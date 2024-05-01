@@ -4,13 +4,13 @@
 
 There are two primary goals of the End-User SIG:
 * Foster a sense of vendor-agnostic community for OpenTelemetry end-users to promote learning and adoption. We currently accomplish this through: [CNCF Slack channel](https://cloud-native.slack.com/archives/C01RT3MSWGZ), [panels](https://youtube.com/@otel-official) and blog posts.
-* Facilitate the collection and communication of end-user feedback to OpenTelemetry project special interest groups to influence SIG priorities. We currently accomplish this through: creation and maintenance of end-user research assets such as OpenTelemetry Community surveys & Organization and facilitation of structured end-user interview sessions.
+* Facilitate the collection and communication of end-user feedback to OpenTelemetry project special interest groups to influence SIG priorities. We currently accomplish this through: creation and maintenance of end-user research assets such as OpenTelemetry Community surveys & organization and facilitation of structured end-user interview sessions.
 
 Our group discourages promotion of vendor-specific solutions and desires to keep the focus on OpenTelemetry core technologies, adoption and usage.
 
 ## Get Involved
 
-There are many ways to get involved in our work! We (End-User SIG) meet every two weeks on Thursdays at 10:00 PT/13:00 ET/19:00 CET. Check out the [OpenTelemetry community calendar](https://calendar.google.com/calendar/embed?src=google.com_b79e3e90j7bbsa2n2p5an5lf60%40group.calendar.google.com)
+There are many ways to get involved in our work! We (End-User SIG) meet every two weeks on Thursdays at 10:00 PT/13:00 ET/19:00 CET. Check out the [OpenTelemetry Community calendar](https://calendar.google.com/calendar/embed?src=google.com_b79e3e90j7bbsa2n2p5an5lf60%40group.calendar.google.com)
 for the Zoom link and any updates to this schedule.
 
 Meeting notes are available as a [public Google doc](https://docs.google.com/document/d/1e-UNZA3Tuno9b53RQbe--whUcO0VIXF3P81oXsrBK6g). If you have trouble accessing the doc, please get in touch on [Slack](https://cloud-native.slack.com/archives/C01RT3MSWGZ).
@@ -22,7 +22,6 @@ As an end user, you may want to:
 * Participate in end-user discussions asynchronously on Slack or synchronously via Google Meet.
 * Follow this page and [#opentelemetry](https://cloud-native.slack.com/archives/CJFCJHG4Q) to learn about new engagement opportunities as we grow our efforts.
 * Encourage other end-users to join and get involved!
-
 
 As someone interested in user research and/or improving the user experience of OpenTelemetry, you may want to:
 

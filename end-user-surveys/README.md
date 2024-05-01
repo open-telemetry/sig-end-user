@@ -29,14 +29,14 @@ The OpenTelemetry community would like to gather data about end-users including 
    - Who will participate in the survey? What is their user role?
   - Do you need any segmentation or demographic information to meet your survey goals?
   - How many participants do you need for success? 
-- Establish Survey Intent & Goals:
+- Establish survey intent & goals:
   - What are you looking to learn/identify/measure?
   - How will the data be used?
-  - What are the survey Key Results?
-- Crafting Survey Questions: 
+  - What are the survey key results?
+- Crafting survey questions: 
   - What is the problem/feedback you want to gather data on?
   - Should you be looking for quantitative or qualitative information, or both?
-- Distribution Channels: 
+- Distribution channels: 
   - Where will the survey be advertised?
   - How will end-users be invited to participate? 
 - How do you plan to analyze & distribute the survey responses: 
