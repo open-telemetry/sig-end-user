@@ -1,16 +1,7 @@
 # <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OpenTelemetry community surveys
 This document is intended to outline best practices for long running and durable OpenTelemetry community surveys. 
 
-The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects. 
-
-# Active Surveys: 
-1: [OpenTelemetry Quarterly Feedback Survey](https://docs.google.com/forms/d/e/1FAIpQLSdKm6oLYRXlZOhEZMVmjoIn4eBToVYNmF6fwpm5GAIipQmPxA/viewform?pli=1)
-   
-- Intent: Gather quantitative data on our end-user community through a simple periodic survey that provides insight with established long running Key Results that we can trend over time. Recruit end-users for future qualitative studies and surveys
-- Survey owners: @sharrmander and @henrikrexed
-- Duration: This survey will be available in perpetuity with some intentional advertising/pushing once a quarter to submit feedback. 
-- Distribution: Survey Results will be summarized on a quarterly basis 
-- [Anonymized raw quarterly feedback survey results](https://docs.google.com/spreadsheets/d/1j2jFe9LLuhJS-NX2xy78ugMo5gDeG-zZeQLOTsgUDTw/edit#gid=0)
+The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects.
 
 # Community survey best practices
 
@@ -26,13 +17,6 @@ The OpenTelemetry community would like to gather data about end-users including 
   - Measuring Key Results
   - Survey Best Practices
   - Summarizing and reporting results
-
-### Recognized Survey Types: 
-1. Direct Survey (anonymous)
-    - OpenTelemetry end user submits survey form
-
-2. Vendor-mediated Customer Interview (semi-anonymous)
-    - Vendor interviews customer & then submits survey form on end-user’s behalf
 
 ### Survey reminders: 
 - Be respectful of the survey-takers' time, in general try to keep the survey short in duration, with specific and targeted questions. You can always ask if you can follow up with them to get deeper context.
