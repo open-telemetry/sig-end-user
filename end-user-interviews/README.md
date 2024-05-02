@@ -2,7 +2,7 @@
 
 ## What are end user interviews? 
 
-- The OpenTelemetry community conducts end user interviews to gather high fidelity information from users though synchronous discussions to learn about their challenges, preferences, and behaviors regarding OpenTelemetry. 
+- The OpenTelemetry community conducts end user interviews to gather high fidelity information from users through synchronous discussions to learn about their challenges, preferences, and behaviors regarding OpenTelemetry. 
 
 ## Why do these interviews happen? 
 
