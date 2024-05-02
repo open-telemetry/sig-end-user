@@ -2,14 +2,14 @@
 
 ## What are end user interviews? 
 
-- The OpenTelemetry community conducts end user interviews to gather high fidelity information from users though the medium of synchronous discussions to learn about their challenges, preferences, and behaviors regarding OpenTelemetry. 
+- The OpenTelemetry community conducts end user interviews to gather high fidelity information from users though synchronous discussions to learn about their challenges, preferences, and behaviors regarding OpenTelemetry. 
 
 ## Why do these interviews happen? 
 
-- Many vendors in this space conduct interviews with their customers but that feedback doesn't always make its way back to the community directly. These interviews will help us test our assumptions, categorize end-users, and describe their needs so that the community can react to their feedback. 
+- These interviews will help us test our assumptions, categorize end-users, and describe their needs so that the community can react to their feedback. 
 
 ## When do these sessions happen? 
-- Our end user working group goal is to hold at least one session a month. 
+- Our End-User SIG goal is to hold at least one session a month. 
 - Our scheduling preference is for these sessions to occur at 10:00 PST/13:00 ET/19:00 CET on Thursdays, however the final schedule will be dictated by the end-user interviewee’s availability.
 
 ## Are the interview sessions recorded? 
@@ -31,5 +31,5 @@
   - Members from the OTel community are welcome to observe the interview and coordinate with the facilitator if there are any specific topics they’d like to be included during the interview. 
 
 ## How can I get involved or learn more?
-- Are you interested in providing the community your feedback in this way? Please contact us in [#otel-user-research](https://cloud-native.slack.com/archives/C01RT3MSWGZ) on CNCF Slack to talk about scheduling. And as always, you can provide your feedback to the community in many ways including our community surveys too. 
+- Are you interested in providing the community your feedback in this way? Please contact us in [#otel-user-research](https://cloud-native.slack.com/archives/C01RT3MSWGZ) on CNCF Slack to talk about scheduling. And as always, you can provide your feedback to the community in many ways, including our community surveys too. 
 - Are you someone who is passionate about gathering and sharing end user feedback? Would you like to help us conduct interviews, improve how we solicit feedback or design a more robust end user interview program? If so, we'd love to hear from you too! We are a friendly, collaborative group and look forward to working together!
