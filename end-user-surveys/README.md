@@ -61,6 +61,8 @@ All surveys should included the following basic demographics questions:
 - How large is your organization? (options: 0-50, 50-100, 100-1000, >1000)
 - What industry do you work in? (options: Technology, Manufacturing, Aerospace, Retail, Finance, Healthcare, Automotive, Hospitality, Research, Travel & Leisure, Media, Advertisement, other)
 - What type of team do you work on? (options: Dev, DevOps, Operations, SRE, Platform Engineering, Observability, Sysadmin, Sales Engineering, DevRel, other)
-- Do you work for a vendor? (options: yes/no)
-- Are you running this in Production? (option: yes/no)
+- Do you work for an Observability or APM vendor? (options: yes/no)
+- Are you running OpenTelemetry in Production? (option: yes/no)
 - Where in your Observability journey is your organization? (options: Beginner - Learning about observability / Have used monitoring tools; Intermediate - We are setting up an observability practice; Expert - We have a well-established observability practice)
+
+Survey template can be found [here](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit). Survey template owner is @avillela.
