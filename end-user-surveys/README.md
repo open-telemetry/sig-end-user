@@ -48,3 +48,25 @@ Survey best practices resources were heavily inspired by these resources:
 
 - [Survey Research Step-by-step Guide](https://www.scribbr.com/methodology/survey-research/)
 - [Types of Survey Questions](https://www.smartsurvey.co.uk/survey-questions/types)
+
+### Basic survey template
+
+Surveys header information should include:
+
+* Purpose of the survey
+* How long the survey will be open (usually one month)
+
+All surveys should included the following basic demographics questions:
+
+- How large is your organization? (options: 0-50, 50-100, 100-1000, >1000)
+- What industry do you work in? (options: Technology, Manufacturing, Aerospace, Retail, Finance, Healthcare, Automotive, Hospitality, Research, Travel & Leisure, Media, Advertisement, other)
+- What type of team do you work on? (options: Dev, DevOps, Operations, SRE, Platform Engineering, Observability, Sysadmin, Sales Engineering, DevRel, other)
+- Do you work for an Observability or APM vendor? (options: yes/no)
+- Are you running OpenTelemetry in Production? (option: yes/no)
+- Where in your Observability journey is your organization? (options: Beginner - Learning about observability / Have used monitoring tools; Intermediate - We are setting up an observability practice; Expert - We have a well-established observability practice)
+
+To start a new survey:
+* Open up the [survey template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit), click on the 3 vertical dots on the top right hand side of the screen, and select `Make a copy`
+* Enable the survey by going to the `Responses` tab on the top middle, and toggle `Not accepting responses`
+
+Survey template owner is @avillela
