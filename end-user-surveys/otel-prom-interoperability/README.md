@@ -12,7 +12,7 @@ The purpose of this survey is to:
 
 ## Resources
 
-* [CSV Survey Results](/end-user-surveys/otel-prom-interoperability/otel-prom-interoperability-survey.csv)
-* [PDF Survey Results](/end-user-surveys/otel-prom-interoperability/otel-prom-interoperability-survey.pdf)
-* Blog Summary of Survey Results (coming soon)
-* [User Feedback Discussion Panel (YouTube)](https://youtu.be/9a3ctZhJj-o?si=nny52gTr-8gDJ77L)
+* [CSV survey results](/end-user-surveys/otel-prom-interoperability/otel-prom-interoperability-survey.csv)
+* [PDF survey results](/end-user-surveys/otel-prom-interoperability/otel-prom-interoperability-survey.pdf)
+* Blog summary of survey results (coming soon)
+* [User feedback discussion panel](https://youtu.be/9a3ctZhJj-o?si=nny52gTr-8gDJ77L)
