@@ -13,15 +13,16 @@ assignees: ''
 
 TBD
 
-### Description used for events
-<!-- Add here a description that will be used in events generated for the event -->
+### Description used for promotional posts and event descriptions
+<!-- Add here the main description that will be used in promotional posts and event invites -->
 
 ### Tasks
 The following list contains sub-tasks that need to be completed as part of organising, recording, and publicising the episode. Please replace items with individual links to issues where appropriate.
 
 - [ ] Confirm speakers
 - [ ] Confirm date and time
-- [ ] Create Q&A doc
+- [ ] Make a copy of the [Q&A interview template](https://docs.google.com/document/d/1vi6NpSj3MvKTuNwFpE8toywHP0sWiH4bsE3AOWvgSwo/edit)
+- [ ] Fill in the template fields highlighted in blue
 - [ ] Create promo image for socials
 - [ ] Create OpenTelemetry public calendar event (including Zoom link)
 - [ ] Create CNCF event

@@ -13,8 +13,8 @@ assignees: ''
 
 TBD
 
-### Description used for events
-<!-- Add here a description that will be used in events generated for the event -->
+### Description used for promotional posts and event descriptions
+<!-- Add here the main description that will be used in promotional posts and event invites -->
 
 ### Tasks
 The following list contains sub-tasks that need to be completed as part of organising, recording, and publicising the episode. Please replace items with individual links to issues where appropriate.
