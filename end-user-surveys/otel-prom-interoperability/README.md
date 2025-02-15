@@ -16,3 +16,12 @@ The purpose of this survey is to:
 * [PDF survey results](/end-user-surveys/otel-prom-interoperability/otel-prom-interoperability-survey.pdf)
 * Blog summary of survey results (coming soon)
 * [User feedback discussion panel](https://youtu.be/9a3ctZhJj-o?si=nny52gTr-8gDJ77L)
+
+## Metadata
+
+* issue: `TBD`
+* questionnaire-link: `TBD`
+* start: 2024-05-01
+* end: 2024-05-31
+* sample-size: 91
+* number-of-questions: 19
