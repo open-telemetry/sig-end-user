@@ -14,7 +14,7 @@ To help the OTel Collector SIG better understand the usage of the OTel Collector
 
 ## Metadata
 
-* issue: `TBD`
+* issue: [Present OTel Collector survey findings to Maintainers](https://github.com/open-telemetry/sig-end-user/issues/22), [Blog post summary of OTel Collector survey](https://github.com/open-telemetry/sig-end-user/issues/16)
 * questionnaire-link: `TBD`
 * start: 2024-01-03
 * end: 2024-01-31

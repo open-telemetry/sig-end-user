@@ -19,7 +19,7 @@ The purpose of this survey is to:
 
 ## Metadata
 
-* issue: `TBD`
+* issue: [Present OTel x Prom interoperability survey findings to Maintainers](https://github.com/open-telemetry/sig-end-user/issues/24)
 * questionnaire-link: `TBD`
 * start: 2024-05-01
 * end: 2024-05-31
