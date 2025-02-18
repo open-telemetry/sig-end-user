@@ -9,7 +9,7 @@ assignees: ''
 <!-- Please remember to change the title of this issue – change <name> to the name of your survey. -->
 
 ### Tasks
-- [ ] Create a new folder in `sig-end-user/end-user-surveys` named as your survey and add a `README.md` file to it
+- [ ] Create a new folder in `sig-end-user/end-user-surveys` named as your survey and add a `README.md` file to (you can use the template below)
 - [ ] Prepare questions
 - [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
 - [ ] Publish links to questionnaire
