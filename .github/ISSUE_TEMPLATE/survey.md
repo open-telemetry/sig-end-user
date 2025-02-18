@@ -11,12 +11,12 @@ assignees: ''
 ### Tasks
 - [ ] Create a new folder in `sig-end-user/end-user-surveys` named as your survey and add a `README.md` file to it
 - [ ] Prepare questions
-- [ ] Create a questionnaire from template
+- [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
 - [ ] Publish links to questionnaire
-- [ ] Website banner
-- [ ] LinkedIn
-- [ ] Stop data collection (save CSV in repo and link it tn README)
+   - [ ] Website banner
+   - [ ] Socials (LinkedIn, Bluesky, Mastodon)
+- [ ] Stop data collection (save CSV in repo and link it in `README.md`)
 - [ ] Analyze data
-- [ ] Report findings
+- [ ] Create a reort
 - [ ] Write a blog post
 - [ ] Present at a maintainers meeting
