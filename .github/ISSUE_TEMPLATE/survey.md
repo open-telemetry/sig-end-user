@@ -24,7 +24,7 @@ assignees: ''
 ### Notes
 #### README.md template
 ```
-# OTel Getting Started Survey
+# <NAME OF YOUR SURVEY>
 
 ## Purpose
 <!-- Explain what do you want to learn from this survey -->
