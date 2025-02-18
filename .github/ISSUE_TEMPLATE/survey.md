@@ -19,7 +19,7 @@ assignees: ''
 - [ ] Analyze data
 - [ ] Create a report
 - [ ] Write a blog post
-- [ ] Present at a maintainers meeting
+- [ ] Present findings at a maintainers meeting
 
 ### Notes
 #### README.md template
