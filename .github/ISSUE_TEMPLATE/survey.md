@@ -17,6 +17,6 @@ assignees: ''
    - [ ] Socials (LinkedIn, Bluesky, Mastodon)
 - [ ] Stop data collection (save CSV in repo and link it in `README.md`)
 - [ ] Analyze data
-- [ ] Create a reort
+- [ ] Create a report
 - [ ] Write a blog post
 - [ ] Present at a maintainers meeting
