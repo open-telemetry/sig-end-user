@@ -1,5 +1,5 @@
 ---
-name: Survey template
+name: Survey
 about: Issue for tracking work on OTel surveys. 
 title: 'Survey: <name>'
 labels: survey
