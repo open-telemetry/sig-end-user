@@ -18,7 +18,7 @@ Meeting notes are available as a [public Google doc](https://docs.google.com/doc
 As an end user, you may want to:
 
 * Reach out to us to tell us your OpenTelemetry adoption story. You can reach out in [#otel-sig-end-user](https://cloud-native.slack.com/archives/C01RT3MSWGZ) to learn more.
-* Take one of our surveys, like our [OpenTelemetry/Prometheus Interoperability Survey](https://forms.gle/LLrba9jkzzgfNexN8)
+* Take one of our surveys (for current surveys, check out the [OpenTelemetry website](https://opentelemetry.io/) or socials)
 * Participate in end-user discussions asynchronously on Slack or synchronously via Google Meet.
 * Follow this page and [#opentelemetry](https://cloud-native.slack.com/archives/CJFCJHG4Q) to learn about new engagement opportunities as we grow our efforts.
 * Encourage other end-users to join and get involved!
