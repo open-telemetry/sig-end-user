@@ -10,15 +10,14 @@ Our group discourages promotion of vendor-specific solutions and desires to keep
 
 ## Get Involved
 
-There are many ways to get involved in our work! We (End-User SIG) meet every two weeks on Thursdays at 10:00 PT/13:00 ET/19:00 CET. Check out the [OpenTelemetry Community calendar](https://calendar.google.com/calendar/embed?src=google.com_b79e3e90j7bbsa2n2p5an5lf60%40group.calendar.google.com)
-for the Zoom link and any updates to this schedule.
+There are many ways to get involved in our work! We (End-User SIG) meet every two weeks on Thursdays at 10:00 PT/13:00 ET/19:00 CET. Check out the [OpenTelemetry Community calendar](https://github.com/open-telemetry/community?tab=readme-ov-file#calendar) for the Zoom link and any updates to this schedule.
 
 Meeting notes are available as a [public Google doc](https://docs.google.com/document/d/1e-UNZA3Tuno9b53RQbe--whUcO0VIXF3P81oXsrBK6g). If you have trouble accessing the doc, please get in touch on [Slack](https://cloud-native.slack.com/archives/C01RT3MSWGZ).
 
 As an end user, you may want to:
 
 * Reach out to us to tell us your OpenTelemetry adoption story. You can reach out in [#otel-sig-end-user](https://cloud-native.slack.com/archives/C01RT3MSWGZ) to learn more.
-* Take one of our surveys, like our [OpenTelemetry/Prometheus Interoperability Survey](https://forms.gle/LLrba9jkzzgfNexN8)
+* Take one of our surveys (for current surveys, check out the [OpenTelemetry website](https://opentelemetry.io/) or socials)
 * Participate in end-user discussions asynchronously on Slack or synchronously via Google Meet.
 * Follow this page and [#opentelemetry](https://cloud-native.slack.com/archives/CJFCJHG4Q) to learn about new engagement opportunities as we grow our efforts.
 * Encourage other end-users to join and get involved!
