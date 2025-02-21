@@ -40,6 +40,26 @@ The OpenTelemetry community would like to gather data about end-users including 
 13. Avoid agree-disagree scales.
 14. Let people disagree
 
+##### Guidelines from [Survey Monkey](https://www.surveymonkey.com/learn/survey-best-practices/?)
+1. Limit yourself to two open-ended questions
+2. Ask a series of closed-ended questions, then include a single textbox question to capture any other feedback
+3. Put open-ended questions on a separate page towards the end of your survey
+4. Make sure that open-ended questions are optional
+5. Avoid jargon, technical language, or acronyms. Especially if your audience is supposed to reflect the general population.
+6. Keep your questions as short as possible. People will be less willing to read long questions and may misunderstand what you’re asking.
+7. If your question has special instructions, add them (in parentheses). Here are a few examples: (select all), (select up to 3)
+8. Avoid leading questions (written in a way that influences survey responses), loaded question (assumes something about the respondents that might not be true), double-barreled questions ( asks people to give only one answer to two different questions), absolutes (always, every, etc.).
+9. Be careful with sensitive questions (religion or faith, ethnicity, race, gender, age, sexual orientation, and income). For example, provide ranges for salary. Explain how the data will be used and ask them closer to the end of the survey. 
+10. Pair close-ended questions with open-ended questions.
+11. Ideally aim for less than 10 questions.
+12. Use screening questions to ensure that the survey is relevant to the respondent.
+13. Only require answers to questions that are necessary to achieve the survey goals.
+14. Give context – who you are, what you do, why you are surveying them, How you’re going to use their information or feedback.
+
+##### Andrej's tips
+1. Make sure you get maximum out of the surveying tool (randomization, etc.)
+
+
 ### Helpful questions and considerations: 
 
 - Audience identification: 
