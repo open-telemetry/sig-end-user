@@ -18,10 +18,27 @@ The OpenTelemetry community would like to gather data about end-users including 
   - Survey Best Practices
   - Summarizing and reporting results
 
-### Survey reminders: 
+### Survey reminders
+##### Original survey design guidelines
 - Be respectful of the survey-takers' time, in general try to keep the survey short in duration, with specific and targeted questions. You can always ask if you can follow up with them to get deeper context.
 - We want to measure improvements too, so using trendable questions helps us assess how we’re doing 
 - We encourage mix of general and targeted surveys
+
+##### Guidelines from [Stripe](https://stripe.com/en-cz/guides/atlas/survey-design-principles)
+1. Make answers options collectively exhaustive, 
+2. Make answer options mutually exclusive
+3. Use language that encourages people to be subjective
+4. Limit yourself to one free response question
+5. Use public facing copy standards
+6. Avoid asking topics that don't immediately relate to a product
+7. Respect users’ time.
+8. Test the survey with fresh—and diverse—eyes.
+9. Describe in detail the key concept of your question.
+10. Never ask about multiple concepts in a single question.
+11. It’s all relative—be precise.
+12. Revise leading questions.
+13. Avoid agree-disagree scales.
+14. Let people disagree
 
 ### Helpful questions and considerations: 
 
