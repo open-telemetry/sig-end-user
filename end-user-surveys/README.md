@@ -24,6 +24,9 @@ The OpenTelemetry community would like to gather data about end-users including 
 - We want to measure improvements too, so using trendable questions helps us assess how we’re doing 
 - We encourage mix of general and targeted surveys
 
+
+<!--
+
 ##### Guidelines from [Stripe](https://stripe.com/en-cz/guides/atlas/survey-design-principles)
 1. Make answers options collectively exhaustive, 
 2. Make answer options mutually exclusive
@@ -56,9 +59,18 @@ The OpenTelemetry community would like to gather data about end-users including 
 13. Only require answers to questions that are necessary to achieve the survey goals.
 14. Give context – who you are, what you do, why you are surveying them, How you’re going to use their information or feedback.
 
-##### Andrej's tips
-1. Make sure you get maximum out of the surveying tool (randomization, etc.)
+##### Harvard
+1. Questionnaire items should be precise
+2. Avoid asking for a single answer to a question that actually has multiple parts.
+3. Respondent should be able to read a question quickly, understand its intent and select or provide an answer
+without difficulty. 
+4. Negation in a question paves the way for easy misinterpretation.
+5. Target the vocabulary of the population to be surveyed (be carful about jargon, abbreviations, biased terms).
 
+##### Andrej's tips
+1. Make sure you get maximum out of the surveying tool
+
+-->
 
 ### Helpful questions and considerations: 
 
