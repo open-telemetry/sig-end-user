@@ -26,6 +26,10 @@ The OpenTelemetry community would like to gather data about end-users including 
 
 
 <!--
+### Survey design guidelines
+- Be respectful of the survey-takers' time, in general try to keep the survey short in duration, with specific and targeted questions. You can always ask if you can follow up with them to get deeper context.
+- We want to measure improvements too, so using trendable questions helps us assess how we’re doing 
+- We encourage mix of general and targeted surveys
 
 ##### Guidelines from [Stripe](https://stripe.com/en-cz/guides/atlas/survey-design-principles)
 1. Make answers options collectively exhaustive, 
@@ -59,7 +63,8 @@ The OpenTelemetry community would like to gather data about end-users including 
 13. Only require answers to questions that are necessary to achieve the survey goals.
 14. Give context – who you are, what you do, why you are surveying them, How you’re going to use their information or feedback.
 
-##### Harvard
+##### [Harvard Law School](https://hnmcp.law.harvard.edu/wp-content/uploads/2012/02/Arevik-Avedian-Survey-Design-PowerPoint.pdf)
+
 1. Questionnaire items should be precise
 2. Avoid asking for a single answer to a question that actually has multiple parts.
 3. Respondent should be able to read a question quickly, understand its intent and select or provide an answer
@@ -67,9 +72,17 @@ without difficulty.
 4. Negation in a question paves the way for easy misinterpretation.
 5. Target the vocabulary of the population to be surveyed (be carful about jargon, abbreviations, biased terms).
 
-##### Andrej's tips
-1. Make sure you get maximum out of the surveying tool
-
+##### Andrej's tips based on reviewing the current surveys
+1. Make sure your questions are configured correctly. 
+2. Use template questions
+3. Use tools to full extent
+  - Provide details in the next question > There is an option for that in Google Forms
+  - Make sure optional questions are not set to required
+  - We should use conditional questions
+4. Use rating numbers with explanations (1,2,3,4,5 > Strongly agree …. Strongly disagree)
+5. Make the choices more balanced (Poor, Okay, Great, N/A
+6. Long surveys (21 questions is too much)
+7. Answer options shouldn't overlap (e.g. 1-100,100-200)
 -->
 
 ### Helpful questions and considerations: 
