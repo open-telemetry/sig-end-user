@@ -34,6 +34,8 @@ The OpenTelemetry community would like to gather data about end-users including 
 14. Ensure questions options are mutually exclusive (e.g. 1-9, 10-99)
 15. Include 'Other' option if relevant
 
+For mode details check guidelines from [Stripe](ttps://stripe.com/en-cz/guides/atlas/survey-design-principles), [Survey Monkey](https://www.surveymonkey.com/learn/survey-best-practices/?), [Harvard Law School](https://hnmcp.law.harvard.edu/wp-content/uploads/2012/02/Arevik-Avedian-Survey-Design-PowerPoint.pdf), [Scribbr](https://www.scribbr.com/methodology/survey-research/), or [Smart Survey](https://www.smartsurvey.co.uk/survey-questions/types)
+
 
 <!--
 ### Survey design guidelines
@@ -128,11 +130,6 @@ without difficulty.
   - How will the data be reported? 
   - What can be summarized? 
   - Do you have any conclusions, insights or recommendations?
-
-Survey best practices resources were heavily inspired by these resources: 
-
-- [Survey Research Step-by-step Guide](https://www.scribbr.com/methodology/survey-research/)
-- [Types of Survey Questions](https://www.smartsurvey.co.uk/survey-questions/types)
 
 ### Basic survey template
 
