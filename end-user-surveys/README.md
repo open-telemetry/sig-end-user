@@ -3,8 +3,6 @@ This document is intended to outline best practices for long running and durable
 
 The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects.
 
-# Community survey best practices
-
 ### Community survey principles
 - User feedback should be a mix of qualitative and quantitative:
   - Qualitative to validate/invalidate hypotheses
