@@ -72,9 +72,22 @@ without difficulty.
 4. Negation in a question paves the way for easy misinterpretation.
 5. Target the vocabulary of the population to be surveyed (be carful about jargon, abbreviations, biased terms).
 
+#### [Survey Research Step-by-step Guide](https://www.scribbr.com/methodology/survey-research/)
+1. Options should cover all the possibilities
+2. Consider asking an open-ended follow up question for a more detailed explanation of what was asked in the closed-ended question before.
+3. Language should be clear and precise. Avoid jargon or industry-specific terminology. Phrase your questions in a neutral way with a no indication for a prefered answer. 
+4. Questioned should be ordered in a logical order.
+5. Start with easy, non-sensitive, closed-ended questions that will encourage the respondent to continue. 
+6. Related questions should be grouped together.
+
+#### [Types of Survey Questions](https://www.smartsurvey.co.uk/survey-questions/types)
+1.  Demographic questions are those that look to categorise the identity of the survey participants based on factors such as their age, gender, ethnicity, marital status, household income, employment, education level and location.
+2. Dichotomous question should be used with care to avoid frustration or compromised results.
+3. Hypothetical questions should be avoided, in general. If used, they should be implemented with great care. 
+
 ##### Andrej's tips based on reviewing the current surveys
 1. Make sure your questions are configured correctly. 
-2. Use template questions
+2. Use template questions and standard scales (e.g. Likert scale)
 3. Use tools to full extent
   - Provide details in the next question > There is an option for that in Google Forms
   - Make sure optional questions are not set to required
