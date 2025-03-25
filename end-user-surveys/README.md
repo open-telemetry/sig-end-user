@@ -3,8 +3,6 @@ This document is intended to outline best practices for long running and durable
 
 The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects.
 
-# Community survey best practices
-
 ### Community survey principles
 - User feedback should be a mix of qualitative and quantitative:
   - Qualitative to validate/invalidate hypotheses
@@ -18,10 +16,25 @@ The OpenTelemetry community would like to gather data about end-users including 
   - Survey Best Practices
   - Summarizing and reporting results
 
-### Survey reminders: 
-- Be respectful of the survey-takers' time, in general try to keep the survey short in duration, with specific and targeted questions. You can always ask if you can follow up with them to get deeper context.
-- We want to measure improvements too, so using trendable questions helps us assess how we’re doing 
-- We encourage mix of general and targeted surveys
+### Survey design guidelines
+
+1. Aim for less than 15 questions that are short and concise
+2. Group questions into logical sections
+3. Use demographic questions (filtering, grouping)
+4. Start with easy, closed-ended questions
+5. Use up to one open-ended question
+6. Set questions to 'Required' only if necessary
+7. Use clear language without jargon and acronyms.
+8. Do not collect Personally Identifiable Information (PII)
+9. Avoid leading questions (written in a way that influences survey responses)
+10. Avoid loaded question (assumes something about the respondents that might not be true)
+11. Avoid double-barreled questions (asks people to give only one answer when asking about two things) 
+12. Avoid absolutes (always, every, etc.)
+13. Be careful with negation in a questions
+14. Ensure questions options are mutually exclusive (e.g. 1-9, 10-99)
+15. Include 'Other' option if relevant
+
+For mode details check guidelines from [Stripe](ttps://stripe.com/en-cz/guides/atlas/survey-design-principles), [Survey Monkey](https://www.surveymonkey.com/learn/survey-best-practices/?), [Harvard Law School](https://hnmcp.law.harvard.edu/wp-content/uploads/2012/02/Arevik-Avedian-Survey-Design-PowerPoint.pdf), [Scribbr](https://www.scribbr.com/methodology/survey-research/), or [Smart Survey](https://www.smartsurvey.co.uk/survey-questions/types)
 
 ### Helpful questions and considerations: 
 
@@ -43,11 +56,6 @@ The OpenTelemetry community would like to gather data about end-users including 
   - How will the data be reported? 
   - What can be summarized? 
   - Do you have any conclusions, insights or recommendations?
-
-Survey best practices resources were heavily inspired by these resources: 
-
-- [Survey Research Step-by-step Guide](https://www.scribbr.com/methodology/survey-research/)
-- [Types of Survey Questions](https://www.smartsurvey.co.uk/survey-questions/types)
 
 ### Basic survey template
 
