@@ -18,3 +18,4 @@ The purpose the OpenTelemetry Communications SIG gather insights about the usabi
 * end: 2025-11-9
 * sample-size: 48
 * number-of-questions: 21
+
