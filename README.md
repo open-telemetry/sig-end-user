@@ -34,7 +34,7 @@ We coordinate our SIG efforts in [#otel-sig-end-user](https://cloud-native.slack
 
 If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io/).
 
-## SIG End-user Leadership
+## Project Leadership
 
 #### Maintainers
 * [@avillela](https://github.com/avillela)
