@@ -39,7 +39,7 @@ If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io
 #### Maintainers
 * [@avillela](https://github.com/avillela)
 * [@danielgblanco](https://github.com/danielgblanco)
-* [@avillela](https://github.com/avillela)
+* [@reese-lee](https://github.com/reese-lee)
 
 #### Approvers
 * [@AnaMMedina21](https://github.com/AnaMMedina21)
