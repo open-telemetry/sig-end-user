@@ -33,3 +33,14 @@ As someone interested in user research and/or improving the user experience of O
 We coordinate our SIG efforts in [#otel-sig-end-user](https://cloud-native.slack.com/archives/C01RT3MSWGZ) on CNCF Slack.
 
 If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io/).
+
+## SIG Leadership
+
+#### Maintainers
+* [@avillela](https://github.com/avillela)
+* [@danielgblanco](https://github.com/danielgblanco)
+* [@reese-lee](https://github.com/reese-lee)
+
+#### Approvers
+* [@AnaMMedina21](https://github.com/AnaMMedina21)
+* [@IAMebonyhope](https://github.com/IAMebonyhope)
