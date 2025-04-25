@@ -34,4 +34,12 @@ assignees: ''
 * Survey responses in `.csv`
 * Survey report in `.pdf`
 * Blog summary of survey results
+
+## Metadata
+related issues: 
+questionnaire: 
+start: (YYYY-MM-DD)
+end: (YYYY-MM-DD)
+sample-size: 
+number-of-questions: 
 ```
