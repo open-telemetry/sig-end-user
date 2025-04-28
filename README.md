@@ -41,6 +41,5 @@ If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io
 * [@danielgblanco](https://github.com/danielgblanco)
 * [@reese-lee](https://github.com/reese-lee)
 
-#### Approvers
-* [@AnaMMedina21](https://github.com/AnaMMedina21)
-* [@IAMebonyhope](https://github.com/IAMebonyhope)
+#### Triagers
+* [@AndrejKiri](https://github.com/AndrejKiri)
