@@ -68,7 +68,7 @@ Surveys header information should include:
 
 All surveys should included the following basic demographics questions:
 
-- How large is your organization? (options: 0-50, 50-100, 100-1000, >1000)
+- How large is your organization? (options: 1-49, 50-99, 100-999, 1000+)
 - What industry do you work in? (options: Technology, Manufacturing, Aerospace, Retail, Finance, Healthcare, Automotive, Hospitality, Research, Travel & Leisure, Media, Advertisement, other)
 - What type of team do you work on? (options: Dev, DevOps, Operations, SRE, Platform Engineering, Observability, Sysadmin, Sales Engineering, DevRel, other)
 - Do you work for an Observability or APM vendor? (options: yes/no)
