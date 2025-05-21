@@ -15,8 +15,8 @@ assignees: ''
    - [ ] Website banner
    - [ ] Socials (LinkedIn, Bluesky, Mastodon)
 - [ ] Stop data collection and upload data to [`sig-end-user`](https://github.com/open-telemetry/sig-end-user) repo
-   - Duplicate the TEMPLATE folder in `sig-end-user/end-user-surveys`
-   - Update `README.md`
+   - Createa a new folder in `sig-end-user/end-user-surveys`
+   - Copy a template from `sig-end-user/end-user-surveys` folder called `README.template.md` and fill it in
    - Upload your data as CSV into the folder (make sure you remove any potentially sensitive info)
 - [ ] Analyze data
 - [ ] Create a report
