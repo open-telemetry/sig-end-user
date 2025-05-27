@@ -31,3 +31,5 @@ The following list contains sub-tasks that need to be completed as part of organ
 - [ ] Host session
 - [ ] Edit recording
 - [ ] Publish recording & promote on socials
+
+<sub>**Tip**: React with 👍 to help prioritize this issue. Add more useful info in comments to help maintainers triage it. Learn more [here](https://opentelemetry.io/community/).</sub>
