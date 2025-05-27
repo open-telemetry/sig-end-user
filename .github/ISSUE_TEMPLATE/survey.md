@@ -23,4 +23,4 @@ assignees: ''
 - [ ] Write a blog post
 - [ ] Present findings at a maintainers meeting
 
-### Notes
+<sub>**Tip**: React with 👍 to help prioritize this issue. Add more useful info in comments to help maintainers triage it. Learn more [here](https://opentelemetry.io/community/).</sub>
