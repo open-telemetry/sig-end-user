@@ -1,0 +1,70 @@
+Do you have any additional comments regarding project organization or your experience contributing? Is there anything you'd like to see added to or changed about the OTel contributor experience?,What kind of event would be useful for growing the project?,Is there anything you would change from this survey to make it more useful for the project?,Is there anything else you would like to add?
+"My experience as a new contributor was fantastic. The SIG maintainers were super welcoming, provided rapid feedback on my work, and encouraged me to keep contributing. It was exactly what I thought joining an open source project would be like. I think we should emphasize to maintainers that welcoming and encouraging new contributors is a win-win. The contributors develop a favorable outlook on OpenTelemetry and are more likely to keep contributing. The more contributors we have, the greater the chance we can promote more people into triager/approver/maintainer roles, giving a much needed boost to busy SIGs.","Local meetups, probably. I don't really attend events.",,
+,Contributor Summit?,,
+,"Maybe more ""Day in the Life of a Maintainer/Approver"" and/or walkthroughs on contributing, even as a basic Youtube video ",,
+I believe the OTel Collector repository has grown in level of importance to match the OTel specification. It is time that we require more than 1 approval to merge PRs in the core Collector repositlory.,,,Thank you for taking my feedback.
+None,"Technical exchange, meet tech experts",Yes,None
+,"I always see small communities that are actually organizing regular meetups (40 ~ 60 attendees), each time hosted in different companies (e.g the Golang comunity from Sao Paulo - Brazi: https://www.instagram.com/golang_sp/) where the people go to share their usecases, meet each other and learn about Golang (in this example) in general. 
+
+Creating OpenTelemetry-related local communities like this could be useful for growing the OpenTelemetry project, as we could find people who are interested in Observability but doesn't know OpenTelemetry - or, in other cases, doesn't know succesful usecases by using OTel. ",,
+"it is painful to contribute to the collector related repositories, especially when i am not a member. my whole experience is like the following: 
+1. get pr created
+2. update based on comment
+3. ask for approval to start ci 
+4. before someone else come to add the pr to merge queue, the branch is already out dated 
+5. update the branch, now i need to run ci again
+
+then repeat 3 to 5 all the time. sorry i may miss some context, but i don't quite understand why would we want to block contributor from running the ci? ",,,
+,"Issue/PR maintenance, roadmap planning, documentation bash, test expansion",,
+,Talks + Hackathon,,
+,"A maintainers summit would be awesome. No need to have a full day of talks, but it would be great to have an agenda, and get all/most of maintainers together to discuss challenges they are facing.",,
+"In the semantic-conventions repo deficiencies in the CONTRIBUTING.md guide were already identified (how to edit certain markdown files, guiding principles) and are being worked on.",,,
+,In-person SIG meetups/workshops,,
+,"Kubernetes, cloud native technology meetups ",,
+,Like KCDs,,
+,"While I thought the last OTel Community Day was valuable, the time spent collaborating with other contributors were far more valuable than the talks (not that the talks were bad, but if the same group of us all giving talks just spent the time connecting and collaborating I feel like it would be a better use of time).",," I think my only major challenge with contributing to OpenTelemetry comes from the fact that it has felt difficult in the past to push major changes without someone coming out of the woodwork after a lot of time has passed to try and shoot down a ton of work. I think this is already being addressed by the RFC process in the Collector, so I cannot think of any other immediate actions to remediate this."
+,pizza party,more examples,
+"Erlang/Elixir is small enough, I wish it was easier for collaborators like me to figure out how to be more helpful, and be faster reviewing things. We are ending up forking most projects instead of contributing upstream",,Make it shorter,
+,,,"I think that there is a big difference on how different members of the TC are engaged and are fulfilling their responsibilities. It looks as if some members see it more as a ""right"" rather than ""duty""."
+,Local Meetups,-,I'm planning to apply to become an OpenTelemetry Member
+I really want to contribute code to the collector but the barrier to entry is very high and there is essentially no or very limited docs which help people get started e.g. build an exporter,Events related to attracting and training new code owners and maintainers for the collector,,
+,"contributors conference; OTel-specific conference like PromCon, separate from KubeCon","Maybe some open questions could help gather more feedback. Examples: What are the problems/obstacles you've encountered while contributing? What did you find surprising when contributing? How is contributing to OpenTelemetry different from contributing to other open source projects""?",
+,An event focused on end-users adopting OpenTelemetry,,
+"I'd like to see more of the process happen asynchronously. Too much is meeting driven. There should also be a clear expectation set regarding turnaround time on code reviews. And the tooling should be made consistent; for example, every project should build the same way in a manner that is hermetic and not dependent on the local system (other than for very low level dependencies such as ""nix-shell"" and/or ""docker""/""podman"") so that you don't need to learn the idiosyncracies of a particular language, project, etc. to be able to ""build"" and ""test"" (the same set of commands should work in each project to build and test it).",,"It would be useful to have a way to provide feedback on specific repositories / SIGs to list both good things to keep and bad things which should be changed (from a process, tooling, etc. standpoint).",
+I would like to see new maintainers assigned to components that are delinquent in addressing open PRs.,,Provide a way to voice complaints about projects or components with insufficient or delinquent maintainer activity.,
+,"Webinar, meetings, bootcamps",Not yet,Not yet
+"The EasyCLA took forever to sign because of some issues connecting my employer and the Linux Foundation Easy CLA website. It took about >2 months to resolve.
+The review, test, and approval process are no straightforward. Easy CLA was resolved on Feb 3rd, 2025. It's Feb 27th but my PR is still under review, all tests are passing. I have to constantly ""Update branch"" and ask people to re-run the tests.",,,
+,contrib or hack day style event like at kubecon / cncfcon would be useful,,thanks for being a great proj to contribute to!
+,A collocated event of observability in KubeCon,,
+,"CICD Observability working session -- how to contribute, how to get started, demo's and the future!",,
+"The  way questions are phrased - ""Do you feel sense of autonomy"" - Personally I feel I can't do what *I* want, but does the SIG have autonomy is more what I'm worried about.
+
+My answer reflects my personal feelings, vs. the answer I'd have if it was ""if all maintainers in the SIG agree"", which is where MOST issues arise.",,,
+Takes too long to get things discussed and approved/denied,,,
+,Events to discus deep dive into the future of OpenTelemetry,,
+,"Workshops, both of this is meant to grow the user base or the contributor base. Speaking at language user groups is also a great way.",,
+"Putting in that first OTel issue/PR and filling out a form to become an OTel Community memeber are straight-forward. But making that jump to try to help when ""there are not enough contributors"" is difficult. The GH issues where the important conversations happen are everywhere and hard to find/navigate from how organic they are. Knowing what a piece of code does is hard unless it's been marked Stable because docstrings are missing/incomplete or sphinx docs don't provide a high level ""what does this do"". Projects like GenAI are so fast-moving it's difficult to catch a wave and starting knowing how to help out. Uncool but important projects like database instrumentation rely on knowledge of people who don't contribute to OTel anymore.",,,
+"In general I find it difficult to make significant contributions without attending SIG meetings. Now that there is an APAC-friendly time this is not so bad for me, but I expect there are many others who are either not able to (family commitments) or not comfortable with joining a meeting (e.g. English may not be their first language - some are much more comfortable writing/reading than speaking.)
+
+I have raised issues and opened PRs that are not looked at until mentioned in a meeting, and this seems to be common in this project. If I had one thing I'd like to see changed, it would be to work on making SIG meetings mostly unnecessary. If someone looks at an issue/PR and decides it needs some discussion that's understandable, but it shouldn't be necessary for getting feedback in the first place.",,,
+,OpenTelemetry in Clients (Web / Mobile / Desktop),,
+"There's too much gatekeeping and too much emphasis on purity over practicality. New ideas and directions are sometimes actively resisted because of one person's strong objections, even when real use cases are put forth. Progress can be glacially slow.",A simulated SIG meeting to show how the system works and how you can contribute.,,
+I think the collector-contrib has grown in a way that the current maintainers struggle too much to keep up with everything. I think the current rules in terms of write permissions to the repo have to be adjusted only for that repository.,I'd love to see a contribfest where maintainers help beginners get their first PR merged :),,
+"- To my knowledge, there isn't a single source of truth when it comes to tracking changes. It usually involves something breaking and then trawling release notes to track down PRs and issues to understand why something was changed/refactored.
+
+- I've heard of bad experiences when someone is attempting to propose some new functionality. It seems a big pain point is figuring out who/what SIG should be consulted with. Often someone will visit one SIG just to be told to go to another and a game of telephone ensues.
+
+- I think this is to be expected with an open source project, but reviews can often be painfully slow and stretch weeks. Most people don't work solely on the project, so reviewing PRs isn't a priority, rightfully so. However it still doesn't negate the fact that reviews are slow and have always been the most painful part about contributing.",,,
+Simplicity should become a priority,"An event focused on ""how-to""",,"My interaction has been primarily through the Java SIG and projects. I'd like to commend the maintainers and drivers of these as I've found them very open, supportive and encouraging which has made it a pleasure to be involved (despite the unavoidable ""committee style"" nature of OpenTelemetry)!"
+,Local meetups,,
+,Regular User Interest Group meetups,,
+"Sometimes I feel like we're too through and make it difficult to experiment or get real world feedback via experimental features from users. This can result in PRs being blocked in the collector, go sig, etc. for an extended period of time.","More user feedback sessions for immediate stuff and then a long-term planning session where the GC/TC helps set goals, guidelines, etc. and allocates resources accordingly.",n/a,"great job, thank you!"
+,Observability focused conferences would be great,,
+"In SIGs where we have to maintain multiple repositories I'd love to see more automation.
+And I wish all SIGs were more aligned with the SIG comms (not the SIG I'm part of), because the official docs should be the to-go spot for everyone trying to use OTel.
+
+I see a lot of repos with implementation details in README files and code snippets in examples folders, this should be moved to Docs and properly structured.","I believe we need an OTel maintainer's summit, where we sit together and discuss pain points around the project and things that are happening across multiple SIGs.
+Issues that one SIG is facing, may be the same issue others are seeing, or even issues that other SIGs already solved.
+Having a day together would be great for fostering X-SIGs collaboration.",,
+,,"There is a lot of noise in regard to Observability 1.0, 2.0. 3.0 ",
