@@ -1,9 +1,17 @@
 # <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OpenTelemetry community surveys
 This document is intended to outline best practices for long running and durable OpenTelemetry community surveys. 
 
-The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects.
+The OpenTelemetry community would like to gather data about end-users including their experiences, preferences, perceptions and opinions about OpenTelemetry. This data can be used to inform priorities within various OpenTelemetry projects.]
+
+### Survey pipeline
 
 You can find information about upcoming surveys in our [survey pipeline](https://github.com/orgs/open-telemetry/projects/90/views/5). 
+
+Key info about the survey pipeline:
+- Mostly, we collect data for survyes for 1 month. In that timeframe we can collect around 100 reponses what is usually enough for the folks running the survey.
+- We run up to 6 surveys per year. We don't want to increase survey fatigue of our community too much. With 6 surveys, we have 50/50 balance between when we ask our community to fill in a survey and when we do not.
+- We do not run multiple surveys concurently because we don't want surveys to steal each others' thunder. What we want to do instead is getting in touch ahead of time and together prioritizing the survey schedule in a way that works for everyone.
+- We make exceptions to the above mentioned when it makes sense. No rules are set in stone.
 
 ### Community survey principles
 - User feedback should be a mix of qualitative and quantitative:
