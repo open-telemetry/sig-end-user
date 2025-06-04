@@ -41,7 +41,7 @@ For mode details check guidelines from [Stripe](ttps://stripe.com/en-cz/guides/a
 ### Helpful questions and considerations: 
 
 - Audience identification: 
-   - Who will participate in the survey? What is their user role?
+  - Who will participate in the survey? What is their user role?
   - Do you need any segmentation or demographic information to meet your survey goals?
   - How many participants do you need for success? 
 - Establish survey intent & goals:
