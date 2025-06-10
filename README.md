@@ -29,7 +29,7 @@ As someone interested in user research and/or improving the user experience of O
 * Follow our work coordination efforts in [#otel-sig-end-user](https://cloud-native.slack.com/archives/C01RT3MSWGZ).
 * Amplify the existence of our surveys and end-user engagement opportunities to interested people!
 
-As a contributor to other OTel SIGs that want's to run their own survey:
+As a contributor to other OTel SIGs that wants to run their own survey:
 * Create a new issue with the `Survey` template.
 * Review our [survey guidance](https://github.com/open-telemetry/sig-end-user/tree/main/end-user-surveys) and past surveys
 * Reach out in [#otel-sig-end-user](https://cloud-native.slack.com/archives/C01RT3MSWGZ) with any questions
