@@ -10,8 +10,14 @@ import sys
 
 load_dotenv()
 
+# Env var setup
+# If this first one is missing, run fails, which is good.
+youtube_key = os.environ.get('API_KEY')
+# Second one is optional, but if it's missing, we'll skip the summary and cleanup.
+openai_key = os.environ.get("OPENAI_API_KEY","")
+
 def get_playlist_videos(playlist_id):
-    youtube = build('youtube', 'v3', developerKey=os.environ.get('API_KEY'))
+    youtube = build('youtube', 'v3', developerKey=youtube_key)
     
     video_ids = []
     next_page_token = None
@@ -55,7 +61,7 @@ def get_playlist_videos(playlist_id):
     return videos
 
 def get_channel_videos(channel_id, start_date, end_date):
-    youtube = build('youtube', 'v3', developerKey=os.environ.get('API_KEY'))
+    youtube = build('youtube', 'v3', developerKey=youtube_key)
     
     videos = []
     next_page_token = None
@@ -144,11 +150,11 @@ def openai_cleanup(transcript, video_id):
     @param transcript: The raw transcript of a YouTube video
     @return: A tuple containing the summary of the video and the cleaned up transcript
     """
-    if os.environ.get("OPENAI_API_KEY","") == "":
+    if openai_key == "":
         print("No OpenAI API key found in .env file; skipping summary and cleanup.")
         return ["Summary not available", None]
 
-    client = openai.OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+    client = openai.OpenAI(api_key=openai_key)
 
     summarize_pls = """
     You are a helpful assistant that summarizes YouTube transcripts.

@@ -23,7 +23,7 @@ From within this directory, we'd place transcripts in that directory off of the 
 ```
 python3 transcripts.py \
     --channel UCHZDBZTIfdy94xMjMKz-_MA \
-    --path ../../transcripts
+    --path ./transcripts
 ```
 
 ## Need a YouTube Key?
