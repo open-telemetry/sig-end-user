@@ -176,7 +176,7 @@ def openai_cleanup(transcript, video_id):
 
     summary = response.choices[0].message.content
 
-    sudo_make_me_a_sandwich = """
+    cleanup_transcript_prompt = """
     You are a helpful assistant that cleans up YouTube transcripts. You will be given a messy
     transcript that contains few sentence breaks, indications of music in the video, and filler words.  
     You will need to clean up the transcript into a set of logical sentences and paragraphs.
@@ -192,7 +192,7 @@ def openai_cleanup(transcript, video_id):
     response = client.chat.completions.create(
         model="gpt-4o-mini",
         messages=[
-            {"role": "system", "content": sudo_make_me_a_sandwich},
+            {"role": "system", "content": cleanup_transcript_prompt},
             {"role": "user", "content": transcript}
         ],
         temperature=0.7,
@@ -243,7 +243,7 @@ def write_markdown(args, video):
 
     print(f"Successfully wrote transcript for video {video_id} to {filename}")
 
-def have_transcript_file(video):
+def have_transcript_file(args, video):
     return os.path.isfile(file_for_video(args, video))
 
 def main(args):
@@ -259,7 +259,7 @@ def main(args):
         videos_to_transcribe = videos_to_transcribe + channel_videos
         print(f"Found {len(channel_videos)} videos in the specified date range.")
 
-    videos_to_transcribe = [v for v in videos_to_transcribe if not have_transcript_file(v)]
+    videos_to_transcribe = [v for v in videos_to_transcribe if not have_transcript_file(args, v)]
     print(f"Found {len(videos_to_transcribe)} videos to transcribe, after filtering out those that already have transcripts.")
 
     if args.limit:
