@@ -13,10 +13,11 @@ assignees: ''
 - [ ] Prepare questions
 - [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
 - [ ] Publish links to questionnaire
-   - [ ] Website banner
+   - [ ] Website [active survey link](https://github.com/open-telemetry/opentelemetry.io/blob/main/content/en/community/end-user/feedback-survey.md?plain=1) 
+   - [ ] Website banner (if applicable)
    - [ ] Socials (LinkedIn, Bluesky, Mastodon)
 - [ ] Stop data collection and upload data to [`sig-end-user`](https://github.com/open-telemetry/sig-end-user) repo
-   - Createa a new folder in `sig-end-user/end-user-surveys`
+   - Create a new folder in `sig-end-user/end-user-surveys`
    - Copy a template from `sig-end-user/end-user-surveys` folder called `README.template.md` and fill it in
    - Upload your data as CSV into the folder (make sure you remove any potentially sensitive info)
 - [ ] Analyze data
@@ -24,4 +25,4 @@ assignees: ''
 - [ ] Write a blog post
 - [ ] Present findings at a maintainers meeting
 
-<sub>**Tip**: React with 👍 to help prioritize this issue. Add more useful info in comments to help maintainers triage it. Learn more [here](https://opentelemetry.io/community/).</sub>
+<sub>**Tip**: [React](https://github.blog/news-insights/product-news/add-reactions-to-pull-requests-issues-and-comments/) with 👍 to help prioritize this issue. Please use comments to provide useful context, avoiding `+1` or `me too`, to helps us triage it. Learn more [here](https://opentelemetry.io/community/end-user/issue-participation/).</sub>
