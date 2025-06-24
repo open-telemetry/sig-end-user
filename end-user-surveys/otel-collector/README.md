@@ -11,6 +11,7 @@ To help the OTel Collector SIG better understand the usage of the OTel Collector
 * [Blog summary of survey results](https://opentelemetry.io/blog/2024/otel-collector-survey/)
 * [User feedback discussion panel](https://youtu.be/LL8v_B417ok?si=u9tjFhZE4N4YRt3e)
 * [Summary of findings presented at Maintainer meeting](/end-user-surveys/otel-collector/OTel-collector-survey-insights.pdf)
+* [Questionnaire](https://docs.google.com/forms/d/12e7tvITwL0JDjY28BtGHaSDHQKGPqXpdM-pzwkspva4/closedform#responses)
 
 ## Metadata
 

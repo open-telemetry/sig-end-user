@@ -10,8 +10,7 @@ This survey is to gain feedback about the experience of contributors to the Open
    * [Demographics responses](end-user-surveys/contributor-experience/otel-contributor-experience-survey-demographic-questions.csv)
    * [Substantial responses](end-user-surveys/contributor-experience/otel-contributor-experience-survey-substantial-questions.csv)
    * [Free-form responses](end-user-surveys/contributor-experience/otel-contributor-experience-survey-free-form-questions.csv)
-* PDF survey results
-* Blog summary of survey results
+* [Blog summary of survey results](https://opentelemetry.io/blog/2025/contribex-survey-results/)
 
 ## Metadata
 
