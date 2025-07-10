@@ -7,7 +7,6 @@ This serves to transparently organize our interview activities and findings.
 
 ### July 2022: Shopify
 - Recording Link: https://www.youtube.com/watch?v=AZJT4LHdygU
-- Summary: [not currently available]
 
 ### June 2022: Anonymous technology development platform company
 - Recording link: n/a
