@@ -42,9 +42,6 @@ This serves to transparently organize our interview activities and findings.
 ### March 2023: Dough Ramirez from Uplight
 - Recording Link: https://www.youtube.com/watch?v=ptYWBF-R1Fc
 
-### August 2022: n/a
-- Summer break!
-
 ### July 2022: Shopify
 - Recording Link: https://www.youtube.com/watch?v=AZJT4LHdygU
 
