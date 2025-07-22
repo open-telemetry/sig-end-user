@@ -1,4 +1,4 @@
-# <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OpenTelemetry community Interview Discussion Guide
+# <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OTel Me Discussion Guide
  
  This template outlines a best practice flow for for end user interviews. This guidance might be especially helpful if there is no pre-defined session agenda.
  
