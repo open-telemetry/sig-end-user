@@ -1,5 +1,5 @@
 annotated-types==0.7.0
-anyio==4.6.2.post1
+anyio==4.10.0
 babel==2.16.0
 beautifulsoup4==4.12.3
 cachetools==5.5.0
