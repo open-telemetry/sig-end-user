@@ -1,7 +1,7 @@
 annotated-types==0.7.0
 anyio==4.10.0
 babel==2.17.0
-beautifulsoup4==4.12.3
+beautifulsoup4==4.13.5
 cachetools==5.5.2
 certifi==2024.12.14
 charset-normalizer==3.4.3
@@ -11,9 +11,9 @@ dateparser==1.2.2
 distro==1.9.0
 google-api-core==2.22.0
 google-api-python-client==2.151.0
-google-auth==2.36.0
+google-auth==2.40.3
 google-auth-httplib2==0.2.0
-googleapis-common-protos==1.65.0
+googleapis-common-protos==1.70.0
 h11==0.16.0
 htmldate==1.9.3
 httpcore==1.0.9
