@@ -84,7 +84,8 @@ All surveys should included the following basic demographics questions:
 - Where in your Observability journey is your organization? (options: Beginner - Learning about observability / Have used monitoring tools; Intermediate - We are setting up an observability practice; Expert - We have a well-established observability practice)
 
 To start a new survey:
-* Open up the [survey template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit), click on the 3 vertical dots on the top right hand side of the screen, and select `Make a copy`
+* Open up the [survey template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit?ts=68c840e5), click on the 3 vertical dots on the top right hand side of the screen, and select `Make a copy`
 * Enable the survey by going to the `Responses` tab on the top middle, and toggle `Not accepting responses`
+
 
 Survey template owner is @avillela
