@@ -2,7 +2,7 @@ annotated-types==0.7.0
 anyio==4.10.0
 babel==2.17.0
 beautifulsoup4==4.13.5
-cachetools==5.5.2
+cachetools==6.2.0
 certifi==2024.12.14
 charset-normalizer==3.4.3
 click==8.2.1
