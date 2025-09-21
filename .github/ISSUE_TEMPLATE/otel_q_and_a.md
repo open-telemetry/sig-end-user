@@ -26,7 +26,7 @@ The following list contains sub-tasks that need to be completed as part of organ
 - [ ] Create promo image for socials
 - [ ] Create OpenTelemetry public calendar event (including Zoom link)
 - [ ] Create CNCF event
-- [ ] Promote on OpenTelemetry socials (LinkedIn, X, Bluesky, Mastodon) - make sure that these point to the CNCF event link
+- [ ] Promote on OpenTelemetry socials (LinkedIn, X, Bluesky, Mastodon, Reddit) - make sure that these point to the CNCF event link
 - [ ] Promote on CNCF Slack channels ([#otel-announcements](https://cloud-native.slack.com/archives/C049G9W5NQ7), [#otel-sig-end-users](https://cloud-native.slack.com/archives/C01RT3MSWGZ), [#o11y-ambassadors](https://cloud-native.slack.com/archives/C050WLWHV1U)) - make sure that these point to the CNCF event link
 - [ ] Host session
 - [ ] Promote recording on socials

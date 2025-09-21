@@ -14,7 +14,8 @@ assignees: ''
 - [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
 - [ ] Publish links to questionnaire
    - [ ] Website banner
-   - [ ] Socials (LinkedIn, Bluesky, Mastodon)
+   - [ ] Socials via Buffer (LinkedIn, Bluesky, Mastodon)
+   - [ ] Reddit
 - [ ] Stop data collection and upload data to [`sig-end-user`](https://github.com/open-telemetry/sig-end-user) repo
    - Createa a new folder in `sig-end-user/end-user-surveys`
    - Copy a template from `sig-end-user/end-user-surveys` folder called `README.template.md` and fill it in
