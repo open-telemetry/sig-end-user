@@ -34,9 +34,9 @@ proto-plus==1.26.1
 protobuf==5.29.5
 pyasn1==0.6.1
 pyasn1_modules==0.4.2
-pydantic==2.11.7
+pydantic==2.11.9
 pydantic_core==2.39.0
-pyparsing==3.2.3
+pyparsing==3.2.4
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python-slugify==8.0.4
