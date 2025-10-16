@@ -13,9 +13,9 @@ assignees: ''
 - [ ] Prepare questions
 - [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
 - [ ] Publish links to questionnaire
-   - [ ] Website [active survey link](https://github.com/open-telemetry/opentelemetry.io/blob/main/content/en/community/end-user/feedback-survey.md?plain=1) 
-   - [ ] Website banner (if applicable)
-   - [ ] Socials (LinkedIn, Bluesky, Mastodon)
+   - [ ] Website banner
+   - [ ] Socials via Buffer (LinkedIn, Bluesky, Mastodon)
+   - [ ] Reddit
 - [ ] Stop data collection and upload data to [`sig-end-user`](https://github.com/open-telemetry/sig-end-user) repo
    - Create a new folder in `sig-end-user/end-user-surveys`
    - Copy a template from `sig-end-user/end-user-surveys` folder called `README.template.md` and fill it in
