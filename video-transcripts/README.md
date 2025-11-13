@@ -15,7 +15,13 @@ This directory contains a script that fetches transcripts from YouTube videos an
 
 ## Configure Environment
 
-Edit `.env` file and set `API_KEY` to the correct value for YouTube
+Copy the example environment file and configure your API keys:
+
+```bash
+cp env.example .env
+```
+
+Edit `.env` file and set `API_KEY` to the correct value for YouTube.
 Optionally, add `OPENAI_API_KEY` if you intend to use the categorizer
 
 - **`API_KEY`** (required): YouTube Data API v3 key for fetching video data and transcripts
