@@ -10,68 +10,83 @@ URL: https://www.youtube.com/watch?v=HRIx9gJtECU
 
 ## Summary
 
-In this YouTube video, Luiz Aoqui, a developer at HashiCorp working on the Nomad project, discusses his experiences with implementing OpenTelemetry for distributed tracing in Nomad. The session is formatted as a Q&A, with Luiz sharing insights into the challenges and methodologies adopted during his attempts to enhance visibility into Nomad's operations. He explains Nomad's architecture, including its server-client structure and the scheduling process, before diving into his various approaches to integrating OpenTelemetry. Luiz elaborates on his journey from initially trying to instrument every aspect of Nomad (which proved overly complex) to focusing on core functionalities, allowing users to leverage built-in telemetry capabilities without extensive modifications. He highlights the importance of semantic conventions in creating meaningful traces and shares lessons learned about managing overhead and user experience challenges. The conversation emphasizes the value of real-world implementations of OpenTelemetry in legacy systems and provides practical insights for developers interested in telemetry.
+In this Otel Q&A session, Luiz Aoqui, a developer on HashiCorp Nomad, discusses his experiences with integrating OpenTelemetry (OTel) into the Nomad workload orchestrator. He shares insights from his four-year journey with Nomad and how he discovered the need for distributed tracing to improve observability and debugging. The conversation covers three main approaches he took: the first being an ambitious attempt to instrument all aspects of Nomad, which proved to be overly complex and generated excessive overhead; the second aimed at enhancing user applications running on Nomad by automatically injecting relevant metadata into traces; and the final approach, which focuses on creating meaningful spans for specific actions within Nomad without altering function signatures. The discussion highlights the challenges of working with legacy code and the importance of finding a balance in telemetry data to avoid overwhelming users. The session concludes with acknowledgment of the evolving conversation around OTel implementations and the shared learning experience.
 
-# OpenTelemetry Q&A with Luiz Aoqui
+## Chapters
 
-Welcome everyone to the OpenTelemetry Q&A! I’m super excited to have Luiz Aoqui join me. He is a developer on HashiCorp Nomad. 
+Sure! Here are the key moments from the livestream along with their timestamps:
 
-**Luiz:** Thank you! I’m really excited to be here. It’s always fun to talk OpenTelemetry. I haven't used it yet extensively, but I've dabbled a lot and will share more details about my adventures with OpenTelemetry.
+```
+00:00:00 Introductions and welcome to Luiz Aoqui
+00:02:15 Luiz shares his background and experience with Nomad
+00:03:45 Overview of Nomad architecture and components
+00:05:30 Explanation of distributed tracing and its relevance to Nomad
+00:10:20 Discussion on initial attempts at implementing OpenTelemetry in Nomad
+00:12:50 Challenges faced with the first approach to distributed tracing
+00:17:00 Introduction of the second approach focusing on user experience
+00:23:30 Discussion on environment variables and their limitations
+00:30:15 Transition to a more focused approach on key processes within Nomad
+00:35:45 Explanation of how semantic conventions aid in tracing
+00:40:00 Conclusion and reflection on the journey of implementing OpenTelemetry
+``` 
+
+Feel free to let me know if you need any additional information!
+
+# Otel Q&A with Luiz Aoqui
+
+Welcome everyone to the Otel Q&A! I am super excited to have Luiz Aoqui join me. He is a developer on HashiCorp Nomad. 
+
+**Luiz:** Thank you! Really excited to be here. It's always fun to talk OpenTelemetry. I mean, I haven't used it yet, but I dabble a lot, and I'll share more details of my adventures with OpenTelemetry.
 
 ### Introduction
 
-Let me introduce myself first. As I mentioned, I'm Luiz, an engineer working at HashiCorp, specifically on the Nomad project. I've been working on Nomad for over four years now. At some point, I bumped into OpenTelemetry, particularly Distributed Tracing. It felt super interesting to me as a developer on Nomad because Nomad can be opaque to debug. Implementing and deploying it can be quite complex, so I thought it would be cool to incorporate some distributed tracing to better understand the internal workings.
+So, as I mentioned, I'm Luiz, an engineer working at HashiCorp specifically on the Nomad project. I've been working on Nomad for over four years now. At some point, I bumped into OpenTelemetry, specifically Distributed Tracing, and it felt super interesting to me as a developer in Nomad because Nomad can be quite opaque to debug. Implementing, deploying, and using Nomad can be done in multiple different ways, so I thought it might be cool to do some distributed tracing to get a sense of what's going on internally.
 
-After our releases, we usually have an internal hack week to cool down after the stressful moments. By the way, we just released Nomad 1.7, so if you want to try that out, it's available now! We’ll probably have a hack week soon, and maybe I’ll work on some extra OpenTelemetry integration then.
+After our releases, we usually have an internal hack week just to cool down a bit after that stressful moment. By the way, we just released Nomad 1.7, so if you want to try that, it's out now! 
 
 ### Nomad Overview
 
-Let’s start with a quick introduction to Nomad since understanding its internals is essential for discussing the tracing aspect. 
+Now, I guess I should introduce Nomad briefly because understanding the internals is crucial for the distributed tracing aspect. 
 
-**What is Nomad?**
-Nomad is a workload orchestrator, similar to Kubernetes. You provide it with a configuration file, and it orchestrates the deployment of containers and other workloads. 
+**Nomad** is a workload orchestrator, similar to Kubernetes. You provide it with a configuration file, and that file becomes containers or other work. Internally, Nomad has a simple architecture with two main components: servers and clients. 
 
-Internally, Nomad has a simple architecture consisting of two main components: **servers** and **clients**.
+- **Servers:** You typically have three to five servers that maintain the core state of the cluster. They communicate with each other to ensure that the state is replicated and available in case of a failure. The servers also handle scheduling, determining where to place jobs based on the requests they receive.
 
-- **Servers:** Typically, you have three to five servers that maintain the core state of the cluster. They communicate with each other to ensure state consistency and to maintain the jobs running in the cluster. 
-- **Clients:** These are the machines that actually run your workloads. You can have anywhere from one to thousands of clients in a cluster.
+- **Clients:** These are the machines that actually run your workloads. You can have anywhere from one to thousands of clients in your Nomad cluster.
 
-### Scheduling and Operations
+The scheduling process involves creating a "plan" based on the job specification, which is then executed by the clients. 
 
-The servers are responsible for two main tasks:
+### OpenTelemetry and Nomad
 
-1. **State Management:** They store the state of the cluster, similar to how etcd functions in the Kubernetes world.
-2. **Scheduling:** The scheduling process occurs within the servers. When a job is submitted, the scheduler determines where to place the workload among the available clients.
+I have tried three different work streams with OpenTelemetry in Nomad, each with its own challenges and benefits. My first attempt was to add distributed tracing throughout the entire process. The idea was to create a single trace for the entire process, so I wanted to map the process of running something end-to-end — from submitting a job to getting visibility into what happens inside the cluster.
 
-Each client periodically queries the server for instructions on which allocations to run, similar to a pod in Kubernetes.
+This approach, which I refer to as "boil the ocean," aimed to trace everything at once. However, it created a lot of overhead and many tiny spans that weren't particularly useful. 
 
-### OpenTelemetry Integration Attempts
+### Challenges Faced
 
-Now, I want to dive into my attempts to integrate OpenTelemetry with Nomad. I'll go over three different approaches I took, each with its own challenges and lessons learned.
+1. **Overhead:** Each span created was very short-lived, leading to excessive data transfer and storage.
 
-1. **First Attempt - Boil the Ocean Approach:** 
-   My initial goal was to add distributed traces everywhere to provide comprehensive visibility. This approach resulted in excessive overhead due to too many spans and data being sent over the network. It became clear that monitoring at the functional level was not ideal for a monolithic application like Nomad.
+2. **Code Changes:** The implementation required significant changes to the Nomad codebase, including wrapping HTTP handlers, which made the process quite messy.
 
-2. **Second Attempt - User-Focused Instrumentation:** 
-   In my second approach, I shifted my perspective to help users instrument their applications running on Nomad. I began by adding environment variables containing Nomad metadata that would automatically populate the spans generated by applications using OpenTelemetry. However, this approach also had limitations, primarily due to the static nature of environment variables.
+3. **Function Boundaries:** Distributed tracing is usually designed for microservices, but Nomad operates more like a monolith, complicating the process of tracing across function calls.
 
-3. **Final Attempt - Targeted Instrumentation:** 
-   In my last attempt, I focused on instrumenting key aspects of Nomad without trying to capture every single function call. I created spans for significant events while utilizing semantic conventions to standardize the attributes across different traces. This approach allowed for better filtering and analysis of the traces related to specific jobs or allocations.
+4. **Consistency:** There was a lack of consistency in the metadata added to the spans, making it challenging to derive useful insights.
 
-### Conclusion and Discussion
+### New Approaches
 
-This journey through integrating OpenTelemetry with Nomad has been quite insightful. I learned that it’s essential not to overwhelm the system with too many spans and that sometimes less is more when it comes to tracing. 
+After some guidance from the OpenTelemetry community, I shifted my perspective. Instead of trying to instrument everything at once, I focused on core aspects of Nomad that would provide the most value. 
 
-**Q&A Session:**
-Feel free to ask any questions as we go. 
+- **Increased Granularity:** The new approach involved creating smaller, more meaningful spans rather than a single mega trace. This allowed for easier filtering of traces based on standardized attributes.
 
-**Audience Member:** What kind of information does each span provide?
+- **Semantic Conventions:** I implemented semantic conventions for Nomad, allowing for better organization and filtering of trace data, making it easier for operators to find relevant information.
 
-**Luiz:** Each span can have different attributes depending on what’s being monitored. Some spans might have additional metadata like job IDs or eval IDs, while others might contain standard OpenTelemetry SDK data.
+### Conclusion
 
-Thank you for joining this session! I hope you found it helpful and insightful. We’ll be posting a recording of this Q&A on the official OpenTelemetry YouTube channel. Keep an eye out for that!
+This journey has been enlightening, and I hope everyone gained insights from my attempts to integrate OpenTelemetry with Nomad. 
 
-Thank you, everyone, for attending!
+Thank you for joining this Q&A session! We will be posting a recording of this on the OTEL YouTube channel (OTEL - Official). Keep an eye out for the announcement on social media and Slack once it's up. 
+
+**Luiz:** Thank you for having me! I appreciate everyone's participation. Bye!
 
 ## Raw YouTube Transcript
 

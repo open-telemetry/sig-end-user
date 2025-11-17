@@ -10,111 +10,155 @@ URL: https://www.youtube.com/watch?v=KR8j11FECgc
 
 ## Summary
 
-In this OTEL Q&A session, Daniel Dias and Oscar Reyes from Tracetest discuss the integration of trace-based testing into the OpenTelemetry (OTEL) community demo. The conversation covers the concept of trace-based testing, which utilizes emitted traces from distributed systems to perform assertions about their state, enhancing testing efficacy. Daniel and Oscar explain how Tracetest implements this testing method through a three-step process: triggering the system, generating traces, and conducting tests on the telemetry data. They also highlight the benefits of this integration, including improved testing reliability and ease of identifying issues across service boundaries. The discussion touches on the challenges faced during the integration, such as ensuring accurate context propagation and adapting existing tests into trace-based formats. The session concludes with insights into how the community has embraced this testing approach, enhancing the overall quality of the OTEL demo.
+In this OTEL Q&A session, hosted by Adriana, Daniel Dias and Oscar Reyes from Tracetest discussed the integration of trace-based testing into the OpenTelemetry (OTEL) community demo. Daniel, a Brazilian software developer and CNCF ambassador, and Oscar, a lead software engineer from Mexico, explained the concept of trace-based testing, which utilizes emitted traces to assert system states and validate interactions between microservices. They outlined Tracetest's implementation process, which involves triggering a system, generating traces, and then testing those traces using assertions. The duo shared their experience of transitioning from traditional integration tests to trace-based tests in the demo, highlighting the advantages of traceability in identifying issues and improving developer experience. They also noted the positive reception from the OTEL community and the increased reliance on trace tests in CI/CD pipelines. The session concluded with a discussion on the challenges faced during integration and the ongoing evolution of trace-based testing practices within the community.
+
+## Chapters
+
+Here are 10 key moments from the livestream, along with their timestamps:
+
+00:00:00 Introductions and welcome to the livestream  
+00:02:30 Introduction of Daniel Dias and Oscar Reyes  
+00:04:00 Explanation of trace-based testing  
+00:06:15 Importance of trace-based testing for distributed services  
+00:08:00 Overview of how Tracetest implements trace-based testing  
+00:10:45 Discussion on creating trace-based tests using YAML  
+00:12:30 Introduction to the OTEL community demo  
+00:15:00 Explanation of the architecture of the OTEL demo  
+00:18:30 Integration of Tracetest into the OTEL demo  
+00:24:15 Benefits and challenges of integrating trace-based tests in the demo  
+00:30:00 Audience Q&A about context propagation and baggage in traces  
+
+Feel free to reach out if you need further details or additional information!
 
 # OTEL Q&A with Daniel Dias and Oscar Reyes
 
-Welcome everyone who has been able to join us today! This is super exciting to have both Daniel Dias and Oscar Reyes from Tracetest with us for an OTEL Q&A. We haven't had an OTEL Q&A for a while, so I'm glad that both of you were able to make it. 
+Welcome, everyone, who has joined us today. This is super exciting! We have both Daniel Dias and Oscar Reyes from Tracetest joining us for an OTEL Q&A. We haven't had an OTEL Q&A for a while, so I’m really glad that both of you could make it today. 
 
-For those of you here today, thank you for joining! Please let your friends know that we will be posting a recording of this on the OTEL YouTube channel (OTEL official) for anyone who couldn't make it. We'll also provide links on social media once the recording is available. 
+For those of you who are here, thank you for joining! Also, feel free to tell your friends that we will be posting a recording of this on the OTEL YouTube channel (OTEL Official) for anyone who couldn't make it. We will also provide the links on social media once the recording is available. 
+
+With that, let's get started! Why don't I get you to introduce yourselves?
 
 ## Introductions
 
-With that, let's get started. Why don't I get you to introduce yourselves?
+**Daniel Dias:**  
+Hello, everyone! I'm Daniel Dias, a Brazilian living and complaining in Argentina right now because of the weather. I am a software developer at Tracetest, and while I'm not helping the team evolve with new features, I'm bragging about the features somewhere. I'm also proud to be a newly minted CNCF ambassador!
 
-**Daniel:**  
-Hello everyone! I'm Daniel Dias, a Brazilian living and complaining in Argentina right now because of the weather. I am a software developer at Tracetest, and while I'm not helping the team evolve with new features, I'm bragging about those features somewhere. I'm also a newly minted CNCF ambassador!
-
-**Oscar:**  
-For my part, I'm Oscar Reyes. I'm Mexican, living in Mexico, and I am a lead software engineer here at Tracetest. I'm really happy to be here to talk about Tracetest and OpenTelemetry.
+**Oscar Reyes:**  
+For my part, I'm Oscar Reyes. I'm Mexican, I live in Mexico, and I'm a lead software engineer at Tracetest. I'm really happy to be here and talk about Tracetest and OpenTelemetry.
 
 ## What is Trace-Based Testing?
 
-First things first, for folks on the call who might not be familiar, can you tell us what trace-based testing is?
+For folks on the call who might not be familiar, can you explain what trace-based testing is?
 
 **Daniel:**  
-The main idea behind trace-based tests is that we use traces emitted by systems to assert the state of a trace. We call a component in the system, wait for the trace to be generated, and then make assertions to ensure everything is correct. This is especially helpful for distributed services where there are many moving pieces. If the entire system is instrumented, we can make numerous assertions around the generated OpenTelemetry data or traces. 
+The main idea behind trace-based tests is that we use traces emitted by systems to assert the state of the trace. We call some component in the system, wait for a while until the trace is generated, and then start making assertions to guarantee everything is correct. This is particularly helpful for distributed services with many moving pieces. If the entire system is instrumented, you can perform various assertions around the generated OpenTelemetry data or the traces. 
 
-You can validate that certain spans exist, and go deeper to validate attributes or execution times of those spans. It's a multi-layered level of testing across all the spans or traces your system generates.
-
-**Oscar:**  
-What I love about trace-based testing is that we're already emitting traces in our code, so why not take advantage of that? It's like a two-for-one deal!
-
-## Implementing Trace-Based Testing in Tracetest
-
-How does Tracetest implement trace-based testing?
+You can validate that certain spans exist and also go deeper to validate attributes or execution time of the spans. It's a multi-layer level of testing for all the spans or traces generated by the system.
 
 **Oscar:**  
-Tracetest follows a two-step process. First, we trigger the system under test. Currently, we support HTTP, gRPC requests, Kafka, and other integrations like Cypress or Playwright. This triggers the system to generate traces and spans, which are stored in a tracing backend like Jaeger or Tempo.
+What I love about trace-based testing is that we’re already emitting traces in our code, so why not take advantage of that? It feels like a two-for-one deal!
 
-The second half of what Tracetest does is pull those traces based on your configuration. Depending on how your system works, the generation of the entire trace could take a few seconds or even several minutes. We support various timing scenarios and pull the trace into the Tracetest system based on the trace ID generated in the first step. This will act as the parent ID for the assertions on the spans and telemetry data.
+## How Does Tracetest Implement Trace-Based Testing?
 
-So, it’s essentially a three-step process: trigger, get the trace, and then test.
+**Oscar:**  
+So, how does Tracetest implement trace-based testing? The way that trace-based testing works is through a two-step process. 
+
+1. **Trigger the System:** The first step is triggering the system under test. Currently, we support things like HTTP and gRPC requests, as well as Kafka, which was integrated by Daniel. We also have integrations for systems like Cypress and Playwright.
+
+2. **Pull the Traces:** After the system generates the instrumented traces and spans, they are stored in a tracing backend, like Jaeger or Tempo. The second part of what Tracetest does is pull those traces based on your configuration. We wait for the trace to be ready, depending on how the system works—some generate all the traces in seconds, while others might take longer. We pull the data into the Tracetest system based on the generated trace ID, which acts as the parent ID for our assertions on the spans and telemetry data.
+
+So, in summary, we have a three-step process: trigger the system, get the trace, and then conduct the tests.
 
 **Daniel:**  
-I’d like to add that Tracetest allows you to create your trace-based tests using YAML, which everyone loves to hate! We’ve been working on simplifying the introduction of trace-based testing to systems, whether through Git actions, CI/CD processes, or cron jobs. With our CLI and TypeScript library, you can automate your tests and manage them through the UI or CLI.
-
-## The OTEL Community Demo Integration
-
-The main reason we called you both for this Q&A is because you did something super cool last fall by integrating trace-based testing from Tracetest into the OTEL community demo. Can one of you explain what the OTEL community demo is for those unfamiliar?
+Do you have anything to add to that?
 
 **Oscar:**  
-The OpenTelemetry demo emulates a telescope shop, but with a twist. Under this shop, we have various microservices that interact with each other, each with its own responsibility. We have an API for payments, another for shipping, and so forth. The main goal of this demo is to demonstrate how you can integrate OpenTelemetry into your system and visualize the data across multiple microservices.
+No, I think that covers it!
 
-## How the Integration Happened
-
-So, now that we understand the OTEL demo, how did you integrate Tracetest into it?
+## Creating Trace-Based Tests
 
 **Oscar:**  
-About a year and a half ago, we were looking for ways to contribute to the community and push OpenTelemetry further. I started by migrating the existing front-end application, which was built entirely in Go with server-side rendering, to a front-end application using Next.js, incorporating React and OpenTelemetry instrumentation.
+If I remember correctly, you can create your trace-based tests using YAML, right? 
 
 **Daniel:**  
-After Oscar's work, we realized that while the OpenTelemetry demo was great, it only had integration tests at the API level. We needed to test how services acted together, especially when background processes were involved. So, we started discussing the idea of trace-based tests. 
+Yes! One of the things we have been pushing in the past few months is not only allowing users to have these three steps but also automating and simplifying how to introduce trace-based testing into their systems. You can use our CLI and different tools, like our TypeScript library, to graph the specifications in YAML or even JSON files. You can export them from the UI or CLI and execute everything from there, which gives you multiple ways to interact with the system and the test definitions.
 
-We began writing traceability tests for the integration tests, not only checking API responses but also ensuring the APIs called behind the scenes were functioning correctly. This proved invaluable when we encountered issues, like when the Kafka SDK changed ownership, and we used trace tests to ensure everything was still working correctly.
-
-## Challenges and Benefits 
-
-What challenges did you face during the integration of trace-based testing into the OTEL demo?
+## Integration with the OTEL Community Demo
 
 **Oscar:**  
-One major challenge was ensuring our tests did not impact the entire ecosystem. We decided to work exclusively with Jaeger, making it easier to manage the tests. Additionally, understanding how the services interacted was crucial, which sometimes led to discovering discrepancies, like mismatched JSON formats.
+One of the reasons we called Daniel and Oscar for this Q&A is that they did something super cool last fall: they integrated trace-based testing into the OTEL community demo. Can one of you explain what the OTEL community demo is for folks who aren't familiar?
 
 **Daniel:**  
-We had a couple of unexpected challenges, such as needing to embed protobuffer files in tests, which complicated things. However, we simplified our tests and improved the developer experience based on feedback from the OpenTelemetry demo team.
-
-What benefits did you start seeing after the integration of trace-based testing?
+The main idea of the OpenTelemetry demo is that it emulates a telescope shop with a bunch of microservices that interact with each other, each serving one responsibility in the system. We have one API for payments, another for shipping, and so on. The demo showcases how you can integrate OpenTelemetry into your system and see the data integrated across various microservices.
 
 **Oscar:**  
-One of the biggest changes was seeing the OpenTelemetry demo maintainers integrate trace tests into their CI/CD pipeline. They could now validate PRs more effectively, catching issues earlier in the process.
+It's a great way to get started with OTEL, especially if you find it overwhelming. It's not too difficult to try out the OTEL demo, and I recommend it for those who haven't yet.
+
+## Integrating Tracetest into the OTEL Demo
+
+**Oscar:**  
+Now that we understand what the OTEL demo is, let's talk about how you integrated Tracetest into it.
 
 **Daniel:**  
-We even received a shoutout from Josh Lee, which was a huge affirmation for us! The integration has allowed for greater reliability and has shifted how testing is approached within the community demo.
+About a year and a half ago, we were looking for partnerships and ways to contribute to the community and push OpenTelemetry further. We discovered the OTEL demo, and I started working on migrating the existing front-end application built in Go to Next.js, which uses React. I also introduced front-end instrumentation using browser-side OpenTelemetry libraries, which connected the browser all the way to the backend services.
 
-## Future Considerations
-
-Now that trace-based testing has been integrated for several months, have you made any changes to your approach?
+**Oscar:**  
+After Daniel joined, we started looking at the testing side of the OpenTelemetry demo. Initially, the demo had integration tests, but they were only at the API level. We realized we needed to test how the services worked together, especially for background processes. So we discussed the idea of implementing trace-based tests to enhance the existing integration tests.
 
 **Daniel:**  
-Yes, we've noticed that other developers are starting to write their own trace-based tests, which is fantastic. We've also had discussions about adding more tests and exploring interesting use cases to further enhance the demo.
+We saw that the integration tests were useful, but we needed a way to ensure that one service's output was correctly processed by another service. By creating trace-based tests, we could validate both the API responses and the background processes.
+
+## Challenges Encountered
+
+**Oscar:**  
+What were some of the big challenges or unexpected things you encountered during this integration?
+
+**Daniel:**  
+One of the first challenges was figuring out how to run these tests without impacting the entire ecosystem. We decided to use Jaeger since the demo already utilized it. This made it easier to test without affecting the overall system performance. 
+
+Another challenge was understanding the services and how they worked. For example, we discovered that the JSON sent to one service was in snake_case, not camelCase, which required some tweaking.
+
+## Benefits of Trace-Based Testing
+
+**Oscar:**  
+What benefits have you seen since integrating trace-based testing?
+
+**Daniel:**  
+One of the significant changes was when the OpenTelemetry demo maintainers started integrating trace tests into their CI/CD pipeline. Previously, they had to run manual tests, and sometimes they would forget to test specific services. With trace tests in place, they could validate PRs and catch issues earlier, ensuring that everything was working correctly.
+
+We also received a shoutout from Josh Lee, which was great! His support for trace-based testing and its importance to the OpenTelemetry community helped raise awareness.
+
+## Future Changes and Improvements
+
+**Oscar:**  
+Now that trace-based testing has been integrated into the demo, have there been any significant changes in how you approach it?
+
+**Daniel:**  
+One significant change was that the maintainers began building their own traceability tests. This was a big step, as they realized that with trace tests, they could validate their systems more effectively. They even decided to simplify their testing approach by reducing reliance on other testing libraries, focusing instead on trace-based testing.
+
+**Oscar:**  
+If you had a redo, would you change anything about how you integrated trace-based testing with the OTEL demo?
+
+**Daniel:**  
+At first glance, I wouldn’t change anything because it felt like a perfect match! However, I would like to add more tasks and think about more interesting use cases to showcase.
 
 ## Audience Questions
 
-We do have a question from the audience: "Can trace tests help identify where context is being broken when it shouldn't?"
+**Daniel (from the audience):**  
+One of the biggest pains for distributed systems is ensuring correct context propagation across service boundaries. Can trace tests help identify where context is being broken?
 
 **Oscar:**  
-Absolutely! One of our goals is to enable Trace-Based Driven Development (TBDD). Users can create assertions based on expected traces. If a span is missing, it indicates that context propagation may not be functioning correctly.
-
-And a follow-up: "Can Tracetest make assertions on baggage?"
+Yes! We have all felt that pain. Trace-Based Driven Development (TDD) allows users to create assertions based on expected traces. If a span doesn’t exist as expected, it indicates that context propagation may have failed. This technique can help identify those breaks.
 
 **Daniel:**  
-Currently, we can test custom attributes in spans that you define. We continually look to the OpenTelemetry specification for more metadata to integrate, such as error codes and span statuses.
+Another question we received was whether Tracetest can make assertions on baggage.
 
-## Closing Remarks
+**Oscar:**  
+Currently, we can test custom attributes in spans. We are continuously looking at the OpenTelemetry specification to integrate more metadata, like error codes and span statuses.
 
-Thank you both, Daniel and Oscar, for joining today! This has been a wonderful discussion about the integration of trace-based testing into the OTEL community demo. I’m excited to see how this evolves and appreciate your insights into the power of OpenTelemetry and Tracetest. 
+## Conclusion
 
-Thank you, everyone, for joining us, and a special thanks to Adriana for organizing this session!
+Thank you both, Daniel and Oscar, for joining today! It’s been great to discuss trace-based testing and its integration with the OTEL community demo. I'm a big fan of the demo and see how this integration adds a powerful and tracing-native approach to integration testing. Thank you, everyone, for participating!
 
 ## Raw YouTube Transcript
 
