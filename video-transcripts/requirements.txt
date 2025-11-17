@@ -55,4 +55,4 @@ typing_extensions==4.15.0
 tzlocal==5.3.1
 uritemplate==4.2.0
 urllib3==2.5.0
-youtube-transcript-api==0.6.3
+youtube-transcript-api==1.2.3

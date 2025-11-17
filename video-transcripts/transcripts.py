@@ -4,6 +4,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
+from youtube_transcript_api._errors import YouTubeRequestFailed
 from dotenv import load_dotenv
 from slugify import slugify
 import json
@@ -211,31 +212,23 @@ def file_for_video(args, video):
     filename = f"{args.path}/{published}-{slug}.md"
     return filename
 
-def get_video_transcript_with_retry(video_id, max_retries=3):
+def get_video_transcript_with_retry(video_id, max_retries=5):
     """
     Fetch transcript with retry logic and exponential backoff.
-    Uses the new youtube-transcript-api 1.x API with fallback to deprecated static methods.
+    Uses youtube-transcript-api 1.2.3+ API.
+    Handles YouTube rate limiting (429 errors) with extended wait times (60-120 seconds).
     Returns cleaned transcript text or None if unavailable.
     """
     for attempt in range(max_retries):
         try:
-            # Try new API first (youtube-transcript-api 1.x)
-            try:
-                transcript_api = YouTubeTranscriptApi()
-                fetched_transcript = transcript_api.fetch(
-                    video_id, 
-                    languages=['en', 'es', 'fr', 'de', 'ja']  # Fixed 'jp' to 'ja'
-                )
-                # Convert to the old format (list of dicts)
-                transcript = fetched_transcript.to_raw_data()
-                
-            except (AttributeError, TypeError):
-                # Fallback to deprecated static method if new API isn't available
-                print(f"Using deprecated static API for video {video_id}")
-                transcript = YouTubeTranscriptApi.get_transcript(
-                    video_id, 
-                    languages=('en', 'es', 'fr', 'de', 'ja')
-                )
+            # Use youtube-transcript-api 1.x API
+            transcript_api = YouTubeTranscriptApi()
+            fetched_transcript = transcript_api.fetch(
+                video_id, 
+                languages=['en', 'es', 'fr', 'de', 'ja']
+            )
+            # Convert to list of dicts format
+            transcript = fetched_transcript.to_raw_data()
             
             # Validate transcript structure
             if not transcript or not isinstance(transcript, list):
@@ -275,14 +268,50 @@ def get_video_transcript_with_retry(video_id, max_retries=3):
         except VideoUnavailable:
             print(f"Video {video_id} is unavailable")
             return None
+        except YouTubeRequestFailed as e:
+            # Check if this is a 429 rate limit error
+            error_str = str(e)
+            if '429' in error_str or 'Too Many Requests' in error_str:
+                if attempt < max_retries - 1:
+                    # Use much longer wait time for rate limiting (60-120 seconds)
+                    wait_time = random.uniform(60, 120)
+                    print(f"⚠️  YouTube rate limit (429) detected for video {video_id}")
+                    print(f"   Waiting {wait_time:.0f} seconds before retry {attempt + 2}/{max_retries}...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"❌ YouTube rate limit persists after {max_retries} attempts for video {video_id}")
+                    print(f"   Consider waiting 10-15 minutes before running the script again.")
+                    return None
+            else:
+                # Other YouTube API errors
+                if attempt < max_retries - 1:
+                    wait_time = (2 ** attempt) * 5 + random.uniform(0, 5)
+                    print(f"YouTube API error for video {video_id}. Retrying in {wait_time:.1f}s...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"YouTube API error persists for video {video_id}: {str(e)}")
+                    return None
         except Exception as e:
-            if attempt < max_retries - 1:
-                # Exponential backoff with jitter
+            error_str = str(e)
+            # Check if this is likely a rate limit error disguised as XML parse error
+            if 'no element found' in error_str or 'line 1, column 0' in error_str:
+                if attempt < max_retries - 1:
+                    # Use longer wait time as this is likely a rate limit issue
+                    wait_time = random.uniform(60, 120)
+                    print(f"⚠️  Possible YouTube rate limit detected for video {video_id} (XML parse error)")
+                    print(f"   Waiting {wait_time:.0f} seconds before retry {attempt + 2}/{max_retries}...")
+                    time.sleep(wait_time)
+                else:
+                    print(f"❌ Persistent error for video {video_id} after {max_retries} attempts")
+                    print(f"   This may be due to YouTube rate limiting. Wait 10-15 minutes and try again.")
+                    return None
+            elif attempt < max_retries - 1:
+                # Standard exponential backoff for other errors
                 wait_time = (2 ** attempt) + random.uniform(0, 1)
-                print(f"Attempt {attempt + 1} failed for video {video_id}. Retrying in {wait_time:.1f}s... Error: {str(e)}")
+                print(f"Attempt {attempt + 1} failed for video {video_id}. Retrying in {wait_time:.1f}s... Error: {error_str}")
                 time.sleep(wait_time)
             else:
-                print(f"All {max_retries} attempts failed for video {video_id}: {str(e)}")
+                print(f"All {max_retries} attempts failed for video {video_id}: {error_str}")
                 return None
     
     return None
