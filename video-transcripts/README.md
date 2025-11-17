@@ -97,6 +97,35 @@ The script includes comprehensive rate limiting to avoid YouTube API quota issue
 ### Language Support
 Attempts to fetch transcripts in multiple languages: English, Spanish, French, German, Japanese
 
+## Troubleshooting
+
+### YouTube IP Blocking
+
+If you encounter "YouTube is blocking requests from your IP" errors, this means YouTube has blocked your IP address from accessing their transcript API. This is different from rate limiting and won't clear quickly.
+
+**Common causes:**
+- Repeated testing/debugging over multiple days
+- Using a cloud provider IP (AWS, GCP, Azure, etc.)
+- Using certain VPN services
+- Your ISP's IP range being flagged
+
+**Solutions:**
+
+1. **Wait 24-48 hours** - IP blocks usually clear after 1-2 days of no activity
+
+2. **Use a different network** - Switch to mobile hotspot, different WiFi, or different location
+
+3. **Cookie-based authentication** (Advanced):
+   - Export cookies from a logged-in YouTube session in your browser
+   - Use a browser extension like "Get cookies.txt LOCALLY" (Chrome/Firefox)
+   - Save cookies.txt in the video-transcripts directory
+   - Modify the script to use cookies (requires code changes)
+   - See [youtube-transcript-api documentation](https://github.com/jdepoix/youtube-transcript-api#cookies) for details
+
+4. **Use a residential proxy** - Cloud/datacenter IPs are often blocked, but residential IPs work better
+
+5. **Run from a different machine** - If possible, run the script from a home computer instead of a server
+
 ## Need a YouTube Key?
 
 * Have a GCP project

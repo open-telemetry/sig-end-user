@@ -5,6 +5,11 @@ from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
 from youtube_transcript_api._errors import YouTubeRequestFailed
+try:
+    from youtube_transcript_api._errors import TooManyRequests
+except ImportError:
+    # Fallback if TooManyRequests doesn't exist in this version
+    TooManyRequests = YouTubeRequestFailed
 from dotenv import load_dotenv
 from slugify import slugify
 import json
@@ -269,9 +274,18 @@ def get_video_transcript_with_retry(video_id, max_retries=5):
             print(f"Video {video_id} is unavailable")
             return None
         except YouTubeRequestFailed as e:
-            # Check if this is a 429 rate limit error
+            # Check if this is an IP block error
             error_str = str(e)
-            if '429' in error_str or 'Too Many Requests' in error_str:
+            if 'blocking requests from your IP' in error_str or 'IP has been blocked' in error_str:
+                print(f"❌ YouTube has blocked your IP address for video {video_id}")
+                print(f"   This is not a temporary rate limit - your IP is blocked.")
+                print(f"\n   Workarounds:")
+                print(f"   1. Wait 24-48 hours for the block to clear")
+                print(f"   2. Use a different network/WiFi connection")
+                print(f"   3. Set up cookie-based authentication (see README)")
+                print(f"   4. Use a residential proxy or VPN (not cloud-based)")
+                return None
+            elif '429' in error_str or 'Too Many Requests' in error_str:
                 if attempt < max_retries - 1:
                     # Use much longer wait time for rate limiting (60-120 seconds)
                     wait_time = random.uniform(60, 120)
