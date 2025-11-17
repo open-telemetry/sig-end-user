@@ -51,8 +51,8 @@ def get_playlist_videos(playlist_id):
             if not next_page_token:
                 break
                 
-            # Rate limiting between pagination requests
-            delay = random.uniform(3, 8)  # Random delay between 3-8 seconds
+            # Small delay between pagination requests
+            delay = random.uniform(1, 3)  # Random delay between 1-3 seconds
             print(f"Waiting {delay:.1f} seconds before next page...")
             time.sleep(delay)
             
@@ -132,8 +132,8 @@ def get_channel_videos(channel_id, start_date, end_date):
             if not next_page_token:
                 break
                 
-            # Rate limiting between pagination requests
-            delay = random.uniform(5, 15)  # Random delay between 5-15 seconds
+            # Small delay between pagination requests
+            delay = random.uniform(1, 3)  # Random delay between 1-3 seconds
             print(f"Waiting {delay:.1f} seconds before next page...")
             time.sleep(delay)
             page_count += 1
@@ -188,9 +188,9 @@ def fetch_transcripts(args, videos):
         else:
             print(f"Skipping video {video_id} due to transcript issues.")
             
-        # Rate limiting between transcript fetches
+        # Small delay between transcript fetches
         if i < len(videos) - 1:  # Don't sleep after the last video
-            delay = random.uniform(10, 30)  # Random delay between 10-30 seconds
+            delay = random.uniform(2, 5)  # Random delay between 2-5 seconds
             print(f"Waiting {delay:.1f} seconds before next video...")
             time.sleep(delay)
     
@@ -458,11 +458,6 @@ def have_transcript_file(args, video):
     return os.path.isfile(file_for_video(args, video))
 
 def main(args):
-    # Add initial delay to let API "cool down"
-    initial_delay = random.uniform(5, 15)
-    print(f"Starting with {initial_delay:.1f} second delay to avoid rate limiting...")
-    time.sleep(initial_delay)
-    
     videos_to_transcribe = []
 
     if args.playlist:
@@ -471,9 +466,9 @@ def main(args):
         videos_to_transcribe = videos_to_transcribe + playlist_videos
         print(f"Found {len(playlist_videos)} videos in playlist %s" % args.playlist)
         
-        # Add delay between different API calls
+        # Small delay between different API calls
         if args.channel:
-            delay = random.uniform(10, 20)
+            delay = random.uniform(2, 4)
             print(f"Waiting {delay:.1f} seconds before fetching channel videos...")
             time.sleep(delay)
 
