@@ -25,7 +25,7 @@ joblib==1.5.2
 jusText==3.0.2
 lxml==5.4.0
 lxml_html_clean==0.4.3
-markdownify==0.14.1
+markdownify==1.2.2
 nltk==3.9.2
 openai==1.104.1
 packaging==25.0
