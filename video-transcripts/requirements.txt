@@ -41,7 +41,7 @@ python-dateutil==2.9.0.post0
 python-dotenv==1.1.1
 python-slugify==8.0.4
 pytz==2024.2
-regex==2024.11.6
+regex==2025.11.3
 requests==2.32.5
 rsa==4.9.1
 six==1.17.0
