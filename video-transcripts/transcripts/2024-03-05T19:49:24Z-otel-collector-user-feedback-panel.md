@@ -10,131 +10,133 @@ URL: https://www.youtube.com/watch?v=LL8v_B417ok
 
 ## Summary
 
-In this YouTube video, a panel of OpenTelemetry (OTEL) collector practitioners discusses their experiences and insights on using the OTEL collector. The panelists include Adriana Villela (the host), Iris (a senior observability engineer at Miro), Juraj Michalik (a senior logging and monitoring engineer at Swissery), Greg Eales (from Ocado Technology), and Joel (from Open Systems). The discussion covers various aspects of the OTEL collector, including usage, deployment challenges, debugging difficulties, scaling strategies, and desired features. Key points include the importance of debugging tools, the need for better handling of metrics, and the desire for specific features such as profiling and a Prometheus remote write receiver. The panelists share their experiences with scaling the collector using Kubernetes and HPA, and express a collective wish for the tool to mature and improve in usability. The session concludes with an invitation to an upcoming KubeCon event where further discussions will take place.
+In this YouTube video, a panel discussion was held featuring practitioners of the OpenTelemetry (OTEL) Collector, including Adriana Villela (moderator), Iris, Juraj Michalik, Greg Eales, and Joel from various companies. The panel focused on gathering feedback about the OTEL Collector to inform its development roadmap. Each panelist shared their experiences with the Collector, discussing its applications in their respective organizations, challenges faced during deployment and debugging, and the use of custom builds. Key topics included the need for better handling of metrics, issues with scaling and memory management, and desired features such as profiling and cumulative metrics processing. The panelists expressed a desire for the OTEL community to address these challenges and enhance the Collector's functionality. The discussion concluded with announcements about upcoming events at KubeCon in Paris, where further user feedback sessions will take place.
+
+## Chapters
+
+Here are the key moments from the livestream along with their timestamps:
+
+00:00:00 Introductions and event overview  
+00:02:30 Panelist introductions - Iris  
+00:04:00 Panelist introductions - Juraj  
+00:05:30 Panelist introductions - Greg  
+00:06:50 Panelist introductions - Joel  
+00:08:30 Discussion on how teams are using the OpenTelemetry Collector  
+00:10:10 Iris discusses current usage of the Collector  
+00:12:00 Juraj shares experiences with past and current implementations  
+00:14:00 Greg talks about migrating from legacy systems to the Collector  
+00:16:30 Joel explains their multi-layered approach to using the Collector  
+00:20:00 Challenges faced with debugging and troubleshooting the Collector  
+00:25:00 Panelists share experiences with the Collector Builder  
+00:30:00 Wishlist for improvements and desired features in the Collector  
+00:35:00 Discussion on scaling the Collector and experiences with auto-scaling  
+00:40:00 Wrap-up and information on future events, including KubeCon  
+
+Feel free to adjust any of the descriptions or timestamps as needed!
 
 # OTEL Collector Panel Discussion Transcript
 
-Thank you everyone for joining. This is a really great turnout, and we're excited to have assembled this panel of OTEL collector practitioners. One of the missions of the OTEL and User Working Group is to collect feedback on OTEL to deliver back to the SIGs. This started because Judah C, who works in the OTEL collector SIG, reached out to us to put together a survey to collect some information on the OTEL collector to see how it's being used and drive the roadmap and vision for the collector in the near future. We also thought it would be beneficial to have a panel for a lively discussion with a handful of OTEL collector practitioners.
+**Adriana Villela**: Thank you everyone for joining. This is a really great turnout, and we're excited to have assembled this panel of OTEL collector practitioners. One of the missions of the OTEL and User Working Group is to collect feedback on OTEL to deliver back to the SIGs. This started because Judah C., who works in the OTEL collector SIG, reached out to us to put together a survey to collect some information on the OTEL collector and see how it's being used. This information will help drive the roadmap and vision for the collector in the near future. We thought it would be great to extend this and also have a panel for a lively discussion with a handful of OTEL collector practitioners. So, here we are! 
 
-## Introductions
+Let’s introduce the panelists. I’ll introduce myself first. My name is Adriana Villela. I work with Reese and Dan in the OTEL end user working group. Our numbers are getting a little bit bigger, so I’m very excited to see that. We’re hosting this event. Let’s go over to our panelists. I’m going to pick names. Iris, how about you go first?
 
-Let’s introduce the panelists. I’ll start with myself. My name is **Adriana Villela**, and I work with Reese and Dan in the OTEL end user working group. Our group numbers are growing, which is exciting. We’re hosting this event today.
+**Iris**: Hello everyone! My name is Iris. I'm a senior observability engineer at Miro, and I’ve been working with OpenTelemetry for a little over a year now, across two companies. I have a lot of experience and use cases since my two experiences are completely different from each other. I’m happy to be here. Nice to meet you!
 
-**Iris**, would you like to introduce yourself?
+**Adriana**: Thank you, Iris. Okay, next we have Juraj. Did I pronounce that correctly? Please correct me if I'm wrong.
 
-**Iris**: Hello everyone! My name is Iris. I'm a senior observability engineer at Miro. I've been working with OpenTelemetry for a little over a year now in two different companies, giving me a lot of experience and use cases, as my two experiences are completely different from each other. I'm happy to be here. Nice to meet you!
+**Juraj Michalik**: Yes, you did! Hi, my name is Juraj Michalik. I’m based in Madrid and currently working for a company called Swissery in the insurance space. Before that, I worked for two different companies where we used OpenTelemetry. In the last one, it was used very sparingly, but in the previous one, we fully migrated to OpenTelemetry for the collection of logs, metrics, and traces. I’m a Senior Logging and Monitoring Engineer in my current role.
 
-**Adriana**: Thank you, Iris. Next, we have **Juraj**. Did I pronounce that correctly?
+**Adriana**: Awesome, thanks. Next we have Greg.
 
-**Juraj**: Yes, you did! Hi, my name is Juraj Michalik. I'm based in Madrid and recently started working for a company called Swissery in the insurance space. Before this, I worked for two different companies where we used OpenTelemetry. In the last one, we migrated fully to OpenTelemetry for the collection of logs, metrics, and traces. I'm a Senior Logging and Monitoring Engineer in my current role.
+**Greg Eales**: Hi! Can you hear me? My name is Greg Eales. I work for Ocado Technology, which started as an online supermarket and now sells online supermarket technology to other supermarkets. My team has been using the collector for just over a year, but I’ve only been on the team for a bit less than a year.
 
-**Adriana**: Awesome, thanks! Next, we have **Greg**.
+**Adriana**: Oh, awesome! And finally, we have Joel.
 
-**Greg**: Hi! Can you hear me? My name is Greg Eales. I work for Ocado Technology, which started as an online supermarket and now sells online supermarket technology to other supermarkets. My team has been using the collector for just over a year, but I've only been on the team for less than a year.
+**Joel**: Hi! I’m Joel from a company called Open Systems. We’re based in Switzerland but have a global presence with offices in San Francisco, London, and Germany. We offer managed SASE, which includes managed connectivity and VPN for our customers. I’m on the observability team, responsible for ensuring we get telemetry from our devices, of which we have 10,000 across the world. We’re also dealing with data coming from Kubernetes, including Prometheus metrics and logs. We started using the collector about a year ago, probably in April last year, and we quickly decided to fully migrate everything to it since we had various service teams doing things in their own way. We found that the collector and OpenTelemetry in general was a great way to consolidate everything.
 
-**Adriana**: Great! And finally, we have **Joel**.
+**Adriana**: Awesome! Thank you again to all of you for joining us. Let’s get into the questions. First things first, Iris, how about you start by telling us how you and your team are primarily using the Collector?
 
-**Joel**: Hi, I'm Joel from a company called Open Systems. We're based in Switzerland but have a global presence with offices in San Francisco, London, and Germany. We offer managed SASE, which includes managed connectivity and VPN for our customers. I'm on the observability team, responsible for ensuring we get telemetry from our 10,000 devices worldwide. We have also started dealing with data from Kubernetes, like Prometheus metrics and logs. We’ve been using the collector for just under a year and have quickly decided to migrate everything to it as we’re consolidating different service teams.
+**Iris**: Sure! I can talk a little bit about how we’re using it now and in my previous company as well since I’m very new in my current position. We are using the Collector mostly as a transport layer at the moment. We have already migrated traces and are in the process of migrating logging and metrics. In my previous company, we were a bit more advanced. We were using the collector itself and the operator. Currently, we are only using it for deployment, basically transporting data from our legacy components, and we’re slowly moving to collect everything through the OpenTelemetry Collector. In the past, we utilized the presets offered by the collector itself, running it as a daemon set, collecting everything, especially in our Kubernetes cluster. The goal now is to have the collector take as much of the information collection as possible and get rid of the legacy solutions like Jaeger and Prometheus.
 
-Thank you all for joining us. Let’s get into the questions!
+**Adriana**: Great! Same question for you, Juraj. How is it that you and your company are using the collector?
 
-## How Are You Using the Collector?
+**Juraj**: In my current role, which I just joined this month, we're just starting with OpenTelemetry and traces in general. But in my previous role, I worked for a SaaS startup where there was some concern about costs. We started migrating from a vendor’s proprietary collection pipeline and client libraries to OpenTelemetry, which enabled us to do a POC of other alternatives. We settled on a self-hosted solution based on the Grafana stack, hosted in Kubernetes. We used typical Kubernetes deployment with a daemon set for collecting logs, metrics, and traces from everything running on the nodes. We also had several stateful sets dedicated to collecting Kubernetes-related metadata and pulling data from AWS CloudWatch. 
 
-**Adriana**: First things first, let's start in the order in which folks were introduced. Iris, can you tell us how you and your team are primarily using the Collector?
+**Adriana**: Awesome! And how about you, Greg?
 
-**Iris**: Sure! In my current company, we are using the Collector mostly as a transport layer. We have already migrated traces and are in the process of migrating logging and metrics. In my previous company, we were more advanced; we used the collector itself and the operator. Currently, we’re only using it for deployment, basically transporting from our legacy components while slowly moving to collect everything through OpenTelemetry Collector. We also heavily used the presets offered by the collector itself, running it as a daemon set in our Kubernetes cluster. Our goal is to have the collector take as much of the collecting of information as possible, moving away from legacy solutions like Jaeger and Prometheus.
+**Greg**: We use the collector for traces. We had a legacy trace system called Request Viewer based on logs, which was quite heavy. We’re migrating everyone to send traces via the collector. We do some processing, sanitization, and tail sampling to allow sampling by whole traces. We don’t do anything with metrics apart from our own metrics, which we gather from the collector and forward them to Grafana using Prometheus remote write. We deploy it in ECS, not Kubernetes, and we have one central cluster that scales in and out with the load of the collector.
 
-**Adriana**: Great! Juraj, how is it that you and your company are using the collector?
+**Adriana**: Interesting! Finally, Joel, how do you use the collector?
 
-**Juraj**: In my current role, which I just joined this month, we’re just starting with OpenTelemetry and traces. In my previous role, we were a SaaS startup that migrated from a vendor's proprietary collection pipeline to OpenTelemetry. We did a proof of concept for alternatives and settled on a self-hosted solution based on the Grafana stack. We used the collector in a Kubernetes deployment, utilizing daemon sets for collecting logs, metrics, and traces from everything running on the nodes, and also deployed it as sidecars for various services.
+**Joel**: We have collectors deployed all over the place, running on all our hosts. They act as egress gateways for telemetry. Primarily, the data we’re shipping is mostly log data. We have pipelines enabled for metrics and traces, but currently, it’s just the collector's own metrics that we ship. Very few applications are using traces at the moment. So primarily, we’re using it as a log telemetry mesh to lay the groundwork for full migration in the future. Our egress collectors run on our hosts, with an ingress collector in our central Kubernetes cluster and multiple layers of collectors behind that for different backends like Loki, Thanos, and Tempo. We self-host everything and aim to ensure all telemetry has a uniform set of labels for better correlation between signals in the backends.
 
-**Adriana**: Thank you! And Greg, how about you?
+**Adriana**: Thank you all! Let’s move on to the next question. Starting with Iris, are you using a vanilla collector, a custom-built one, or a vendor distribution?
 
-**Greg**: We use the collector for traces. We had a legacy system called request viewer, which was based on logs. We’re migrating to use the collector for sending traces. We do some processing and sanitization, adding attributes and doing tail sampling. We don’t do much with metrics beyond gathering our own metrics from the collector and forwarding them to Grafana through Prometheus remote write. We deploy it in ECS, and we have one central cluster that scales with the load of the collector.
+**Iris**: We’re using the vanilla one. So far, we haven’t had the need for any custom builds or vendor distributions; the open-source version has worked great for us.
 
-**Adriana**: Interesting! And finally, Joel?
+**Adriana**: Perfect! Same question for you, Juraj.
 
-**Joel**: We have collectors deployed on all our hosts, acting as egress gateways for telemetry. The primary data we’re shipping is log data, but we have pipelines for metrics and traces as well. Most of the applications are not using traces yet, so we’re mainly using it as a log telemetry mesh and laying the groundwork for future migration. We have egress collectors running on our hosts and an ingress collector in our central Kubernetes cluster, along with multiple layers of collectors for different backends like Loki and Thanos.
+**Juraj**: We use a variety. We have multiple custom distributions built. One reason for this is that we wanted to minimize the size of the binary for the OTEL collectors exposed to the Internet. We only include the necessary components for security. We also created a special distribution with a gold debugger for debugging issues. All of this is based on the upstream OpenTelemetry collector contrib with custom configurations.
 
-## Collector Distribution
+**Adriana**: That’s interesting! Greg, what about you?
 
-**Adriana**: Thank you all. Next question: are you using a vanilla collector, collector contrib, a custom-built one, or a vendor distro? Iris?
+**Greg**: We build our own. We forked the contrib repo because we needed a feature to add AWS Cloud Map service discovery to the load balancer exporter. We’ve contributed that back and have an open pull request that’s still pending. We’ve discovered some bugs and have been able to debug the code locally, which has been beneficial for learning more about Go development.
 
-**Iris**: We’re using the vanilla one. So far, we haven't had the need for any custom builds, as the vanilla collector works great in our case.
+**Adriana**: Great! And finally, Joel?
 
-**Adriana**: Same question, Juraj?
+**Joel**: We’re running a custom build. We use the builder, and it was not a problem to get it running in our build pipelines. We’ve had a very positive experience with it. However, there’s always a concern when maintaining your own distribution, especially with the fast release cadence, as you can run into deprecated features that can blindside you during deployment.
 
-**Juraj**: We use a variety of custom distributions. We've built multiple custom distributions to minimize the size of the binary and the number of components, especially from a security perspective. Everything is based on the upstream OpenTelemetry collector contrib with custom configurations.
+**Adriana**: Thank you all! What’s been the biggest challenge or challenges that you’ve faced with the Collector? Iris, let’s start with you.
 
-**Adriana**: Great! And Greg, what about you?
+**Iris**: Deployment has been straightforward, but debugging has been a challenge. I recently had an issue enabling ingress. I spent more than two days figuring out that I needed to pass the right paths in the receiver. Even after enabling debug logs, there wasn’t enough information to help us troubleshoot effectively.
 
-**Greg**: We build our own. We forked the contrib repo and based our version on that. We had specific features we needed, like adding ECS CloudMap service discovery to the load balancer exporter, which we contributed back to the community.
+**Adriana**: Juraj, how about you?
 
-**Adriana**: And Joel?
+**Juraj**: Debugging has been difficult, especially when bugs only occur under heavy loads. We built our own distribution with the gold debugger in the dev environment to find the root causes. Also, late-breaking changes have caused incidents, like stopping data from being sent to Datadog due to label changes that we didn’t catch in lower environments.
 
-**Joel**: We are running our custom build. The reason is that we have service teams who built their own processes, and it was one of the big draws for adopting OpenTelemetry. We use the builder and had a good experience getting it running in our build pipelines.
+**Adriana**: Greg, what’s your experience?
 
-## Challenges with the Collector
+**Greg**: Our biggest challenge has been the quality of the platform we provide. When users look for requests they’re trying to debug and can’t find them, it creates anxiety. We didn’t know how to monitor the collector properly, which led to doubts about where the problem lies in the pipeline. We’ve improved on that, but we still have areas of uncertainty.
 
-**Adriana**: Moving on to challenges, starting with Iris, what’s the biggest challenge or challenges you’ve faced with the Collector?
+**Adriana**: Finally, Joel?
 
-**Iris**: Debugging is definitely a challenge. Deploying it is pretty straightforward, but debugging can be overwhelming. I had a situation where I was using the collector with ingress for the first time, and it took my coworker and me over two days to figure out an issue with passing the right paths. The debugging logs did not provide enough information, and we ended up deep in the code before we found the solution.
+**Joel**: The handling of cumulative metrics has been a challenge. We ran into issues with the count connector, which didn’t work as expected. It’s disappointing to inform users that a proposed solution isn’t going to work, and we need to rely on upstream development for fixes.
 
-**Adriana**: Juraj, what about you?
+**Adriana**: Thank you all for sharing your experiences! What’s on your collector wishlist as a feature improvement? Iris?
 
-**Juraj**: We ran into bugs that were hard to debug, especially under large loads. We had to build our own distribution with a debugger to see what was happening. It’s challenging to test complex pipelines without deploying them to full-blown environments.
+**Iris**: I’m looking forward to profiling. I’ve seen some promising developments and am excited about its potential.
+
+**Adriana**: Juraj, what’s on your wishlist?
+
+**Juraj**: I’d like to see the Apache Arrow project mature, as it could reduce network usage. Additionally, there are still silent ways to lose data with metrics. I’d also like OpenTelemetry to adopt a more unified approach to metric production to avoid compatibility issues.
 
 **Adriana**: Greg?
 
-**Greg**: Our biggest challenge has been the quality of the platform we provide to the organization. There have been bugs or misconfigurations causing traces and spans not to be available when users looked for them. Initially, there was also naivety about the collector’s reliability, and it caused anxiety among the team.
+**Greg**: I’d like the platform to mature more. I want to be able to assure users that features will work as expected. Additionally, I’d like to see a dead letter queue integration point for exporters to handle errors more effectively.
 
 **Adriana**: And Joel?
 
-**Joel**: I echo a lot of what has been said. One challenge is the handling of cumulative metrics. We heavily rely on logs, and there’s no general way to generate metrics from logs within the collector currently. This is something we’re working on internally.
+**Joel**: I echo many of these points. A Prometheus remote write receiver would be on my wishlist, as well as a more generic connector for building metrics from logs.
 
-## Wishlist for Improvements
+**Adriana**: Great insights! Lastly, let’s discuss scaling the collector. Iris, any feedback or pain points around scaling?
 
-**Adriana**: What’s on your collector wishlist for feature improvements? Iris?
-
-**Iris**: I'm looking forward to profiling. I’ve seen some promising improvements and I believe it will be groundbreaking. The collector has been very complete for our use cases, so I’m excited about the future developments.
+**Iris**: We’re currently using a horizontal auto-scaler, which works great for us. We’ve also tried KEDA, and it worked well for auto-scaling based on queue size.
 
 **Adriana**: Juraj?
 
-**Juraj**: I’d like to see improvements around reducing network usage, like what Apache Arrow is promising. There are also some bugs that need fixing, especially around the gRPC layer.
+**Juraj**: We’ve also used HPA based on memory and CPU. It worked nicely, and we were looking into using VPA for better resource management.
 
 **Adriana**: Greg?
 
-**Greg**: I hope the collector matures more. I want features like a dead-letter queue for exporters and better handling of service discovery to avoid split traces when scaling.
+**Greg**: We’re in the early stages of our journey with scaling. We’ve over-provisioned for now to avoid losing data. We’re also exploring exporting internal metrics to CloudWatch to inform our auto-scaling policies.
 
-**Adriana**: And Joel?
+**Adriana**: Finally, Joel?
 
-**Joel**: I would like to see a Prometheus remote write receiver. Additionally, a general connector for creating metrics from any telemetry would be beneficial.
+**Joel**: We run everything on one cluster per environment and have found that HPA with memory limits works well. I need to investigate gRPC scaling issues further, as it sometimes leads to parts not receiving telemetry.
 
-## Scaling the Collector
+**Adriana**: Thank you all for your valuable insights. We’re at the end of our time. Thanks to our panelists for sharing their thoughts on the OTEL Collector and how you use it in the wild. Thank you to everyone who joined us today. We appreciate it! 
 
-**Adriana**: Lastly, let’s talk about scaling the collector. Starting with Iris, any feedback or pain points around scaling the collector?
-
-**Iris**: We’ve used the HPA effectively for scaling, and in my previous company, we also explored KEDA, which worked well for auto-scaling based on queue size.
-
-**Adriana**: Juraj?
-
-**Juraj**: For our deployments, we also used HPA based on memory and CPU, and we looked at VPA for daemon sets.
-
-**Adriana**: Greg?
-
-**Greg**: We have a conservative auto-scaling policy based on memory as the tail sampler holds a lot of memory. We haven’t put much effort into optimization yet, as we’re focused on processing data properly.
-
-**Adriana**: Joel?
-
-**Joel**: We run everything on one cluster per environment and have been using HPA with no issues. I need to talk to Juraj about gRPC issues we’ve encountered with scaling.
-
-## Conclusion
-
-That brings us to the end of our panel discussion. Thank you to all our panelists for sharing their insights on the OTEL Collector and how you use it in the wild. This is incredibly valuable. Thank you to everyone else who joined today as well. 
-
-Don’t forget to check out our OTEL YouTube channel for the recording of this session. For those attending KubeCon in Paris next month, many of us from the OTEL end user working group will be there. We’ll have various activities lined up, including user feedback sessions, demos, and more. Keep an eye on the OTEL blog for further details.
-
-Thank you all for your time, and we hope to see many of you in Paris!
+For those who couldn’t make it, a recording will be available on the OTEL YouTube channel, called OTEL Official. If you’re attending KubeCon in Paris next month, many of us from the OTEL end user working group will be there, and we hope to see you at the OTEL Observatory. Thank you so much again, and see you next time!
 
 ## Raw YouTube Transcript
 

@@ -10,77 +10,81 @@ URL: https://www.youtube.com/watch?v=o-1UE67l9q4
 
 ## Summary
 
-In this YouTube video, Paige Cruz, a developer advocate at Chronosphere, discusses the importance of effective training in observability, particularly focusing on tracing and OpenTelemetry (OTEL). She shares her experiences transitioning from Site Reliability Engineer (SRE) to advocating for open-source observability solutions, emphasizing the need to bridge knowledge gaps between developers and observability practices. Paige outlines her successful strategies for training, including hands-on workshops tailored to specific tech stacks, and the importance of engaging learners through clear goals and practical exercises. She highlights the challenges of ensuring developers take ownership of observability practices and how to create a culture of responsibility within teams. The session concludes with resources for further learning and a call to action for more inclusive observability practices.
+In this presentation for OTEL in Practice, Paige Cruz, a developer advocate at Chronosphere, discusses her extensive experience in observability and shares insights on training developers to implement tracing effectively. Having transitioned from a Site Reliability Engineer (SRE) to focusing on open-source observability, Cruz emphasizes the importance of hands-on workshops tailored to an organization's specific tech stack to bridge knowledge gaps among developers. She explores the complexities of observability and the rising significance of OpenTelemetry (OTEL), noting that many developers lack fundamental knowledge about tracing and the tools available. Cruz also shares strategies for creating effective training programs, including identifying learners' needs, structuring content to promote engagement, and leveraging existing resources. The session concludes with discussions on the challenges of ownership in observability, highlighting the need for collaboration between operations and development teams.
 
-# Observability Training Workshop Transcript
+## Chapters
 
-Thank you so much for having me, OTEL in Practice. I have been attending the last few sessions and I am excited to present a little bit about my world. I am Paige Cruz, and I work at Chronosphere. This is my third observability company. When I wasn't working for observability companies, I was an SRE at customers of those observability companies, working on observability. If you can't tell, I have thought about this stuff for a very long time and from many different perspectives.
+Here are 10 key moments from the livestream with the corresponding timestamps:
 
-**A Quick Tale from the Field**
+00:00:00 Introductions and Paige Cruz's background  
+00:05:15 Overview of observability initiatives and challenges  
+00:10:20 Importance of training in the observability space  
+00:15:00 Discussing the complexity of introducing tracing  
+00:20:45 The significance of hands-on workshops for developer engagement  
+00:30:10 Strategies for effective training development  
+00:35:00 Identifying learners' knowledge gaps and tailoring content  
+00:45:30 Delivering training in various modalities for better reach  
+00:50:15 Sharing resources and further learning materials  
+00:58:00 Discussion on ownership boundaries in observability and training outcomes  
 
-I have retired from SRE today and I am a developer advocate focused on the open source side of observability. In my previous role, my team was always tasked with leading big observability initiatives. This included migrating from one vendor to another, transitioning from self-hosted open source to managed services from our cloud providers, and rolling out tracing. The logging bill was so high that we had to address it immediately. 
+# Observability Training Workshop
 
-There are many things that fall under the observability umbrella that my team was tasked to manage. During these initiatives, which impacted every team, we had to re-instrument either to add traces or to switch from a proprietary protocol to open source. 
+Thank you so much for having me, OTEL in Practice. I have been attending the last few sessions and am excited to present a little bit about my world.
 
-Yes, technically, if the development teams were too busy, my team could focus on this work for three or four quarters and deliver a migration by the end. However, we were then seen as the owners of observability and treated like "Ask Jeeves." It felt like the line of responsibility between ops and dev had become skewed. This was fair considering we moved everything to a new platform with a new UI and new libraries, resulting in many knowledge gaps to cover.
+I am Paige Cruz, and I work at Chronosphere. This is my third observability company. Before working for observability companies, I was an SRE at customers of those companies working on observability. If you can't tell, I've thought about this stuff for a very long time and from lots of different perspectives.
 
-I have steered quite a few migrations and tried many tactics to delegate the re-instrumentation work and pass the baton of ownership from solely ops to app devs. Out of everything I tried—linking documentation, sharing conference talks—the best tactic was hands-on workshops tailored specifically to my organization's tech stack. This approach highlighted the value of what we were trying to achieve.
+### A Quick Tale from the Field
 
-**Train the Trainer**
+I have retired from SRE today and am now a developer advocate focusing on the open-source side of observability. During my time in SRE, I led my team through big observability initiatives, whether that was migrating from one vendor to another, transitioning from self-hosted open source to a managed service from one of our cloud providers, or rolling out tracing. The logging bill would often get so high that we had to take action.
 
-This led me to bring forth the concept of "train the trainer," particularly in the context of tracing training, which requires participation from devs across the stack. To quote a famous work, "We’re all in this together." 
+There are many components that fall under the observability umbrella, and my team was tasked with being the stewards of these initiatives. I found that when we had to implement changes that touched every team, like re-instrumenting to add traces or moving away from a proprietary protocol to open-source tools, there were significant knowledge gaps. My team could do heads-down work for several quarters and successfully deliver a migration, but we were then seen as the owners of observability—almost like an “Ask Jeeves” for developers. This blurred the line of responsibility between operations and development.
 
-**Why Training Matters**
+While it's fair to say that we moved everything to a new platform with a new UI and libraries, there were many knowledge gaps to cover. I've steered numerous migrations and tried various tactics to delegate the re-instrumentation work and pass the baton of ownership from operations to application developers. 
 
-Now, let's talk about why training matters. There are several layers of complexity when introducing tracing. Observability is still an emerging field, and much of what we learn is done informally on the job. This varies based on the tech stack a company uses, the vendors or protocols they are using, and the companies they've worked for. 
+### Effective Training Techniques
 
-Even two developers with the same years of experience could possess completely different sets of knowledge about observability. We must teach this stuff. While informal approaches are important for developing operational skills, we need to find a way to bridge the gap between informal knowledge and a strong foundation.
+Out of everything I tried, the best tactic was hands-on workshops tailored to my organization's tech stack. This approach demonstrated the value of observability and the changes we wanted developers to implement. This is why I wanted to introduce the concept of "train the trainer," specifically focusing on tracing training, which requires participation from developers across the stack. To quote *High School Musical*, "We are all in this together."
 
-This foundation is crucial so that developers can add tracing, manage costs, and understand how sampling affects viewing aggregate trace data. There is a lot of complicated information in this space, and we need to consider where our learners are, what they know, and what they might have seen.
+#### Why Training Matters
 
-In the realm of observability, we have open telemetry, which has evolved from just being known for tracing. However, many developers I speak with are unaware of OTEL unless they are specifically tasked with bringing it into their organization. While we are excited about new features and advancements, there remains a segment of our colleagues who may not have even heard of OTEL. 
+Observability is still an emerging field. Most learning occurs informally and depends on the tech stack, the vendors or protocols used, and individual experiences. Even two developers with the same number of years of experience can have completely different knowledge sets. 
 
-If we simply tell them, "Hey, add tracing to this service," and link to the OTEL docs, it won’t be helpful if they don’t understand what a span is or how to navigate OTEL’s components. Observability is new, OTEL is new and rapidly evolving, and tracing, in particular, is often seen as a tool for power users or the elite engineers.
+While informal learning is beneficial for developing operational skills, we must find ways to bridge the gap between patchwork knowledge and a strong foundation. This enables developers to add tracing, manage costs effectively, and understand sampling effects when viewing aggregate trace data. The complexity of observability means we need to consider where our learners are, what they know, and what they’ve experienced.
 
-**The Challenge with Tracing**
+We also have to recognize that OpenTelemetry (OTEL) is rapidly evolving. Even if developers are familiar with OTEL, they may not know how to navigate its components or the differences between vendor implementations. Simply linking to the OTEL documentation may not suffice if they don’t understand basic terms like "span."
 
-As someone who has worked on tracing products at New Relic and LightStep, I know tracing well. However, this is not a repeatable experience for everyone. We need all types of people to develop all sorts of things. This was the problem I focused on for my workshop: I want more people to use tracing. One barrier is that while partial traces can be helpful, the best scenario involves having a full trace from end to end across the system, which requires every service owner to do their part. 
+### Training Development
 
-I aim to help people understand how to send and use trace data. Having the information on how to instrument isn’t enough if they don’t know what to do when they get to a trace waterfall. Some may argue that the documentation has everything they need, but while the OTEL documentation site is fantastic, people often have questions like, "Is this library instrumented with OTEL?" 
+To develop effective training, we need to find those "aha" moments of discovery. After all, the goal of training is to change behavior and encourage learners to take action. Just providing rote instructions is insufficient. 
 
-**Finding the Aha Moments**
+We need to consider what our learners need to know and the skills they need to develop. This requires understanding the problem we’re trying to solve, whether it’s better visibility or deeper insights into a profitable system. 
 
-We need to provide more than just knowledge; we need to equip learners with skills. Many of us have experienced training that felt like a waste of time—training that was not tailored to our specific needs. Good training differs significantly from bad training, which may not match your expertise level or be relevant to your use case.
+#### Identifying Learners’ Needs
 
-So, why does training matter? Because many learners, as an anonymous user on Reddit said, "I don’t even know what I don’t know," making it difficult to answer their questions. This highlights the necessity of training: not everyone is at the same level of understanding.
+If you're unsure of what your learners know, consider sending a survey or having informal coffee chats. It’s essential to include a variety of roles, as observability impacts everyone.
 
-To develop effective training, we need to identify the gap between where learners are and where we want them to be. This involves understanding what knowledge they need and what skills they must acquire.
+Understanding the consequences of missteps can also clarify the importance of training. If developers fail to instrument their applications correctly, it can lead to increased costs or loss of visibility, which highlights the need for ownership.
 
-**Creating Effective Training**
+### Scoping Training Content
 
-When designing a training program, consider the problem you are trying to solve. Define the main drivers of the initiative, such as better visibility or ownership of data. Avoid the temptation to include everything you know about observability; focus on the essential aspects relevant to your audience.
+When creating training material, focus on what is necessary for your specific audience. For instance, if you want attendees to leave the workshop able to instrument traces independently, ask yourself whether each piece of content contributes to that goal. 
 
-Engage a representative sample of your learners by conducting surveys or informal chats to gauge their backgrounds and current knowledge. It’s crucial to understand where they are coming from and tailor the training accordingly.
+Additionally, consider the existing resources within your organization. Don’t reinvent the wheel; leverage the available tutorials, documentation, and community knowledge. 
 
-Once you have a draft, have both a novice and an expert go through it. Observing their experiences can reveal stumbling blocks and areas that need clarification. 
+### Delivery Methods
 
-**Delivery and Modalities**
+In delivering training, utilize various modalities, such as live sessions, self-guided learning, and recorded sessions. This approach accommodates the diverse learning styles and schedules of your audience.
 
-When it comes to delivering your training, utilize existing resources and adapt them to your needs. Don’t reinvent the wheel; there are plenty of tutorials and workshops available. 
+### Conclusion
 
-Consider the modalities of learning. Many people learn in different ways, so provide options for live guided sessions, self-guided learning, and recorded sessions. This increases the likelihood that more individuals will engage with the content.
+In summary, effective training in observability requires:
 
-In summary, think about the problem you are trying to solve, understand where your learners are, and narrow the training gap as much as possible. 
+- Clearly defining the problem and identifying learner needs.
+- Bridging the gap between current knowledge and desired outcomes.
+- Tailoring content to the specific tech stack and organizational context.
+- Utilizing existing resources and encouraging ownership among developers.
 
-**Final Thoughts and Resources**
-
-I want to share resources that can help you on your journey. Two recommended books are **"Design for How People Learn"** and **"Better Onboarding"** from A Book Apart. Both provide valuable insights into learning and training.
-
-For open observability resources, the OTEL documentation has a section specifically for developers. The CNCF Glossary is also helpful for understanding acronyms and terminology.
-
-Lastly, the OpenTelemetry demo is an excellent resource for those seeking a more realistic example. 
-
-Thank you for your attention! If you have any questions or want to discuss your training needs, feel free to reach out. I’m here to help, and I’m excited to see more people embracing tracing!
+Thank you for your attention! I'm looking forward to hearing your thoughts and discussing your training needs.
 
 ## Raw YouTube Transcript
 

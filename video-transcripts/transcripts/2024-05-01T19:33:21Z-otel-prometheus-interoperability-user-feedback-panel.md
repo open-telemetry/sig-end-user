@@ -10,79 +10,102 @@ URL: https://www.youtube.com/watch?v=9a3ctZhJj-o
 
 ## Summary
 
-The YouTube video features a panel discussion on the interoperability between Prometheus and OpenTelemetry (OTEL), moderated by David Ashpole from Google. The panelists, including Iris from Miro, Nikos Takas from Corelogs, Vijay Samuel, and Dan Bromitt from Home Depot, share their experiences and challenges integrating these two observability tools in their respective organizations. Key topics discussed include the architecture of their observability stacks, the transition from Prometheus to OpenTelemetry, performance issues, configuration challenges, and the need for consistent metric naming conventions. The panelists express excitement for upcoming features in Prometheus, such as OTLP support and enhanced resource efficiency, while also emphasizing the importance of maintaining backward compatibility to avoid disruptions in large-scale deployments. Overall, the discussion highlights the collaborative efforts needed to improve interoperability and usability between the two systems.
+The YouTube video features a panel discussion on Prometheus and OpenTelemetry (OTEL) interoperability, moderated by David Ashpole from Google. The panelists include Iris, Nikos Takas, Vijay Samuel, and Dan Bromitt, who share their experiences with using Prometheus and OTEL in their observability stacks. The discussion covers various topics, including challenges faced in integrating these tools, the importance of maintaining compatibility to avoid breaking changes, and the need for consistent metric collection practices. The panelists express a desire for improved features in future versions, such as enhanced OTLP support and standardized naming conventions to streamline the user experience. Overall, the conversation highlights the complexities of observability in large organizations and the ongoing efforts to enhance the integration between Prometheus and OpenTelemetry.
+
+## Chapters
+
+00:00:00 Introductions and panelist overview  
+00:05:00 Dan discusses his observability stack and challenges with store environments  
+00:08:30 Vijay explains instrumentation and Prometheus/OpenTelemetry setup  
+00:12:00 Nicholas shares current use of OpenTelemetry and challenges with resource consumption  
+00:14:30 Iris talks about using Victoria Metrics and experimenting with OpenTelemetry  
+00:20:00 Discussion on the challenges of adopting OpenTelemetry and Prometheus together  
+00:26:00 Panelists share feedback on upcoming features in Prometheus 2.0 and 3.0  
+00:30:00 Discussion about the impact of breaking changes in large organizations  
+00:37:00 Panelists provide thoughts on the benefit of OTLP support and configuration simplicity  
+00:42:00 Audience participation and final remarks from panelists
 
 # Prometheus OTEL Interoperability Panel Transcript
 
-**Moderator:** Welcome everyone to the Prometheus OTEL interoperability panel. David reached out to us to gather end user feedback on ensuring that Prometheus and OpenTelemetry (OTEL) work harmoniously together, which is always a great initiative. We have four panelists here today, and David will be our moderator, guiding the discussion and asking questions. Let's start with introductions. David, would you like to go first?
+**Welcome and Introductions**
 
-**David Ashpole:** Sure! I'm David Ashpole, and I work for Google. Currently, I'm involved with the Prometheus OTEL work group, focused on ensuring that the protocols, exporters, and integrations between OpenTelemetry and Prometheus function well and consistently. Our goal is to enhance the user experience for those utilizing both technologies.
+Everyone who's able to join for this Prometheus OTEL interoperability panel, David reached out to us to see if we could get some end-user feedback on ensuring that Prometheus and OpenTelemetry (OTEL) work well together, which is always awesome. We have four panelists and David is our moderator who will be asking questions. Let's have everyone introduce themselves, starting with David.
 
-**Panelist Introductions:**
+**David Ashpole:**
+Sure. I'm David Ashpole. I work for Google and right now I'm working with the Prometheus OTEL work group. We're trying our best to ensure that the protocols, exporters, and all components that integrate OpenTelemetry and Prometheus work well and consistently, helping users who use both to have a good experience.
 
-- **Iris:** Hello everyone! I'm Iris, a senior observability engineer at Miro. My work revolves around Prometheus and OpenTelemetry, and I'm excited to be here.
+**Iris:**
+Hello everyone, I'm Iris. I work as a senior observability engineer at Miro. My life revolves around Prometheus and OpenTelemetry recently. It’s nice to be here!
 
-- **Nikos Takas:** Hi, I'm Nikos Takas, an engineer at Corelogs, where I'm working on observability units. I'm a Prometheus Operator Maintainer and also a Persis Maintainer. My work involves contributing code to Prometheus to assist with Prometheus 3.0 and OTLP ingestion.
+**Nikos Takas:**
+Hello everyone. My name is Nikos Takas, and I'm an engineer at Corelogs, currently working on observability units. I'm a Prometheus Operator Maintainer and also a Persis Maintainer. I've been working on getting some code into Prometheus to help with the Prometheus 3.0 and OTLP ingestion as well. My daily focus is on Prometheus, OpenTelemetry, metrics, and related topics. Pleasure to be here!
 
-- **Vijay Samuel:** Hi, I'm Vijay Samuel, and I help with observability. It's great to see many familiar faces here again.
+**Vijay Samuel:**
+Hi, my name is Vijay Samuel. I help with observability. I think I've met most of you, it's nice to see you all again.
 
-- **Dan Bromitt:** Hi, I'm Dan Bromitt, Senior Manager of SRE at Home Depot, overseeing the Store and Payments Systems. We utilize many OTEL and observability tools.
+**Dan Bromitt:**
+Hi, I'm Dan Bromitt, Senior Manager of SRE at Home Depot for the Store and Payments Systems. We use many OTEL and observability-adjacent tools. Great to have you all here!
 
-**Discussion on Observability Stack:**
+**Observability Stack Overview**
 
-**David:** Great! Let's go around and discuss what your observability stack looks like and how you incorporate Prometheus and OpenTelemetry. Dan, let's start with you.
+Let's go person by person to discuss what your observability stack looks like and how you're using Prometheus and OpenTelemetry in that stack. We'll start with Dan.
 
-**Dan:** Sure! We monitor services across various compute environments, including on-prem virtual machines, GCP (primarily GKE), and small clusters inside our stores. We run OpenTelemetry collectors alongside Prometheus installations. In the cloud, we share metrics across GCP projects, but we've faced challenges in our store environments, where network connectivity can be unreliable. Backfilling metrics can be problematic due to timestamps, especially when devices are offline. Configuring the fleet of services is also a challenge, though we're improving on the Kubernetes side.
+**Dan:**
+We observe services across a wide range of compute environments, including on-prem virtual machines in our data centers, primarily using GCP and GKE, and within our stores, where we run OpenTelemetry collectors alongside Prometheus installations. 
 
-**Vijay:** Our setup involves standardizing instrumentation using a mix of the Prometheus Java client and Micrometer for Java applications. We also use the community-supported Prometheus client for JavaScript. These expose metrics that are scraped by OpenTelemetry collectors deployed on our Kubernetes clusters. Most of our metrics come from these sources, with a smaller group sent directly to our gateway APIs. We aim to encourage more use of the OpenTelemetry SDK for metrics, as we already use it for tracing.
+Most use cases with OpenTelemetry and Prometheus involve Kubernetes in the cloud, which is fairly standard. However, our challenges arise in store environments where we have miniature data centers. We need to ensure everything is functioning correctly, as network connectivity can be spotty, resulting in some stores being offline daily. This makes backfilling metrics challenging due to timestamps and other issues.
 
-**Nikos:** Our setup currently involves using OpenTelemetry Collector for traces and recently starting with logs. In metrics, we’re considering replacing our Prometheus agents with the OpenTelemetry Collector, though resource consumption remains a concern. We hope to see Prometheus natively ingesting OTLP in the future.
+**Vijay:**
+Starting with instrumentation, we've standardized on a mix of the Prometheus Java client and Micrometer for Java applications. We use community-supported Prometheus clients for JavaScript, which expose metrics for everything not considered managed. These endpoints are scraped by OpenTelemetry collectors deployed on all our internal Kubernetes clusters. 
 
-**Iris:** Our architecture is straightforward; we primarily use Prometheus clients and Victoria Metrics for custom metrics. We're experimenting with OpenTelemetry, especially for host metrics, as it provides more convenience for our needs. We aim to transition to OpenTelemetry for a more uniform data collection approach.
+For about 90-95% of our metrics, we send data directly to our gateway APIs, which can handle proprietary formats. We're also encouraging the use of the OpenTelemetry SDK for metrics to streamline our processes. The backend is predominantly Prometheus-first, utilizing the Prometheus storage engine with Thanos for long-term storage. Over time, we aim to have a unified system for metrics, traces, and eventually logs.
 
-**David:** It seems many of you are using Prometheus libraries and are considering moving to OpenTelemetry for consistency. What drives this desire for consistency?
+**Nikos:**
+Our setup is quite simple. We're leveraging OpenTelemetry Collector for traces and are starting to explore logs. For metrics, we currently use a mix of Prometheus servers and agents but aim to replace the Prometheus agent with the OpenTelemetry Collector to utilize its pipeline capabilities. However, resource consumption is a challenge that is currently blocking us from fully transitioning.
 
-**Iris:** The OpenTelemetry SDKs for tracing have proven superior to previous SDKs. Given our existing use of OpenTelemetry for tracing, it makes sense to unify our metrics collection under the same framework.
+**Iris:**
+For us, the architecture is straightforward. We're mainly using Prometheus clients and Victoria Metrics for custom metrics, with everything in Prometheus format. We're experimenting with OpenTelemetry, especially for host metrics since it’s more convenient for collection. We also run a monolith alongside Kubernetes, using the Prometheus receiver and adding script jobs to OpenTelemetry for areas challenging to cover with Victoria Metrics. Our goal is to have a uniform way of collecting all data, especially since tracing is already handled by OpenTelemetry.
 
-**Dan:** I want to add that we are using the OpenTelemetry Java agent in production, although some of our legacy systems are still using various libraries.
+**Challenges in Using Prometheus and OpenTelemetry**
 
-**Challenges Faced:**
+**Nicholas:**
+My struggles primarily revolve around user experience and understanding how to set up metrics properly. It took time to grasp the nuances of configuring the collector and managing attributes. The biggest issue was switching from the Prometheus receiver to the OpenTelemetry operator and figuring out how to run the target allocator without it. 
 
-**David:** Let's discuss challenges. Nicholas, can you share what struggles you've faced while adopting Prometheus and OpenTelemetry?
+**Dan:**
+One major struggle has been the lack of support for certain legacy systems. We tried to leverage the Java agent for observability on older microservices that ran on unsupported versions of Java and Tomcat. The configuration of OpenTelemetry for telemetry over a messaging framework was also a challenge for our engineers. 
 
-**Nikos:** A significant challenge has been the performance of the OpenTelemetry Collector compared to the Prometheus agent. We find that the Collector consumes more resources, which is a bottleneck since we manage a large volume of metrics. We're working toward replacing the Prometheus agent with the Collector, but resource constraints are currently holding us back.
+**Vijay:**
+Our biggest struggle was scrape parity. Initially, there were significant differences in how Prometheus and OpenTelemetry Collector handled scenarios like label names starting with an underscore. Thankfully, many of these issues have been addressed through PRs we filed.
 
-**Dan:** For us, one major struggle was integrating the OpenTelemetry Java agent with legacy microservices that run on unsupported versions of Java and Tomcat. Configuration complexity for telemetry transmission over messaging frameworks has also been challenging. Additionally, timestamps for offline locations can lead to issues when they come back online.
+**Iris:**
+Our challenges mostly stem from the size of our organization. With 700 engineers using our observability platform, any change can disrupt their dashboards or alerts. We’re moving slowly to ensure that transitions don’t negatively impact user experience.
 
-**Vijay:** Our biggest struggle has been achieving scrape parity. We encountered various scenarios where Prometheus differs from how the OpenTelemetry collector handles metrics. While some issues have been resolved through PRs, we remain cautious about any changes that might disrupt our systems.
+**Looking Ahead: Future Developments**
 
-**Iris:** Our challenges stem from the size of our organization. With around 700 engineers relying on our observability platform, any significant changes could disrupt their dashboards and alerts. We need to proceed cautiously to avoid overwhelming our teams during the transition.
+**Iris:**
+I'm excited about the upcoming features, especially the Prometheus 2.0 exporter and receiver. We’re testing it heavily to prepare for our next move. The support for dots in metric names and the uniformity it brings to our engineers is also something I’m looking forward to.
 
-**Future Developments:**
+**Nicholas:**
+For me, the remote write 2.0 is significant as it promises better resource consumption. I'm also looking forward to the OTLP ingestion in 3.0, which will facilitate more seamless integration between OpenTelemetry and Prometheus.
 
-**David:** Let's talk about upcoming features and improvements. What are you looking forward to in future releases?
+**Dan:**
+The OTLP support will simplify our configuration as we centralize our metrics. We’re also curious about handling late data with OTLP and how that will integrate with our existing infrastructure.
 
-**Iris:** I'm excited about the Prometheus remote write support for OTLP and the improvements to the Prometheus exporter and receiver. Uniformity across our metrics collection will greatly benefit our engineers.
+**Vijay:**
+I'm interested in the OTLP ingestion and how it will allow for a seamless experience where the instrumentation matches the backend metrics without unnecessary transformations. It’s crucial that we preserve names and avoid breaking changes.
 
-**Nikos:** I agree! The remote write improvements will help save resources, which is crucial for our operations. I'm also looking forward to OTLP ingestion becoming GA.
+**Audience Interaction**
 
-**Dan:** The OTLP integration is promising, as it could simplify our configurations. However, we need to understand how late data will be handled in terms of storage.
+If there's anyone from the audience who would like to share feedback or thoughts, the floor is open.
 
-**Vijay:** I'm looking forward to OTLP ingestion and maintaining the integrity of our metric names. Ensuring consistency between what is instrumented and what is queried is essential for our operations.
+**Audience Member:**
+I would like to emphasize the importance of keeping conventions consistent across both ecosystems to minimize the learning curve for engineers. 
 
-**David:** Thank you all for your insights. We appreciate the feedback, and it's clear that balancing the existing Prometheus standards with the evolving OpenTelemetry conventions will be crucial for the community's success.
+**Moderator:**
+Thank you, everyone for your valuable insights. This discussion has been incredibly beneficial. We look forward to more community discussions in the future. 
 
-**Open Floor for Audience Feedback:**
-
-**David:** Now, I'd like to open the floor for any audience feedback or questions.
-
-**Audience Member:** I'd like to emphasize the importance of keeping conventions consistent in querying. If we can maintain familiarity while introducing UTF-8 support, it would greatly help engineers adapt.
-
-**David:** Thank you for that input! It’s been a fruitful discussion, and I appreciate everyone’s participation. We look forward to more community discussions in the future.
-
-**Panelists:** Thank you! 
-
-**David:** Thank you, everyone!
+**Thanks and Farewell**
+Thank you for joining us!
 
 ## Raw YouTube Transcript
 
