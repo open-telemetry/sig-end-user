@@ -156,16 +156,3 @@ When surveys are conducted yearly or periodically, comparing results across year
 
 
 
-
-
-
-
-
-
-
-
-
-
- 
-
-
