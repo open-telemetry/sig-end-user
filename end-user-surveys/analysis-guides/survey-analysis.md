@@ -24,8 +24,14 @@ Note:
 
 **Steps to using pivot tables:** 
 
- - Insert pivot_table_1
- - Insert pivot_table_2 
+
+
+https://github.com/user-attachments/assets/ce119f86-07db-4946-8efc-d6c78a293548
+
+
+https://github.com/user-attachments/assets/774df128-c6b9-46f1-b763-8d04b40fb4c4
+
+
 
 **Cleaning 2: Standardize Responses**
 
@@ -49,9 +55,11 @@ You’ll transform them later, only when needed for specific statistical tests o
 For questions where respondents can select multiple answers:
  - ≤ 10 options:
     - Convert each option into a dummy variable (0/1) using IF(ISERR(SEARCH(I$1,$H2)),0,1).
-    - insert an image here
+![69D61F99-06A9-4EB5-B7B0-76EF895EC32D_1_105_c](https://github.com/user-attachments/assets/653bbb97-8d39-4c09-a880-4a8633cff97c)  
+    
     - Each option becomes its own column (e.g., deployment_k8s, deployment_vm, etc.).
- - > 10 options:
+      
+ - Greater than 10 options:
     - To keep your sheet manageable, create a separate sheet for that question.
     - Use the respondent_id to link it back when needed (e.g., through VLOOKUP)
     - And this time, the only change in the formula is checking the matching case in the main data sheet, i.e, $O2 as shown in the screenshot, will be found in the data!$O2
@@ -66,7 +74,6 @@ Before starting analysis, and as you run functions, it’s important to randomly
 
  - The number of rows or respondents matches the original after transformation
  - As you perform multiple response transformations, compare the sum of the new columns with the Google Forms summary.
-  - Insert a validation video?
 
 ## Exploratory Data Analysis (EDA)
 Once your data is cleaned and structured, the next step is to explore it systematically.
@@ -91,14 +98,30 @@ For each categorical or binary variable:
 To explore patterns across groups (e.g., region, organization size, number of collectors, etc):
 
 **Case 1**: Crossing 2 single select variables, e.g organization size x otel in production
- - Insert cross-tabs-1
- - Insert cross_tabs_2
- - Insert cross-tabs_3
+
+
+
+https://github.com/user-attachments/assets/c33220b3-85af-4ecc-ba24-64c02d569208
+
+
+
+https://github.com/user-attachments/assets/954743e1-16cb-4e47-b5cb-c2c9665ff1ec
+
+
+
+
+https://github.com/user-attachments/assets/bb351316-8ebc-4cac-975c-4412c7563edc
+
 
 **Case 2**: crossing a single select with a multiple response variable, e.g, team type x collector deployment location
 
- - insert image
- - Insert cross-tabs-4
+
+![4369B9A1-D196-4A42-83B5-3C9A43388BBD_1_105_c](https://github.com/user-attachments/assets/9cf6692f-dc7c-4ef7-a44f-04278ea9856f)
+
+
+https://github.com/user-attachments/assets/8bee9dbc-3e0c-4fd9-9d93-97a40af368cc
+
+
 
 **Tips for Groups Summaries:** 
 
@@ -126,9 +149,14 @@ Use the Pivot Table outputs as your data source:
 2. Click Insert → Chart.
 3. Choose the chart type (e.g., “Column chart” or “Bar chart”).
 4. Adjust titles, labels, and legends for clarity.
- - Insert viz_01
- - Insert viz_02
- - Insert viz_03
+
+
+https://github.com/user-attachments/assets/63bb79aa-9389-4d06-8e3b-f3f92767101b
+
+https://github.com/user-attachments/assets/cc034042-2f42-4e87-b916-3cb26a5e9321
+
+https://github.com/user-attachments/assets/9ebbf38d-5e39-4988-ae46-e54c99a9bd0b
+
 
  **Tips:**
 
@@ -150,7 +178,10 @@ When surveys are conducted yearly or periodically, comparing results across year
  - Compatible data/variable formats
  - Ensure the surveys target the same respondent population
 
- - Insert comparison_01
+
+
+https://github.com/user-attachments/assets/816e4c7f-97f9-4aab-b582-30ac9c9141c2
+
 
 
 
