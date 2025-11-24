@@ -388,6 +388,61 @@ def openai_cleanup(transcript, video_id):
 
     return [summary, cleaned_up]
 
+def clean_ai_preamble(text):
+    """
+    Remove AI assistant preamble lines from the response, keeping only the actual content.
+    This strips lines like "Sure! Here are the key moments..." or "Here are 10 key moments..."
+    @param text: The raw text response from AI
+    @return: Cleaned text with only the actual chapter timestamps
+    """
+    if not text:
+        return text
+    
+    lines = text.split('\n')
+    cleaned_lines = []
+    
+    # Common preamble patterns to remove
+    preamble_patterns = [
+        'sure!',
+        'here are',
+        'here\'s',
+        'below are',
+        'i\'ve identified',
+        'i have identified',
+        'key moments',
+        'from the livestream',
+        'from the transcript',
+        'from the youtube',
+        'with timestamps',
+        'along with their timestamps',
+        'with their timestamps',
+        'with the corresponding timestamps'
+    ]
+    
+    for line in lines:
+        line_lower = line.lower().strip()
+        
+        # Skip empty lines at the start, but keep them later for formatting
+        if not cleaned_lines and not line_lower:
+            continue
+            
+        # Check if this line is a preamble (contains preamble patterns and doesn't look like a timestamp)
+        is_preamble = False
+        if line_lower and not line_lower.startswith('0'):  # Timestamps start with 0
+            for pattern in preamble_patterns:
+                if pattern in line_lower:
+                    is_preamble = True
+                    break
+        
+        if not is_preamble:
+            cleaned_lines.append(line)
+    
+    # Remove leading empty lines from the result
+    while cleaned_lines and not cleaned_lines[0].strip():
+        cleaned_lines.pop(0)
+    
+    return '\n'.join(cleaned_lines)
+
 def create_chapters(transcript, video_id):
     """
     Create timestamps and chapters for a YouTube video transcript.
@@ -420,6 +475,8 @@ def create_chapters(transcript, video_id):
     )
 
     chapters = response.choices[0].message.content
+    # Clean any AI preamble before returning
+    chapters = clean_ai_preamble(chapters)
     return chapters
 
 def write_markdown(args, video):
