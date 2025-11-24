@@ -10,113 +10,229 @@ URL: https://www.youtube.com/watch?v=Of_ygNU_Cbw
 
 ## Summary
 
-In this YouTube video, Doug Ramirez, a principal architect at Uplight, presents on the concepts of distributed tracing and context propagation within the realm of observability, particularly in microservices architecture. He emphasizes the importance of distributed tracing as a means to understand interactions among various services, as traditional monolithic structures provided easier debugging and observability. Doug explains key concepts like spans and traces and provides a minimal code example demonstrating how to implement distributed tracing using OpenTelemetry and adhere to W3C recommendations. He showcases a scenario involving a bands API and a reviews service, illustrating how to send and propagate trace context through HTTP headers to monitor performance issues effectively. Throughout the session, he engages with the audience, answering questions and providing resources for further exploration. The video concludes with a mention of future meetups and the importance of integrating logging with tracing for optimal observability in production environments.
+In this YouTube video, Doug Ramirez from Uplight presents a session on distributed tracing and context propagation in microservices architecture, focusing on the OpenTelemetry framework. Doug explains the importance of distributed tracing for observability, especially as microservices become more prevalent, and discusses key concepts like spans, traces, and trace context. He provides a minimal coding example to illustrate how to implement these concepts using OpenTelemetry, emphasizing the use of standardized HTTP headers for trace context propagation. Doug also addresses privacy considerations when implementing tracing and encourages developers to familiarize themselves with relevant documentation. The session concludes with a Q&A, where Doug shares further insights and resources for those looking to enhance their observability practices.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream, along with their timestamps:
+00:00:00 Welcome and intro
+00:00:50 Doug Ramirez introduction
+00:01:50 Distributed tracing overview
+00:03:00 Context propagation explanation
+00:05:00 Trace and span definitions
+00:06:30 W3C trace context specification
+00:08:20 HTTP headers for tracing
+00:12:35 Live coding demonstration
+00:15:00 Initial performance issues
+00:23:00 Observability with Jaeger
+00:32:55 Q&A and closing remarks
 
-00:00:00 Introductions and guest introduction  
-00:02:30 Overview of OpenTelemetry and distributed tracing  
-00:05:00 Explanation of distributed tracing concepts: spans and traces  
-00:10:15 Importance of context propagation in distributed tracing  
-00:13:30 Overview of W3C recommendations for trace context  
-00:18:00 Live coding demonstration of a minimal distributed tracing example  
-00:25:00 Explanation of the importance of observability in microservices  
-00:30:45 Debugging and identifying performance issues in service calls  
-00:35:00 Integration of tracing with logging for better observability  
-00:40:00 Wrap-up and audience Q&A session  
+**Speaker 1:** Thank you. Hi everyone, thanks for joining us for Hotel in Practice and for being patient and sticking around. We've got Doug Ramirez from Uplight joining us for a second time. This time in the Hotel in Practice capacity. He has joined us previously for the Hotel Q&A session, and in case you missed that, we do have a blog post summarizing that session in the Hotel blogs in OpenTelemetry.io under the blog section. 
 
-Feel free to ask if you need any more information!
+I guess without further ado, here's Doug.
 
-# Hotel in Practice Webinar Transcript
+[00:00:50] **Doug:** Thank you. Hi everyone, I am Doug Ramirez. I'm a principal architect at Uplight. We do cool things to try to save the planet. Just a shameless plug, uplight.com/careers, we're hiring. We're a B Corp, we do cool things. But let's move on to OpenTelemetry and distributed tracing. 
 
-**Thank you!** Hi everyone, thanks for joining us for Hotel in Practice and for being patient and sticking around. We've got Doug Ramirez from Uplight joining us for a second time, this time in the Hotel in Practice capacity. He has joined us previously for the Hotel Q&A session, and in case you missed that, we do have a blog post summarizing that session in the Hotel blogs at OpenTelemetry.io under the blog section. 
+[00:01:50] I have a few things that I want to try to do today, and those are to introduce this concept of distributed tracing context propagation. I want to share a very, very minimal example of distributed tracing in action, trying to peel away a lot of the extraneous stuff and noise around this so that you can just see in as few lines of code how this is implemented. Then also share some resources around just more resources for people to go and explore distributed tracing.
 
-So, I guess without further ado, here’s Doug.
+So what is distributed tracing? It's an observability concept that gives us a big picture of how our myriad of services interact with each other. If you think about the three main pillars of observability—logs, metrics, tracing—those have all been around for a while. Distributed tracing has been around for a while, but as more and more of microservices architecture becomes a thing and becomes popular, it really elevates the need for the ability to trace things that span process and service boundaries. 
 
----
+There's a lot of things that monoliths give us, and with microservices, it's really—I really think that if you're going to move towards microservices, you really need to make sure that you're treating distributed tracing as a first-class citizen as part of that implementation. 
 
-**Doug:** Hi everyone, I am Doug Ramirez, a principal architect at Uplight. We do cool things to try to save the planet. Just a shameless plug: uplight.com/careers, we're hiring, we're a B Corp, we do cool things. But let's move on to OpenTelemetry and distributed tracing.
+[00:03:00] Context propagation is the mechanism that gives us the ability to observe things that happen in a service as a transactional request spans another service and another service, and kind of your call chain of microservices. Context propagation is the thing that gives us the ability to watch and see what's happening. 
 
-I have a few things that I want to cover today. Those are to introduce the concept of distributed tracing and context propagation, share a very minimal example of distributed tracing in action, and provide some resources for people to explore distributed tracing further.
+A couple of concepts that are important to know about when you're thinking about distributed tracing and context propagation are spans and traces. In my experience, oftentimes I think people flip the two. But to be clear, a span is basically a unit of operation, a unit of work. You can think a database query is a great example of a span. That's a unit of work that a service does. 
 
-### What is Distributed Tracing?
+There's a collection of these units of work that make up the transaction that may happen in the service. A span is nothing more than that unit of work, and a span ID is the thing that uniquely identifies that unit of work. A trace is just a collection of those spans, and it tells the story of how a request traverses all of these different services that essentially enable a use case or a feature or a capability. Each trace has a unique identifier, which is globally unique and random. 
 
-Distributed tracing is an observability concept that gives us a big picture of how our myriad of services interact with each other. If you think about the three main pillars of observability—logs, metrics, and tracing—those have all been around for a while. Distributed tracing has also been around for a while, but as microservices architecture becomes more popular, it really elevates the need for the ability to trace things that span process and service boundaries.
+[00:05:00] I put some links in the readme here so that you can read more about the reasoning behind that, but I think it's important for people to know. I know this has come up in conversations that I've had with people around what a trace ID is, and it is important that it is globally unique and random for reasons that are explained better in the documentation from the W3C, which I'll get into in a moment. 
 
-Monoliths offer certain advantages, but with microservices, it’s crucial to treat distributed tracing as a first-class citizen during implementation. Context propagation is the mechanism that allows us to observe things happening in a service as a transactional request spans multiple services in a call chain of microservices.
+A trace context is essentially kind of like the envelope or baggage that it's passed between services so that they can understand what uniquely identifies the request that's coming into them, have a uniquely identifiable transaction request that's going out of that service to another service. Essentially, in order for all of this to work, there has to be an agreement on what that format and what that specification is for a trace context. 
 
-### Key Concepts in Distributed Tracing
+One of the things that we get as developers, which is awesome, is a recommendation from the W3C around what a trace context should look like. We also get the benefit of a lot of the work that the OpenTelemetry community has done to codify those recommendations and specifications into SDKs and into other things like the OpenTelemetry collector that give us as developers a really easy way to implement distributed tracing context propagation. 
 
-When thinking about distributed tracing and context propagation, two important concepts are **spans** and **traces**. A span is essentially a unit of operation, like a database query. It represents a unit of work that a service performs. A trace is a collection of spans that tells the story of how a request traverses through different services to enable a feature or capability. Each trace has a globally unique identifier.
+[00:06:30] There's an agreed-upon format that is recommended by the W3C on how to do this. There are software libraries and specifications that the OpenTelemetry community gives us to make all of this really easy, and I'll show that in a moment. 
 
-A **trace context** is like the envelope or baggage passed between services to uniquely identify a request. For this to work, there needs to be an agreement on the format and specification for a trace context. The W3C provides recommendations on what a trace context should look like, and the OpenTelemetry community has codified these into SDKs and other resources to simplify implementation.
+With that specification that the W3C gives us, part of that recommendation is to use HTTP headers to allow a service to send information to another service so that that trace context can be propagated. There are two headers that the W3C recommends for doing this: a trace parent and trace state. 
 
-### HTTP Headers for Context Propagation
+Trace parent is where we package up the unique identifiers that describe a unit of work that's happening in one service, the trace that's associated with it, to send to another service so that they can unpack that tag, that unit of work in the other service with information so that as that information is emitted to an observability platform, we can tie all these things together and we can see how this call chain of things that happen that span services all work together. 
 
-Part of the W3C recommendation is to use HTTP headers to send information between services. There are two headers recommended for this: **traceparent** and **tracestate**. 
+[00:08:20] Back in the day with monoliths, it was pretty easy to observe and debug things that spanned different subcomponents of your monolithic architecture, and we kind of lose that ability with microservices. But we get it back by leveraging this trace context concept and the headers that are specified from that W3C recommendation to pass that information between services. 
 
-- **Traceparent**: This header packages the unique identifiers that describe a unit of work happening in one service, along with the trace associated with it.
-- **Tracestate**: This header is a simple list of key-value pairs that can carry additional contextual information.
+Okay, service A calls another service. It simply uses a header to package up some information. It's an agreed-upon format for other services to unpack and use to tag the spans and units of work that those other services are using. 
 
-Using these headers allows services to communicate and understand what uniquely identifies a request. 
+There's some details in here about what the format of that is. Let me reduce my font here so you can see what an example of a trace parent would look like. There's a version—I'm not going to get into the version today, nor will I get into the trace flags—but the really important part of this is to understand that this ID here, this unique identifier for the trace ID, is the thing that will allow us to tie all of this work together so that we can observe how microservices are all working together to enable some feature, satisfy some use case. 
 
-### Privacy Considerations
+In addition to the trace parent header, the W3C recommendation also offers another additional header called trace state, which is really nothing more than a simple list of key-value pairs that you can add along with the context that's being propagated between services so that you can attribute that to things that may be unique to whatever it is you're doing. 
 
-It’s essential to familiarize yourself with privacy considerations regarding PII and GDPR when implementing distributed tracing. While following the W3C recommendations is generally safe, it’s crucial to be aware of potential data leakage.
+Vendors may use trace state to provide observability into what they're doing, but you can just think of it almost as a little bit of baggage that rides along with the trace context that moves between the services. 
 
-### Implementation Example
+I have some links in here to the W3C trace context specification and recommendation. One of the things that I think is worth calling out, and I would encourage anybody who's going to go down this path, is to make sure that you're familiar with the privacy considerations. In this day and age with PII and GDPR and a lot of the other things that we really need to pay attention to as it relates to the potential leakage of personal information, there are some considerations that are worth noting. 
 
-Now, I want to quickly show you a minimal example of a couple of microservices working together. Imagine we're building an Internet Band Database (similar to IMDb) that provides information about bands and their reviews. 
+I will say that in general, following the W3C recommendation using the specifications in the libraries that we get from OpenTelemetry, this is a very safe thing to do. But just to be clear, spend some time and just make sure you familiarize yourself with those privacy considerations. 
 
-In this scenario, we expose an endpoint to call and retrieve a band by its unique ID and its associated reviews. 
+I know that I ran through that quickly because I know we're kind of pressed for time, but essentially, this thing called distributed tracing, again, it's a way to observe how a transaction or a request traverses multiple microservices. Again, the good news here is that we have a specification that's widely adopted and it's widely known. We have tools that we can use from OpenTelemetry to employ this. 
 
-When I run the service, it takes a surprisingly long time. This is common; when someone reports performance issues, it often requires tedious debugging and log gathering. Adding distributed tracing can help.
+For anyone who's thinking about, like, I'm building a bunch of microservices, I need to observe how they're operating, how do I do it? The good news is that that problem's been solved for you. There's a de facto standard, there's tools that you can use, and as you'll see in a moment, it's actually quite easy to do. 
 
-### Adding Tracing
+Let me pause there because I know that was probably a fire hose of stuff, but I want to see if anybody who's on the call right now has any questions about these concepts before I jump into some code.
 
-I will add some code to my service to enable distributed tracing. Using the OpenTelemetry SDK, I can extract the traceparent header and inject it into my service calls. This allows us to trace requests and see how our services perform.
+[00:12:35] Okay, we're going to run with scissors now and we're going to do some live coding. What I've done here is, again, what I tried to do was to just create the most minimal example of a couple of microservices all working together to demonstrate how you can use the W3C recommendation and use the OpenTelemetry libraries to do this stuff. 
 
-For instance, when calling the reviews service from the band service, I start a span and inject the trace context. This lets us observe what the band service is doing and how long it takes to get reviews.
+In this scenario, we're building the—it's kind of like IMDb. Instead of the Internet Movie Database, it's the Internet Band Database. I want to create this source of truth when it comes to band names, and also in this scenario, we have—we're leveraging a platform that just handles and reviews just a generic platform for reviews. 
 
-### Observing with Jaeger
+We've created a band's API that our front-end developers are going to use to build web and mobile applications on top of, and rather than building a reviews platform ourselves, we're just going to leverage this fictitious reviews platform. 
 
-Now when we call the APIs, we can start digging into the performance. Using Jaeger, we can visualize the traces and spans. 
+In this case, we've exposed an endpoint that allows something to call and say, "Hey, give me this band that has a unique ID and give me the reviews associated with it." So I'm going to call the endpoint to get a band and its reviews, and wow, it took six seconds. That's a long time. Let me run it again just to see what's happening here. Twelve seconds is a long time. 
 
-When we examine the data, we see a majority of time is spent in the get reviews function, which helps us identify where the bottleneck is occurring. 
+You can imagine we're all familiar with this, right? Like you're building the service, you've got people that are writing front ends to it, and they're saying, "Hey Doug, I'm calling the endpoint to get a band and it's taking a long time," and that's not a lot of information to go on and debug. 
 
-### Conclusion
+[00:15:00] I think we're all familiar with those scenarios where somebody contacts you and says, "Hey, you know, we've been noticing that this doesn't seem to be performing very well." We have to do that guessing game of, "Okay, well when did you call this service? Do I start grabbing a bunch of logs?" It becomes very tedious. 
 
-In conclusion, distributed tracing allows us to observe how a transaction traverses multiple microservices. The good news is that we have widely adopted specifications and tools from OpenTelemetry to make implementation straightforward. 
+So one of the things that helps is to employ some tracing and some distributed tracing. What I'm going to do now is say, "All right, hey, from a developer, I'm going to add some stuff to my service and all I need you to do is to make sure you pass me some information when you call me so I know that you're calling me." 
 
-Let me pause here and see if anyone has questions before I jump into some code.
+Then we can kind of debug this and see what's happening. The first thing I want to do is I want to go into my bands API, and this is just a very, very simple FastAPI application, just a very simple model for a band. I have an endpoint here that lets a caller get a band by its ID. I have a little helper function here that does some work to go actually access a data repository of reviews, which happens to be this other review service that I mentioned before. 
 
----
+So let me bring up my cheat sheet here. Let's start by bringing in some code that will provide some visibility with tracing. What I'm doing here is a couple of things. One is I'm going to bring in the library that's going to help me essentially tease out information from the header that I talked about a moment ago, this trace parent header, and inject it into essentially a hook that will call out to another service and emit that tracing signal.
 
-**Audience Questions**
+In this case, I'm going to use Jaeger, all populated about the OpenTelemetry collector. But in this case, I'm just going to bring in some code with the SDK, give the band service, the band's API, the ability to unpack that header and inject that information to emit a trace so that we can see what's happening. 
 
-1. **Audience Member:** How did you find the documentation around context propagation?
-   
-   **Doug:** It was pretty good! The OpenTelemetry documentation has detailed information on things I glossed over today. Once you understand the concepts, building a reference implementation is quick.
+Oh yeah, so the get reviews. So let's go to our get reviews. Excuse me, this is the function that does the call to the reviews service. What I want to do here is say, "Okay, for my when I call the get review service, I want to start some kind of trace so I can see what's happening." 
 
-2. **Audience Member:** How do you integrate logging and metrics with observability?
+In this case, I'm starting a span in my service, and what I want to do is I want to actually—I don't want to do this just yet. Sorry, let's just do this, and then back over here I'll explain what I'm doing here. 
 
-   **Doug:** I recommend starting with logging because it’s familiar to most developers. By incorporating logging with OpenTelemetry, you can get Trace log correlation for free. Once you establish that connection, adding tracing becomes much easier.
+What I'm doing now is I'm adding a couple things. I am creating the ability, or what I'm doing is I'm bringing in a very, very small library. This is just a helper library that is essentially provisioning the tracer that we get as part of the OpenTelemetry SDK. 
 
-3. **Audience Member:** Could you do a follow-up presentation on logging?
+What this tracer will do is this is the thing that will build up the traces and send it to an observability platform. In this case, it's going to be Jaeger. In case you're wondering, there's some default stuff that happens, like the OpenTelemetry SDK knows to send to a certain port that a service is listening to—in this case, it's 4317—and Jaeger's running locally, so it will pick it up.
 
-   **Doug:** I would love to! I think there’s a lot of value in simple implementations that highlight these concepts.
+That's a lot of hand waving, but in the interest of time, just know that the SDK is handling a lot of this stuff for you. Back in my band service, what I want to do is say, "Okay, anytime somebody calls the service, what I want to do is I want to allow the caller to send that trace context in the header." 
 
----
+In my service, what I want to do is I want to tease out that trace parent header because I know that there's a standard and a specification for that. I'm going to build up a carrier, and I'm going to inject that trace context from my caller into my context so that when I build up a span, the OpenTelemetry SDK is going to do a bunch of magic and work for me and essentially emit that trace to the observability platform. 
 
-**Closing Remarks**
+So I have this now built up in my code. Now the band's API can receive a request, build up a trace loop in that trace context from the caller, and when it calls its own internal function, we're going to spin up another span, which is a unit of work to make a query to the reviews platform. 
 
-Thank you, everyone, for joining today, especially given our late start. Thanks, Doug, for adapting on the fly and for your insightful presentation. We will post updates about our next Hotel in Practice session on the various CNCF Slack channels.
+This will start to give us some visibility into what the caller is doing and what the band service is doing. So now let's go. What I want to say to the caller, then, the person who's building this application, is to say, "Hey, I'm adding some stuff to our service because I know you said it was slow and things don't seem right. Send this bit of information so that we can start to really observe what's happening here." 
 
-If you're attending KubeCon EU, several of us will be there, and we’d love to connect. A blog post summarizing today's session will be available on the OpenTelemetry blog on Monday. 
+If I go back to my client, what I want to do is I want to essentially say, "Hey, help me help you by sending this header." When you send this header, manufacture a trace and a span on your end, add that header to the call that you make to me, and then we can kind of start to dig into what the problem may or may not be. 
 
-Thank you again, everyone!
+So now at this point, we're kind of wired up now to get a bit more observability into what these different services are doing. If I run my—if the client now calls me, I can see it took five seconds. Oh, I forgot one thing. Sorry. 
+
+I also just kind of want to print out to the console a little helper thing just to link me right to Jaeger, where these traces are being sent to, so I can start to see what's happening. Now the client calls me again; we should be able to start digging into what's going on here. Wow, 15 seconds is a long time. 
+
+[00:23:00] Now I can kind of dig into this and I can see—and I don't—I'm not going to spend too much time on Jaeger, but Jaeger is an open-source platform that helps visualize traces and spans. Now that I have the caller following that W3C recommendation, passing that trace parent with some unique identifiers of the units of work it's doing, sending it to the band service, the band service is taking that information, its context has been propagated to it, it's leveraging that to emit information about what it's doing, and now we can observe what's happening. 
+
+I can see that the get bands endpoint was called, and I can see that the get reviews function unit of work was run. If I look at this, the spans table here, I can see that the majority of time that was spent here was getting the reviews. So that's good helpful information to know. I can see, like, okay, get reviews is taking a long time; let's dig into that. 
+
+So let's go back to our code and I can say, "Hey guys, building folks building the client, I see something going on in my service. Let me dig into it. The get reviews is taking a long time." 
+
+"Hey, what's this debugging thing? Somebody did something while they were debugging. I just have a random timer here. Let me just get rid of this. Sorry about that, folks." 
+
+Right. Okay, hey, I just deployed a new version of my service. Call me again. Still taking a long time, something doesn't seem right. So now in this fictitious world, I'm going to turn around to the folks that work on the reviews platform and say, "Hey, you know, we're looking into an issue. There was some random code that was sleeping in our end. Can you take a look and see what's going on in your platform? Because when we're calling you, like, it's taking a really long time to get reviews; like, our service seems to be working pretty fast." 
+
+So now let's go and do the same thing on the reviews end. Very similar bit of refactoring. Let's go to the reviews, especially. Let me bring—all right, let's bring all this in. 
+
+So now the same service here is going to bring in this helper function to start up the tracer again, leveraging the OpenTelemetry SDK to do that. We'll bring in this trace context propagator so that we can have this service do interesting things with the trace context. 
+
+Let's see. Here we want to do something that's a little bit different than the band service does, right? Yeah, I think that's right. So now the review service can also receive that trace parent, that trace context, unpack it, and associate it with its span of work. In addition to that, we want to start a span at the internal—imagine this would be a piece of code that would more than likely read from a data repository, a data store associated with the review service. 
+
+So now I can say, "Okay folks that are building the front end of the mobile app, we've released a new band's API, we've released a new reviews API that we think is going to help give us some visibility into what's going on." 
+
+So they're going to keep doing their development. They're going to start making calls to us. Four seconds isn't too bad. Let's try again. It's still taking too long, so now we got to figure out, okay, well what's going on? 
+
+So let's go back to our observability platform, Jaeger, and what is happening? Not seeing the trace from the reviews out of this. This is what you get when you try and run with scissors and do live coding. What am I missing here? 
+
+Trace parents. So this is getting—oh, I know what we did. All right folks, there it is. 
+
+The reason that the review service wasn't getting the context propagated is because I didn't add that in the—so in the band service that's calling the review service, we need to propagate that context. Be quiet, Siri. 
+
+Here we go. All right. I know I'm jumping around quite a bit. In the band service, it's getting that trace context from the caller, it's attaching it to a span, it's making this call to get reviews. We want to see what's happening in that unit of work, so we're starting up a new span. 
+
+But we also want to take the context from the caller and inject it into a header so that when the band service calls the review service, that context gets propagated to it as well. So now when the caller calls the band service, it's spinning up this trace ID, this unique identifier, sending it to the band service. The band service is like, "Thank you very much. I can attach this to my span, my units of work. I'm going to send it downstream to the thing that I rely on." 
+
+It's going to attach this information to its units of work, and we should see all of that come together in Jaeger. Boom! All right, service is still running slow, but at least now we have some visibility into what's happening. 
+
+Oops, and if I go to my trace graph—sorry, my spans table—actually, where is it? I can see here that the majority of the time seems to be spent getting the reviews from the reviews database. So when it's getting a review, by getting the reviews for a band by the band ID, it's taking a long time. 
+
+So let's go back and start digging into that code there to see what might be happening. So in the review service, if I look at this function that is grabbing data from some kind of data repository, again, somebody put in some kind of sleep. Maybe they were debugging, testing some timeouts; who knows what, but let's pull that out. 
+
+Now we can say, "Hey folks that are building the mobile and web app, we think we fixed it for real this time. Can you try again?" Wow, that's better. 
+
+Let's go back and see what happened in Jaeger. Okay, things are taking milliseconds. That feels better. I like this. Now I can observe what's happening across all of these different things. Yay team! 
+
+Just to kind of walk through the code one last time: the client is packaging up this header based on the W3C recommendation. It's passing that header along to our bands API. Our bands API is leveraging the OpenTelemetry SDK and saying, "Hey, let me pull this stuff out and inject it into a carrier so that I can send it downstream." 
+
+[00:32:55] By the way, when I'm creating my spans, I'm going to leverage that information. When the review service gets a call into it, it can tease out that trace parent information and inject it into its spans by attaching that context. And now we have distributed tracing with context propagation because we've got this awesome stuff from the OpenTelemetry community and we've got this awesome recommendation from the W3C. 
+
+Let me stop there and ask if anybody has any questions about the basic minimal implementation of these concepts in these handful of FastAPI services, and maybe this is a good time just to kind of open up to general questions as well because I know we're coming up on time.
+
+**Audience Member:** Doug, I had a question for you. How did you find in terms of finding the information, the documentation around context propagation? How was that experience for you in terms of finding that information in the Hotel docs?
+
+**Doug:** It was pretty good actually. So in the readme for this repo, which I hope that other people can help me test the documentation, I would love for some folks to go and clone this repo and try to spin all these services up and make some calls and see if they can get it running locally. It was good. 
+
+The OpenTelemetry documentation has some very good details around things that I glossed over today that I would really like to go into further detail around. I'm sure that anybody who watches this is probably going to start asking questions like, "Well, how does that actually work?" There's a lot of magic under the hood, but the OpenTelemetry documentation goes into a lot of detail around the things that I just waved my hands around, like the tracers, the trace exporters, the context propagation, the shape and format of spans, how these things all link together. 
+
+I found it was pretty easy to find that, and I also think that the W3C documentation is also very good as well. So I was able to kind of bring everything together pretty quickly. It didn't take me very long to build this reference implementation of these few applications.
+
+**Audience Member:** Yeah, OpenTelemetry also publishes a bunch of integration packages which lets you hook up to like Node middleware or HTTP clients automatically, so you can just have everything instrumented and doing the correct header insertion and things like that without really having to worry about doing it manually like in this demonstration.
+
+**Doug:** Yes, that's a really good point. One of the things that I did as part of this reference implementation was to do a very explicit implementation of these concepts. We don't have time, and I wanted to do that thing that you always see in a demo where somebody says, "Do all this stuff," and at the end of the demo, they say, "Oh, by the way, you don't have to do anything. You just do this other thing and it all gets handled for you." 
+
+There is a FastAPI instrumentor which will remove the need to do a lot of this explicit unpack, this explicit extraction and injection of the context. I didn't have time today to show that, and I kind of wanted to make it very clear to a developer who's learning these concepts to walk through the code and see something very procedural that shows this. 
+
+For example, there's a header, and that header is very important, and it is called a trace parent, and it has a specification. Here's an example of teasing out that header in code. The OpenTelemetry library has this thing where it can extract this context for you. Here's the line of code that does this. When I make a call to another service, I want to pass that along very explicitly. 
+
+There was a lot of intention behind trying to make this application a bit more verbose, even though it's very minimal, to try to show somebody who's maybe new to this what does this actually look like. If you use the FastAPI instrumentor, the good news is a lot of this gets handled for you. 
+
+My recommendation would be for anyone who's getting started with microservices is to make sure that you include distributed tracing from the very, very beginning. I would almost suggest that you spend a bit of time and implement this explicitly so that you understand what's happening, so that other developers understand what's happening. 
+
+Once you solve the problem of observability, then level up and start to leverage some of these other things that OpenTelemetry gives us, like the FastAPI instrumentor and these other things that we get from the community. 
+
+I feel like that just kind of helps bake the concepts in for people. I know that for me, I'm a very tactile learner, so it helps me to see what's happening before I start to let some libraries handle that magic for me, if that makes sense. Your mileage may vary, but my recommendation would be to go ahead and do it explicitly. 
+
+It's a handful of lines of code, you can share it with people when you're doing code reviews, you can explain to them what's happening. It's not mysterious, it's very explicit.
+
+**Audience Member:** Do we have any questions for Doug?
+
+**Audience Member:** Thank you, Doug, for sharing that. One question from me is that how does it look when you, like, so the observability problem in production, I suppose, apart from this OpenTelemetry tracing part, I suppose we also need to serve logging and metrics, and do you find any difficulty integrating the different parts of observability?
+
+**Doug:** The last time I spoke here, I mentioned that one of the paths that we took and have been taking at Uplight has been to actually begin with the log signal. The reason is that in terms of introducing these concepts that these problems that OpenTelemetry solves, these problems that the W3C helps us with solving is to begin with logging so that you—because logging, I think, is very, very familiar with most developers. 
+
+I think junior and intermediate developers are familiar with this concept of logging, like a print statement. What I've recommended and what we did at Uplight when we started down this path was to start using the logging SDK, even though it's newer than the work for the signals of metrics and traces, but to start with logging so that you can at least begin to practice including the packages and libraries into your code using OpenTelemetry to emit that logging signal. 
+
+Get that logging signal landing in your APM or whatever your observability platform is, and once you make that connection of like, "I'm writing code, I'm writing a statement that says logger.debug, my message is landing in an APM," it's structured, it's honoring the specification that the OpenTelemetry community gives us. 
+
+Then it's really easy to then, you know, level up to add tracing, and you get trace-log correlation for free. That's one of the things I would like to actually do with this little reference implementation is to add in some trace-log correlation so that people can see, like, how do I do the thing that I'm so familiar with doing? 
+
+I like to send out a log; I like to do a print statement. That's so we always do that all day, every day. If you start with logging and you get the SDKs into your repo and you have that information flow into your APM, then adding the layer of maturity around traces and the trace-log correlation is almost free because you've already got everything packaged up into your application already. 
+
+That might not work for everybody. To me, that feels like a very natural way to evolve into using the specification, using the SDKs, and really kind of getting into observability nirvana, where you can walk up to your APM and say, "I have questions about the health and behavior of my services, and I have a lot of them. What's happening?" 
+
+You can get those answers if you do this.
+
+**Audience Member:** Doug, it sounds like you need to do a follow-up presentation on logging.
+
+**Doug:** I would love to, and I think that I would love some help from other people to take this repo and clone it or fork it or just play with it. I definitely encourage others to poke around as well. I think it would be cool to contribute this back to OpenTelemetry. 
+
+Although, to be honest, I don't know if other OpenTelemetry folks have a better idea on the process around that because I think I'm newer to the process. But anyway, I think that, yeah. 
+
+I know that there are, like, there's a demo app and there's other reference implementations, but one of the problems I was trying to solve here was how do I strip away all the noise and give a developer with a modern operating system and Docker the ability to get clone, fire up these services, and watch what's happening so they can really dig into these concepts and understand how powerful they are in their simplicity. 
+
+It's pretty amazing; all we're doing is just sending a header, and these SDKs are doing these wonderful things for us. It's pretty simple, but it's unbelievably powerful. 
+
+The idea for this reference implementation was to try to highlight that as best we could with as few lines of code as possible so that people can understand this and so that people can go and be successful with building this level of maturity in their observability in their code.
+
+**Audience Member:** I totally agree, and I think there's a lot of value in that. Like you mentioned, the OpenTelemetry demo app is awesome because it shows all of the things, but there is definitely value in simpler implementations like this one. 
+
+So yeah, well, on that note, I know we're a little bit over time. Thank you everyone who was able to join us today, especially given that we started late. Thanks Doug for working on the fly with our reduced time and for lunch—that's never an easy task. 
+
+So definitely appreciate the time that you put into making this happen today. Thanks everyone for joining us once again, and keep your eyes open for our next Hotel in Practice. I don't think we have one scheduled yet, but we'll post on the various CNCF Slack channels for that. 
+
+Rin, do you have any additional upcoming announcements that folks should be aware of?
+
+**Rin:** Sure, yeah. So first, there's an OpenTelemetry in Practice meetup. If you came here through CNCF, a lightweight way to get notified whenever we have something and not have to look for the Slack. If you're not in the CNCF Slack and you want to talk further to any of the OpenTelemetry in Practice folks, Doug, the audience, we're happy to add you. That information is in the chat. 
+
+If you'll be at KubeCon EU, several of us will be, and we'd love to connect with you there. There will be a blog post on the OpenTelemetry blog on Monday with all of the activities. Yes, I am happy to do a follow-up with Doug because of KubeCon EU; that will probably be around the end of May. We can figure out what format we want to do based on hopefully talking with you all in the Slack. 
+
+Thank you, everybody.
 
 ## Raw YouTube Transcript
 

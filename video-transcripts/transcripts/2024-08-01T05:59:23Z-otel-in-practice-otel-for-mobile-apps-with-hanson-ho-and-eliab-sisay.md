@@ -10,115 +10,193 @@ URL: https://www.youtube.com/watch?v=mTcdwdWIFgI
 
 ## Summary
 
-In this episode of "Otel and Practice," hosts Hansen and Eliab from Embrace discuss the challenges and opportunities of implementing data modeling and application performance (AP) design in mobile apps using OpenTelemetry (OTel). Eliab, a product manager at Embrace, introduces the topic by highlighting the significance of mobile observability, emphasizing that mobile apps are not distributed systems but rather installed software that interacts with distributed services. Hansen, an Android architect at Embrace, delves into the unique challenges of mobile observability, including the dynamic runtime environment, issues with session tracking, and the fragmentation of mobile devices. He explains how OTel's assumptions may not always hold true in mobile contexts, stressing the need for tailored instrumentation and user experience-focused metrics. The presentation concludes with a call to action for developers interested in mobile observability to engage with OTel working groups and contribute to developing robust standards for mobile applications.
+In this edition of "Otel and Practice," hosts Hansen and Eliah from Embrace discuss the challenges and opportunities of implementing data modeling and observability in mobile apps using OpenTelemetry (Otel). Eliah introduces Embrace's focus on mobile observability and the transition to Otel, emphasizing the unique complexities mobile apps face compared to backend systems, such as diverse hardware environments and the need for real-time performance monitoring. Hansen elaborates on these challenges, including the limitations of current telemetry systems, the importance of user experience, and the adaptation of Otel's protocols to better fit mobile applications. They also encourage audience involvement in the mobile observability community to help shape standards and best practices. The session concludes with a Q&A, addressing various topics such as instrumentation for different types of apps, golden signals for performance, and the readiness of Otel for production use in mobile environments.
 
 ## Chapters
 
-Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:01:20 Introduction of Eliah
+00:02:53 Overview of mobile observability
+00:05:00 Challenges in mobile observability
+00:06:30 Call to action for involvement
+00:07:00 Hansen's presentation on mobile differences
+00:09:56 Unique challenges of mobile environments
+00:12:30 OpenTelemetry challenges on mobile
+00:19:00 Ongoing challenges and future considerations
+00:22:00 Q&A session begins
+00:44:00 Closing thoughts and wrap-up
 
-00:00:00 Introductions and Overview of the Session  
-00:01:30 Introduction to Eliah and Hansen from Embrace  
-00:03:40 Importance of Mobile Observability in App Performance  
-00:05:30 Challenges in Implementing OpenTelemetry in Mobile Apps  
-00:10:00 Unique Characteristics of Mobile Runtime Environments  
-00:15:00 Fragmentation and Device Variability in Mobile Ecosystem  
-00:20:00 The Role of OpenTelemetry in Mobile Observability  
-00:25:00 Key Differences Between Mobile and Backend Observability  
-00:30:00 Discussion on User Experience and Golden Signals in Mobile Apps  
-00:35:00 Q&A Session on Mobile Instrumentation Challenges  
+**Speaker 1:** Well hello everyone, welcome to another edition of Otel and Practice. Today we've got Hansen and Eliah from Embrace. They're going to take us through some of the challenges and some of the opportunities as well of doing a data modeling API design in mobile apps. In OpenTelemetry, we talk a lot about the backend, but we'll see how we can apply OpenTelemetry to the client side as well. 
 
-These timestamps capture significant moments in the presentation and discussion, providing a clear overview for viewers.
+We will do a presentation first, and then there will be time for Q&A. I'll drop a link in the chat, and then I've created an Agile Coffee board. You can go there, you can add your questions, and then at the end of the talk, we'll go through the Q&A. You can vote for your questions as well, so feel free to add your questions as you see in the presentation, and then we'll go through them at the end. 
 
-# OpenTelemetry in Mobile Apps: Challenges and Opportunities
+So without further ado, I'll introduce Hansen. I think you're going to be kicking off, so take it away.
 
-**Welcome everyone to another edition of OpenTelemetry in Practice!** Today, we have Hansen and Eliah from Embrace with us. They will discuss the challenges and opportunities associated with data modeling and API design in mobile apps. While OpenTelemetry is often focused on backend systems, we will explore its application on the client side as well.
+**Hansen:** Great, I'm actually going to pass it off to Eliah to kick it off.
 
-We'll start with a presentation, followed by a Q&A session. There’s a link in the chat where you can drop your questions, and I've set up an Agile Coffee board for you to add your queries. Feel free to vote for the questions you’d like us to address at the end. 
+[00:01:20] **Eliah:** Nice. Hi everyone, yeah like it was mentioned, my name is Eliah Cisi. I am a product manager at Embrace. We are a mobile observability company. We provide developers with SDKs that they can integrate into their mobile apps to monitor performance in real time. Our main goal really is to help developers keep their apps running smoothly by proactively identifying and resolving issues, really with the objective of improving the overall user experience. 
 
-Without further ado, let's kick things off. I’ll hand it over to Hansen.
+We're also heavily invested in OpenTelemetry. We began that transition about nine months ago, and it's really helped us provide our customers with a more unified and comprehensive view of app performance from what's happening client-side on the user's mobile device all the way to the backend services that power those experiences. 
 
----
+In doing that migration, we discovered that while the benefits of OpenTelemetry are numerous, there are some specific challenges that occur when trying to implement it in a mobile environment, and that's kind of what we're here to talk about today. I'll be honest and say that the term "we" is very generous. Also on the call is Hansen, who we talked about; he's an Android architect at Embrace, formerly a mobile performance engineer at Twitter. So I'm just here to do kind of a brief intro, and then I'll hand it off to Hansen, who will be doing a majority of the presentation.
 
-## Introduction by Eliah
+[00:02:53] **Hansen:** Next slide, thank you. One more. I want to start by just setting a little bit of context. In 2022, the average mobile user spent a little over four hours a day on their phone, and of that, over 90% of it, or about 90% of it, was within native mobile apps. By the end of this year, mobile apps are expected to generate over 900 billion dollars in revenue. If you think about your own mobile use, I'm willing to bet that the brand or companies that you interact with most have a native app that you use consistently. 
 
-Hi everyone! My name is Eliah Cisi, and I’m a Product Manager at Embrace. We are a mobile observability company providing developers with SDKs to integrate into their mobile apps for real-time performance monitoring. Our main goal is to help developers keep their apps running smoothly by proactively identifying and resolving issues, ultimately improving the overall user experience.
+Now, as we think about the observability ecosystem, we've spent the last 5 to 10 years really trying to figure out how we do observability better for backend systems. There are a variety of standards that were created, most notably OpenCensus and OpenTracing, which form the foundation for where we are today with OpenTelemetry to provide the visibility into the health of distributed systems. 
 
-We are heavily invested in OpenTelemetry, having begun our transition about nine months ago. This has enabled us to provide our customers with a unified and comprehensive view of app performance, from what's happening client-side on mobile devices to the backend services that power those experiences.
+Mobile apps are not a distributed system; they are installed software running on distributed compute resources that interact with distributed systems. There are a lot of unique challenges with that environment. Take session tracking for instance. In the mobile world, a user session can be anything from several seconds to several hours, and it can be interrupted by calls or network changes or the app running in the background, which is really quite different from what you see server-side. 
 
-However, we discovered that while the benefits of OpenTelemetry are numerous, several specific challenges arise when implementing it in a mobile environment. That’s what we’re here to talk about today. 
+Mobile apps themselves are also extremely different. A gaming app, for example, needs to track things like frame rate and rendering times, while a financial app might focus more on transaction speeds and security events. Add to that the fragmentation in the mobile ecosystem, where you've got multiple operating systems and countless device manufacturers, and it's really easy to see how complex that becomes. 
 
-I’ll pass it off to Hansen, who will cover most of the presentation.
+[00:05:00] We were looking at the number of unique devices for just one customer, and we saw that there were like 42,000 plus different combinations of device models and chipsets that could potentially exist, which is crazy. For most of its life cycle, observability and monitoring in the mobile ecosystem has been mostly proprietary systems designed by vendors. The typical starting point is Firebase Crashlytics, which is free but highly sampled and extremely limited in its feature set. So if you're a serious app developer, you're not going to use that, and that's led to a bunch of vendors building their own proprietary standards and trying to convince people that they should be serious about observability with their solution, but mostly it's just crash reporting and error tracking. 
 
----
+The result is that the paradigm looks something like this, and the unfortunate thing is that a lot of mobile engineers actually consider that to be kind of acceptable. When we talk to customers who truly care about the user experience that their customers are having on their mobile devices, they tell us that all of their customer-impacting SLOs are directly tied to the mobile device, but they don't have a good source of information that correlates that data to the work they're doing to build reliability and resiliency in their backend systems. 
 
-## Presentation by Hansen
+[00:06:30] That's what Hansen's going to be talking about, which is some of the challenges in this paradigm that we're facing today, and some of the opportunities and how we're working to address that. More than anything, I think today is really a call to action for the people in the Zoom, for the people watching. If you yourself, or if you have coworkers or people that are interested in the mobile ecosystem, we would love for you guys to get involved. Hansen's involved in the Android SIG and the client-side SIG. We have people working in the Swift SIG. We're working on OTEL contributions for React Native and Flutter, and we're really committed to making mobile observability as robust and standardized as it is for backend systems. We'd love to involve as many of you in that effort as possible. 
 
-Thank you, Eliah. I’m here to discuss how mobile is different in terms of observability. The crux of the problem lies in moving tools onto mobile platforms and making them run effectively. There are fundamental differences embedded in the assumptions we make regarding durability and the questions we ask of our tooling. Without identifying these differences, we cannot improve specs or tooling.
+With that, I'll hand it off to Hansen. 
 
-### Key Differences in Mobile Observability:
+[00:07:00] **Hansen:** Thanks, Eliah. So I am here to talk about how mobile is different in terms of observability. I think the first thing to approach this is that the crux of the problem is actually about simply moving tooling onto these mobile platforms and making them run because there are fundamental differences that are embedded in the assumptions that we make when we have durability and the questions that we ask of our tooling. Without first identifying and acknowledging these differences, we can't start improving the specs or tooling because we don't know what it should look like. 
 
-1. **Runtime Environment**: Mobile devices have dynamic and heterogeneous runtime environments. There are 42,000 unique chipsets and device combinations, which can lead to unpredictable behavior. Factors such as losing network connection or background activity can affect app performance.
+To make the front of the horse look like the back of the horse, we've got to first figure out what the face should be. Here is what I'm trying to do: I'm just going to go over a little bit what the differences may be. I can spend a couple hours here talking about this, but hey, we don't have that much time, so I'm just going to concentrate this in three general areas where mobile is different. 
 
-2. **Capture and Transmission Pipeline**: Data capture in mobile environments is fragile. Data can be lost at multiple stages before being transmitted to servers due to crashes or unstable network connections. Even when data reaches the server, it may be delayed or out of order.
+First is the runtime environment. We're talking about dynamic heterogeneous runtime environments running on devices that are unpredictable—42,000 unique chipsets and device combinations. Not only that, the environment that they run in is extremely dynamic as well. You walk into an elevator and you lose your mobile connection; you lose your network connection. You background the app to answer a notification, and that affects how the operating system runs the app. Not only that, the actual hardware that is running your app is quite severely limited. Phones that existed 10 years ago still even today, PHs are released last year that cost $99. The hardware mirrors that cost, and the OS not only limits what you can do with that already limited hardware, it also does it in a very unpredictable way. 
 
-3. **User-Centric Data**: The data we capture must center around user experience. Observations from millions of independent app instances should provide insights into individual user experiences rather than just system health.
+What you have is a dynamic environment where you don't know what is actually executing your app. Objective performance, which is typically what we measure, is only part of the equation because what makes an app slow differs in terms of where I'm using it or whether somebody else is using it. Perceived performance is also part of the equation, and SLOs have to somehow take that into account. 
 
-### Challenges with OpenTelemetry:
+[00:09:56] Another aspect of mobile that makes it challenging and different than backend is the fragility of the capture and transmission pipeline. How to get data from these devices onto servers, I could do something with it. Data could be lost in multiple stages before it gets captured because it was a crash, before you persist the data or after we persist the data, because the network connection is unstable and we can't get the data over to the server. Even when the server gets the data, it could be delayed or out of order, so what you get may not be the full picture until several hours later when more data comes in. 
 
-OpenTelemetry generally works well as a lingua franca of observability, but it was designed to solve specific backend problems. Here are some challenges we face when adapting it for mobile:
+Lastly, the data we capture has to center the user experience because operational runtime and device state is useful only in how they provide insight into individual user experiences end to end. Otherwise, it's just trivia. On mobile, we're observing millions of independent app instances, but each one of the measurements we get maps back to a user. It is not merely a state of health of the system. If something is slow, somebody is looking at a very slow phone. It's like a P99—what does that mean? Well, P99 is 1% of all measurements are that slow or slower, so if you think that's an outlier, well, 1% of interactions being that slow means it is more than an outlier. It is something that we have to capture.
 
-- **Spans**: While they are great for measuring durations in predictable environments, they fall short in mobile where operations can be interrupted or lost entirely.
-- **Protocols and APIs**: Assumptions that telemetry is recorded and transmitted reliably do not hold true in mobile environments. Tools must account for unreliable data transmission and the strain telemetry puts on system resources.
-- **Contextual Understanding**: Mobile engineers may not be familiar with low-level concepts like threads or context propagation. Therefore, APIs must be adapted for broader understanding.
-- **Execution Boundaries**: Mobile operations can span multiple modules owned by different teams, making instrumentation brittle without proper infrastructure.
+Now let's talk about OTEL. In general, OTEL works really well as a lingua franca of observability. Its backend roots, though, mean that it was designed to solve a problem with a very specific context, and when we change that context to mobile, some parts start to not fit very well. 
 
-Lastly, mobile devices represent millions of independent instances, which complicates how we approach metrics. Metrics need to be grounded in the context of the system to be useful.
+The first point I want to talk about is spans. Spans are great in OTEL if you want to measure the duration of operations of applications that have a very fixed runtime environment, predictable runtime code path, so you can actually measure and calculate deviations based on some baselines. They are not so great if, say, duration is not an indicator of performance. If you want to measure a period of time, well, OTEL signals look like spans, but is it because duration is not an indicator of performance? 
 
----
+[00:12:30] When you start aggregating and saying, "Hey, what's P95?" that starts to not make sense. Also, operations run for a long time in OTEL, but unfortunately you don't get to know what happened until it ends, either in a failure or success. What if it gets interrupted in the middle through a crash that we don't know about? Mobile apps could be killed without actually alerting the app, so operations like that are gone or lost, and with OTEL itself, we wouldn't know about it because it's not done, and that's kind of challenging for mobile.
 
-## Call to Action
+Also, operations that need to be contextualized with a lot of mutable state that are expensive to obtain, well, that's a challenge because in OTEL you write the data into the spans of span events or attributes, but sometimes the act of getting these types of state takes a while for the mobile app to actually get from the OS, and for us to basically block the ending of a trace, just doesn't work well.
 
-We encourage everyone involved in the mobile ecosystem to contribute. Hansen is involved in the Android SIG and the Client-Side SIG, and we are working on OpenTelemetry contributions for React Native and Flutter. We want to make mobile observability as robust and standardized as backend systems.
+The second point I want to talk about is that the protocols and APIs of OTEL make certain assumptions that are just not true on mobile. For example, assumption one is that telemetry is recorded and transmitted reliably, and you could trust that data that gets recorded will make it to the server, the collector, in a reasonable amount of time. But as we mentioned before, that is not true in mobile, and it could also not be true in a number of fascinating ways. 
 
----
+So tooling that is usable on mobile has to take that into account and build resilience, like persistence, for instance, before export. Thanks to Cesar for doing that on OpenJava or the OpenCry Android extension; it's extremely helpful in production. In the future, perhaps there will be a place for ways for us to automatically transmit a group of related telemetry so that we don't get into this weird state in the backend wondering if more data is coming. That would be nice.
 
-### Questions
+Another assumption is that recording and transmitting telemetry doesn't put a strain on system resources. The SDKs are well-written, and they perform well, so on the backend, use them, it's no problem. However, on low-end devices and metered networks, it means that every signal captured potentially reduces performance or costs users money. We have to be a lot more careful in how we record data and how we transmit data. Even simply the act of getting the data to record can be expensive, so the consideration that we have to go into what to record is a lot greater and depends on the use case.
 
-**Q: In web, Core Web Vitals have become a standard to measure user experience. Do you see an emerging standard for mobile apps?**
+Another assumption is that engineers that use the API understand low-level concepts like threads or context propagation. Even the idea of tracing and what spans are may not be universally understood if you change the audience to mobile engineers, simply because the background, the variety of background of folks building mobile apps changes quite a bit. It could be somebody who's just done a six-month boot camp who is building a mobile app for the local grocery store, and they want observability too. They want to know why their stuff is slow, but they're used to higher-level constructs like coroutines when you're using threads but not really. They don't know about it, and how do you explain propagation when they don't understand the existence of a thread? 
 
-Yes, we are working on semantic conventions for mobile that can capture metrics like ANRs and sluggishness. Once we figure out the best approach, we'll collaborate with the SIGs to submit conventions.
+Adapting the APIs to be ematic is one thing, but making those concepts understandable by those without CS backgrounds is another challenge right there. Lastly, another assumption is that traced operations have a clear execution boundary and code ownership. You have a service that creates a span, and the runtime, generally a team owns that front to back, and you transmit the context via context propagation, etc. Unfortunately, things are not as clean on mobile because a single span for an operation can go through several modules owned by several teams, and not all of them may be aware of all these problems. 
 
-**Q: What about applications using Kotlin Multiplatform? What instrumentation options are available?**
+Instrumentation can be extremely brittle if you don't have the right infrastructure in place to catch regressions where implementation changes but the instrumentation doesn't. It's not as modular, nicely connected, cleanly connected as you would for distributed tracing, just because of how mobile apps are architected. The last OTEL thing I'm going to talk about is that mobile devices are millions of independent instances. OTEL generally assumes that the system being monitored and observed is one connected system. 
 
-Currently, there is no native SDK for Kotlin Multiplatform that emits OpenTelemetry telemetry. There is potential for a native SDK or a bridge to existing SDKs. We are evaluating how best to approach this.
+It could be made of dozens of microservices deployed in various ways, but effectively they all roll up, and metrics in that context make a lot of sense—OTEL metrics. But for mobile, when we have disconnected app instances running, that starts to break down because metrics need to be grounded in the context of the system that emits them in order for the baselines to be created and compared. Munting together metrics from phones of various models into one limits how useful those generated metrics are. What does P95 of heap size of an app at one minute mean when you look at the entire fleet of devices? I don't know. Did it change when it increases or decreases? Is that good or bad? Well, I don't know because we don't know the reasons because these are different systems.
 
-**Q: Is the variability of runtime environments an open problem?**
+[00:19:00] Not that metrics aren't useful on mobile; they're extremely useful, but you tend to need to have like-to-like comparisons, apples to apples, and it tends to involve dimensions that are high in cardinality, and unfortunately that just doesn't work fantastically well with OTEL metrics. Simply the strict time-aligned aggregation is not really suitable for apps that have operations that have variable duration and have data come in at any time. It just wasn't meant to do what mobile wants it to do. But that's okay because these are not insurmountable challenges. These are ongoing things that we could work with the protocol and the SIGs and the folks to kind of improve.
 
-Yes, it's an ongoing challenge. We are working with the entities working group to help capture external mutable states related to apps. We have some workarounds, but we're still exploring the best approaches.
+We're working with various SIGs to try to get some of these problems surfaced and addressed. We are also, at Embrace, having workarounds to go around OTEL or perhaps use OTEL in non-standard ways in order to get the data to do what we want it to do. But that's not the end state. The end state we want to see is a diverse ecosystem and tooling that builds on not only what folks in OTEL have done before but also extends support to the plethora of use cases that we're bringing up. 
 
-**Q: How closely related are mobile instrumentation and browser instrumentation?**
+Frankly, this is just the beginning because mobile apps that I'm familiar with run on very small, restricted sets of circumstances and phones and tablets are what I'm used to using. I haven't worked on cars or TVs, IoT, but those apps deserve observability as well. I'm sure as we take the tooling and the specs forward, more use cases will come on board and say, "Hey, I want to connect my data from my TV to my backend data." What additional challenges are there when I don't even know how a TV works in terms of how it uses Android? I'm sure it's different, and I'm sure there are new things.
 
-There are many similarities between mobile apps and web apps. We should consider web instrumentation when designing mobile instrumentation due to overlapping environmental factors.
+At this point, we're just exploring ourselves. We're trying to ask questions; we're trying to figure out if our assumptions are correct. Are there things we could change about how we used to do things in order to fit more into OTEL? But at the end of the day, we want everyone to come up with their use cases and help ask these questions of mobile and client use cases for OTEL. Great work has been done in the Android and Swift and client SIG already, but I think there could be more going forward. 
 
-**Q: Do different types of mobile apps require different data models?**
+Folks listening, maybe they're converted to OTEL, but hopefully other people also watch this and say, "Hey, I looked at OTEL, it didn't really fit, but after this presentation, maybe I can make it fit. Maybe I can use it in a way that is productive and actually truly have this become the lingua franca of observability for both the backend and the frontend." 
 
-Yes, different apps have unique characteristics that require tailored semantic conventions. For instance, gaming apps may focus on frame rates, while financial apps prioritize transaction speeds.
+That's enough of us talking. Any questions? I'm going to end the presentation if I can. There we go. 
 
-**Q: Are there golden signals for mobile irrespective of device type?**
+[00:22:00] **Eliah:** Thank you very much, Hansen. For those that have joined a bit later, maybe haven't seen this message, we've got an Agile Coffee board. You can add your questions in there. I think we've got a couple of questions. We'll start with one related to web CWV. Vitals have become a standard to measure user experience for better awards. Do you see an emerging standard to measure equivalent concepts in mobile apps for sluggishness or speed?
 
-The ultimate golden signal is user happiness, which can be assessed through user engagement and retention metrics. Tracking success rates and abandonment rates for key operations is also crucial.
+**Hansen:** Yes, so you know, with OTEL, everything is defined effectively as semantic conventions built on the existing signals. At Embrace, we've kind of modeled some of the TRec capture for things like ANRs on Android and various other kinds of mobile slowness or sluggishness. We did it in a certain way that works, but is it the best? We don't know. Once we figure it out, we'll want to work with the SIGs to submit conventions to model that. I believe especially with the introduction of these emerging specs of profiling and even entities, a lot of these problems that we have are going to be addressed. So it's a matter of figuring out what we have and then defining them. If you're interested in defining certain slowness metrics or telemetry for mobile, let's talk. 
 
-**Q: Is OpenTelemetry mobile instrumentation ready for production use?**
+There's one that I'm in the middle of putting together with the help of a lot of folks from the client SIG, a crash convention that spans platforms that's different from exceptions. We have many more down the pipe and it's limited by the abandonments that we have, but anything that can be should be standardized as semantic conventions. So it's a very long way of saying yes, and please help.
 
-Yes, various SDKs are available that you can integrate into your mobile apps. Depending on your needs, you can roll your own implementation or use existing ones.
+**Eliah:** Good stuff. Let's go on to another one. There are some options available for OTEL instrumenting iOS or Android code. What about applications using Kotlin Multiplatform? What instrumentation options are available? Any additional considerations when instrumenting KMP?
 
----
+**Hansen:** Kotlin Multiplatform is interesting. For those unfamiliar, it's similar to, you know, React Native or things like that, where you write it once and it kind of generates native apps for the various platforms. I'm sure I'm getting something wrong in the technicality there, but the idea is that you have one codebase for multiple platforms. There isn't an SDK that I'm aware of that works in such a way that is built natively into Kotlin Multiplatform that will emit OTEL telemetry. Whenever we have iOS or Android, we use a Java SDK at the core, and iOS uses the Swift SDK. 
 
-**Closing Thoughts**
+For Kotlin Multiplatform, either there has to be a native SDK for Kotlin Multiplatform that will transpile into the native platforms, not only iOS and Android, but web and a whole bunch of different platforms, or there has to be a way of getting a bridge built to the other SDKs. We are evaluating, at Embrace, how best to approach this. We think the native way is the best way, but we don't know. We're working through some of these problems, not specifically Multiplatform, but with React Native, which is I think why it's more well-known and more well-adopted. 
 
-We want to get more people involved in the working groups and SIGs for mobile observability. The ecosystem is still emerging, and we need diversity in our approaches. If you're using OpenTelemetry or interested in mobile, please join us in shaping its future.
+There's definitely opportunity in Kotlin Multiplatform, but first, we got to have an SDK before we got to have a way of getting OTEL telemetry working on that platform, like recording first before anything else can happen. If you're working on it, you know, you should start talking to people and think about that because that would be really interesting as well.
 
-Thank you for joining us today, and we hope to see you in the next edition of OpenTelemetry in Practice!
+**Eliah:** Thank you. I think the next question is about one of your challenges. It sounds like one of the core challenges for mobile observability is the variability of runtime environments. Software and hardware— is this entirely an open problem or are there suggestions on how to start tackling this? 
+
+**Hansen:** I think to do it natively in OTEL, entities will have to, for those who may not be familiar with that particular working group, entities is a way of capturing external mutable transition of states that are independent from but related to apps. I think for us, we could see it capturing a lot of this variable state without having to directly—well actually the implementation is not yet, I don't know, maybe it could work. 
+
+We have done certain things to work around this that may not be accepted or enatic. We're using spans to log durations of interesting things happening, and then on the backend kind of merging the stuff all together. That's not great, but it also allows us to capture the stuff independently and not have telemetry recording be blocked and also not have to encode every change of network condition onto every piece of telemetry sent and have race conditions that will, especially on mobile apps, make the edges blurry. 
+
+So we have something working, but we're not sure if it's the best quite yet, and we're really looking for entities to be able to do that or help us. Does that answer your question? I think there were two parts; I might have only answered one part, I'm assuming so.
+
+**Eliah:** I think we've got a few questions, so I'm going to move to the next one. I know that you're part of the client-side instrumentation SIG, so this was quite an interesting one. How closely or not is mobile instrumentation to browser instrumentation as far as tracking user journeys? For example, if the client-side instrumentation work gears towards one or the other, or are the data models for both browser and mobile considered the same or similar enough?
+
+**Hansen:** I think there are differences, but certainly there are a lot more similarities between web apps and mobile apps than I would say between mobile apps and backend distributed traces. I think the differences are more nuanced, and I think there's enough similarity that anything that we should consider for web we should consider for mobile and vice versa. There may be cases where it is immediately, you know, unfit, but honestly, you can run a mobile application on a mobile browser, on a mobile device. 
+
+All the environmental changes are effectively similar that they have to deal with, so I think in that respect, they are very, very similar. So yeah, we work very closely with the web folks.
+
+**Eliah:** Moving on, what different types of mobile apps require different kinds of data models? For example, an online game like Magic the Gathering versus a social media app like Instagram or a messaging app.
+
+**Hansen:** The question is, do they require different kinds of data models, those different types of apps? Certainly different semantic conventions, I would say. There are certain characteristics about the runtime that are more interesting to high frame rate apps like games, for instance. If you're using Salesforce Online, scroll jank is bad, but it doesn't deter from the experience that much, and also it's not as sensitive to mobile device capabilities. 
+
+But if you're running a game and your frame rate drops by half in critical instances, you want to know about it. Having more detailed data for that kind of stuff will be applicable to certain domains and not others. But I think that becomes more of a challenge of tooling and instrumentation rather than the spec. I think the spec as it is, you know, with logs and spans, well, events actually specifically, and spans—hopefully a way of classifying spans in the future—give us enough of the building blocks to model these different use cases. 
+
+The same challenges that we have in terms of transmission and things like that, as long as those are dealt with, I think a good portion of that stuff is going to be taken care of. Now there may be additional things that I'm not aware of that will certainly need to have different types of consideration. But I think before we run, let's just crawl, and I think getting unity and others, those different apps that we may not typically think about, console apps for instance. You have McDonald's, and you have that thing that opens for 24 hours—that's a different use case than a mobile app that you background all the time after seconds. 
+
+I think with the work that we're doing now, hopefully, we'll move things forward enough so that we can start looking at some of these more challenging issues like frame rates on Unity and things like that.
+
+**Eliah:** I think this next one relates back to some of the earlier questions, but you mentioned that duration is not an indicator of performance. Are there golden signals for mobile, irrespective of device type and OS version, or do we always need to take these factors into consideration?
+
+**Hansen:** I think the golden signal is whether the user is happy or not. On mobile, there are indicators of whether the user is happy in terms of whether they actually come back and use the app again. Things like whether the user comes back, a usage rate, because just because one operation is slow, the effects could be multiplied if you have many slow operations. You basically get fed up with the app.
+
+At the very end, the very highest level, whether the app is being used is a good indicator. But going lower level, because that level is almost too late sometimes, whether an operation succeeded—users tend to give up on operations if things take too long to load. They background the app or hop to another page or whatever it is, so looking at the abandoned rate of operations is useful if you're tracking whether a particular operation is taking too long. 
+
+Looking at duration in those cases, even if duration is important, the abandon rate is actually super important as well because you can have a case where your P50 or P95 goes down because more people give up. So your success rate reduces, and your performance increases. You're like, "What's that?" Well, it's because people are giving up. The population is different underneath; you're losing people already, so all the people remaining are the fast people. 
+
+In fact, this is actually a key problem in mobile performance: people look at the current state and say, "Oh yeah, P99, that looks great." Well, you haven't considered people for whom your app is way too slow and you can't even use it, or they use it, they install it, it's too slow, they uninstall it. This kind of self-fulfilling prophecy of, "Oh, I don't have to invest in apps because people experience high-quality fast," well, it's because you've lost all the people, and the inability to track those you've lost is a huge miss in mobile observability. 
+
+I think OTEL has facilities to track it. We can end a span with an unsuccessful ending, so data can be collected to take care of this use case. I think that to me is the most important thing to track: it's not just duration; it's whether or not it actually succeeded.
+
+**Eliah:** Can I add just one other thing there? Just from my product hat here, I think the golden signals that are asked in that question really depend on the type of app that you have. Hansen talked about startup and abandon rates and slow frame rates—all of those can have different impacts on your users depending on the intent of your app, whether it's, like we talked about this earlier, whether it's a gaming app or a financial services app or whatever that may be. 
+
+If I were a PM or working on a mobile app, I would go back to what are the primary key workflows that we need our users to do to make this a successful transaction, and I use that term very broadly for them. Then you go instrument those based on whatever that is. For a gaming app, your golden signal may be frame rate because you know if your frame rate is as high as possible and your users are having a really frictionless experience, you see gameplay time increase. You see all these other second-order effects really turn into positive impacts on those second-order effects. Whereas for a retail app, it's really about checkout—how fast is that checkout flow for me? Are the operations that are part of that checkout flow performant? Are they reliable, etc.? 
+
+It really depends on what your app is trying to do, and also the audience is important too. Are they using your app because they have to, or are they using your app because they choose to? If you're a game and you're slow, I can just play another game. If your workplace uses Microsoft—oh, no, I shouldn't say—uses certain apps that you have no choice but to use, you know, it's slow, but you don't have a choice, so the golden signal there may be a little bit less than if folks have more options to go. 
+
+**Hansen:** Next question? 
+
+**Eliah:** Do you know of some use cases of OTEL working on video streaming apps like Netflix?
+
+**Hansen:** Not that I'm aware of, and if they exist, I think the instrumentation would be fairly bespoke because—no, not that I'm aware of, but it would be a very interesting use case.
+
+**Eliah:** I think we've got two more. Resource utilization like CPU or memory is normally represented as a gauge in a time series format on a backend system. Do time series make sense in mobile apps at all?
+
+**Hansen:** Certain time series, I would say utilization less so because the app is not the only utilizer of resources. You could be running very expectedly, and something higher priority, the OS decides to schedule. Somebody starts a video in the corner of their tablet; they have multi-screen enabled, and suddenly the fast cores are now going to the mobile tablet video. Well, your app is running, and suddenly things are slow, so suddenly you are getting issues that you didn't get before. 
+
+It's good to track the utilization of the CPU, but there are probably other things you would want to know about that the utilization is supposed to tell you. On mobile, there are just so many different things that could affect utilization that you almost need to capture so much other contextual information for that to be useful. If you're going to do that, you may as well go direct and say, "Hey, are we seeing lag? Are we seeing failures? Are we seeing unexpected occurrences in the app in certain instances?" 
+
+Knowing that your app is not being prioritized is important, but how big of a heap, for instance, you know, those changes that on you so much. It'll GC you out of, in the most inappropriate places, simply because it wants more resources for other apps. It'll kill your app in the background because another app is running and needs it, and it's no fault of yours that your thing got killed faster. 
+
+Resource utilization—there may be use cases where it's useful, but I think for me, it's harder to use the data and make sense of it.
+
+**Eliah:** This is the last question we've got. Do you have some idea of when OTEL mobile instrumentation might be ready for use in production? Is it months? Is it years?
+
+**Hansen:** It's ready now; it depends on what you want to do. There are SDKs out there, directly the Swift SDK and the various JavaScript SDKs. If you want to kind of roll your own, it works. The Android Open project is something you can drag and drop into your app, and it'll kind of do some monitoring for you. The Embrace SDKs, you can actually use it without using Embrace. You can just drop it in, configure your exporters to go to your own collectors, use our implementation of the tracing API to have instrumentation libraries, like data sessions, and have it all sent to your own servers without Embrace being involved. 
+
+There are, I'm sure, other implementations out there as well, but it depends on what you want and what you need. There are things off the shelf you can use for free, and you can also roll your own with the SDKs. All the challenges I was talking about really is to build a platform that is encompassing of all the corner cases that we want to support for all our customers. 
+
+If you have a specific app with a specific use case, with a specific thing you want to measure, you may not need any of this other stuff. If you're not sharing that code, if you're just using it on your own, well, who cares about semantic conventions if no one else is going to look at that data? You're quite locked into your own instrumentation, which is not a good thing, but if it works for you, it works for you. So I would go ahead and fork some of these repos and just try it out. They should work; they do work. There are apps that are in production with all of these SDKs.
+
+**Eliah:** That's all we had, so thank you very much, Hansen and Eliah. Is there any closing thoughts, anything you would like to add to finish off?
+
+**Eliah:** I would just go back to kind of where we started this. I think as Hansen's been talking about through this at all is that we really, really, really want to get more people involved who care about mobile in the working groups, in the SIGs. We are opinionated and we come to it with our own experiences and the work that we've done, but we're by no means the final arbiter of what is right and wrong in mobile. 
+
+The only way we can work through those is by having a variety of use cases. I think that Netflix question is a good example of one that we don't deal with a lot, and so we may not be close to all the intricacies that come with running a video service at that scale or other services at that scale. If you care about mobile, even if you're not working directly on it, or if you have teams that work directly on it, we would love for you guys to get involved in the SIGs and provide your perspective and input.
+
+[00:44:00] **Hansen:** The ecosystem is just emerging, I think, for mobile. There isn't enough diversity there; there aren't enough folks leveraging the SDKs and building instrumentation for mobile use cases and mobile libraries that are popular. The closing thought is that if you're using OTEL or if your backend is using OTEL and you're not, you could actually get a lot of mileage just by talking the same language and using the same signals. 
+
+I used to not think there was a ton of overlap in terms of, "Well, just mobile folks can just have that data, and then backend folks, all you have to do is encode all your conditionals and conditions and your requests in the back." There’s all that data, right? Well, it's not so easy to ingest all that in a performant way at every request. I've come around to understanding the utility of having two separate sets of data that can be connected. 
+
+If you're a backend person and your company has mobile apps that you know use unnamed observability companies that may be free or may be very not free, but that don't really talk to your backend signals, well, have a look at OTEL and see what you can get in terms of things that are frankly even better, especially if it's provided by folks who only do mobile. There are a lot of things that are not captured if you just use folks that—well, I forget it, I'm not going to say it. 
+
+Yes, join us. I guess that's the thing: join us on the CNCF LA. I'll post the link in the channel for OTEL client-side telemetry. We also have the OTEL SIG and user channel if you're an end user and you want to discuss more things about how you're approaching OpenTelemetry. 
+
+Thank you again, both Hansen and Eliah, and we'll hopefully see you in the next edition of Otel and Practice. Thank you. Bye-bye.
 
 ## Raw YouTube Transcript
 

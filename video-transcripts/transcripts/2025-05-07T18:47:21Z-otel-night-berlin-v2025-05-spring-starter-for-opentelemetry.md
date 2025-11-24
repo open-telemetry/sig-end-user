@@ -10,81 +10,239 @@ URL: https://www.youtube.com/watch?v=R0n6Ny588dk
 
 ## Summary
 
-In this YouTube video, the speaker, who has extensive experience in Java development and is currently an approver for OpenTelemetry Java instrumentation at Grafana, discusses the Spring Boot starter for OpenTelemetry. The presentation covers the current state of OpenTelemetry as of 2025, including its significant advancements in Java and comparisons with existing solutions like Micrometer. The speaker emphasizes the importance of a seamless integration experience for Spring Boot users and discusses the challenges of matching the large number of libraries supported by OpenTelemetry. The video features a demo showcasing how to implement the Spring Boot starter, including configuring the application and observing telemetry data. The speaker addresses various technical questions from the audience regarding context propagation, service naming, and instrumentation challenges, concluding the session with a Q&A segment.
+In this video, the speaker discusses the Spring Starter for OpenTelemetry, sharing insights from their extensive experience with Java and Spring Boot. They explain the motivations behind creating a Spring Boot starter for OpenTelemetry, highlighting its ease of use compared to existing solutions like Micrometer. The speaker also provides an overview of the current state of OpenTelemetry in Java, including the stability of various libraries and the importance of semantic conventions. A significant portion of the presentation is dedicated to a live demo, showcasing how the starter integrates seamlessly with Spring Boot applications for observability. Throughout the session, they engage with the audience, addressing questions and clarifying technical concepts related to the implementation and functionality of OpenTelemetry in Java applications.
 
 ## Chapters
 
-00:00:00 Introductions and background of the speaker  
-00:03:00 Overview of OpenTelemetry and its state in 2025  
-00:05:30 Motivation for building a Spring Boot starter for OpenTelemetry  
-00:10:15 Comparison of Spring Boot starter with Micrometer  
-00:15:00 Explanation of how OpenTelemetry works, focusing on Java  
-00:20:00 Discussion of semantic conventions and their importance  
-00:25:00 Introduction to the demo environment setup  
-00:30:00 Starting the demo application and observability stack  
-00:35:00 Demonstrating data collection and trace visibility in Grafana  
-00:40:00 Q&A session on context propagation and service naming issues  
-00:45:00 Conclusion and final thoughts on OpenTelemetry and Spring Boot integration
+00:00:00 Introduction and background
+00:01:30 Overview of OpenTelemetry
+00:03:10 State of OpenTelemetry in Java
+00:04:37 Spring Boot starter motivation
+00:06:05 Spring Boot experience expectations
+00:08:00 Protocol and semantic conventions
+00:10:41 Comparison with Micrometer
+00:12:00 Spring Boot starter vs existing technologies
+00:15:40 Demo introduction
+00:15:40 Starting the demo application
+00:28:00 Demo results and Q&A
 
-# Spring Boot Starter for OpenTelemetry
+**Speaker 1:** All right. Yeah, I want to talk about the spring starter for open telemetry. And what I'll try to do is it just works, but except when it doesn't. So, that's for the demo gods and because it's spring boot.
 
-## Introduction
-Hello everyone! Today, I want to share my insights about the Spring starter for OpenTelemetry. The aim is to demonstrate how it works, and I'm going to cover a few key points. Just a heads up, the demo gods might play a role since it’s all about Spring Boot!
+**Speaker 1:** About myself. Actually, what I didn't put on here but 20 years ago I started my first job as a Java developer in this building. Just realized today I... Yeah. It was not the first location but the first company and we moved here from a different location in Berlin to this one and I worked here for about three years. 
 
-## About Me
-A bit about myself: I began my career as a Java developer right here in this building 20 years ago. While it wasn’t the original location, it was the first company I worked for. After about three years, I moved on. Ten years later, I started using Spring Boot. I still don’t know everything about it! Fast forward five years, I began working with OpenTelemetry and realized I would never know everything there is to know about it. Two years ago, I joined Grafana, where I'm currently an approver for OpenTelemetry Java instrumentation, which involves sending all the data you’ll see later. I also work on other areas in OpenTelemetry, such as the operator, collector, and specifications.
+**Speaker 1:** Yeah, 10 years later I started using Spring Boot. I still don't know everything about it. Five years ago I started working with hotel and I definitely know that I will never know everything about it. Yeah, and then I started working for Grafana two years ago and now I'm an approver for hotel Java instrumentation. So the stuff that sends all the data but you will see that later. And I work a bit on some other areas in hotel, operator, collector, and specification.
 
-## Overview
-I want to provide you with a quick overview of the state of OpenTelemetry in 2025, highlight what’s new, and discuss the motivation behind building a Spring Boot starter in the first place. We’ll also compare it briefly to other solutions in Spring Boot, namely Micrometer. Most of our time will be spent on the demo to show you how easy it is to use, and I’ll leave some time for Q&A, but feel free to ask questions anytime.
+[00:01:30] **Speaker 1:** I want to give you like a quick overview of the state of hotel in 2025, what is new. Then the motivation why building a spring boot startup in the first place. I also want to compare it quickly to other solutions in spring boot which is called micrometer. I want to spend most of the time in the demo to actually see and show you that it is easy and leave time for Q&A, but you can also ask in between. I hope that we have enough time and if we don't then it's better if you ask before rather than I'm trying to finish the demo and it doesn't work.
 
-### State of OpenTelemetry
-As you can see, there are many languages supported in OpenTelemetry, and most have moved to stable releases for traces, logs, and metrics. This is significant progress from last year. We’re focusing on Java, PHP, .NET, and C++. Profiling is a new topic that’s actively being developed and might be included in the future.
+**Speaker 1:** As you can see, we have quite a lot of languages in hotel and a lot of them have actually moved to stable for traces, logs, metrics. I think that's quite a bit of change for last year but I haven't recorded it. So Java, which we are talking about, PHP, .NET, and C++. For some reason, profiling is not listed here but this is like a new topic that is an active development. I guess in a year or two this will also be listed here. 
 
-#### Java and OpenTelemetry
-Java is one of the more mature areas in OpenTelemetry, likely due to the prevalence of e-commerce and business applications written in Java. There’s a high demand for libraries, with over 100 supported libraries available. Java's compatibility with older versions is possible because of a technology called bytecode manipulation, allowing software to modify methods and classes at runtime.
+[00:03:10] **Speaker 1:** And I will not show that. Okay, state of hotel in Java. Java is one of the more mature areas in hotel probably because a lot of e-commerce and business applications are written in Java and there's a lot of demand and there are many libraries. I just counted yesterday over 100 supported libraries are supported and it's also compatible with ancient versions of Java. So, Java 8 was released long more than 10 years ago but I did not count. 
 
-### Why Build a Spring Boot Starter?
-The question arises: Why did we spend significant time last year creating a Spring Boot starter? One reason is that we can’t match the large number of libraries because we cannot alter existing code, and it would take a lot of time to reach the same level. As a Spring Boot user, I want a native Spring Boot experience. It should be straightforward to add a library as a dependency without any special steps, similar to adding a database.
+**Speaker 1:** And that is actually only possible because Java has a technology called byte code manipulation which means that you can write software that at runtime looks at all the methods and classes that are loaded and can basically change anything. It can change a return value and can look at parameters similar to how Python can do monkey patching. 
 
-When using a Java agent, it feels somewhat magical and detached from the integrated experience Spring Boot provides. You should be able to add properties in the `application.yaml` file easily, with names and values automatically suggested. However, if you add a Java agent, it can complicate things because adding multiple Java agents usually doesn’t work well together.
+[00:04:37] **Speaker 1:** Now that I explained how the spring starter works, the question is, isn't that good enough? So the question is why did we or I and another engineer from Microsoft spend a huge amount of time last year working on making a spring boot startup? 
 
-### Comparing with Micrometer
-Micrometer is an older solution that has been used in many applications. It added a module for exporting metrics using OTLP, but since Spring is older than OpenTelemetry, there are limitations on changing the names of their metrics. Micrometer tracing, previously known as Sleuth, is also relatively new and lacks semantic conventions, leading to inconsistencies when combining libraries.
+**Speaker 1:** Let's start with what we cannot do or cannot yet do. We cannot match the huge number of libraries, more than 100, simply because we cannot change old code. Also, because there's a lot of work being done and it would take a lot of time to have the same level. 
 
-### Key Concepts in OpenTelemetry
-1. **Protocol**: The protocol is crucial as it ensures data is sent out correctly.
-2. **Semantic Conventions**: These define names and attributes for metrics, traces, and logs.
-3. **API**: Stable APIs are essential for library authors to maintain compatibility with OpenTelemetry.
-4. **SDK**: The SDK implements the API and provides configuration options.
-5. **Tooling**: The collector and operator are significant for managing telemetry data.
+**Speaker 1:** Then the question is what we can do, and as a spring boot user, I like to have a native spring boot experience. That means I can just select a library, add it as a dependency, and it does not anything special and that is exactly what I wanted to have for observability. It should not be anything special. It should be built into the development like you have a database. Well, it's probably kind of hard because without a database, you could not do anything. You could not serve customer requests. But it should be as close as possible to just adding a database. 
 
-## Moving to the Demo
-Before diving into the demo, are there any questions? 
+[00:06:05] **Speaker 1:** And that is not possible. If you are adding a Java agent, then it's kind of this magic. As a spring boot user, you also are used to have a very integrated experience. That means you can take your configuration file called application YAML and you can just add properties and the values and names of those properties are automatically suggested. 
 
-### Q&A
-One question raised was about sending Zipkin spans to the collector and whether they would show up as one trace. The response is that while both could be sent, they might not maintain the correct parent-child relationship due to the different internal mechanisms used by Spring.
+**Speaker 1:** You can basically just select service name because we talked about service name a bit before and hopefully I can show you that this is very easy. And then you can also use another Java agent to do your other magic work because adding two Java agents doesn’t usually work well. And you can also use a GraalVM native image which compiles your entire application into an executable which starts faster but it takes ages to compile. I'm too impatient to show that to you. But there is a full working example that where you can try that out. 
 
-## Starting the Demo
-Now, let’s move on to the demo. I’m using IntelliJ and am currently in a project called `docker-hotel-lgtm`, which has examples of instrumentation and a complete observability stack based on Grafana technology.
+**Speaker 1:** As I said, I spent a lot of time last year and it also became stable last year. Now I can talk about it. Before going into exactly how the spring starter works, this is a recap of how it works. This is not Java specific and not spring specific but in the next slide you will see how it relates to what I'm trying to show you. 
 
-I have two build materials set up: one for OpenTelemetry and the other for Spring Boot dependencies. First, let’s start the application, and while it’s starting, I’ll also start the observability stack via Docker.
+[00:08:00] **Speaker 1:** The order is my personal preference and from most important to least important for me. The most important one is the protocol because once you have that protocol and you have your application, you know data is sent out. I can switch it somewhere else I don't have to recompile the application even if I don't have any developers. 
 
-### Application Setup
-The observability stack consists of an application sending data to the OpenTelemetry collector, which then sends data to databases. The goal here is to create an easy trial experience, not optimized for scalability but for startup time.
+**Speaker 1:** As we heard in the previous post, even if the data is kind of crappy you can use AI to make it better but you need to have the data. The next one is semantic conventions because semantic conventions define the names and attributes. So for a metric, it would be the metric name of the duration of a request for example, and also the units. 
 
-### Application Traffic
-Now that the application is up, I’ll generate some traffic using a simple curl script. Let’s see if we can retrieve some data. 
+**Speaker 1:** So metrics and traces for logs. There is a bit of semantic conventions but not much. The third one is an API. The API is more for library authors who want to be compatible with hotel and they don't want to spend time in five years rebuilding their observability stack and for that, the APIs are stable. 
 
-### Analyzing Data
-We have a few dice rolls recorded, and we can check the traces generated. The application is not calling any other services or databases, which is why not much data is available. 
+**Speaker 1:** In hotel, they are stable as you have seen in like here what it means stable is means the API among others but one is that the API is stable. One special thing is that for tracing the API is also important so that different libraries in the same process know which parent span belongs to which child span. 
 
-### Adding Improvements
-During the demo, I asked if anyone had suggestions for improvements. The common response was to add more spans or metrics. Adding the service name correctly is also essential, and I’ll demonstrate how to do that.
+**Speaker 1:** Because there are two cases. The easy case is you have a thread in Java and the thread is for a request and the thing that is first in the thread is done first. This is a parent and the second one is the child. But sometimes you have something that is asynchronous because it has an executor framework or something like that and then you need to have some kind of object that says this is a parent, that is a child, and that is what the API is for. 
 
-## Conclusion
-To wrap up, we discussed the significance of the Spring Boot starter for OpenTelemetry, compared it to Micrometer, and walked through a demo showcasing its functionality. If you have any further questions about the implementation or concepts, feel free to ask!
+**Speaker 1:** Lastly, the SDK. The SDK is an implementation of the API and it also gives you configuration options for example with environment variables. The last one is not the least important one. It's just more like at the side, the tooling, the collector, and operator is actually very important and very helpful. 
 
-Thank you for your time!
+[00:10:41] **Speaker 1:** Now I want to compare the spring boot starter that I've worked on to the existing technologies in spring boot to explain a little bit why we built something where kind of something similar is already there. In micrometer, you have two things. Metrics is quite old and used in many applications as far as I know. More recently, a module has been added where you can export the metrics using OTLP, that's why OTLP the first one. 
+
+**Speaker 1:** But as spring boot is older than hotel, they cannot just change the names of their metrics. I mean they could, but for spring, they hold it very dear to not change anything for old applications because there are many old spring applications. Changes are only in major versions and it takes a very long time and that's why they did not add yet support for semantic conventions. 
+
+**Speaker 1:** In our spring starter, when I say our, it's not Grafana where I work for but it’s hotel as because this is something that I worked on just as a hotel contributor, you can import those metrics because there are many applications and libraries that emit those metrics and in some cases can be useful to use those micrometer tracing. 
+
+**Speaker 1:** The second part that is a bit newer was called something different, Sleuth. I think before it was called micrometer tracing but it's still newer than metrics. In tracing, you can use the hotel SDK to emit traces but it also does not have the semantic conventions even though it's newer. 
+
+**Speaker 1:** Here you have the problem that it is not using the same API. That's why you have this problem here on the right side. That has actually created some questions and probably even more exploding heads that I'm not aware of for users who are trying to combine some library with some other library. They usually don't know that one is using micrometer tracing and the other one is using hotel and sometimes works, sometimes doesn't, and sometimes works kind of. 
+
+**Speaker 1:** That's basically it. I would love to have a common approach where there would be only either the micrometer APIs or the hotel APIs but this has not happened because the spring folks have a rich tradition and they know when they create an API they also want to keep it. On the other hand, the hotel folks don’t want to say we just take another API because it is for many languages and picking a different API makes it very difficult for hotel users who actually love to have the same experience across all languages. 
+
+**Speaker 1:** This has been a question that has been asked many times but so far nobody has really given an answer to this. This is basically what I said just more in a data flow kind of way. In hotel, we have instrumentation libraries and in spring, there are instrumentation libraries in spring. They are called native because they are not maintained by hotel and they are not repositories, but they are done by the authors of different libraries themselves. 
+
+**Speaker 1:** In spring, this is sometimes also not, they are also sometimes doing it for other libraries. Semantic conventions, I mentioned semantic conventions and later we will hopefully see why this is important. 
+
+[00:15:40] **Speaker 1:** That's actually it. Now I want to start the demo, but if you have any questions, it probably makes sense to ask them now before we go to the demo. 
+
+**Speaker 2:** All right. So, I used to work with Zipkin, right?
+
+**Speaker 2:** Yes. And we have a Zipkin receiver in the collector. So, would it work to just send Zipkin to the collector and like does it work if I send Zipkin spans to the collector and hotel from my Python application to the collector and do they show up as one trace at the back end? I mean, I guess the question is on the context propagation side of things, right? 
+
+**Speaker 2:** You could send both and they would both show up, but they would not have the correct parent-child relationship because internally Spring does not use Zipkin. It uses something else which is like a common denominator of both Zipkin and hotel because those are the two targets for micrometer tracing. 
+
+**Speaker 2:** If they would say okay, we just want to optimize for hotel then it would work. Doesn't that work with the B3 headers? 
+
+**Speaker 1:** The headers are basically where it’s between processes.
+
+**Speaker 2:** Yeah. I mean, I have a Python application that is sending data to my collector and hopefully that one generated a span that originates the Java spans.
+
+**Speaker 1:** Yeah, then it would work. So if here between parent and child you have a process boundary, then it would work. If it's in the same process, then it only works in some cases. So if it's in the same Java thread, then I think it will work. But if it's in a different Java thread because you have an executor then it will not work because the context is actually stored somewhere else as a matter object and Java does not have a context object like Go for example.
+
+**Speaker 2:** Is that a property of Java or spring like kind of is that could this also happen just with general Java applications because I'm just thinking like we sometimes see that there are incorrect parent-child relationships in spam and we're mostly using Java but I'm not sure if they only use spring.
+
+**Speaker 1:** There are many scenarios where this can happen. Even if you just use the Java agent which is like one distribution, it usually is because there is some other context propagation mechanism that is not supported or a library version upgrade changes the version how context is propagated. That sometimes happens. But if it's between threads but in the same process, then it couldn't be, you said like if it's in the same process, it could still lead to this mismatch.
+
+**Speaker 1:** Yes. But if it's in the same process, it cannot be like different methods of propagation at least I understand propagation is in between processes.
+
+**Speaker 1:** Oh, there propagation is the term that is both used between processes and also within the same process. Between processes you have headers like B3 headers for example that are added to HTTP and in the same process it is some language-specific passing. 
+
+**Speaker 1:** In Java, by default, the context is stored in a thread local because you can store a thread local without modifying the application. You don't have to pass a parameter. But that only works so long as the entire call is in one thread and new applications typically don't do that because this is not very efficient. 
+
+**Speaker 1:** In general, you have to expect that there are linkage breaking between parents and child with Java. 
+
+**Speaker 2:** No, no, no, no. The Java agent authors have support for those technologies or libraries where it's not easy. So Java executor for example is a framework where you can pass a runnable to a different pool and then it will be picked up by a number of different threads. They do round robins so that you don't need a thread for every request. 
+
+**Speaker 2:** This byte code manipulation thing of the Java agent can see when you put an object into this pool and then it will attach some metadata into that object. So maybe there's a map where you can put things into and then you can add a context ID, a trace ID, and a parent span ID, and then you can form the correct parent-child relationship. 
+
+**Speaker 1:** But if that support is missing in the Java agent and here in the spring boot starter it would be the same. If the spring boot starter does not support this then it would not work. What is even more difficult is if there are two different instrumentation technologies that don't use the same API then they also don't know what they should expect as a context object and that is what is making it so difficult to combine micrometer and hotel instrumentation. 
+
+**Speaker 1:** This might be the beard talking, but I miss EJB context. 
+
+**Speaker 2:** EJB. I mean, EJB context was perfect for this kind of situation. Does EJB even still exist?
+
+**Speaker 1:** I don't. Maybe it would have been the solution. How old I am. The last time I used EJB was when I was in university. And as I just said, it's more than 20 years ago. 
+
+**Speaker 1:** Let me try with the demo before we run out of time. How much time do we have left?
+
+**Speaker 2:** You have... 
+
+**Speaker 1:** Okay, good. Good. As long as you still have some energy left. So, yeah, this is my IntelliJ. Weirdly, it does not look black even though I have the black theme. Oh, no. Okay. Let's see if it does. Yep. 
+
+**Speaker 1:** Oh, wow. Should have checked that table. You just turned it off and turned it on. Yeah, it's all you have to know as an S.
+
+**Speaker 1:** Here I'm not just in any project but I'm in the project called docker hotel lgtm which both has examples of instrumenting and also has a complete observability stack based on Grafana technology of course because I'm working there. And I have created a new example just so that it to get us started a bit faster.
+
+**Speaker 1:** Here I have two bill of materials. In we are using Maven, this is a dependency management section and first we have open telemetry, this is the latest version and then we have spring boot dependencies. We have the open telemetry first so that if there are libraries with the same name the one from the first one win and since spring boot has a micrometer which has the hotel exporter but in an older version I want to make sure that we have the newer version and that they are compatible. 
+
+**Speaker 1:** Then I just have a starter web which is from spring and then I have the open telemetry spring boot starter and then there's really nothing here. I don't know why we have repackage we have a spring boot app but there's nothing interesting here and then we have a small controller that is just doing rolls and it has a player name. 
+
+**Speaker 1:** So, first I want to start this. And while this is starting, I'm going to switch here where I have two windows. The first one is actually starting the image where we have the complete observability stack. So this one is actually just a docker script but just to show you what this is really doing. 
+
+**Speaker 1:** MIS is just a task runner. So like make file but a bit nicer. And this one is just a shell script. The shell script is just Docker. The only thing why I don't call Docker is that I probably forget some of the ports. By the way, I did not mention the ports. 
+
+**Speaker 1:** I did not mention the whole slide because it said demo. This is explaining the project much better than I could do. On the left side is the application that we're doing that is sending all the data to the hotel collector which is sending the data to all the databases. The profiling one is not used here and then we can view it with Grafana and that's why we have two ports on the left and one port on the right side. 
+
+**Speaker 1:** This is just passing the ports and some people like to actually persist the data but the goal of the project is more to have an easy try-out experience. So it's not optimized for scalability but it's optimized for startup time. Did it work out? Yeah, it started in 3 seconds. That was the latest iteration that I did because it was taking half a minute before. 
+
+**Speaker 1:** And then it also has an environment file which it's not really needed but I set it here to an external endpoint. So I can also view the data in Grafana cloud but this is actually not needed. 
+
+[00:28:00] **Speaker 1:** Okay, so back to our application as it started now. Yeah, I think in the beginning it sent some errors because the observability stack was not started and now I will also put some traffic. This is just a curl script that pulls the endpoint. Sometimes it gives an error because the error is simulated. See if we actually get some data now. 
+
+**Speaker 1:** Yeah, we have dice rolls. Now let's actually see if we can see some data. Yeah, we have some data. We have some traces. Are the traces? Oh, cannot scroll down. Okay, so nothing really interesting. Why is it not interesting? Well, because the service is not calling any other service and it is not calling a database just sometimes has errors. 
+
+**Speaker 1:** Do we see errors? Let's see if that at least works. So this is by the way the Grafana 12 that was just released today. I hope I'm using that correctly. Error. Yeah, it's error. So, here we have an error. Let me see if that works. Copy that. 
+
+**Speaker 1:** Does it work? Oh, I did not copy the entire thing here. There's copy. Yep, that's where the error is thrown. Okay, so that part works. 
+
+**Speaker 1:** Oh, what I forgot to ask. How many of you have used Spring Boot? Okay, at least a couple of people. How many have instrumented Open Telemetry in any language? Even more. Good. How many have used the two together? Oh, one. Okay, good. 
+
+**Speaker 1:** But the next question is not about instrumenting. Do you see anything that could be improved that we should make better or that you want to have added? More spans? More spans. 
+
+**Speaker 2:** Yeah. An unknown service. Exactly. Unknown service. And I promise that this should be easy to do. So let's see if we can do that. Where's my directory here? Very slow today. 
+
+**Speaker 1:** Let me see. Service service hotel service name. No, but it's a different one. Okay. Let me see if I have hotel. Oh, is it not recognizing? Maybe I not I have to reload. Maven did work today. But the goat... 
+
+**Speaker 2:** Yeah, I did not sacrifice a goat. 
+
+**Speaker 1:** So, I guess I have a question. Why do you look it up? The new way of doing things is using hotel config files that can be reused across services. That is right. 
+
+**Speaker 1:** Would that come to the spring boot starter as well? Like can I could I just add my hotel.yaml file there instead of configuring to the partition? 
+
+**Speaker 1:** Before answering, just a bit on the background. Right now in hotel, the standard way of doing things is environment variables and that is quite limited. So the most fancy thing is if I write hotel resource at... Oh, it's even completing that but this is not spring, this is the AI. So I can say service name, service version, something like that. 
+
+**Speaker 1:** Anything more complicated is specific to any language and is currently blocked. What Drusi is saying is that the plan currently is to have the same experience, well not in spring syntax but in YAML or in any structured data, to have the same experience. 
+
+**Speaker 1:** For spring, we would probably have a major version where we would tell you to switch from the syntax that I'm trying to show here to the one that is compatible. I have spent some time trying to figure out if this can be integrated with spring because here you can also use a spring expression. 
+
+**Speaker 1:** In spring, you have a language where you can reference environment variables. I don't know if I can get it right if that is actually correct or if this is just an AI hallucination but there's a spring feature where you can reference other parts in spring and you can even reference Java beans and so on. 
+
+**Speaker 1:** What I want for the future is that you can also have this because you're used to it as a spring user but with the common YAML format. I'm not sure if that is possible because this is already stretching the limits of spring and it will be even more so with the new format. So I hope it's possible but no promises. 
+
+**Speaker 1:** Since I'm trying to do that here, I'll just look in my stash to see if I'm just too stupid to find the right format. Resource attributes, hotel service name. Yeah, the autocomplete just didn't work for some reason. It's not suggesting it. 
+
+**Speaker 1:** So show up as a plugin on the right-hand side. There's no plugin, right? Actually, this is a feature of the dependency here. So it basically just has a JSON file where it lists all the properties. 
+
+**Speaker 1:** Yeah, it should work. Let's see if it's working. If we restart the service. Tracing is always the tracing locks is the fastest to show because it's processed right away. Metrics is ingested every minute. You can change it to more often but for this demo it's not necessary. 
+
+**Speaker 1:** See the last one. No, it still has unknown service. Well, what I had before is that when I started in spring, it's not working. But when I use Maven to start it then it is working. So that can be tricky. 
+
+**Speaker 1:** Let me see if that is the case. Oh, it's still unknown service. They look for unknown service. I think that's too old by now. That's still a node price that you were looking at. 
+
+**Speaker 2:** Can you filter by service? 
+
+**Speaker 1:** It should. It actually says service name here. So, it's automatically grouping by service name. That is not the problem. I'm probably doing something wrong because I put it in a wrong directory or something. 
+
+**Speaker 1:** Something that is a typical spring problem that happens every time when I try to do something new. Okay. I'm just going to delete that file and apply the stash as I had it before. 
+
+**Speaker 1:** Oh yeah, it's in a different directory. That's why my error. Yeah. Good that I had the stash. Let me see if I can also type service. Yep, now it works. Okay, at least that worked. 
+
+**Speaker 1:** But now I made the mistake that I started it here and also in the other one. It's probably saying that the port is already used. Started it here and no seems that it is loaded. 
+
+**Speaker 1:** Okay, see if it works better here. Here it is. Okay, here's rolled dice. Okay, then let's just look at that instead. 
+
+**Speaker 1:** Here now I can show you where the service name is. Here is service name and then you also have a bunch of stuff that we did not specify and that is because there are resource detectors so that you don't have to do all the work yourself. 
+
+**Speaker 1:** For example, you have the process ID that was taken from the operating system and you can also see that it was created by the spring boot starter. So if you're reporting a bug, then it's easier for the authors to find where this is coming from. 
+
+**Speaker 1:** You have also this correlation that you have between some metric types. You can actually see the trace that was the trace that started before the log message was emitted. 
+
+**Speaker 1:** Now that we have that, let's look at some metrics. There is this duration metric that I talked about before and that has the same name across all languages. That is really useful for having an APM system where you can see what the request rates for all of your services are. 
+
+**Speaker 1:** Here this is the open-source version of Grafana. So you don't have the APM tool here. I would have some things that we could do. We could add a manual metric or an additional metric where you can count the number of requests or players. 
+
+**Speaker 1:** We can add more spans, I heard that before. Or we can add a database or we do none of it and we just leave more time for questions. So if you don't have anything that you want then I think we can just cut it here. But if you want something then I will add it. 
+
+**Speaker 2:** I just have a quick question. Why is the service name not on the resource attribute?
+
+**Speaker 1:** Oh yeah, that's a good one. Let's I think we saw it here. That is the visualization of Loki. Loki shows everything flat and it's actually you're not the first one to notice that it would be more useful if that was structured in traces. 
+
+**Speaker 1:** It is structured. Yeah. It's a good point. I think it would be better. And now it's also showing up here for some reason didn't before. So here it is in resource attributes and it's down there. It's there. Service name, right? 
+
+**Speaker 1:** Yeah, here it is. But in the configuration, you have to add it to a different place or is that kind of free? You can... Oh, service name is special. In open telemetry, service name is special. It internally translates into resource attribute but it is like the single one that is required by every telemetry data that I could also add it here by the way. 
+
+**Speaker 1:** I also find that confusing that there are two ways and I just had a customer call today where we found out that in some cases it does matter where you put it even though it should not. 
+
+**Speaker 1:** Yeah, I mean I think it's an implementation detail. Basically, service name is the only required attribute for open telemetry and it is top level. An implementation detail is it is a resource attribute and so that's why sometimes it works sometimes it doesn't. 
+
+**Speaker 1:** I mean in theory it should only work if it is at top level right because if you add it as resource attribute then it's probably not recognized at the top level. 
+
+**Speaker 1:** Confusion in OTLP, it is only resource attributes so it's only within the resource attributes that is a special one called service name and that's it, so that's why some if you specify an environment variable with the service name it might work but then depending on the library if you don't have the proper service name environment variable it overrides the one that you would override with the resource attributes with a default one so that's why sometimes it doesn't work sometimes it does. 
+
+**Speaker 1:** So if as a user you should only use it at the top level not at the resource attributes. 
+
+**Speaker 2:** So when I see in Grafana on the resource attributes that's just the dual thing basically. 
+
+**Speaker 1:** Yeah. Is that really true? It is how it is internally stored. In Grafana, I know if you go like to the traceQL query instead of using traceQL itself it has this kind of building query by the same then there's like the top two or so.
+
+**Speaker 1:** Yeah, exactly. So if you go to search now, not the trace. So service name, span name, and status are like the special ones. 
+
+**Speaker 1:** For open telemetry, only the service name is special. The folks at Tempo, they said you know span name is interesting to have it as part of the trace syntax and so it's there. But from the hotel perspective, the only thing that we require is a service name. Even then we don't throw an error. 
+
+**Speaker 1:** The specification says that if a service name is not specified the unknown service should be used which is what we've seen before, right? So the spring boot application was working without the service name and it was showing unknown service but it is against this spec it should resources then in the application YAML you should not put it under resources. 
+
+**Speaker 1:** No, it's perfectly fine. It works. But as a user you should not, as a user you should probably not do that. 
+
+**Speaker 2:** Got it. Okay. I mean, it might work for spring but it might not work for only lambdas. I mean I think per spec it should work but the case I had today was where it actually did not work. They were putting it in the environment variable but it's basically the same. Most people I think most authors expected in service name that's why it's safer to put it in there. 
+
+**Speaker 1:** This is also just my last obligatory slide. That's why I put it on here. Cool. All right. Thanks for your time.
 
 ## Raw YouTube Transcript
 

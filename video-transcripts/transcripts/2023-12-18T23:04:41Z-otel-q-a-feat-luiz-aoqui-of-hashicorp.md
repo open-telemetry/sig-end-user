@@ -10,83 +10,270 @@ URL: https://www.youtube.com/watch?v=HRIx9gJtECU
 
 ## Summary
 
-In this Otel Q&A session, Luiz Aoqui, a developer on HashiCorp Nomad, discusses his experiences with integrating OpenTelemetry (OTel) into the Nomad workload orchestrator. He shares insights from his four-year journey with Nomad and how he discovered the need for distributed tracing to improve observability and debugging. The conversation covers three main approaches he took: the first being an ambitious attempt to instrument all aspects of Nomad, which proved to be overly complex and generated excessive overhead; the second aimed at enhancing user applications running on Nomad by automatically injecting relevant metadata into traces; and the final approach, which focuses on creating meaningful spans for specific actions within Nomad without altering function signatures. The discussion highlights the challenges of working with legacy code and the importance of finding a balance in telemetry data to avoid overwhelming users. The session concludes with acknowledgment of the evolving conversation around OTel implementations and the shared learning experience.
+In this Otel Q&A session, Luiz Aoqui, a developer from HashiCorp working on the Nomad project, discusses his experiences with implementing OpenTelemetry (OTel) for distributed tracing in Nomad. The conversation covers his journey through three approaches to integrating OTel, beginning with an attempt to create extensive tracing across the entire Nomad workflow, which proved to be complex and generated significant overhead. Luiz highlights the importance of understanding Nomad's architecture, explaining its server-client structure and job scheduling process. He describes a shift in strategy to focus on more meaningful traces by using semantic conventions, allowing for easier filtering and visibility in the traces generated. The discussion emphasizes the challenges faced when working with older codebases and the need for thoughtful instrumentation. The session concludes with Luiz sharing insights and advice for those looking to implement OTel in their projects. The video will be available on the official OTel YouTube channel for further viewing.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:02:30 Nomad overview
+00:11:46 OpenTelemetry integration attempts
+00:19:00 First approach: Distributed tracing
+00:25:50 Challenges with first approach
+00:32:37 Second approach: User-focused instrumentation
+00:39:00 UX challenges in second approach
+00:44:00 Guidance from OpenTelemetry community
+00:45:19 Final approach: Instrumenting Nomad
+00:54:00 Closing remarks and Q&A
 
-```
-00:00:00 Introductions and welcome to Luiz Aoqui
-00:02:15 Luiz shares his background and experience with Nomad
-00:03:45 Overview of Nomad architecture and components
-00:05:30 Explanation of distributed tracing and its relevance to Nomad
-00:10:20 Discussion on initial attempts at implementing OpenTelemetry in Nomad
-00:12:50 Challenges faced with the first approach to distributed tracing
-00:17:00 Introduction of the second approach focusing on user experience
-00:23:30 Discussion on environment variables and their limitations
-00:30:15 Transition to a more focused approach on key processes within Nomad
-00:35:45 Explanation of how semantic conventions aid in tracing
-00:40:00 Conclusion and reflection on the journey of implementing OpenTelemetry
-``` 
+**Luiz:** Welcome everyone to Otel Q&A, and I am super excited to have Luiz Aoqui join me. He is a developer on HashiCorp Nomad. Welcome.
 
-Feel free to let me know if you need any additional information!
+[00:19:00] **Luiz Aoqui:** Thank you. Really excited to be here. always fun to talk OpenTelemetry. I mean, I haven't used it yet, but I dabble a lot, and I'll share more details of my adventures with OpenTelemetry. I guess I'll introduce myself first. As I mentioned, I'm Luiz, I'm an engineer, working at HashiCorp specifically on the Nomad project. I've been working on Nomad for like four plus years now. At some point, I don't remember exactly when, I bumped into OpenTelemetry, Distributed Tracing more specifically. It felt super interesting to me as a developer in Nomad because Nomad can be so opaque to debug, but also to implement and deploy and use in multiple different ways. I was like, Oh, it might be cool to do some distributed tracing there to get a sense of what's going on internally.
 
-# Otel Q&A with Luiz Aoqui
+And then through the course of several sort of like after our release, we usually do like an internal hack week just to cool down a little bit after that stressful moment. By the way, we just released Nomad 1.7, so if you want to try that, it's out now, which means we'll probably have a hack week soon and maybe I'll do some extra OpenTelemetry work, but that's a tangent. Yeah, I've tried three different work streams with OpenTelemetry Nomad, and I'll go into more details there, but each of them had sort of their own challenges and also nice things, but also bad things. I'll explain those.
 
-Welcome everyone to the Otel Q&A! I am super excited to have Luiz Aoqui join me. He is a developer on HashiCorp Nomad. 
+[00:02:30] But yeah, that's it about me. I don't know if we should do a quick Nomad intro, because a lot of the things, since the idea of distributed tracing is to expose the internals of Nomad, I think I kind of need to explain a little bit about those.
 
-**Luiz:** Thank you! Really excited to be here. It's always fun to talk OpenTelemetry. I mean, I haven't used it yet, but I dabble a lot, and I'll share more details of my adventures with OpenTelemetry.
+**Speaker:** Okay, yeah, that's helpful. Why don't you go ahead?
 
-### Introduction
+**Luiz Aoqui:** Cool. Let's start there. I was going to do like PowerPoint, but Adrienne told me that's more like a Q&A and I also tend to overdo it in PowerPoint. So if you have something you can share, if not, that's cool. We are super chill. I'll just draw live, just because feel free to mute, ask questions. I don't have any specific agenda here, but I'll start there and then maybe that will help. The general idea is like, feel free to ask questions as I go. 
 
-So, as I mentioned, I'm Luiz, an engineer working at HashiCorp specifically on the Nomad project. I've been working on Nomad for over four years now. At some point, I bumped into OpenTelemetry, specifically Distributed Tracing, and it felt super interesting to me as a developer in Nomad because Nomad can be quite opaque to debug. Implementing, deploying, and using Nomad can be done in multiple different ways, so I thought it might be cool to do some distributed tracing to get a sense of what's going on internally.
+Cool. So first of all, what's Nomad? Nomad is a workload orchestrator. Think of it like Kubernetes, you give it a magic file, that file becomes containers or other things, right? But that's what the orchestration aspect of this is. Now internally, it's important to understand some details of Nomad to understand what I'm going to show a bit later, is that the general architecture is like, you have two components, very simple: like server and client. These two components have different roles.
 
-After our releases, we usually have an internal hack week just to cool down a bit after that stressful moment. By the way, we just released Nomad 1.7, so if you want to try that, it's out now! 
+So the server, and you usually have three or five servers, they maintain the core room, basically. They sort of are always talking to each other to maintain state. All of your jobs that you run, everything that you're running on your cluster is stored in the server. They have an internal database, you know, in the Kubernetes world, think of this as like etcd, but Nomad has its internal database. They all have the idea that they start a state of the cluster, and then they talk to each other to make sure that state is replicated and sort of available in case of a failure or something like that.
 
-### Nomad Overview
+So maybe I'll write bullet points. They store state, that's their main goal. The second goal is that they also do the scheduling. The scheduling process happens inside the server. All servers have several, what we call workers, which is quite confusing because I know that in the Kubernetes world, workers is something completely different. But the workers here are the scheduler workers. What the workers do, and each instance normally has like one per core on your machine by default, I believe. 
 
-Now, I guess I should introduce Nomad briefly because understanding the internals is crucial for the distributed tracing aspect. 
+What do workers do? They're like goroutines, you know, to go into a little bit. There's like a thread running on your servers and their goal is to, given a request to run something, so that would be like a job in a middle angle, given a job, where should I place things? So imagine that, I should move this. Imagine that I have a bunch of clients here. 
 
-**Nomad** is a workload orchestrator, similar to Kubernetes. You provide it with a configuration file, and that file becomes containers or other work. Internally, Nomad has a simple architecture with two main components: servers and clients. 
+Oh, I didn't talk about what clients do, but clients, they run stuff. Clients are the machines that are actually running your containers. They're actually running your workloads. That's the point of the clients. Normally, you can have like from like one to like 10,000 clients. So like to infinity and beyond here. Some people really try to push Nomad to its limit, but you can have a lot of clients on your cluster.
 
-- **Servers:** You typically have three to five servers that maintain the core state of the cluster. They communicate with each other to ensure that the state is replicated and available in case of a failure. The servers also handle scheduling, determining where to place jobs based on the requests they receive.
+The job of the scheduling is given a job or like, you know, like a YAML spec in the Kubernetes world, given this file, how do I translate this into specific work for each client? So let's say I want to run like three containers here on my file. The job of the scheduler is to say, okay, like I'm going to put two containers here on this client and then one container on this client. So that's what scheduling means. It's like, given the spec, how do I make it real? 
 
-- **Clients:** These are the machines that actually run your workloads. You can have anywhere from one to thousands of clients in your Nomad cluster.
+And this thing that sort of makes things real, this is called a plan. So the goal of the workers here, the scheduling workers, is to create a plan given, you know, what we call the job spec. So that's what the scheduling process does. Cool. So those are the two main things that servers do. They store state, they do scheduling, and then the clients run stuff. When the client receives the work, like after the plan is generated, it gets validated, gets stored in state. The server says, okay, like this client here is going to run two containers. This client is going to run one container.
 
-The scheduling process involves creating a "plan" based on the job specification, which is then executed by the clients. 
+So periodically, this client is going to go and ask the server like, Hey, give me, which allocations I should run. To translate a little bit, an allocation is like a pod in Kubernetes world. It's like the unit of workload that's going to run. Periodically, the client goes like, Hey, what should I be running? Since we just scheduled two containers, the server is going to reply, Hey, these are the two containers you should run. 
 
-### OpenTelemetry and Nomad
+Then the client is going to start a few sort of internal components here. First, it's going to create an alloc runner, and the alloc runner is responsible for setting up the allocation environment. It's going to create folders in your file system, like folders inside that machine to store files. It's going to register the service, you know, either internally or register service in console. It's going to do things that prepare the way of the land, right? Call CNI plugins, all of that happens in the alloc runner.
 
-I have tried three different work streams with OpenTelemetry in Nomad, each with its own challenges and benefits. My first attempt was to add distributed tracing throughout the entire process. The idea was to create a single trace for the entire process, so I wanted to map the process of running something end-to-end — from submitting a job to getting visibility into what happens inside the cluster.
+And then just like a pod can have multiple containers, an allocation can have multiple tasks. The alloc runner for each task inside your allocation is going to create a thing called a task runner. This task runner, kind of like the alloc runner, is going to set up the environment for the tasks, like for the specific container. It's going to create like environment variables, it's going to download files, download the Docker image, whatever. Everything for that specific workload to run. 
 
-This approach, which I refer to as "boil the ocean," aimed to trace everything at once. However, it created a lot of overhead and many tiny spans that weren't particularly useful. 
+And then the task runner is going to start, like, so like the end result of the task runner is like a container or a binary or whatever you want to run here. It creates like a process on the machine. From that file that is specified, what you want to run, you give that to the server. 
 
-### Challenges Faced
+The server is going to send it to the... Oh, I forgot to mention the process of how it gets to the worker. Okay. So normally you have three or five servers and one of them becomes the leader. The leader is the only one that can actually write state to disk and write the final, like the global, the single source of truth is stored in the leader. The leader also has a thing called the queue. That's called the eval queue. The eval queue is like work to be done. An eval is like something that has to happen in my cluster. 
 
-1. **Overhead:** Each span created was very short-lived, leading to excessive data transfer and storage.
+That something that's described in an eval goes into the queue, and then the other servers sort of dequeue from there to find work to do. The workers are dequeuing work, processing that eval, generating a plan. That plan becomes state, so like gets written into the global cluster state, and then the clients are sort of like asking for updates on that state to figure out what needs to run, what needs to be stopped, and all of that. I think that's it. That was a lot. Let me know if there are any questions on this part. Hopefully, it all made sense. 
 
-2. **Code Changes:** The implementation required significant changes to the Nomad codebase, including wrapping HTTP handlers, which made the process quite messy.
+[00:11:46] So let's get to the actual stuff that I did. This is the Nomad repo. There are a few, so if you search for OTEL branches, you're going to find my previous adventures putting OpenTelemetry enrollment. I'm going to go sort of, and you can see, it's been a while since I've been trying to do this properly. I think I'll go probably chronologically here. 
 
-3. **Function Boundaries:** Distributed tracing is usually designed for microservices, but Nomad operates more like a monolith, complicating the process of tracing across function calls.
+So the first attempt, when I learned about this, it was like, cool, let's put distributed traces everywhere. My goal here was for, given all of this process that happens, it should all like, in my mind, it was like, Oh, this is like one process. Everything here should be a single trace or like have a trace, a unique trace ID that, Oh, this could be a span. When it goes to the queue, that's another span. When it gets dequeued, that's like creating a bunch of spans in a huge tree. 
 
-4. **Consistency:** There was a lack of consistency in the metadata added to the spans, making it challenging to derive useful insights.
+I wanted to map this process of running something end to end, you know, as a user, submit a job, how do I get visibility of what's happening inside the cluster? That's the approach that I like to call boil the ocean because I wanted to do everything at once. First, let's run this branch, I guess, to see what that looks like. Let's hope that the two-year code works. I was testing this yesterday, but I think it will work. I'm also going to start the OpenTelemetry demo repo that I found. I need some sort of setup to run, like I need Jaeger, and I need a collector, and I need an application to test. 
 
-### New Approaches
+So I'm just going to start the whole demo here just to have something to generate stuff, to generate data. Okay. Deprecations or warnings are not errors. So let's assume that this worked. If you look at the branch, let's start looking at the diff. One of the things that I did, or I had to do was to have a sim config, additional configuration for Nomad. We have it on, like when you start a Nomad agent, you need to pass a configuration file. 
 
-After some guidance from the OpenTelemetry community, I shifted my perspective. Instead of trying to instrument everything at once, I focused on core aspects of Nomad that would provide the most value. 
+So I added like configuration for OpenTelemetry endpoint and just to explain to like, where to send all the OpenTelemetry data. I think I have it here. So like telemetry, OpenTelemetry endpoint, localhost for 3.7. That's where I'm running the OpenTelemetry collector from the demo and insecure because I'm not using TLS. I think that's all I need. 
 
-- **Increased Granularity:** The new approach involved creating smaller, more meaningful spans rather than a single mega trace. This allowed for easier filtering of traces based on standardized attributes.
+If you haven't used Nomad before, Nomad Agent Dev is a quick way to start. It gives you like a fully functioning cluster locally. It starts a client, starts a server in the same process. It's a handy way to try stuff. It's also ephemeral. Once it goes down, it destroys everything created, which is nice for cleanups, but sometimes bad because sometimes you do want to keep stuff. But it's a good way to quickstart with Nomad. 
 
-- **Semantic Conventions:** I implemented semantic conventions for Nomad, allowing for better organization and filtering of trace data, making it easier for operators to find relevant information.
+I'm going to read this config with the additional OpenTelemetry configuration. So let's start that. I'm actually also going to run a job. If you haven't seen it before, a Nomad job looks like this. It uses the HCL language, sort of like Terraform does. There's not a whole lot to go over this right now. I think the main thing is, it's kind of hard to map to Kubernetes concepts. 
 
-### Conclusion
+I'll try my best, but like a group is kind of like a deployment. It tells you what to run, like how to run things. In the group, you can have a count, how many instances you want to run, stuff like that. The task is kind of like, or like the groups are kind of like the pod spec. It tells you what to run and how to configure stuff. The task is like a container definition inside a pod. You tell, Nomad doesn't only run containers, so you can do other stuff, and that's plugins, so those are test drivers. 
 
-This journey has been enlightening, and I hope everyone gained insights from my attempts to integrate OpenTelemetry with Nomad. 
+The config is how you configure the test driver. This is just like saying, hey, I want to run a Redis container. It's going to expose this port and give it these resources to run. So fairly simple job here. When I run that, it creates evals. The evaluation because something changed in my cluster. That's how I communicate changes in Nomad, is through these evals. 
 
-Thank you for joining this Q&A session! We will be posting a recording of this on the OTEL YouTube channel (OTEL - Official). Keep an eye out for the announcement on social media and Slack once it's up. 
+That eval created an allocation. The allocation is like the pod. It's the thing that is actually running. And it works. It's all running. If I go to the Nomad UI... Oh, this is a node version of the previous. There's a special flag that I had to run, but let's hope it's actually running. 
 
-**Luiz:** Thank you for having me! I appreciate everyone's participation. Bye!
+Now, if I go to Jaeger, which is where... here, I will see a lot of services. Those are for all the demo stuff. But I also see two Nomad services here. So on this boil the ocean approach, as I mentioned, I wanted to get the whole flow end to end, from user to like the clients. I started from the CLI. So you can see here, there's a CLI, Nomad CLI, what's it called? Service with a job run action here. 
+
+It's kind of small to see. I started putting traces everywhere I found stuff. It's one huge trace with a bunch of different spans for each individual action that is happening. You can see here, the Nomad CLI ran the job run command. I think there's like, I don't remember how much extra data I put. I was experimenting with all of this stuff. 
+
+So I could put log entries here. There's some Nomad CLI job run command ran that CLI made an HTTP request. So they put request to this endpoint here. That put request became a job request in the FSM. The FSM, for those who haven't heard this term before, stands for finite state machine. That's how data replication works. 
+
+Imagine you're trying to help your friend find your house. Normally, you tell them to go to Google, but imagine you live in the middle of nowhere, there's no GPS. You need to give them instructions on how to find your house. You know, drive two miles east, turn right, drive another, how many miles, turn left. You give specific instructions. Now imagine you're not just telling one friend, but multiple friends. You kind of give that instructions to all of them at the same time, so they can reach the same destination. 
+
+That's what the FSM does. It gives an instruction. It mutates the state in a consistent way across all servers. Hopefully, that made sense. I think I got confused myself, but let me know if that wasn't very clear. 
+
+So it creates a job request in... So now we moved away from the CLI. That's the HTTP request that was made. Now the Nomad agent is who received that HTTP request and turned it into an internal request for a register. That's a job register command. I caused the job register method internally. You can see here, I'm putting logs and stuff, trying to figure out how the OpenTelemetry library works. 
+
+After we registered that, we have these things called emission controllers, which there are two kinds of them. They're like the mutators and the validators. The mutators are the things that we need to mutate when the job comes in. For example, if you're using vault in your job, we mutate your job to put a constraint to say, "Hey, only run this on clients that have vault." Otherwise, your job will never succeed. 
+
+That's what the mutator does. It mutates the input. There are multiple of them. One of them kind of, I hate this word, canonicalizes the input. It sets default values that have not been specified by the user just to make sure that the job is consistent. Console connect, expose checks, and all of these are separate things that are mutating the job. 
+
+Then we have validators. They validate the job. Then it goes through… So like, Raft is the mechanism we use to propagate changes across our servers to make sure that those changes are consistent in all the servers. So it goes to Raft. There are a bunch of methods that are called there. Then it goes to NQ. 
+
+That's the queue that I mentioned about the eval broker queue. It's like, here is some piece of work that needs to be done. Now it's in the queue. You can see here that it got dequeued later on by another server. And what's this? Oh yeah, I don't know what this is. 
+
+Yeah, and then like got dequeued by somebody to process and create that plan that I mentioned. So like... And then, yeah, there's a lot happening here, which is kind of neat, but also kind of overrun. After the CLI made the put request, it keeps monitoring the eval to get status updates. It makes a bunch of HTTP GET requests just to get the update for that eval. 
+
+It starts monitoring the deployment and again, starts making a bunch of HTTP requests. The gist of it is like that whole end-to-end approach. I wanted to create a span that showed me what happens after I run Nomad job run because from the user perspective, all you see is just this output, which is quite confusing if you're not used to Nomad and quite tricky to debug. If you're an ops person and your job runs in a pipeline somewhere, you really don't have a lot of visibility of what happened or what's happening. 
+
+That was my first attempt. It was like, how do I map this process end to end and give as much detail as possible to the cluster operators? Now why this was not a good approach is one, because it creates a bunch of overheads. If you look at all the different spans, they're like zero microseconds long or like 50 micro. That's not very useful, I guess. It's nice to note about them, but in a practical sense, it creates a lot of overhead. Each of these has a lot of data in them that needs to go through the network, needs to be stored somewhere. 
+
+It creates a lot of overhead for every time a job runs, for example. What happens when you drill down into one of the spans? What kind of information does it send you? 
+
+[00:25:50] I don't think I put a whole lot. It also depends on the span. Sometimes I put data. Sometimes I think I did and where was it to Q? Maybe I put some Nomad specific data. Oh, here, like the eval ID, for example. I was trying to experiment with adding metadata to different spans, but it wasn't very consistent. Some of them have additional data. Others, there's just the standard OpenTelemetry SDK data.
+
+So the first problem was the overhead. The second problem is that if you look at the diff, there's a lot of code changes. For example, let's look at... It's like the HTTP handlers. OpenTelemetry does have a nice wrapper. It does have a nice wrapper for like Go HTTP, but we don't quite use that. I had to manually wrap each endpoint in a function that had to use reflect to figure out which RPC should be called. It's kind of messy, but not too bad. 
+
+The actual bad part is that normally distributed tracing, I think it was like created with the idea of microservices. There are like a metric boundary more or less between your services. Since Nomad is more like a monolith, like each component of Nomad is a big monolith, a lot of this, there's like boundaries defined by function calls. I had to modify all the functions that I needed to monitor, like that I wanted to instrument. 
+
+Had to be modified to take a context, for example, as a new argument to keep propagating that span forward. Using function as the boundary for your telemetry is not great because it just becomes like, it's not as transparent as monitoring the metric layer, right? There's no way to do it automatically, and it just requires so much code change. 
+
+Yeah, after I got... and I didn't even go through the whole process. If you notice, I stopped at the dequeues. After dequeues, the span sort of ends because I just couldn't keep going with all these code changes. Most of this PR is just adding context as the first argument to a bunch of functions, which is not bad by itself. A lot of functions having a context there can be helpful, especially for async work. But a lot of times it was not, it was just to keep the span going. 
+
+So there's a lot of code changes for not a whole lot of... not necessarily not a lot of benefit, but like a lot of code changes that were not the best changes to make. 
+
+**Matthew:** Oh, hi, Matthew. Yes, I can send. I'll send you the list of all the branches, I guess.
+
+**Luiz Aoqui:** Oh yeah, thanks. Also, hi, long time no see.
+
+**Matthew:** Hey, nice to see you.
+
+**Luiz Aoqui:** Yeah, so these are all the branches. Once you click on the branch, you can see GitHub will give you a link for like one commit ahead, and that's the deal. 
+
+So this approach, I think, is very nice to have this view. Jaeger has some nice things about giving you like how the systems interact. I could make this bit like each service could be like a different server and I'll have three servers, multiple clients, and sort of have that view. But I don't think that was the right approach. It feels like it felt like going against the principles of distributed tracing, which is like you instrument your microservice and then the network becomes sort of your boundary of when to move the span. 
+
+I was doing it at the functional level, which felt very, very fine grain to what I was doing. Just before you move on, you mentioned that you'd done some, you had to like create some wrappers yourself around some of the OTEL calls. 
+
+**Matthew:** Yeah, all of these. 
+
+**Luiz Aoqui:** How come you had to do that? Sorry, I missed your reasoning on that.
+
+**Matthew:** Oh yeah, so normally the SDK does it automatically for you if you're using a framework like net/http, or I think it does support the Gorilla Mux. Normally you just import the library and it sort of does the magic for you. But the way we do it in Nomad, it's like another thing to keep in mind is that Nomad is a very old project. A lot of people don't know how old Nomad is, but it's as old as Kubernetes. I think Nomad is like one month younger than Kubernetes. The V1 came out sort of around the same time. 
+
+So that was like 2017, I want to say. Nomad is a very old code base. A lot of the things we do predate a lot of the new sort of code niceties. The whole HTTP layer, the whole RPC layer is something that we had to create because there wasn't a standard or a more common way to do it. 
+
+**Matthew:** Gotcha. Gotcha. That's very interesting. I think especially hits on an interesting point for folks who are looking to incorporate OpenTelemetry into their existing projects. Oftentimes, we are dealing with very old code bases, and that's not something that we discuss enough. So I'm definitely happy that you're bringing this to light because I'm sure you're not the first and only person to encounter this. 
+
+**Luiz Aoqui:** So yeah, no worries. But like it did, as you can see, the rep is fairly simple and does use the SDK quite a lot, but it's just like the way the project was was not the way that usually Go HTTP handlers are written nowadays. That was kind of why I had to do this. 
+
+[00:32:37] Cool. So that was the first approach. I kind of gave up because it was getting too complex and the hack was done, so I didn't have a lot more time to work on. The second approach, I sort of shifted the perspective a little bit. Instead of trying to instrument Nomad itself, the idea was to make it easier for people using OpenTelemetry and using them to instrument their own applications. 
+
+What I did in this branch was, here's the test runner. Going back to the task runner, it's the thing that runs your container, that actually runs your workload. You set up the environment to run your workload. What I did here was I started adding... If you use OpenTelemetry before, you know this environment variable will tell resource attributes, which I think is part of the spec. 
+
+It defines values that are automatically added to your span context or whatever you create with OpenTelemetry. This environment variable sort of creates standardized values to or like metadata to add to those resources that you create. What I did here... 
+
+Oops, this one is like, I say, okay, if you're running, if you're already using OpenTelemetry and you're running Nomad, could be helpful to automatically get Nomad data for your OpenTelemetry stuff. So having the alloc ID, the alloc name, the evals, like all of this data sort of gets injected automatically for you by Nomad itself. 
+
+So this whole code, what it's doing is just setting the environment variable with a bunch of Nomad data. Let's take a look at how that works in practice. I think what you're doing here is more or less like what Kubernetes does as well now when it emits telemetry data that you have that kind of free with purchase, environment variables.
+
+**Luiz Aoqui:** Right. Which is quite nice. Yeah. Like I think that information about the fault information about it, like that sort of just happens automatically for you when you're using the OpenTelemetry SDK and all the collector. So let's run this. I don't think I need the config because I'm not sending any data. 
+
+So I'm just starting Nomad and, oh yeah, I remember now. So I need... I'm running Nomad. Nomad is going to automatically instrument my application. So I need to run something in Nomad that uses OpenTelemetry. I found this project. I just Google like OpenTelemetry simple job or Docker image, so I found this OTEL gen project here that just generates traces for you. 
+
+It runs that image and points to my Docker container here that is running the collector and generating multiple traces. It has a batch job, so it's just going to run once. When I run that... 
+
+**Matthew:** Sorry, what does that batch job do?
+
+**Luiz Aoqui:** It generates OpenTelemetry data. Let me find that repo here. Yeah, so it's this project, which is very helpful. It just generates... You can tell that you generate metrics, traces, and then it just creates sample data for you in the OpenTelemetry format.
+
+**Matthew:** And is it supposed to be like, as you said, it's just sample data. You're not actually using it for anything other than for test purposes?
+
+**Luiz Aoqui:** Kind of thing. Yeah, it's just like, imagine this is like your application that is generating traces.
+
+**Matthew:** Got it. Got it. Cool. 
+
+**Luiz Aoqui:** And that application is running. So let's look at the data it generated. So it created three traces here, three traces, say that fast two times. 
+
+Now, if you look at each trace, it now has all the Nomad stuff. It has like, this was like a GitHub project, so I did not change any source code at all. But just by the fact that it's running Nomad, Nomad itself is instrumenting, like populating a lot of metadata for each trace, for each span. It gets the alloc ID, the alloc name, the eval, the group names. 
+
+If you are a user of Nomad and if you're already using OpenTelemetry, all the things that you're running in Nomad with OpenTelemetry will automatically have all of this additional context and data for you. I didn't know how much data to go, so I put like a lot, but this is to help the data. It's not instrumenting Nomad itself, but to help people that already instrumented their applications. 
+
+When they're running them, they get additional benefit. That was a different approach to OpenTelemetry. The problem with this approach was one, I didn't know what to put. So I just put a lot of things. A lot of this is probably not useful, like job type, who cares? Because, you know, metadata is good, but too meta, too much metadata. 
+
+[00:39:00] It's also tricky because you increase your metric packet size. You need to store this somewhere, so it kind of balloons your store. The challenge with this approach was just to how do we... It's more like a UX problem. 
+
+How do we allow people to control what information they want, or like, do we allow them to control or do we hard code some values? Figuring that balance was a little tricky. Looking at the code, I think this is just like, yeah, I just hard coded a bunch of stuff because again, this is a Hack Week project. 
+
+One of the problems with the other approach is that if you are already using OpenTelemetry, you're probably doing something like this. You may already be adding your own values here, right? You may already have your own environment variable for your attributes out there. If I run this job or this version of the job, now that code that I initially wrote would kind of overwrite that. 
+
+In this other approach, I instead of overriding, I merged the changes just to be nice for the user. What I think... Oh yeah, I actually found a bug in the SDK here, which wasn't decoding the values as it was describing the spec. 
+
+But then we actually figured out that there are like two versions of the spec in place. Then I had to go and change this back. There's like a whole side quest that I had to go through to fix this. I think it hasn't been... Let me do a check. 
+
+So I changed this back, which means every SDK had to be updated. And there's the link. I think there's still some open ones. People are looking for, you know, contributing job and telemetry. This might be a good first issue. They're like sort of simple. It's just changing all the... 
+
+That variable gets decoded, and there are still some languages that have not been fixed. So yeah, for contributions, this could be a good first issue to look into. 
+
+Yeah, so that's the second approach. Good for users, not so much instrumenting Nomad itself, but could be useful. Just the UX paper cuts were the major drawbacks there. Nothing OpenTelemetry specific, just how do you do surface text? 
+
+Oh, one thing, another downside of this approach is that since it's using environment variables, those values are rather static. You cannot modify an environment variable to a container that is already running. If you want to put data that is not known ahead of time or some data that can change throughout the lifecycle of that container, this approach doesn't quite work because the environment variable is already created. So it's not great for dynamic values or things like that. 
+
+[00:44:00] That was the second approach. Each approach, like a year apart. After doing all of that, I think it's sort of when I met, right after this, or like I met Adrienne and the other folks at the OpenTelemetry community. I started to get some guidance of like, you know, Hey, I'm trying to do this, you know, going back to the original approach. It's not quite working because of all of these reasons.
+
+Speaking with Adrienne and I think Ted was also very helpful in giving feedback on this. It's like, don't try to boil the ocean. You don't need to instrument everything at once. You can start small. Find your core, I think the exec suggested, find your core business instrument that, and then you get a lot of value out of that already. 
+
+Translating that into the Nomad world to me, it felt like, Oh, okay, like I don't need to instrument everything end to end. We already have this eval thing that is like the unit of work. By instrumenting that flow of the eval, maybe I can get enough information out of this to be useful. 
+
+[00:45:19] So let's in practice how that works. Go to this branch now, and I don't think I need a config for this one. Let's run this version. What this version does is like, it's going back to the first implementation, like I want to instrument Nomad itself. This is adding traces and spans and all of that into the Nomad code itself to instrument Nomad for operators. 
+
+So going back to my traces here, nothing happened because I didn't run the job. Let's run a job to do some work. I don't need to wait. 
+
+**Matthew:** Yeah. 
+
+**Luiz Aoqui:** So now I have a service called Nomad. If you look at the traces now, instead of, you know, let's compare it to the previous implementation. Before, I had... I think I... Oh yeah, I think I might have deleted... but before I had like one huge trace of everything. Now instead of going and trying to keep the context around each function calls, what I did was more... 
+
+You can see here, there's a bunch of traces instead of a single one. What I did was... I didn't try to connect all those function calls, but it was more about instrumenting the specific aspects. Like here in the alloc runner, when the alloc runner starts, you create a new span. I didn't worry about keeping the same span going. It's like, okay, this is a new action that is happening. It's going to be a new span. 
+
+So I guess the approach was being more mindful of what you wanted your traces to be. Because you went from a mega trace to a bunch of smaller traces, where these smaller traces then have more meaningful information to you, is that?
+
+**Matthew:** Yeah, exactly. It's like changing the perspective a bit instead of keeping the gigantic trace, be more serious about like, okay, this function is important. This function is going to create a trace. 
+
+What this means is I don't need to change my function signatures. I don't need to keep passing context around. I can just, whenever something important happens, I just create a trace there. The downside, as you can see, is that there are a lot of traces here. 
+
+But a good thing, something that I learned later on is that, well, I knew this already, but I didn't know how to use it specifically, but traces have attributes. I think that was the key to this approach. There's this notion of semantic conventions in the OpenTelemetry SDK. For those who don't know, it's that of predefined attributes for your... just like Docker has, or I guess they're called containers, like your container engine has predefined keys that it's supposed to use. Kubernetes has its own, AWS has their own attributes or standardized attributes that they use. 
+
+So the key to this approach was like, okay, what does that look for Nomad? I think it was at the bottom. Yeah. So I created semantic conventions for like, Oh, what does a Nomad region key look like? Oh, it's Nomad.region. What does a Nomad space key? Nomad.space. 
+
+This allows each span, you know, these are all like different spans coming from all different parts of the code, but they have standardized attributes. What this allows me to do is like, I could come here and say, Oh, I actually want job ID to be example. I can use these values to filter all this mess that nobody's ever done. 
+
+It's not like a nice single huge trace. It's just a bunch of different disconnected traces. But by using the semantic conventions, I can help find and filter things better. These are all the traces for, you know, this job here. But let's say I go to the UI now. 
+
+This job created an allocation, for example. Let me get the allocation ID here. I said, I don't want the whole job. I just want this allocation. So now it's like all the traces for that allocation because even though they're different traces coming from different parts of the code, different parts of Nomad, they all share the same conventions. 
+
+That allows me as a cluster operator to go and filter out all the "noise" that gets generated to be more meaningful to me. You can see here the same things that we saw in the big trace, but now they're just breaking down. 
+
+So like the alloc runner, the state stores, like the database. I also started experimenting with like the log events as well. Instead of having... Let me find it. I think that might be more interesting data there. 
+
+This is when I registered a job. Where did I get the ID? Okay. Is this... Oops. Again, maybe this... I don't remember how I did it. Let's remove all traces and then I'll find manually. 
+
+I was looking for... Yeah. On... Sorry, the Zoom window is going to go. 
+
+**Matthew:** See it?
+
+**Luiz Aoqui:** Yeah. Oh, maybe I'll find it. Share later. But the idea is that I started to experiment with logs a lot more. 
+
+**Matthew:** Are you referring to just span events or actual OTEL logs? I'm just curious.
+
+**Luiz Aoqui:** Yeah. Yeah, events. Data. Let me run the job again. Let me take a look at this. Yeah. So like... So for example, this is the trace, the sort of like the scheduler part, the worker scheduler, all of that. 
+
+I started putting logs that like, as it was scheduling, it's like all the scheduling decisions are like part of the trace now. So you can see like why did this change happen? You can see here as part of events in your span. Instead of having the multiple tiny traces, those function calls sort of become more events instead of a new span. 
+
+**Matthew:** Yeah, that's a strange point. That's awesome. 
+
+[00:54:00] **Luiz Aoqui:** We are at time, just FYI, an hour blew by really fast.
+
+**Matthew:** Yeah, that was what I showed. That was the last attempt that I made. If you have questions, sorry, I missed chat. 
+
+**Luiz Aoqui:** You have to add attributes to each trace. 
+
+Oh yeah. So the code to add the attributes, you do have to call for each trace. But you can kind of make it like helper functions to do like... Let me find an example here. Yeah. 
+
+You can pass in like helper functions like, okay, given this allocation, this pod, give me all the attributes for that. You do have for each trace, but you can create helper functions too to ease the burden. 
+
+**Matthew:** That is so awesome. Thanks for sharing your OTEL journey with us, Luiz. This has been super, super helpful. I hope everyone on this call got something out of it. 
+
+I think it's so important to have these kinds of conversations because I think we're moving past the, you know, let's intro to OTEL. We're now getting into like more people doing really digging deep into their OTEL implementations, and hearing about the challenges that you've experienced and the different things that you've tried has been really awesome. 
+
+So thank you so much for sharing this with us. For those of you on the call, tell your friends who couldn't make it that we will be posting a recording of this on the OTEL YouTube channel. The YouTube channel is OTEL-official, so just keep an eye out. I'll post on socials and also on Slack once we have the recording up and running. 
+
+Thank you everyone for joining. Really appreciate it. 
+
+**Luiz Aoqui:** Thank you everyone for coming and thank you for having me. 
+
+**Matthew:** Bye. 
+
+**Luiz Aoqui:** Thank you.
 
 ## Raw YouTube Transcript
 

@@ -10,136 +10,172 @@ URL: https://www.youtube.com/watch?v=bsfMECwmsm0
 
 ## Summary
 
-In this YouTube video, various experts in the field of observability share their insights and experiences related to OpenTelemetry, a project aimed at improving observability in software systems. The participants include Iris Durish (Meo), SE Nman (Cisco), Kayla Riel (New Relic), Morgan Mlan (Swun), Henrik Reet (Dan Race), Vijay Samuel (eBay), Daniel Gomez Blanco (Skyscanner), and others, each discussing their roles and contributions to the observability landscape. They explore the significance of observability, its evolution from traditional monitoring, and how OpenTelemetry serves as a vital tool for gathering telemetry data across diverse systems. The discussion highlights the importance of community collaboration, the future of open standards, and the integration of various signals like metrics, logs, and traces to enhance system understanding and performance. The participants express their enthusiasm for the advancements in observability and the transformative impact of OpenTelemetry on engineering practices.
+In this YouTube video, titled "Observability and OpenTelemetry Insights," a group of professionals from various tech companies discuss their experiences and perspectives on observability and the role of OpenTelemetry in the industry. Key participants include Iris Durish from Meo, SE Nman from Cisco, Kayla Riel from New Relic, Morgan Mlan from OpenTelemetry, and others from companies like eBay, ServiceNow, and Honeycomb. They explore the evolution of observability, emphasizing its importance beyond traditional monitoring, and how OpenTelemetry serves as a standardized solution for collecting telemetry data across different systems. Key points include the significance of metrics, logs, traces, and profiling in understanding system behavior, the community aspect of OpenTelemetry, and its future potential in making observability accessible to all developers and organizations. The speakers express enthusiasm for the project’s growth and its impact on improving system insights and performance management.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream with the corresponding timestamps:
+00:00:00 Welcome and introductions
+00:03:00 Observability definitions
+00:06:30 Observability evolution
+00:09:40 OpenTelemetry significance
+00:12:27 Community and collaboration
+00:15:10 OpenTelemetry project involvement
+00:19:30 Challenges in observability
+00:22:41 Signals in observability
+00:24:00 Metrics, logs, and traces
+00:27:30 Favorite signals discussion
 
-00:00:00 Introductions of participants  
-00:02:15 What is observability?  
-00:05:30 The evolution of observability from APM  
-00:09:00 Observability as peace of mind  
-00:12:45 Observability versus monitoring  
-00:15:00 How observability impacts user experience  
-00:19:00 The role of OpenTelemetry in modern observability  
-00:23:30 Community and collaboration in OpenTelemetry  
-00:27:15 Personal journeys into OpenTelemetry  
-00:31:00 Discussion on favorite telemetry signals (traces, metrics, logs)  
+**Iris:** Well, I'm Iris Durish. I'm a senior observability engineer at Meo, and my professional life is all about observability. I build an observability platform that provides the tools for engineering teams at Meo to monitor, to observe, and get the best of their obligations.
 
-These moments encapsulate the main ideas and discussions shared during the livestream.
+**SE:** My name is SE Nman. I'm working at Cisco at the open source program office, and I'm a member of the open Telemetry governance committee. I'm one of the co-maintainers of the open Telemetry documentation.
 
-# Observability Engineers Panel Discussion Transcript
+**Kayla:** My name is Kayla Riel. I work for New Relic, and I'm contributing to the open Telemetry Ruby project.
 
-**Iris Durish**:  
-I'm Iris Durish, a senior observability engineer at Meo. My professional life revolves around observability. I build an observability platform that provides the tools for engineering teams at Meo to monitor, observe, and get the best out of their applications.
+**Morgan:** My name is Morgan Mlan. I'm a director of product management at Swun. I've been with open Telemetry since day one. I'm one of the co-founders of the project. I'm on the governance committee. Wow, what do I work on with open Telemetry? A bit of everything. I mean, early on, it was literally everything. Myself, Ted, and various others were doing many, many jobs. More recently, I've been involved in the release of traces and then metrics 1.0, logs 1.0 last year. Right now, I'm working on profiling, as well as open Telemetry's expansion into mainframe computers.
 
-**SE Nman**:  
-My name is SE Nman, and I work at Cisco in the open source program office. I'm a member of the OpenTelemetry governance committee and one of the co-maintainers of the OpenTelemetry documentation.
+**Henrik:** My name is Henrik Reet. I am a cloud-native advocate at Dan Race, and I'm passionate about observability, performance, and I'm trying to help the community by providing content on getting started on any solutions that help.
 
-**Kayla Riel**:  
-I'm Kayla Riel, and I work for New Relic. I contribute to the OpenTelemetry Ruby project.
+**Vijay:** My name is Vijay Samuel, and I help do architecture for the observability platform at eBay.
 
-**Morgan Mlan**:  
-I'm Morgan Mlan, a director of product management at SWUN. I've been with OpenTelemetry since day one and am one of the co-founders of the project. I'm on the governance committee. Early on, I worked on a bit of everything, but more recently, I've been involved in the release of traces, metrics 1.0, and logs 1.0. Right now, I’m focusing on profiling and expanding OpenTelemetry into mainframe computers.
+**Daniel:** I'm Daniel Gomez Blanco. I'm a principal engineer at Skyscanner and also a member of the open Telemetry community.
 
-**Henrik Reet**:  
-My name is Henrik Reet, and I am a cloud-native advocate at Dan Race. I'm passionate about observability performance and am trying to help the community by providing content on getting started with observability solutions.
+**Doug:** My name is Doug Odard. I'm a Senior Solutions Architect with ServiceNow Cloud Observability, which is also formerly LightStep. I'm also a previous customer of using open Telemetry for several years prior to that.
 
-**Vijay Samuel**:  
-I’m Vijay Samuel, and I help with architecture for the observability platform at eBay.
+**Adnan:** Hey, I am Adnan. I work at TraceTest as a developer advocate, which you can guess better than me what that is. I pretty much do a bunch of everything regarding open Telemetry. I'm one of the contributors for the documentation, for the blog, and the demo.
 
-**Daniel Gomez Blanco**:  
-I'm Daniel Gomez Blanco, a principal engineer at Skyscanner and also a member of the OpenTelemetry community.
+**Ren:** My name is Ren Manuso. I work for Honeycomb IO, and I am one of the maintainers of the end user.
 
-**Doug Odard**:  
-I'm Doug Odard, a senior solutions architect with ServiceNow Cloud Observability, which is also formerly Lightstep. I was a previous customer using OpenTelemetry for several years prior.
+**Observability Discussion:**
 
-**Adnan**:  
-Hey, I’m Adnan, and I work at TraceTest as a developer advocate. I handle various tasks related to OpenTelemetry and contribute to the documentation, blog, and demos.
+[00:03:00] **Ren:** What does observability mean to me? Observability to me is the biggest passion of my life and also my professional career. It is one of those areas that you are not very interested in when you start your career because you don't know anything about it. It's not taught in school. It's not preached by the tech communities a lot, but then you discover it, and you say, "Wow, this is amazing! We're actually making a change and helping the teams make the best of their products."
 
-**Ren Manuso**:  
-My name is Ren Manuso, and I work for Honeycomb.io. I am one of the maintainers of the end-user documentation.
+**SE:** I think observability is a big game changer, right? It's an evolution from what we have done, especially APM, over the last few years. I worked for a very long time at EP Dynamics, and we sold APM agents to customers. We gave them a lot of the things that observability is promising today as well. But the big change I see with observability is that it's coming down, let's say, to everybody. This is making the things that we did there available for everybody and even more. We're moving away from this, "Hey, let's add a post-compilation agent into your application," to "Yeah, let's make native observability. Let's make this a thing that developers and operation teams are using across all organizations."
 
----
+**Morgan:** To me, observability means having peace of mind. It means having something that you can rely on in order to see what happened and what went wrong. I think observability is also a way to feel more technically connected to your customers and your users so that you can see the ways that they're interacting with your software instead of just the ways that you might interact with it.
 
-### What Observability Means
+**Kayla:** I mean, observability to me transcends just the computing industry. It's the ability to peer into something and understand how it works, what it's doing right now, and thus, if it breaks, how to fix it more quickly. Certainly, when we think of open Telemetry in this industry, what observability classically means to me is visibility to back-end infrastructure and applications.
 
-**Ren Manuso**:  
-Observability means a lot to me; it’s a significant passion in my life and professional career. It’s one of those areas you may not initially be interested in when starting your career because it’s not taught in school or heavily discussed in tech communities. However, once you discover it, you realize how amazing it is to help teams get the best out of their products.
+**Doug:** Kind of excitingly, I think it's expanding right now, right? With open Telemetry, we're pushing into client applications. We're pushing into mainframes.
 
-**Morgan Mlan**:  
-I think observability is a game changer. It represents an evolution from what we’ve done, particularly in APM over the years. My background is in selling APM agents, which provided many of the benefits observability promises today. The big change is that observability is becoming accessible to everyone, moving away from the need to add a post-compilation agent to applications towards native observability that developers and operations teams can utilize across all organizations.
+**Adnan:** Usually, when people mention observability, they say, "Hey, it's about a replacement of the old name monitoring." But for me, it's more than monitoring. Monitoring is like you just look at something, and observability, for me, is like having enough information to understand a given situation. If you just look at metrics, then you have a guess that something is going wrong, but you don't understand. So having the options to get more information like logs, events, exceptions, traces, profiling, then at the end, combine all those dimensions together, then you say, "Okay, I got it. This is my problem, and I can resolve it."
 
-**SE Nman**:  
-To me, observability means having peace of mind. It’s about having a reliable system to understand what happened and what went wrong. It’s also a way to feel connected to your customers and users, seeing how they interact with your software.
+**Vijay:** What does observability mean to me? I belong to what is called the site engineering organization inside of eBay, and our goal is to make sure that we can observe everything that's going on in the site and ensure that we have high availability. So basically, observability means knowing if the site is running fine or not because that's why I'm there.
 
-**Kayla Riel**:  
-Observability transcends just the computing industry. It's the ability to peer into something and understand how it works, how it’s performing right now, and how to quickly fix it if it breaks.
+[00:06:30] **Henrik:** What does observability mean to me? It's a way for us to understand what's happening within our systems because we run quite a complex system. We need to understand what goes on inside of them so we can deliver a good experience for our end users at the end of the day.
 
-**Henrik Reet**:  
-In the context of OpenTelemetry, observability means visibility into back-end infrastructure and applications. We’re expanding into client applications and mainframes, providing visibility into any systems that impact your business.
+**Adnan:** Oh my God, observability is to me—I've been a full-stack developer for years, and as we observed, I actually ended up on an incident response team doing tracking of incidents but also trying to figure out what was wrong. It pointed out to me how much we need this, how hard it was to look at so many different screens. Observability, for me, is the way to actually see what's happening in your system. It's the pinnacle of not being up the whole night trying to figure out what went wrong. With open Telemetry and with the rise of tracing in the last couple of years, it has hit an all-time high with regards to the possibilities that we have right now. I'm just really, really happy to be part of the project. I'm also really happy that it's growing at the pace it's growing right now, and I can't see how that's going to evolve within the next couple of years.
 
-**Vijay Samuel**:  
-For me, observability is about understanding everything happening on the site to ensure high availability. It’s knowing if the site is running fine or not.
+**Kayla:** For me, observability is about being able to ask deeper questions of our systems, being able to demand more than just alerting on things that are emergencies, things we've seen before, but actually being able to go out into the unknown and understand how complex systems are performing. Open Telemetry is the tool that is making observability great again.
 
-**Doug Odard**:  
-Observability allows us to understand complex systems so we can deliver a good experience for our end users. 
+**Morgan:** I would say that observability is seeing the surge now that open Telemetry is becoming so popular. It's allowing centralization of telemetry signals, it's allowing semantic conventions, and it's generally helping observability teams and the engineering teams take more attention to observability and building it and making it better.
 
----
+**Henrik:** What does open Telemetry mean to me? I think it's the vehicle for observability, right? I mean, it's enabling that. I joined the open Telemetry community a few years back because I was curious about this idea to bring observability to everybody. I think we are doing a really good job.
 
-### The OpenTelemetry Community
+**Adnan:** What it also means to me now is that it's an amazing community, right? We're at KubeCon here, and I meet so many people I just know from those digital conversations, and now I can talk to them in person. We talk a lot about open Telemetry, but we also talk a lot about other things than open Telemetry. We talk about observability, of course, about what we think about is going to happen in a few years.
 
-**Adnan**:  
-OpenTelemetry means a community effort to take the best practices from existing instrumentation and consolidate them so that everyone can benefit. 
+[00:09:40] **Kayla:** Open Telemetry, to me, seems like it's a community effort to take the best of what's already been out there for instrumentation and collect it in one group so that everyone can benefit from it. I think that we've learned so much as different engineers, but there's also so much to learn from users of products themselves, and open Telemetry does a great job of bringing both people who are experts in observability and experts in languages to make something really great and meaningful for everyone.
 
-**Morgan Mlan**:  
-OpenTelemetry is the vehicle for observability. I joined the community a few years back out of curiosity. It’s been an amazing experience, with a great community where we not only discuss OpenTelemetry but also share thoughts about the future of observability.
+**Morgan:** I mean, open Telemetry is my baby. I put so much effort into creating this project. What does it mean to me? I mean, there's the boring answer, which is it extracts signals, metrics, traces, logs, profiles, everything else from your infrastructure, from your services, from your clients, and makes those observable, processable on the back end. But I think to a lot of us who've been in this community so long, I mean, open Telemetry is also just a really nice open-source community to participate in. It's a thing I just enjoy working on. 
 
-**Kayla Riel**:  
-OpenTelemetry has a unique ability to bring together experts in observability and programming languages to create something meaningful for everyone.
+**Henrik:** Open Telemetry, for me, means the future. Because at the end, by having an open standard, we have the luxury, I would say, to have a common standard, a common format for all the solutions of the market. And having that common format for all the industry and all the vendors and all the solutions will just open use cases. 
 
-**SE Nman**:  
-OpenTelemetry is my baby. I’ve put a lot of effort into creating this project, and it means a lot to me. It enables us to extract metrics, traces, logs, and profiles from our services and infrastructure, making them observable.
+**Vijay:** I think testing used to rely on feedback from users, and now with observable data, we can be so much more efficient in the way we test. We could be so much more efficient in replacing marketing tools, business analytics tools. I think it's the future. 
 
----
+**Henrik:** One thing that also a lot of people talk about is AI everywhere, machine learning, blah blah blah, but I think it's the same thing as observability. I mean, Tesla, when you drive your car, it takes decisions based on the sensors that you measure. If you don't have those sensors and those measurements, then you can have the smartest systems, but without the data you cannot take the right decisions. 
 
-### Future of Observability
+**Morgan:** I think it's an enabler also for the future implementations of modern applications. Open Telemetry is the standard for observability going forward, and it's very important because as we have gone through the journey of observability over the past few years, we have had to hunt for open standards in Prometheus and a few others. Now, at least with ingestion and collection, it's a single standard for everyone to adopt, and I think that's pretty powerful for the long run.
 
-**Henrik Reet**:  
-OpenTelemetry represents the future of observability. By having an open standard, we can ensure a common format across the industry, which opens up new use cases. 
+[00:12:27] **Doug:** What does open Telemetry mean to me? I think it's bringing people together, bringing everyone together under one single language and one single way of thinking about telemetry. I think human languages are difficult enough for us to understand each other, and I think open Telemetry is bringing the technology together under one single way of thinking about telemetry, thinking about how we observe our systems.
 
-**Doug Odard**:  
-OpenTelemetry is becoming a standard, allowing for centralization of telemetry signals and helping observability teams focus on building better observability practices.
+**Daniel:** To me, open Telemetry is bringing the ability to have product teams, infrastructure teams helping their jobs make it easier, and also just improve the customer experience and just make it an overall better experience to do our jobs.
 
-**Morgan Mlan**:  
-OpenTelemetry allows us to ask deeper questions about our systems and go beyond just alerting. It’s about understanding complex systems' performance.
+**Adnan:** Open Telemetry is, I'm going to say, the future of observability. We've seen so many companies, so many vendors move to an open Telemetry first mindset. The way that you can use open Telemetry to generate, to actually gather all telemetry signals with one set of libraries, with one tool, is just the way it was supposed to be. You're not locked into one vendor or one cloud provider anymore. You can do basically whatever you want, and you can use both the metric logs and traces for basically anything you want to do. 
 
-**Vijay Samuel**:  
-OpenTelemetry is the future because it enables product teams and infrastructure teams to collaborate more effectively, improving the overall customer experience.
+**Morgan:** Open Telemetry is an instrumentation protocol that helps us ask more detailed questions about observability because it collects multiple signals from many flexible types of systems. Folks monitor everything from the control plane in Kubernetes all the way up to physical on-prem systems. It's a really flexible language, and it's a beautiful community of humans that came together over the pandemic to build something really special.
 
----
+**Kayla:** I was working in a very fast-paced observability team, and we were maintaining a lot of tools. We really did not have conventions there. We did not have centralization, and we really were not flexible when it came to being vendor-agnostic in general. So we discovered this amazing tool called open Telemetry. We said, "Okay, let's give it a try." It worked great for us, and here I am today, more than a year later, and pushing the migration to open Telemetry in my second project.
 
-### Favorite Signals
+[00:15:10] **Morgan:** How did I get involved in open Telemetry? I mentioned that I got curious a few years ago. I was at EP Dynamics working as a so-called domain architect. I was an expert for Node.js, Python, and a lot of those other languages, and there was always this conversation around, "Hey, there's this thing now called open Telemetry. Should we not integrate this into our product?" I was like, "Okay, I want to learn more." Then I was like, "What is a good way to learn something new about an open-source technology? Get involved in that." 
 
-**Morgan Mlan**:  
-My favorite signal is profiling because it closes a significant gap in observability. 
+**Kayla:** I got involved in open Telemetry last spring when New Relic asked me to take a look at what the current status was of the open Telemetry Ruby project. I also work as an engineer on the New Relic Ruby agent team, and that gave me an opportunity to start to contribute to the project. 
 
-**Kayla Riel**:  
-I love traces because they tell stories in meaningful ways. However, I also have a soft spot for logs.
+**Doug:** I was working at Google on Google's observability products like tracing, profiling, debugging, that whole thing. One of the challenges we had with tracing was getting data from people's applications. It was really, really hard. You needed integrations of hundreds of thousands of pieces of software. No one team, no one company is going to maintain that. It's just infeasible. 
 
-**Doug Odard**:  
-I’m partial to distributed traces since that’s where the project started, but I’m also excited about logs and their potential.
+**Morgan:** We wanted to do something open source. There were other open source standards. There was one that had started, I think, roughly around the same time we were doing this called open tracing, and at some points, especially amongst the more socially media savvy members of the team, which I am not one of, there was some contention between those projects about where people who maintain databases and language front-end things should actually spend their integration efforts, and it was limiting the success of both projects. 
 
-**Adnan**:  
-I enjoy all signals, but I’m particularly excited about profiling. It helps us understand performance optimizations.
+**Kayla:** I was leading open census. Ted and Van and others were leading open tracing, and in late 2018, early 2019, we finally sort of brought things to a head and decided to merge those into what is now called open Telemetry. I've been involved since then. I now work at a different company but still on the same things.
 
-**Henrik Reet**:  
-I’m a fan of metrics because of their power in anomaly detection and machine learning applications.
+**Adnan:** When I started the adventure in open Telemetry, of course, I joined a company that has their vendor agent called OneAgent. I saw this movement of open Telemetry and coming from the performance background, I looked at it and I said, "Wow, an open standard? That sounds quite exciting because I had a performance gig for a customer where I implemented collecting logs and processing it and putting machine learning." I told myself at that time, "It would be wonderful to have one common standard." 
 
----
+**Vijay:** When I looked at the definition of the project and the things behind the project, I was so excited. I said, "Oh gosh, I want to be involved in a project." That's where I started to build content to help the community get started. I used to be a developer, but I'm a bad developer for sure, so that's why I'm trying to help the project in other ways and other directions. 
 
-This concludes the panel discussion on observability and OpenTelemetry. Thank you for joining us!
+**Morgan:** My goal is to increase the adoption of the open standards, making sure that it's being adopted everywhere so that we can move forward by trying even more exciting implementations. I started a few years ago for two reasons: one, we were looking to introduce open standards inside the company, and at that time, open tracing and open census was converging into open Telemetry. 
+
+**Doug:** We started evaluating open Telemetry for that, and given that we were moving into open Telemetry for tracing, I also went through the journey of migrating our metrics collection into open Telemetry. That's basically how I got involved.
+
+[00:19:30] **Kayla:** How did I get involved in open Telemetry? I got involved through working as a Skyscanner end user. I was driving adoption of open standards, open Telemetry. During COVID, there was a need for simplification in how we approach our infrastructure, how we collect, how we process, how we export data, and also basically to lead the adoption of open standards and that simplification.
+
+**Adnan:** I got involved in the community at Telemetry, decided to interact with all end users and meet people who want to solve the same problems. They want to find a solution that works.
+
+**Morgan:** I actually, for several years in my previous position, was hired to develop observability software. I was writing my own thing. We were doing a lot of alert management and various things. It was so much work, and I thought, "This has got to be easy." Plus, I wanted to make sure that it could be future-proof, but also extensible. 
+
+**Daniel:** When I discovered open Telemetry, I was just like, "Oh, thank you," because it's something that the company could carry forward, and we didn't have to worry about storing the data as much. 
+
+**Kayla:** It really provided an excellent platform so that we can focus on the task at hand versus how to do the job.
+
+**Adnan:** How I got involved in the project was actually first as a customer. It was about three, close to four years ago, kind of the infancy of open Telemetry. I would go online, look at the documentation, or I would be in the code a lot, but I wanted to learn more. 
+
+**Vijay:** I would go to a call, and there would be someone from Google and Microsoft and other companies, and then there was this guy from this small fintech in the US. At first, it was a little awkward, but they were so excited to have me in the call because I was an end user. It was a wonderful experience to begin that way and realize that I could contribute to this rather than simply be a consumer of it.
+
+**Morgan:** It was great. Then I transitioned my career into working for a vendor, and we implement these systems now for customers like myself that I was years ago. It's kind of a pay-it-forward, give-back type of thing.
+
+**Adnan:** How did we get involved in the open project? We started contributing more to the blog with you guys, started contributing a bit to the docs as well. It's just been a wholehearted effort in the team to always dedicate a few minutes of each day to check out the open project and find a way to contribute.
+
+[00:22:41] **Doug:** I got involved in the open Telemetry project. Honestly, I was working at one observability company in marketing, and they didn't see the point. They didn't want me to get involved. I really believed in open source. I'd worked at Mozilla and Wikipedia and really believed that this was the way forward strategically. 
+
+**Morgan:** So the second I could switch to a company that did let me get involved, that's what I did. Now I'm at Honeycomb, and I'm glad to say within the first three months, I became a project member and started working with the end-user working group and worked to grow it into a SIG and into all the programs that it has today together with others.
+
+**Kayla:** Tracing is my favorite signal. My favorite signal now is profiling because I think this is really closing a big gap that was missing in observability. I come from the APM space, and now for me, APM and observability, it's very hard to make a difference here. 
+
+[00:24:00] **Henrik:** But one thing that when I talk with people using APM products right now is they're like, "Hey, where's the code-level visibility?" With open Telemetry, my commercial agent is giving me that line of code that is breaking something, and this is what we get with profiling, and that's why I'm really, really excited about it.
+
+**Vijay:** To decide a favorite signal is kind of difficult for me. I really love the power of traces. I think that traces can tell stories in ways that are very meaningful. But on the other hand, I've been so immersed in logs and trying to allow logs to have more connections to spans and traces, but I definitely have a soft spot for logs as well.
+
+**Morgan:** I mean, I'm partial to distributed traces because that's where this project got its start. I think early on, that's where a lot of the value was. No one else was really doing standardized distributed trace collection. There were some open-source examples of it attached to like Zipkin and Jaeger, but I think the reason open Telemetry got so much traction so quickly is that it was providing that.
+
+**Kayla:** I'm also partial to logs, which we launched last year just because that's one where I've been involved in a lot of parts of open Telemetry. 
+
+**Henrik:** But that's one where I was involved in a lot of the core specifics early on and driving that, and so it was really exciting to see that ship. Also, logs are just a thing that throughout my career before working on any of this, I just got frustrated with because they're never standardized, they're slow to process, they're expensive.
+
+**Morgan:** Open Telemetry is going to bring a lot of changes there for the better for everyone who uses logs. And finally, I guess profiles, because I'm working on that now, and it's new. When I was at Google many years ago, I launched what I think was the world's first distributed continuous profiling product, at least publicly available, which was Google Cloud profiling stack profiling. They still support it. I still think it's free; it's very powerful. 
+
+**Henrik:** Profiling has always been a bit of a niche thing. I know that Splunk and other companies support it, but it's not as well known as metrics and traces. I think with open Telemetry starting to later this year, we're going to launch full support for profiles. That's really going to change things. 
+
+**Adnan:** We had customers at Google who would spend an hour on our profiler and save 20-30% of their aggregate CPU because they found some really poorly optimized code really quickly. For more people to have that ability and speed to speed things up and for developers to actually get insight on how things work, that's super exciting. The tech has been there a long time, and open Telemetry bringing this mainstream is huge.
+
+**Morgan:** When people ask me who is your favorite kid, usually I say I don't have a favorite kid. You know, all my kids are wonderful. They all have a great thing out of it. I think I love traces because sometimes they help you to understand where it's slowed down. I love metrics because as a performance engineer, I used to use metrics a lot. 
+
+**Kayla:** I love logs because at the end, there's no single answer. If you just do analytics on logs, wow, you are so much more precise. I don't think I'll have a favorite signal. I'll just say that depending on what I need, I can pick and choose. 
+
+**Daniel:** There's clearly one signal that will help me more. There's one thing that I'm very eager and waiting for since Valencia: continuous profiling. I love profiling and I think traces are great, but if there is a problem somewhere, profiling would be so much helpful.
+
+**Adnan:** So I think, yeah, I don't answer any questions, but I say, yeah, I love all the signals provided by open Telemetry.
+
+[00:27:30] **Vijay:** I am thoroughly biased towards metrics. I feel metrics are the most powerful signal as long as you are thinking through your instrumentation and making sure that you have the right granularity and cardinality being sent into the platform. You can do powerful, powerful things with regards to anomaly detection, machine learning, and many other things. 
+
+**Kayla:** I have to say traces because they give you the content. Traces give you the backbone correlation for all the other signals. Right? But I do think that the current design of the API design of metrics is so powerful that I'm falling in love again with metrics because of the way that we decouple instrumentation and measurement from the aggregation of those metrics. 
+
+**Daniel:** It's powerful and so much richness to basically give us a way to describe our system that I'm calling back again in love with metrics. 
+
+**Morgan:** My favorite signal, I have to say, I'm partial to traces because I've been doing software development for so long. That was the first thing that really turned me on to it was the ability to see that, especially because I know what it's like to debug. 
+
+**Doug:** But I also know what it's like in an incident to have to focus in very quickly. So yes, traces are my favorite, but I do also like to send that Trace ID and Span ID into the logs. Now it's kind of becoming my next favorite.
+
+**Kayla:** My favorite signal is traces. I'm going to say traces definitely. 
+
+**Adnan:** My favorite signal is Ed Sheeran. 
+
+**Doug:** What is my favorite signal? I mean, I work for Honeycomb, so I am constitutionally obliged to say traces are my favorite signal.
 
 ## Raw YouTube Transcript
 

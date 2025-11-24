@@ -10,77 +10,405 @@ URL: https://www.youtube.com/watch?v=dpXhgZL9tzU
 
 ## Summary
 
-In this YouTube Q&A session, Jacob Arnoff, a staff engineer at Lightstep, discusses his experience with migrating to OpenTelemetry (otel) from OpenTracing and OpenCensus while working at Lightstep. The conversation, led by the host, covers the challenges and strategies involved in this migration, emphasizing the importance of a safe and efficient transition for observability in software applications. Jacob details the initial use of proxies for metrics collection, the performance issues encountered, and the iterative approach taken to migrate tracing and metrics to otel. He explains the various deployment options for collectors in Kubernetes, including sidecar, daemonset, and stateful set, and highlights the benefits and considerations for each. The discussion also touches on the significance of keeping telemetry systems up to date, the advantages of using tools like Dependabot, and the ongoing developments in the open-source observability community. Overall, the session provides valuable insights for organizations looking to adopt OpenTelemetry and improve their observability practices.
+In this YouTube video, Jacob Arnoff, a staff engineer at Lightstep, discusses his experience migrating to OpenTelemetry (otel) from OpenTracing and other telemetry solutions within the company. The conversation, facilitated by the host, explores the challenges and strategies involved in the migration process, emphasizing safety and performance improvements. Jacob shares insights into the initial migration from OpenTracing to OpenTelemetry, the issues encountered while migrating metrics, and the advantages of using features like views for managing metrics effectively. The discussion also touches on deployment strategies for collectors in a Kubernetes environment, comparing sidecar, daemon set, and stateful set approaches. Throughout the conversation, Jacob emphasizes the importance of keeping dependencies up to date and how this impacts the overall performance and reliability of observability systems. The session concludes with an invitation for Jacob to share more of his insights in future talks, highlighting the ongoing evolution of telemetry practices.
 
 ## Chapters
 
-Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:00:20 Guest introduction: Jacob
+00:02:30 Jacob's background and role
+00:03:50 Migration to OpenTelemetry
+00:05:41 Migration challenges and strategies
+00:09:00 Q&A session begins
+00:12:01 Metrics migration details
+00:16:02 Performance improvements discussion
+00:18:00 Metrics views and aggregation
+00:22:02 Logging and span events
+00:24:50 Collector setup and architecture
 
-00:00:00 Introductions and welcome message  
-00:01:30 Introduction of Jacob Arnoff from Lightstep  
-00:03:00 Discussion about Jacob's experience with OpenTelemetry  
-00:05:30 Overview of Lightstep's migration from OpenTracing to OpenTelemetry  
-00:10:00 Challenges faced during the migration process  
-00:15:00 Explanation of the metrics migration strategy  
-00:18:30 Discussion on the performance issues encountered  
-00:25:00 Insights on using attributes and metrics in OpenTelemetry  
-00:30:00 Overview of the differences between deployments, stateful sets, and daemon sets  
-00:40:00 Explanation of the Target Allocator and its benefits  
-00:45:00 Discussion on keeping dependencies up to date and the importance of regular updates  
+[00:00:20] **Host:** Thank you. Welcome everyone to Hotel Q&A. Thanks for joining. Today we are super lucky to have Jacob Aronoff from Lightstep from ServiceNow join us. It's a cool treat because I tapped Jacob because he was telling me that he had submitted a CFP to one of the, I think it was KubeCon, right Jacob?
 
-These moments encapsulate the essential discussions and insights shared during the livestream, making it easier for viewers to navigate the content.
+**Jacob:** Yeah, it was a CFP on migrating to Hotel from our organization—migrating to Hotel, right? If I understand correctly, which I thought that's a pretty freaking cool story to tell. So I asked him to join and have this Q&A and hear the story because I think it makes for a compelling narrative when an observability vendor talks about using OTEL themselves on their own products. So here we are. So welcome Jacob. Do you want to do like a quick little intro?
 
-# Hotel Q&A with Jacob Aronoff
+**Jacob:** Sure. Yeah, hi, my name is Jacob Aronoff. I'm a staff engineer at Lightstep on the Telemetry pipeline team. I've been in lead stuff for almost two years, and the first year of that journey was solely focused on Hotel migrations—doing them internally and making them easier for customers, sort of that whole process. So yeah, I could get into this anyway that is interesting. How do you think we want to do this? Very Q&A style or should I just go right into the story?
 
-Thank you for joining us for today's Hotel Q&A session. We are fortunate to have Jacob Aronoff from Lightstep, part of ServiceNow, with us today. Jacob recently submitted a CFP for KubeCon, focusing on migrating to OpenTelemetry (otel) within his organization, which is an exciting topic to discuss. 
+**Host:** We can let it evolve organically.
 
-## Introduction
+**Jacob:** Cool. Yeah, I like that. Why don't we start like— I mean I think you're rearing to go, so maybe why don't you describe, like, set the scene for us?
 
-**Jacob Aronoff:** Hi, my name is Jacob Aronoff. I’m a staff engineer at Lightstep on the Telemetry Pipeline team. I have been working on this for almost two years, with the first year dedicated to internal migrations to OpenTelemetry and making the process easier for our customers.
+[00:02:30] **Jacob:** When I joined Lightstep, we were still on OpenTracing for tracing and then a mix of OpenCensus and some hand-rolled StatsD stuff for metrics. So this meant that we had to run a proxy on every single pod that we ran in Kubernetes. A proxy, since it's a sidecar on every pod, means that every single time you run one of your applications, you have to run another little application that's going to read from StatsD and then forward those metrics off. And, you know, for us, as we're building out a metric solution, that destination was Lightstep. 
 
-## Migration Story
+[00:03:50] I came in, and this was sort of at the beginning of metrics Alpha, I think. I was like, hey, it would be great for us to—we know that OpenTelemetry for metrics is going to be a huge effort for us in the next year or two. We wanted to reach stability. The Hotel team had been—we have an Hotel team internal to Lightstep. They've been working on it a lot and really wanted some immediate feedback on how to improve it. So I took on that migration for us. 
 
-When I joined Lightstep, we were still using OpenTracing for tracing, alongside a mix of OpenCensus and some hand-rolled StatsD metrics. This setup required running a proxy on every pod in Kubernetes, which was costly and complex. As we were moving towards OpenTelemetry for metrics, I took on the migration effort. Our internal OpenTelemetry team had been working hard on it and needed feedback for improvement.
+We also had the theory that doing so would save us a good chunk of money because we would no longer need to run these relatively expensive StatsD sidecars. So I planned it initially to be sort of as safe as possible. I'd done some migrations like this in the past, and there are a few different ways that you can do migrations like this. You can do the all-in-one go, which for us would have been possible— we're in a mono-repo—but it's much more dangerous because you worry about, you know, am I going to push a bug that's going to take everything down, right? 
 
-During this migration, I aimed to make it as safe as possible. Since we were in a monorepo, we could have done an all-in-one migration, but that approach is risky. Instead, I opted for a feature-flag-based migration where we could disable the StatsD sidecar and enable the OpenTelemetry code.
+Obviously, this is application data. It's data about your applications, which we use for alerting. We use to understand how our workloads are functioning in all of our environments, and so it's important that we don't take that down because that would be disastrous for us. But obviously, for an end user, it's going to be the same story. They want the comfort that if they migrate to Hotel, they're not going to lose all of their alerting capabilities immediately. They want a safe and easy migration. 
 
-### Performance Issues and Discoveries
+So that was the only one with our initial approach for doing a sort of feature flag-based—just like part of that configuration that you run in Kubernetes. It would disable this sidecar, enable some code that would then swap to OTEL for metrics and then forward it off to where it's supposed to go. So that was sort of the path there. 
 
-Midway through the migration, I tested everything in our staging environment and found performance issues. I collaborated with the OpenTelemetry team to identify the cause, which was related to the attributes used in our metrics. This led me to theorize that by migrating from OpenTracing to OpenTelemetry, we could also see performance improvements.
+[00:05:41] Midway through this journey of doing these migrations, I had tested it all out, and staging looked pretty good. I tested the container in our meta environment. So we use to monitor our public environment. I noticed some pretty large performance issues in those 2021 and I had reached out to the Hotel team, and we had worked together to sort of alleviate some of those concerns. One of the ones that we found that was a big blocker was we heavily use attributes on metrics right now, and it was incredibly tedious to go in and figure out which metrics are using all these attributes and getting rid of them. 
 
-I paused the metrics work and began the tracing migration. This time, I decided to try an all-or-nothing approach, as the OpenTelemetry path was more straightforward and backwards compatible. I managed to complete the migration with minimal issues, and it turned out to be a significant improvement in performance.
+Well, I had a theory that really this one code path was the problem where we're doing the conversion from our internal tagging implementation through Hotel tags, which had a lot of other logic with it that was pretty expensive to do on pretty much every call. So I was like, you know what? There's no better time than now to begin another migration from OpenTracing to OTEL basically. While we wait on the Hotel folks on the metric side to push out more performant code implementations for us, we can also test out this theory that if we migrate the Hotel entirely, we're actually going to see even more performance benefits. 
 
-## Insights from Migration
+So at that point, I said, okay, I'm going to put a pause in the metrics work while we wait for Hotel, and I'm going to begin on this tracing migration. However, I decided to try a different approach, which is the all-or-nothing approach. Basically, the OpenTracing to OpenTelemetry path was a bit more known. There were a few really small docs and examples, and they are backwards compatible. You’re able to use them in conjunction with each other, so one thing emitting Hotel and one thing emitting OpenTracing is not the end of the world. 
 
-This migration story is valuable for organizations at different stages of their observability journey. Those just starting with instrumentation and those who have dabbled in OpenTracing can learn from our experience. 
+So you can mix those as long as you have the propagators set up correctly. So first step, propagators. Second step, make sure that all of our plugins worked, which at the time they weren't open sourced. Now they are open source, so people can just use them. I just did it all in one swoop. Maybe I had to revert like three times from our staging environment—nothing really major. And then there was one bug that I missed where we were previously doing a lot of in-app sampling because we had a really noisy function call. So I had to implement the custom sampler, which is actually like ten times easier with OTEL than it was with OpenTracing. I was able to get rid of a good like 1000 lines of code or so and some really dangerous hacks, so that was a really good thing. 
 
-### Starting Points
+And yeah, so then that went out very happy. Also stopping at any time if we want to get back to like more Q&A stuff.
 
-When migrating, I suggest starting with smaller services that have low traffic but enough consistency to gather meaningful data. By comparing metrics before and after migration, you can identify any discrepancies. 
+[00:09:00] **Host:** I have so many questions from this already, but do you mind taking like a quick pause?
 
-## Challenges and Solutions
+**Jacob:** Sure.
 
-One challenge was ensuring that all attributes remained consistent after the migration. This required close monitoring and sometimes rewriting processors to ensure compatibility. 
+**Host:** A couple of comments. One thing that came to my mind as you're saying this, I'm like, this is actually really freaking cool story because I think we tend to see like two different types of organizations. We see the ones where there's like zero code instrumented—like this is their first foray into instrumenting their code—and then we see the organizations that have either dabbled in OpenTracing. I think it's a really cool story because this is like a real-life migration story where you can actually provide advice on this is what you can do if you find yourself in this situation, which is really cool. 
 
-### Future Directions
+I want to call that out because I think that's a really important thing, especially if you're starting to get into OpenTelemetry. The other thing that I wanted to ask you about because you said that it’s a monorepo, so in that case, did you find it—and especially since you did the all-or-nothing approach—did you find having a monorepo more challenging than if you'd been dealing with microservices instead? 
 
-With logs maturing in OpenTelemetry, there are potential plans to replace span events with logs, which is an exciting development. However, my focus has recently been on improving infrastructure metrics in Kubernetes.
+**Jacob:** Yeah, well, so we do use microservices. It's just that we have a repo of microservices—sorry, my bad about you guys. In that case, yeah, then how do you know—because I mean yes, you're going for like a big bang approach, but you got to start somewhere. So then like where do you start?
 
-## Collector Setup
+**Jacob:** I started with—and it was the same with how I started the metrics migration—I started with really small services that my team owned that were really low traffic, but enough for it to be constant. The reason that you want to pick a service like that is if it's too low traffic, if you're only getting like one request every minute, one request every like ten minutes, you have to worry about sample rates. You might not have a lot of data to compare against. Really, that's like the big thing that you need to have is some data to compare against. 
 
-We run various types of collectors at Lightstep, including metrics and tracing collectors. Currently, we leverage a mix of deployments and daemon sets depending on the use case. 
+[00:12:01] I wrote a script early on for the metrics migration that just queried different build tags that are on all of our metrics. So you would say, you know, query all of the metrics for service X, grouped by release tag, and if you see that the standard deviation for the newer build tag is, you know, greater than one—right? So if it's one or more standard deviations away from the previous release, then there's probably something going wrong in your instrumentation library. 
 
-Daemon sets are particularly useful for node-level scraping, while deployments are more efficient for stateless collectors. Stateful sets are less common but beneficial for certain scenarios where consistent IDs are necessary.
+If you assume that your metrics are relatively stable, then if they're not, it's important to know. The other thing I had to check for was that all of the attributes were still present before and after migration, which is another thing that matters. Sometimes they weren't because something might be something that StatsD just adds automatically that we don't really care about, and so those were acceptable. I just like hand waved and said those are fine; we don’t care. 
 
-## Keeping Up to Date
+For tracing, it's sort of the same deal where I picked a service that had both internal-only traces—traces that stayed within a single service—and then traces that spanned multiple services with different types of instrumentation, so coming from like Envoy to Hotel to OpenTracing. What you want to see is that the trace before has the same structure as the trace after. So I made another script that checked that those structures were relatively similar and that all of them had the same attributes as well.
 
-To ensure everyone stays updated with the latest versions of OpenTelemetry, we use tools like Dependabot. It’s crucial to keep dependencies current to avoid security vulnerabilities and compatibility issues.
+**Host:** Right, right. Because tracing attributes, again, I was doing an attribute migration. That was really the point of doing the tracing one, so what matters is that all the attributes stayed the same, right?
 
-## Conclusion
+**Jacob:** Yeah, it's interesting too because you're starting from the point where you were migrating from an existing thing. You have that frame of reference, which I guess is kind of a double-edged sword, right? Because on the one hand, it's like you pretty much know that you've instrumented the things—hopefully. Maybe you’ll discover as you go along that there's like more stuff to instrument, but at least you have a baseline to start from. But then I guess on the other hand, if something's missing, you're like, oh damn, why is that missing?
 
-Thank you all for joining us for this informative session! I hope you found the discussion on the migration process and collector setups helpful. If you have more questions or topics you'd like to explore, feel free to reach out to me or engage in future discussions. 
+**Jacob:** Yeah, and those, you know, "why is this missing" stories are the really complicated ones because, of course, sometimes it's easy to just like, you know, oh I forgot to add this thing in this place, and that's usually pretty simple. But sometimes it's like, oh, there's an upstream library that doesn't emit the thing or Hotel. And now I need to—again, this is like early stuff. Most of these have all been upgraded and are fine now. 
 
-Thank you again, Jacob, for sharing your insights and experiences today!
+But there is an example with like our gRPC. Actually, this is like an interesting one. I had done a gRPC migration on a gRPC util package, which I think is now in like token trip—the Hotel gRPC trip. There was an issue with propagation. I was trying to understand, you know, what's going wrong here? And when I looked at the code, it just tells you how early in this story I was doing this migration, where there was supposed to be a propagator. There was just a TODO.
+
+**Host:** Oh no.
+
+**Jacob:** So, and the TODO was from someone on it. It was from Alex Book, which I'll call him out. So I sent it to Alex, and I was like, hey, this is a funny TODO because I just, you know, took down an entire service's traces in staging. So I spent some time to fix that TODO. It wasn't that difficult; it was just that they were waiting on another thing. I mean, that's how it goes. You're waiting on someone else, which, you know, another person—it's just endless cycles of that type of thing.
+
+**Host:** Yeah. 
+
+**Jacob:** But then I got it working, so that was like one of the main blockers for us.
+
+**Host:** Nice, nice.
+
+[00:16:02] **Jacob:** And was able to upstream it as well. It wasn't just a fix for ourselves; it was a fix for the community. There were a few things like that. A lot of the metrics work actually resulted in big performance boosts for Hotel metrics, like Hotel Go metrics, and it also has given the specs folks some ideas about how descriptive the API should be or various features. 
+
+So things like views and the use of views is something that we did heavily in that early migration because we were worried about—can you just—
+
+**Host:** Yeah, definitely. Just tell folks what you mean by that.
+
+**Jacob:** Yeah, so a metrics view is something that's run inside of your metrics provider in OTEL, your media provider in Hotel. What it's doing is it's saying you can configure it to do kind of a lot. It could just be drop this attribute whenever you see it. If you're a centralized SRE and you don't want anybody to instrument code with any user ID attributes because that's a super high cardinality thing, it's going to explode your metrics cost, right? So you could just make a view that gets added to your instrumentation that says just don't let this attribute from being recorded—just deny it.
+
+So that's like probably the most common use case. There are other ones though—more advanced use cases for dynamically changing things like the temporality or the aggregation of your metrics. So temporality being cumulative or delta for like a counter. You know, am I recording zero, one, three? I'm trying to—two, three, zero, one, three—or am I recording one and two, right? 
+
+And then your aggregation is going to be about how do you—oh man, being on the spot is so much harder because it's like I want to look it up, but feel free to look it up. That's totally cool. 
+
+**Host:** Well, aggregation is like how you send off these metrics basically. We had an aggregation that instead of doing—well, for histograms, this is like most useful when you record a histogram. There are a few different types of histograms. Datadog's histograms, StatsD's histogram is not a true histogram because what they're recording is like aggregation samples. 
+
+So they give you a min, max, sum, count, average. And so I actually don't even think they give you sum. I looked at this last night. They don't give you sum. They give you like min, max, count, average, and like P95 or something. And so the problem with that is in distributed computing, if you had multiple applications that are reporting a P95, there's no way that you could get a true P95 from that observation with that aggregation. 
+
+The reason for that is that in order to get P95, you can't—if you have five P95 observations, there's not an aggregation to say give me the overall P95 from that, right? You need to have something about the original data to actually recalculate it. You could get the average of the P95s, but that's not a great metric. That's not really like—it doesn't really tell you much. It's not really accurate. And if you're going to alert on something, if you're going to page someone at night, you should be paging on accurate measurements.
+
+[00:18:00] Initially though, we did have a few people who relied on this min, max, sum, counter instrument, so we used Hotel views in the metrics SDK to configure custom aggregation for our histograms to emit what some would call a distribution or what OTEL calls an exponential histogram, or the min, max, and the min, max count. So we were dual emitting. This works because they're different metric names that we were emitting, so there was no overlap between them. So what we did was we migrated. After we did the metrics migration, we were able to then go back and say any dashboard, any alert, anything that was using a min, max, sum, count metric just changed it to be a distribution instead. 
+
+Because we had enough data in the past, like, you know, a few weeks, months of running Hotel metrics in our public environment, that was possible to do. So that was like one of the key features because we had it, it was ten times easier, and we were able to do it from the application. We didn't have to introduce any other components, which is pretty neat.
+
+[00:22:02] **Host:** Right, right. Cool. Another question that I had for you. So like, when you were doing this migration, traces and metrics were in existence; logs I believe would not have been like the specification would not have been ready—possibly not even in the works?
+
+**Jacob:** No, it was still really early for that. 
+
+**Host:** I guess in lieu of logs, there's span events that you could use, so it's not something like that was leveraged as well?
+
+**Jacob:** Definitely. We've heard a long time have you used span events and logs or a lot of things internally. I'm a big fan of them. I am not a huge fan of logging. I find it to be really cumbersome and really expensive. IOPS for tracing and trace logs, whenever possible, I find it easier for myself to reason about. There are other people who are like logging first, and that's great, but that's just not who I am. I like logging for local development and tracing for distributed elements; that makes sense. 
+
+But we use this heavily. That was one of the first things that I checked worked. It's actually an interesting bug where we had some custom code or OpenTracing that allowed us to serialize JSON blobs in the span events, and that stopped working because we didn't emit them in the same way. It's a little hazy, but I had to rewrite a processor to make that work and then update some downstream code like in Lightstep as platform to Facebook.
+
+**Host:** Cool. So now how about keeping that in mind—now that logs are more mature, are there any plans to do any conversions? And please correct me if I'm wrong, but my understanding too is that with the log specification maturing more and more, the span events are going to be replaced by logs in some form—like it's going to be the log specification for span events. Have you heard anything around that?
+
+[00:24:50] **Jacob:** No, this is a bit outside of where my recent focus has been, so I'm not positive. I think right now the way that we do—I think the thing that we would change is how we collect those logs potentially. Right now we use—how do we do this right now? It changed recently. I don't want to say something incorrect, but we previously did it by just using like Google's logging agent, where they basically are running Fluent Bit on every node in the GKE cluster, and then they send it off to GCP and they just like tail it there. I think this changed though, and I'm not sure what we do now.
+
+**Host:** Okay, cool. Speaking of GKE, I have many questions on GKE specifically. Do you know if there's like a feature now in newer versions of Kubernetes where there's like some— I think there's some telemetry collection. Do you know if that's been enabled in any of the clusters?
+
+**Jacob:** Yeah, so I think that Kubernetes now has the ability to emit like the Hotel traces natively.
+
+**Host:** Yeah, yeah. 
+
+**Jacob:** I'm not sure if we're collecting those yet. I don't know what version that's more of a question for the SREs. I don't—Kubernetes came out like I think even last year, starting whatever, like last fall kind of thing. 
+
+**Host:** Yeah, that's a really good question that I want to look into because I want to see if really what I would like to do is see if we can collect the traces that we get from those to use the span metrics processor to generate like better Kubernetes metrics from those traces. I'm very focused on infrastructure metrics—like Kubernetes infrastructure metrics—and I find them to be very painful in their current form. 
+
+It would be really cool; right now, I prefer to use the Prometheus APIs for them currently. It's just a bit more ubiquitous in the observability community to use Prometheus to do that because that's what Kubernetes natively emits, right?
+
+**Jacob:** Right, go ahead.
+
+**Host:** Oh, no, go ahead. I'll let you complete the thought. Maybe it answers my questions.
+
+**Jacob:** And so that's what we do right now. I use the target allocator, which is, you know, a nutshell component that I work on to distribute those targets, which is, you know, a pretty efficient way of getting all that data. We also use daemon sets as well that we run in our clusters to get that data. In addition to that, so that works pretty effectively. The thing that's frustrating is just Prometheus. Prometheus script failures can be a super common problem, and it gets really annoying when you have to worry about metrics cardinality as well because it can explode. 
+
+I actually found a bug in GKE maybe six to eight months ago—six, seven months ago—but they've since fixed where they weren't deleting—they weren't reconciling certificate signing requests in their Kubernetes cluster, which meant that for kube-state metrics, which reports on cluster state, it was omitting because there were so many certificate signing requests left from these abandoned nodes. 
+
+Something on the magnitude of like six hundred thousand for like a single metric, which is huge. And so then Prometheus—the Prometheus that I was running—fell over because of that. And that's like a thing that happens constantly in this Prometheus realm, which is just like someone emits a high cardinality metric, Prometheus goes to scrape it, and then it just crashes.
+
+**Jacob:** Oh wow. 
+
+**Host:** That does not sound fun. 
+
+**Host:** I want to just take a step back because you mentioned the target allocator. I was wondering if you could expand a little bit on that because I know one of our previous Q&A folks also mentioned the target allocator. That was the first time I had heard of it, so I think it'd be like super helpful to just get a little overview.
+
+**Jacob:** Sure, yeah. So the target allocator is a component, part of the Kubernetes operator in Hotel, that does something that Prometheus can't do, which is dynamically shard targets amongst a pool of scrapers. Prometheus has some experimental functionality for sharding, but you still have a problem for querying because Prometheus is a database, not just a scraper. 
+
+If you shard your targets, you don't necessarily—you have to do some amount of coordination within those Prometheus instances, which gets expensive. It's like a very experimental feature. Or you could scale Prometheus with something like Thanos or Cortex, which is Grafana's Prometheus scaling solution, I think, right? 
+
+Which works, but you just then have to run like six more components that you then need to monitor, and then if those go down, how do you monitor all these other problems, right? In Hotel, we just basically tack on this Prometheus receiver to get all this data. But because we want to be more efficient than Prometheus, because we don't need to store the data, we tell—we have this component, the target allocator, which goes to do the service discovery from Prometheus. So it says give me all of the targets that I need to scrape, and then the target allocator says with those targets distribute them evenly amongst the set of collectors that are running.
+
+**Host:** Oh, okay.
+
+**Jacob:** So that's the main thing. It does some more stuff around job discovery now, or if you're using Prometheus service monitors, which is part of the Prometheus operator, which is a very popular way of running Prometheus in your cluster. It's what a lot of vendors use as well. So if you're on GAE or OpenShift, I think both of those natively use service monitors and pod monitors. 
+
+So the target allocator can also pull those service monitors and pod monitors and update the collectors' scrape configs to do that.
+
+**Host:** Oh cool, it's awesome. And so related to the Prometheus thread, are you running like Prometheus itself, or are you just scraping the Prometheus metrics and pumping them through to the collector?
+
+**Jacob:** Exactly right. Just no Prometheus instances, just the collector running Prometheus receiver and then sending them off to Lightstep.
+
+**Host:** Oh, living the dream! That was always my dream.
+
+**Jacob:** That's awesome. 
+
+**Host:** Do you use—because I remember Lightstep has like a Prometheus operator that helps facilitate that, so we used to have this thing called the Prometheus sidecar, which you might run. 
+
+You would run it as part of your Prometheus installation, which would then sit on the same pod as your Prometheus instance and read the write-ahead log that Prometheus has for persistence and batching and all these other things. So we would read the write-ahead log and then forward those metrics. 
+
+But if your Prometheus is very noisy—as many customers have very noisy Prometheus statistics—it's not really efficient. It can get really noisy, and not that—what's the word? It's not the best thing to run the collector as like the best way to run.
+
+**Jacob:** Okay, so—and it sounds like this thing still requires to have Prometheus installed.
+
+**Host:** Yeah, you would still need to be running a whole computer system.
+
+**Jacob:** Oh, okay. I thought it was—I was under the impression it was like a replacement for Prometheus and that it was—maybe I'm thinking of something else. There was a thing that I knew was like a replacement for needing Prometheus, and it was like vendor-neutral, so it wasn't like, oh, you have to use Lightstep to use this thing.
+
+**Host:** I think I might just be a Hotel operator collector target allocator trio.
+
+**Jacob:** Oh, okay, okay.
+
+**Host:** But maybe there's another thing out there.
+
+**Jacob:** Oh, unless maybe that got integrated into the target allocator as part of—anyway, it is a mystery.
+
+**Host:** Yeah, okay, cool, cool. 
+
+**Host:** So then, okay, since we're talking collectors now, for me, like the two million dollar question—the one that I'm always curious about—is collector setup. So what is the collector setup that y'all have chosen? What works for you now?
+
+**Jacob:** Yeah, it's hard to say because we run a lot of different types of collectors. At Lightstep, we run like metrics things, tracing things, internal ones, external ones. There are a lot of different collectors that are running at all times. You have like a separate one that just collects metrics and one that just collects traces.
+
+Right now we don't—it’s all varying flux. Right now we're changing this a lot to run experiments and stuff. Basically, like the best way for us to be able to make features for customers and end-users is by running them ourselves and then using them internally, making sure that they work, and then sending them for the open source realm. 
+
+So that's what we're trying to do even more of—like we're kind of reaching a point where we dogfood everything, which gets really confusing because you have to like—
+
+**Host:** Yeah, I can imagine.
+
+**Jacob:** Yeah, we're running like in a single path there could be like, I think, two different collectors in two environments that could be running two different images in two different versions. It gets really meta and very confusing to talk about.
+
+**Host:** Yeah, I can imagine.
+
+**Jacob:** And, you know, if you're sending from collector A across an environment to collector B, collector B also emits telemetry about itself, which is then collected by collector C. And it just chains—like you basically ensure that you have to like make sure that the collectors are actually working.
+
+**Host:** Yeah, you have to be sure that everything along this path—yeah, you just have to know which thing has the data. 
+
+**Jacob:** Right. Well, you shouldn't have to—we do that for you, but like—
+
+**Host:** Right.
+
+**Jacob:** Yeah, and we make like dashboards to help with that. But that's like the problem when it's like we're debugging this stuff is when there's a problem you have to think about like where's the problem actually? Is it in how we collect the data? Is it in how we emit the data? Is it in, you know, the source of how the data was generated? It's one of like a bunch of things.
+
+**Host:** Yeah, yeah. 
+
+**Host:** Now, like you need to work on the Hotel operator. So, and I've been reading up on the operator recently, and there's like, I think, four different deployment modes, right? There's sidecar deployment, daemon set, and—what's the other one?
+
+**Jacob:** Yeah, nice, yeah. 
+
+**Host:** So my question is, which mode—or is it like all of the above, depending on the thing that you need to do?
+
+**Jacob:** Yeah, it's all the above depending on what you need to do and your general needs and like how you like to run applications for reliability and stuff. 
+
+**Jacob:** So sidecar is the one that we use the least and is probably used the least if I were to just make a bet. Sidecars are really useful across the industry, you would think.
+
+**Host:** Yeah, across the industry, I'd be willing to bet that those are the least popular. 
+
+**Jacob:** That's the least popular method. Sidecars are just expensive, and if you're not using them—if you don't really need them, then you shouldn't use them. You’ll really only need them like something that's run as a sidecar, like Istio, which makes a lot of sense to run as a sidecar because it's doing like traffic proxy hooks into your container network to change how that all does its thing. 
+
+And you get a performance hit if you sidecar your collectors for all your services. You just get like a cost. It would just cost you a lot more. And you also wouldn't be able to do as much with like if you're making like Kubernetes API calls for attribute enrichment—that's like the thing that would get exponentially more expensive if you're running it as a sidecar, right? But as like a stateful set of like, you know, five pods, that's not that expensive. 
+
+But if you have a sidecar on like 10,000 pods, then that's 10,000 API calls made to the Kubernetes API.
+
+**Host:** Right, right.
+
+**Jacob:** What would be the advantage of running your collector as a stateful set versus a deployment? I guess what's the state that you would want to persist?
+
+**Jacob:** Yes, this is, I don't know what the right word is, but stateful sets aren't only used for their ability to mount volumes. There are a few other things that are inherent to how stateful sets run that are really valuable in distributed computing. This is an important thing to know for not just like how the collector runs as an application, but how your applications can run, right? 
+
+Stateful sets have consistent IDs, so if you have a stateful set with 10 replicas, they're all going to be the stateful set name dash counter number, so it goes from like zero to n. So that's a really valuable thing when you want consistent IDs, right? 
+
+As opposed to like with deployments, like when you, like your pods are all like random crap, right? So the pod IDs are done where it’s deployment name dash replica set ID dash pod ID, right? And so with stateful sets, because we have this consistent ID range, we can actually do some extra work with—for the target allocator, which is why we require that. 
+
+And so the other thing that stateful sets guarantee is what's called an in-place deployment, which is what daemon sets do as well, where you take the replica, you take the pod down before you create a new one. 
+
+So the reason that this is important is that in a deployment, you normally do a one-up, one-down, right? Or what's called a rolling deployment, a rolling update. And so if we were to do this for—if we were to do this for the— with the target allocator, we would probably get much more unreliable scrapes because you would—and someone actually just asked this question in the operator channel—I mean, I'm going to give them this exact response. 
+
+When a new replica comes up, you have to redistribute all the targets because your hash ring that you place these on has changed. So if you're doing a rolling deployment, if you're doing one up, one down, that's a really expensive operation, because then you have to recalculate all these hashes that you assign. 
+
+So if you were to do a one down, one up, you would still have to redo this whole thing because you would lose a pod, which means it's taken out of the ring, redistribute. You would gain a new ID, and then you'd have to redistribute again, right? 
+
+Whereas stateful sets, because it’s a consistent ID range, you don't have to do that at all. And so this means that when we do a one down, one up, it keeps the same targets each time.
+
+**Host:** Right, right. So it's almost like a placeholder for it. You don't have to recalculate the ring, basically.
+
+**Jacob:** Yeah, it's just sort of like a little—what's it called? 
+
+**Host:** Yeah, yeah, yeah. 
+
+**Jacob:** I can't think of the word. Cool, that's really neat. I didn't know that.
+
+**Host:** Yeah, it was funny because I was reading about like pods being deployed in stateful sets. I'm like, straight or sorry, not collectors. I'm like, I straight up do not understand what the use case would be, but this makes a lot of sense. 
+
+**Jacob:** So that's really cool. And so it's not as useful—or this is really only useful for like a tracing use case I would say, or sorry, metrics use case where you're like doing complete test scores. 
+
+We would probably run it as a deployment for anything else because a deployment gives you everything that you need pretty much, because the collectors are stateless—they don't need to hold on to anything. Deployments are much more lean as a result.
+
+**Host:** Yeah, yeah. 
+
+**Jacob:** They can just run and roll out, and everybody's happy, and that's how we run most of our collectors—deployment. 
+
+**Host:** And then at what point would a daemon set be useful?
+
+**Jacob:** Yeah, so daemon sets are really good for things like node scraping, which we do a lot of. So this allows you to scrape like the kubelet that's run on every node. It allows you to scrape the node exporter that's also run on every node, which is another Prometheus daemon set that most people run.
+
+**Host:** Right, right. 
+
+**Jacob:** Yes, the daemon sets guarantee that you’ve got pods running on every node.
+
+**Host:** Right, exactly. Every node that matches its selector, right?
+
+**Jacob:** Right, right. 
+
+**Host:** And so that's really useful for like scaling out. So if you have like a cluster of like 800 plus nodes, it's more reliable to run like a bunch of little collectors that get those tiny metrics rather than a few bigger stateful set pods, right? 
+
+Because your blast radius is much lower, so if one pod goes down, you lose like just a tiny bit of data. But remember like with all this cardinality stuff, that's a lot of memory. 
+
+**Jacob:** So if you're doing like a stateful set scraping all these nodes, that's a lot of targets, that's a lot of memory. It can go down much more easily, and you lose more data. Luckily, the collector isn't like Prometheus, where we don't care about that state. So if a collector goes down, it comes back up super fast. So usually, the blip is low, but it does mean that the blip is more flappy, right? 
+
+Where like it could go up and down pretty quickly if you're past the point of saturation. That's why it's good to have like a HPA, horizontal auto-scaler.
+
+**Host:** Right, right. 
+
+**Jacob:** But still, daemon set is a bit more reliable.
+
+**Host:** And it sounds like it would be useful again, like from a metric standpoint.
+
+**Jacob:** Yeah, yeah.
+
+**Jacob:** Tracing, you could do it for tracing and just send it on like a node port, but tracing workloads, again, because it's all push-based, they are much easier to scale on. 
+
+And you can distribute targets; you can load balance. There are all these other benefits that we get from push-based workloads. Pull-based is like—the reason that Prometheus is so ubiquitous in my opinion is just because it makes local development really easy, where you can just scrape your local endpoint. 
+
+That's what most back-end development is anyway, so you could like hit endpoint A and then hit your metric set point and then hit endpoint A again—metric standpoint. You can just like check that. It's like a very easy developer loop. 
+
+No, it also means that you don't have to reach out side of the network. So if you're a really strict like proxy requirements to send data, local dev is much easier for that, which is why like Hotel now has like a really good Prometheus exporter so you could do both, right?
+
+**Host:** Right, right. 
+
+**Jacob:** If you have that hankering for running Prometheus. 
+
+**Jacob:** And then I'm assuming there's a centralized gateway somewhere or—
+
+**Jacob:** This is part of the collector chain that I was talking about. Again, we're running a lot of experiments. Cool. I can like half talk about it. 
+
+Okay, I can be vague. A big effort within Hotel right now is around Arrow, which you might have been hearing about some. There’s been some work done by Lightstep and F5 to improve the processing speed and egress and ingress costs of OTEL data by using Apache Arrow, which is a project for columnar-based data representations. 
+
+And so we're just like doing some proof of concepts or like proof of implementation work to see what the actual performance of this stuff looks like, right? And also, like, you know, check that everything works as expected.
+
+**Host:** Yeah, yeah, yeah. 
+
+**Jacob:** As well, which it is, but that's—you always have to check.
+
+**Host:** Yes, absolutely. 
+
+**Host:** Well, I'd say the main takeaway from this whole story on collectors is like it sounds like it's always going to be an evolving game, which is not a terrible thing to do.
+
+**Jacob:** No, it's important that you keep your telemetry up to date. I think that like library authors and maintainers are like constantly working on new performance features and new ease of use, like quality of life stuff as well.
+
+**Host:** Yeah, yeah. 
+
+**Jacob:** Especially with OTEL, like we talk about quality of life a lot. 
+
+**Host:** Yeah.
+
+**Jacob:** And so that is definitely a focus, and that's why it's important to keep up to date. It makes migrations easier as well. Trying to migrate from like an ancient version of something to the latest version, you're probably missing a lot of breaking changes potentially, and you have to be careful of that.
+
+**Host:** And on that vein then, how do you ensure that everyone's keeping up to date with the latest versions of OTEL across the org?
+
+**Jacob:** I think like stuff like Dependabot is pretty good. We use it internally—or not internally, we use it in Hotel. We're keeping up to date with Hotel stuff, so I find it to be really helpful. It's very frustrating sometimes because it's like Hotel packages all update in like lockstep pretty much. 
+
+That means you have to update a fair amount of packages at once, but it does do it for you, which is pretty nice.
+
+**Host:** That's nice. That's nice.
+
+**Jacob:** But you should be doing this not just for Hotel but like any dependency, right? Like CVEs happen in the industry constantly, and if you're not staying up to date with vulnerability fixes, then you're opening yourself up to security attacks, which you don't want. 
+
+**Host:** So, yeah, do something about it is my recommendation.
+
+**Jacob:** That’s fair, that’s fair. 
+
+**Host:** I know we've got like four minutes left. Do you want to give us any like parting thoughts as we wrap up? I'm interested to hear if there are any questions from the group that we've missed in our discussion here. Any takers with burning questions? Now's the time. If not, I'm going to call on Rhys, but this was great. 
+
+I feel like I was like rapidly trying to take notes. I probably will have more as I try to like go back and tidy up some of my notes. But yeah, honestly, I was just trying to like keep up with people with so much information, I feel like because I've been reading up on the operator like the last week and so like more questions than answers, and I feel like I have some answers now. 
+
+I've definitely learned a lot. I hope folks on this call have learned a lot as well. I think this is like really great information. I think it gives folks like an idea of like what's involved in a migration, things to consider like when you're setting up your collectors, things to avoid doing, keeping up with those latest versions of OTEL—always a good thing.
+
+**Jacob:** Yeah, that's the big one is that like new fixes really often.
+
+**Host:** Yeah, yeah. 
+
+**Jacob:** Like new versions every two weeks for the collector, I'd say it's like a pretty frequent cadence. There are some Prometheus libraries that like don't update like ever. Like Thanos hasn't released since March, right? 
+
+**Host:** Which is absurd to me because there's like a bug in compatibility between Prometheus and Thanos right now. 
+
+**Jacob:** Oh really? 
+
+**Host:** How cheap! 
+
+**Jacob:** Yeah, so you can use them together if you're like coding, so not fun.
+
+**Host:** Damn! 
+
+**Host:** All right, last chance for burning questions, y'all. Erica said thanks for the info and your time, Jacob.
+
+**Jacob:** Thank you, Erica, for hopping on. 
+
+**Host:** Yeah, this was really awesome. Thank you so much because like for real, this is a dope, dope topic. So yeah, we'll, you know, reach out to your friendly neighborhood CFP approvers.
+
+**Jacob:** No, thank you so much. I feel like there was so much more we could have chatted about as well, so we might—
+
+**Host:** Yeah, yeah. Maybe I can—if I get accepted for the talk, then I can give a sneak peek at least. I can get some feedback on it.
+
+**Jacob:** Actually, you know what, like if you're interested because we have Hotel in practice, which is kind of like giving like a little talk. So if you're interested in doing that even like before you find out whether or not you get accepted, we are happy to have you.
+
+**Jacob:** Yeah, it sounds great. Cool, I'm in.
+
+**Host:** Cool, cool. We'll figure out the behind the scenes on like when to schedule you.
+
+**Jacob:** Sounds good. 
+
+**Host:** Yay! Cool. All right, and Daniel said thanks, Jacob, as well. And yeah, we're at the top of the hour. Thanks for joining us.
+
+**Jacob:** Thank you all.
+
+**Host:** Thank you! 
+
+**Jacob:** Yeah, thank you everyone. 
+
+**Host:** Bye!
 
 ## Raw YouTube Transcript
 

@@ -10,78 +10,308 @@ URL: https://www.youtube.com/watch?v=EL0UkhvFAmY
 
 ## Summary
 
-In this live stream from CubeCon EU, host Reese, a senior developer relations engineer at New Relic, is joined by colleagues Adriana Vila and Marilia, a staff engineer at Grafana Labs. The discussion centers around the OpenTelemetry project, its community, and the importance of localization in technology. Marilia shares her journey from being an end user to contributing to OpenTelemetry, emphasizing the significance of semantic conventions and the roles within the community, such as contributor and maintainer. The conversation also highlights the recent advancements in OpenTelemetry, including a new database monitoring release, ongoing efforts in localization for non-English speakers, and the impact of AI on observability tools. Austin Parker, the community manager for OpenTelemetry, joins later to discuss the project's growth, upcoming community events, and the evolution of logging infrastructure. Overall, the stream showcases the vibrant OpenTelemetry community and the collaborative efforts in improving observability practices.
+In this live stream of "Humans of OA," host Reese, a senior developer relations engineer at New Relic, is joined by colleagues Adriana Vila and Marilia, a staff engineer at Grafana Labs. The discussion centers around their experiences with OpenTelemetry, including Marilia's journey from an end user to a significant contributor. They explore the importance of contributor roles within the open-source community, the recent release of a database monitoring tool, and the significance of localization efforts to make technical content accessible in multiple languages. Additionally, they touch upon the evolving role of AI in observability and OpenTelemetry, emphasizing its potential to reduce toil in software development and improve documentation practices. The conversation highlights the collaborative nature of the tech community, ongoing projects, and upcoming events like the OpenTelemetry Community Day.
 
 ## Chapters
 
-00:00:00 Introductions to the livestream and guests  
-00:02:30 Marilia discusses her background and role at Grafana Labs  
-00:05:15 Overview of OpenTelemetry's focus and recent updates  
-00:08:00 Discussion on the Database Semantic Convention Special Interest Group (SIG)  
-00:12:30 Explanation of contributor roles in the OpenTelemetry community  
-00:16:00 Marilia talks about the importance of localization in documentation  
-00:20:00 Overview of the Contributor Experience SIG and its goals  
-00:24:00 Austin Parker joins the discussion as the community manager  
-00:30:00 Discussion on AI's potential impact on OpenTelemetry  
-00:35:00 Overview of upcoming OpenTelemetry events and community days  
+00:00:00 Welcome and intro
+00:00:30 Guest introduction: Marilia
+00:02:00 Database monitoring talk
+00:03:30 Semantic conventions discussion
+00:05:11 Contributor roles overview
+00:07:40 Localization importance
+00:09:30 Localization SIG details
+00:11:50 Contributor experience SIG
+00:14:42 Guest introduction: Austin Parker
+00:16:40 OpenTelemetry project updates
 
-# Humans of OA Live Stream Transcript
+**Reese:** Hello, welcome to a live stream of humans of OA. We are coming to you live from what had a little bit of subtitle issues, but we are here and we're so excited. My name is Reese. I am a senior developer relations engineer at New Relic and I am joined here by my lovely industry colleague Adriana and Marilia who is our first guest.
 
-**Hello, welcome to a live stream of Humans of OA!** We are excited to be here despite some subtitle issues. My name is Reese, and I am a Senior Developer Relations Engineer at New Relic. I’m joined by my lovely industry colleagues, Adriana and Marilia, who is our first guest. 
+**Adriana:** Hey everyone. Thanks for tuning in. My name is Adriana Vila. I work alongside Reese.
 
-**Adriana:** Hey everyone, thanks for tuning in! My name is Adriana Vila, and I work alongside Reese. 
+[00:00:30] **Marilia:** Hi everyone. My name is Marilia. I am a staff engineer at Grafana Labs and also in OpenTelemetry. I work in a few different groups. I am a maintainer for the contributor experience and I'm an approver for...
 
-**Marilia:** Hi everyone! My name is Marilia, and I am a Staff Engineer at Grafana Labs, working with OpenTelemetry. I’m involved in a few different groups; I am a maintainer for the contributor experience and an approver. 
+**Reese:** I was earlier about all the different parts that you're involved in and we're really curious because you started as an end user and then eventually started contributing. 
 
-**Reese:** That’s amazing! You started as an end user and eventually began contributing. Can you tell us more about your journey?
+**Marilia:** Yeah. And so we would love to... on my prior job I was responsible for the observability. I used to work at Cockroach Labs and I was the manager for the observability there. So I started learning about OpenTelemetry specifically because there we did would be able to use that. Maybe someone want to see some of those things outside of the database. So we created like some endpoints here and there, but it was like very basic stuff. 
 
-**Marilia:** Sure! In my prior job at Cockroach Labs, I was responsible for observability. I began learning about OpenTelemetry because we wanted to use it outside of the database. We created some basic endpoints, but my team focused solely on OpenTelemetry. Now, I get to have fun with it every day!
+**Reese:** So this team is to work only on OpenTelemetry. So your focus is just OpenTelemetry. 
 
-**Reese:** That’s awesome! What are some of the programming languages and SDKs you work with?
+**Marilia:** So this is my day-to-day. I can have fun and just be on it.
 
-**Marilia:** Currently, I’m focusing on Java and .NET, ensuring that all SDKs are on the same level. I also manage the Postgres plugin, which I have been working on.
+**Reese:** That's awesome. I didn't realize that. That's so cool. And what would that new like Java and .NET and I want to make sure that all SDKs are on the same level and the other two were a little here. What are the things that we can add? 
 
-**Reese:** You recently gave a talk about database monitoring, right?
+**Marilia:** So we have owner for the Postgres plugin that I was already like touching and there. That's awesome. And actually you gave a talk yesterday about database monitoring.
 
-**Marilia:** Yes! We just released the release candidate this week, and by the end of the month, it will be marked as stable. This means people can start using it without concerns.
+[00:02:00] **Marilia:** Exactly. So one of the other big ones. So fresh news. We just this week released the release candidate two. So that means by the end of the month we're going to mark it as stable. So people can really start using it without any concerns.
 
-**Reese:** You mentioned you’re part of the semantic convention SIG for databases. Can you explain how that differs from the general semantic conventions SIG?
+**Reese:** You mentioned that you're in the semantic convention SIG for databases and there's like a general semantic convention SIG, correct? What is it about the database semantic convention SIG that spun off?
 
-**Marilia:** Typically, the general semantic conventions include representatives from various areas, which can lead to discussions that may not be relevant to everyone. By creating separate SIGs for specific areas like databases, HTTP, and RPC, we can focus on topics relevant to those who have experience in that field. This helps keep the work focused and easier to prioritize.
+**Marilia:** Yeah. So usually you have the general semantic convention and on that one you have sometimes people from all of the other semantics that can give updates or discuss this particular name of the metric. And spend an hour when you have a lot of people on the code they're not related to databases, so they don't have any input to give. It might be a waste of time. So it's kind of like you spin up like different semantic conventions for each of like, oh we want to focus on database, we want to focus on HTTP, we want to focus on RPC. So now you can bring people that have experience in that area and talk about it. The same way you can think about if you would have a SIG for SDK, you have so many languages. So we have now one SIG for each language. So it's kind of like the same idea.
 
-**Reese:** That makes sense! You have a lot of responsibilities in the community. Could you explain the distinctions between your roles as a contributor, approver, and maintainer?
+**Reese:** Help like keep it like the work focused and easy to prioritize. 
 
-**Marilia:** Absolutely! You can become a contributor without being a member of the CNCF. After making a few contributions, you can ask to become an official member. Once you start helping out by reviewing PRs and commenting, you can achieve the status of triager, where you help manage incoming issues. From there, you can become an approver, meaning your approval counts towards merging PRs. Finally, maintainers are responsible for merging changes and creating releases, while also gathering input from contributors.
+[00:03:30] **Marilia:** Yeah. And then we can always have the updates that we can bring to the main semantic one because when they generate a version, it's for all semantics. It is not as specific for the database. So you just merge that repo and whenever a new version comes in, it might be bringing updates for the database, might be from the HTTP, and so on. So we just like can bring the update like to the main ones like, hey this one we're marking as stable. We have these updates and things like that.
 
-**Reese:** That’s a great overview! Speaking of contributions, I know you’re also involved in Portuguese localization. Can you tell us why it's important and how you got involved?
+**Reese:** And then you mentioned, and I'm glad you were able to rattle off the long list of titles that you have in the community because I was like I am not going to remember all these but they're so cool. So there's like different titles. There's approver, then approver, then maintainer.
 
-**Marilia:** Localization is crucial because language can be a barrier. Many people learning tech concepts may not speak English as their first language, making documentation less accessible. I started a blog to help with translations and worked on reviewing materials. It’s important to decide what to translate and what to leave in English, as some concepts don’t have a direct translation. This work helps break down barriers and brings more people into the community.
+**Marilia:** Okay perfect. And then could you explain to us briefly like what each, what's the distinction between each role?
 
-**Reese:** It sounds like a lot of work! Has this experience helped improve your own Portuguese?
+[00:05:11] **Marilia:** Yeah. So you started first as a contributor. So you can become a contributor not being a member of CNCF at all. So when you do a couple of contributions, you ask to become a member, which is something I think everybody should do if you are doing it because it's very easy to join. You just have to open a PR, say like, hey I want to become an official member of CNCF and then OpenTelemetry and then you are officially a contributor. Then you pick something that is more interesting to you. So for example, I really like this language or I really like this specific component. Start joining the SIGs just to learn more about it, see how you can help. And when you start really helping out, start reviewing PRs, putting comments, creating issues for things that you mind. And with time you get the status of triager, which is somebody that is helping when a lot of issues come up. You help exactly triage those issues and see like things that make sense, things that actually they were not using correctly or there are actual bugs. Then from that, you can become an approver. When you approve a PR, your approval actually counts because people can approve, but to be able to merge you need to have people with permission giving the approval and being able to merge. So the approver now has this, whatever we approve it counts and somebody who has the permission can just merge it in. And then you have the final one, which is maintainer. So these are the people that can actually merge, usually the ones creating the releases, creating like road maps, but they do get input from everybody that is contributing.
 
-**Marilia:** Yes, it has! Living abroad for so long has made it a challenge to keep my language skills sharp, especially when giving talks in Portuguese. We also have contributors working on Spanish, French, and Japanese localization, so we’re constantly learning from each other.
+**Reese:** That's so exciting. That is really cool. Thanks for the overview. 
 
-**Reese:** That's fantastic! As we wrap up, what advice would you give to someone looking to start contributing?
+**Marilia:** Yeah. The other thing that we wanted to ask, you know, you mentioned that you're working in the Portuguese localization. Talk a little bit about that, like talk about why it's important to have localization, how you got involved with that, specifically how that's been.
 
-**Marilia:** There’s always something for everyone, so just try to get involved! Open source is different from a daily job, so it's important to keep that in mind. Be proactive, and don’t hesitate to reach out to the community for guidance. 
+**Marilia:** Yeah. So I think it's really important because it's a barrier, like the language. And it's already hard for you to like completely learn something completely new like on tech, but imagine if you don't even know the language. And a lot of other countries like their first language is not English. It's not always you're going to find this documentation and not easily accessible for everybody. So actually I started like a while ago. I created like my own blog post and I was like everything that I'm creating there, I'm going to create and where people that actually met when I did like conference days in Brazil and there was the bad group. So I started like, oh I'm going to help them out. So I like to like review a lot of things and the good things a lot of things in English that you learn like just experience living. So I can help out with like the translation, the localization, and also decisions like what are the things that you don't translate at all because we're going to say tracer. We don't, that makes sense because at the same time you don't want to translate everything because then when they're going to search those words don't exist anywhere. 
 
-**Reese:** That’s great advice. Thank you so much for sharing your insights today, Marilia! We’ll continue our conversation shortly as we bring on our next guest, Austin Parker, the community manager for OpenTelemetry. 
+**Reese:** Yeah, but yeah, I think it's like really good to just break this barrier and bring a lot of people they would have no idea.
 
-**Austin:** Hi everyone! I'm excited to be here. I’ve been managing the community and working on various projects, including the OpenTelemetry website.
+**Marilia:** Yeah, that's so great. That's a lot of work. I guess in some ways has it like improved your Portuguese as a result?
 
-**Reese:** It's great to have you! What changes have you seen in the community since it started?
+[00:07:40] **Marilia:** So yeah, it's always funny because like living outside for so long and sometimes you, I'm going to give a talk like in Portuguese and I was like here so I know the right thing to use but it's always always a challenge. But we also try because there's not only Portuguese. We also have like people working on the Spanish, French, and Japanese. So do completely different than the French know. We also have this thing like which is like similar to the same. So we have the documentation one, but we have different groups. So every time a docs page comes out, you like the localization SIG translates. 
 
-**Austin:** There’s been significant growth! When we first came to KubeCon, many people were using OpenTelemetry, and the project updates room has grown substantially over the years. It's exciting to see new vendors and commercial solutions built on top of OpenTelemetry.
+**Reese:** Yeah. So that is the idea. So right now that people are accessing more things like that. So we start with those ones and like the same thing for SDKs. I see which ones people are like downloading more. 
 
-**Reese:** It sounds like the excitement is palpable! So many people are getting involved. What do you see as the future of OpenTelemetry?
+**Marilia:** So we do have something to... because part of the when you do a localization there is a new kind of like tag that you had to put in what was the commit that you translated. Because it's really hard for people to know that somebody did an update somewhere. You had to really be paying attention. So the idea is to have something that would tell us, hey those are behind just catch up and things like that. So we were always up to date.
 
-**Austin:** AI is going to play a big role. We’re looking into how to improve documentation for LLMs, as well as using AI to reduce toil in observability tasks, like migrations. This will help make the process smoother for developers.
+**Reese:** Oh, sorry. Go ahead.
 
-**Reese:** That’s a fascinating perspective! As we look ahead, what upcoming events should we be aware of?
+**Marilia:** I was curious because when I was asking you all your different roles, that was like the first time I'd heard of that specifically because I know we have translated some of our documentation, but I didn't realize there were specific teams working on these languages.
 
-**Austin:** We have the OpenTelemetry Community Day in Denver scheduled for June, alongside the Open Source Summit. We're also planning to have a community day in Europe, so stay tuned for more information!
+**Marilia:** So the localization SIGs, they are only translating documentation or what all involves? 
 
-**Reese:** Fantastic! Thank you both for joining us today, and thank you to our behind-the-scenes crew for making this possible. We appreciate everyone tuning in, and we hope to see you next time!
+[00:09:30] **Marilia:** So like the official page like the OpenTelemetry.io. All the pages there are the ones. If you look at the now at the top that didn't have anything. Now if you're looking at the page, the top you have a select there that you can change the language that you want. 
+
+**Reese:** So whenever the page is translated now you have...
+
+**Marilia:** So cool, learned something new today. I then joke that I have a PR with the translation to the Japanese even though I don't speak any Japanese and sometimes it goes wrong there too. 
+
+**Reese:** Uh-huh.
+
+**Marilia:** So it's a way to catch up. So like when they was like, "Okay, so the..." I was like, "Oh, let me see if any other languages translated the same thing wrong." Async or something. 
+
+**Reese:** Okay. 
+
+**Marilia:** Yeah, that's pretty big. 
+
+**Marilia:** And then it was good that it was just like a word and I translated and I put a PR and I tagged the reviewers for Japanese. I was like, I don't speak any Japanese. I put this thing that I think is the right translation. Like there was a part for the translation, but we even like looking for we want to add also more examples because we don't have a lot of examples. If there is something like for example you never did, so you try it yourself and you might for the future ones that are coming that they know like more examples, more things to try on.
+
+**Reese:** Yeah, man. This is so exciting. I'm learning all kinds of new things.
+
+**Marilia:** I know. Yeah. 
+
+**Marilia:** So yeah, so many things that we're like when people ask like how do I start, like so many of you're going to be able to find somewhere something that is interesting. There's always something for you, right?
+
+**Reese:** Yeah, it's really hard and just try joining just like listening. But at the same time, keep in mind that open source is different than a day-to-day job because sometimes what I see people find things was like how I found the things that like, oh, they need help with this, they need help with that. And then the things that I already have priorities like from even coming like from, hey can you take a look at this up for grabs? A few repos have them, so we have things like for example contribute fest that we did here and a lot of them got tagged with contribute fest, but not all of them got actually worked on. 
+
+**Marilia:** So those are the ones that you know and you're going to find something and people in the community are very helpful like tag them on Slack, on the issue itself, they are happy to give you guidance as well. 
+
+[00:11:50] **Reese:** Yeah, and I'll do a shameless plug for the end user SIG as well. We are always happy to have contributors. You can find more information in our show notes. Part of like the end user SIG. The other thing I want to ask is the contributor experience. So if you want to contribute like what is missing? So for example, one of the projects that I did that was so like how do I start? I don't know how to set up locally. There was no like what is the dependency that you need. So there was like nothing there. So I worked like as a mentor for the AI program template that all repos could use and started creating like the PR so people have at least the basic things that they need to just at least start having things.
+
+**Marilia:** Oh, that's amazing.
+
+**Reese:** And really quickly, actually, I want to ask about the contributor experience SIG because that one's a relatively new SIG, right?
+
+**Marilia:** Yes. 
+
+**Reese:** Can you tell us a little bit about that SIG, how it got started, and how you became a member?
+
+**Marilia:** It was because we saw this need of people complaining that they don't know how to start. They don't always understand like the path for like triager or like how like there is nobody there to guide. Okay, if nobody is going to be there for you, are you able to find all the documentation that you need to be able to follow the path that you want? Or like we didn't even know the challenges people were having a few of the things and we do like also surveys to find out people like how are you feeling like being a contributor and we started tackle the things that were the most concerned. Like documentation was the top one, so this is why I started that project and container almost right away.
+
+**Reese:** What are some of the upcoming things for the contributor experience?
+
+**Marilia:** So for this one, I just finished this part like this month for the template. So my next meeting is going to be actually picking up what is going to be the next one. But we do have like issues open that is just helping out like clarify things to people. And if anyone like also if you're listening, if you have something that is really like bothering you and you need, feel free to like message us or like open an issue directly on the repo there. We can prioritize because we have a list there, but we are just prioritizing ourselves because we don't have necessarily feedback things but react like thumbs up or really want this kind of thing and we will be able to put it in first.
+
+**Reese:** Awesome. And I think we're almost ready for our next guest.
+
+[00:14:42] **Marilia:** Yeah, I think we're so I guess we will continue our conversation. I guess as we get ready to bring on our next guest experience, they will be able to share like people just joining and people that have a lot of experience will be able to guide you as well just as I join the calls. 
+
+**Reese:** And they are Austin Parker. I'm just going to get the surprise out of the way. Community manager for OpenTelemetry and we are so excited to have him on.
+
+**Austin:** How am I still community manager? 
+
+**Reese:** Wait, are you no longer the community manager?
+
+**Austin:** What? You're still community manager?
+
+**Reese:** Yeah, I think I am. If you go and check the repo, I probably am. I mean, I do both jobs still. So, I am a member of the OpenTelemetry governance committee. I also have been a maintainer on the OpenTelemetry website, OpenTelemetry demo. I've working group I guess you could say like where we combine OpenCensus maintainers and OpenTracing maintainers where we, you know, came in and worked with some people.
+
+**Reese:** What have you seen as like the biggest changes since things started?
+
+**Austin:** Like when we first came to KubeCon, zero day event, you know, ask people who's how many people are using OpenTelemetry and it's like every hand in the room is going up, right? Like the growth of OpenTelemetry...
+
+**Reese:** Which was 2022.
+
+[00:16:40] **Austin:** The project updates room, you know, the project was given like a really small room. It was like pretty packed. Yeah. And over the years I've seen that room like get bigger and bigger. 
+
+**Reese:** Yeah. I know they probably like a 200 seat room and there are still people standing in the back, right?
+
+**Austin:** There was also a lot of, you know, there was a keynote yesterday that was actually the thing that I've been most excited about. The growth of OpenTelemetry isn't OpenTelemetry necessarily, but the opportunities that we see other people kind of taking and running with, right? Projects like Percy’s, new vendors, new commercial solutions built on top of OpenTelemetry have been really exciting to see. 
+
+**Reese:** And I think, you know, that that's the sort of stuff that you...
+
+**Austin:** Yeah. Yeah, definitely. Yeah. It's been exciting to see it grow. I remember even like my first KubeCon was Detroit and there was an Open Observability Day and then there was an OpenTelemetry unplugged with KubeCon North America and EU, which I'm super stoked about. 
+
+**Reese:** What super busy too. We have hundreds and hundreds of people showing up for those.
+
+**Austin:** Yeah. It was great.
+
+**Reese:** Yeah. Thank you. I mean, I feel like it's also one of those things where it's kind of like you can't really do three tracks, right? Like that's a bit like two is good. Seems like a good number, but there's observability talks, you know, throughout the week at KubeCon. I don't know. This used to be the Kubernetes club, right? This is the operations, the SRE kids. And now, you know, security has a big presence in the CNCF. 
+
+**Austin:** I think what we're seeing...
+
+**Austin:** What I think is important is you in a lot of ways if you think about how a lot of technology that we still rely on today, you know, was built and maintained and came right. Maybe someone, maybe someone and if that's you, more power to you. 
+
+**Reese:** To America, we might need your help.
+
+**Austin:** Things became the de facto standards through whatever, you know, combination of factors happened, right? Like I think what's cool about C4 vendor, you happen to use or so on and so forth.
+
+**Reese:** Now the downside is, you know, in 25 years my kid's going to copy me and be like, "What the, what's this OpenTelemetry crap dad?"
+
+**Austin:** Don't metaverse OpenTelemetry now. 
+
+**Reese:** Oh man. 
+
+**Austin:** Also speaking of the future, yeah, we were curious about how do you think AI might impact OpenTelemetry?
+
+**Austin:** How it might, how it might impact or have an impact or...
+
+**Austin:** Yeah. There's a lot of ways. I think one thing I was, so it's funny 'cause I was just talking to someone about this. A project I've been working on kind of on the side is how to make better docs for LLMs because the documentation that we write for human beings is really good for human beings and LLMs are not human beings. They are something else. So you need to kind of give them documentation in a way that is similar to how you would give it to a human but distinct enough that it's not, you know, it's trickier than just saying like, oh go read this web page, right? 
+
+**Reese:** 'Cause the web page has a lot of stuff that's for humans. 
+
+**Austin:** We care about things like font sizes and colors and we care a lot about sort of the organization of information and we want to have pages that are single concept, right? So that you can focus on like what is the goal of this page. But then LLMs, there's a distinction you need. You can, like one interesting thing if you think about writing a document, you know, writing documentation is you're not supposed to use, even if there's a more specific word, like use more words, not less, right? You have to kind of hit it at whatever reading level you expect people to be at, even for that kind of stuff. But with LLMs, actually, they don't have that disadvantage, right? Like you can give it a very large flowery word and if it's the most specific word, that's actually helpful because of the way the semantic search works. 
+
+**Reese:** Precision in language is actually really important.
+
+**Austin:** So you wind up needing documentation that is the same documentation you give to humans because the concepts all need to match but is organized and structured in a different way, is much longer, has kind of everything in one big chunk, is optimized for the amount of tokens and the semantic values of those tokens. But the advantage of doing this right, of thinking about how do I give the LLM documentation is that LLMs are remarkable, you know, especially if you're using them as part of like AI-assisted coding, are remarkable at reducing toil. 
+
+**Austin:** One of the things that I think, you know, all of us here have been working in observability for years and what is like the one thing nobody wants to do? Nobody wants to do a migration, right? No, you go tell someone like, "Oh, here's the new thing." They have to rewrite all this instrumentation, all these logs, all this stuff. They just be like, "Thanks, I'll pass." It's 'cause it's a toil. It doesn't make sense, right? The existing stuff works well enough. It's maybe it could be better, but you know, we're not going to go dedicate however many engineers' lives for three months to rewrite all of our logging statements. 
+
+**Reese:** But what if you just have an AI do it, right? The AI doesn't care. It doesn't complain. If you give it good instructions and good rules, it's able to, you know, make good decisions. And it's not like you're replacing human effort, right? You're not replacing the programmer. You're not replacing the people that are responsible for maintaining the system. You're easing the burden of modernizing what they're trying to do. 
+
+**Austin:** And so you're actually benefiting those people a lot 'cause even with improvements in AI-powered anomaly detection, whatever, right? Like we've been doing AI in observability for a while. LLMs just advance it a little bit, maybe a lot, we'll see. But even non-AI stuff, right? If you think about traditional sort of anomaly detection and heuristic-based detection, it's still machine learning. LLM machine learning. It's all machine learning. We've been doing machine learning for a while. And when you get to a certain size and complexity of your systems, you have to have it because there's just too much data for humans to process and go through. 
+
+**Reese:** So let's figure out how we can, you know, that to me is like the impact of AI on observability and on OpenTelemetry is we can make it easier for the AI, make it easier for your observability tooling to understand OpenTelemetry and interpret what's happening in your system better and at the end of the day give you more time to do...
+
+**Austin:** We had talked about OpenTelemetry project updates, which took place yesterday, right? 
+
+**Reese:** That sounds right. I'm losing track. I'm losing...
+
+**Austin:** Yeah, it is. It was yesterday.
+
+**Reese:** Milk. That doesn't sound like a good bagel. I wish it said bagel clock. 
+
+**Austin:** This is probably a great visual bit for the...
+
+**Reese:** And it's been... it attracted my attention ever since I came up here and now it's like I've been obsessed. I've been waiting for the appropriate moment to drop the bagel clock into the conversation.
+
+**Austin:** You did it. There you go. This is what we call commitment to the bit.
+
+**Reese:** Yes. I update. 
+
+**Austin:** Yeah, project update. So, OpenTelemetry right now is the second or first biggest project in the CNCF, depending on how you count it, but contributing across, you know, dozens and dozens of repositories. We're maintaining APIs, SDKs, tools in, you know, dozen plus languages. A lot's going on, right? And at this point, the project is really too big almost to have kind of a single narrative of whatever we're doing, but there's a few areas that we wanted to focus on. 
+
+**Austin:** We're starting to see a lot of great adoption of OpenTelemetry by the sort of broader community outside of just OpenTelemetry. We're starting to see more CNCF projects natively integrate OpenTelemetry. We're starting to see are integrating OpenTelemetry into their frameworks and into the, in Dino's case, into the runtime itself, right? So if you're writing a JavaScript app and you're using Dino, you pass in a config, you don't have to do anything, which is great. That's the vision for the project. 
+
+**Reese:** So beyond that, you know, beyond the kind of growth we're seeing in adoption, we're seeing a few, you know, longer-term projects that we are proceeding along. 
+
+**Austin:** So one thing that we've been working on over the past six to eight months, we've had a lot of progress there. We have a system-level profiler that is being worked on. It uses eBPF and various other technologies to let you use profiling across your services on a node. That is still in alpha, like it's not done. It's not ready, but pretty soon that should be ready for people to start banging on. 
+
+**Austin:** Another important thing we're doing is that we are evolving our logging infrastructure or logging APIs. So traditionally we would just bridge to your existing logging API because there's a lot of those. There's Log4j, there's various facades in Go and .NET and wherever, but one of the pieces of feedback we were going out and finding these sort of consistent metadata across services and libraries and domains is people need a structured way to emit structured events, right? Things like that you and I would probably call the LOG. Some people would call it an event. 
+
+**Reese:** And one thing I have learned is that the third rail of observability is talking about logging at all because people are very, very precious about what the word logs means to them.
+
+**Austin:** I've noticed.
+
+**Reese:** Oh, true. Yeah. It's you don't mess with people's logs.
+
+**Austin:** Yes. So what we've kind of come to realize through this whole process is that we need some sort of API level answer to that and we're pretty close to have, you know, we have some OTAs and some specs in flight on this, but the idea is that there will be an OpenTelemetry logging API that will exist to let you emit structured events. 
+
+**Austin:** A structured event is really just a fancy way of saying a structured log that has a known schema, right? In the same way that semantic conventions in OpenTelemetry let you apply schemas to your telemetry, to your logs, or sorry, to your metrics and traces. You'll be able to say, hey, here's a client-side ROM event, or here's a, you know, out of memory exception, or any of the various things that can happen. You'll be able to say, "Hey, here's a generative AI prompt, for example." And what we'll do is you'll be able to either take that and use it like you would use a span event today and bundle it in with the span or you'll be able to emit it separately through the log record signal and then have your backend either stitch them together or process them independently or do whatever, right? Like once it's out of our hands, we don't really care what you do with it. 
+
+**Austin:** But that's probably the two big in-flight things I would say. Beyond that, a lot of work is happening on other things. Stabilizing the collector, stabilizing various other SDKs and APIs. Shout out to our JavaScript SIG which just released JS SDK 2.0. My understanding is this fixes a lot of problems that people have had with especially with bundling it and things around ESM modules. I don't quite know what all that is. It sounds very scary. The JS devs assure me it's very important, but seriously I think it's actually a really good sign of the health of that project, right? That they have been able to get enough feedback about like, hey, these are the decisions that worked and didn't work to create a 2.0. And then for an end user, I was actually talking to someone Monday, Sunday at Cloud Native Rejects about this who maintains an integration into OpenTelemetry into his company's product and he was like, oh yeah, the migration was like five minutes, right? 
+
+**Reese:** Wow.
+
+**Austin:** Because the API and the SDK are independent, so an SDK change is really very, you know, it's not a huge deal, it's not a lot that you have to do to take those updates. So that's something that for obviously other maintainers may or may not decide to do it, but we're, you know, it certainly seems that a lot of maintainers are thinking about, well maybe it's a good idea to go back. It's been five, six years, right? Like you can learn a lot, you get a lot of great feedback over that time and there's things that we would probably do differently in every language if we had a do-over. So thanks to the OpenTelemetry architecture, you can kind of get that do-over, which is cool.
+
+**Reese:** That's great. How are we on time? I'm not sure 'cause we have...
+
+**Austin:** Are we on time, producer?
+
+**Reese:** Okay. Well, I guess this could be a good opportunity for us to plug some upcoming stuff like OpenTelemetry Community Day.
+
+**Austin:** Yes, OpenTelemetry Community Day in Denver, Colorado coming up this summer. June 25th or 26th. It's the same week as Open Source Summit. Go look on the web. The CFP is closed unfortunately, but we will be, we should be announcing the schedule on that here pretty soon. Even if you aren't planning on, you know, plan on speaking, highly recommend everyone that's in the US, North America to come out to that. It's going to be great.
+
+**Austin:** And we are also, no promises, but we're trying to do a community day in Europe this year. So stay tuned. If not this year, definitely next year. 
+
+**Reese:** Is it going to be part of Open Source Summit EU or that would be the plan, but nothing's set in stone. But we've definitely, one of the fun facts at the project update is that about 50% of our contributors are actually not in the US in OpenTelemetry and we've seen now that's US and then everywhere else, right? So, but if you look at, if you break it down by like region, so you go like North America, EMIA, APAC, other, then we like the line for EMIA is just like doing this and the US one is kind of doing this a little bit. 
+
+**Austin:** So they're starting to get closer and closer together. But we've definitely, you know, one of the things I always love coming to KubeCon EU is we have so many, you know, our user community is so vibrant here. We have so many maintainers whose work is just fantastic and we really want to support our European end user and contributor community. So we're very strongly going to be figuring out how to do a European community day.
+
+**Reese:** Awesome. Oh, that's awesome. 
+
+**Austin:** Yeah. I always love the vibe at the KubeCon EU. It's just very vibrant. And I think at the keynote, they mentioned this was the biggest KubeCon so far, 12,000.
+
+**Reese:** Yeah. Over 13,000 people.
+
+**Austin:** Over 13,000. That's the number I heard. Damn, that is wild.
+
+**Reese:** Yeah. No, they... I mean I...
+
+**Austin:** And it's like how's your KubeCon? And they say it's like, "Oh, it's my first." I'm like, "You're going to have that. Bring lots of water. Bring lots of water."
+
+**Reese:** But I love that we're still that new people are still coming into this community, right? That we're really cool to see the growth of, you know, this community, right? Like to see it expand, to see it bring in new people, right?
+
+**Austin:** Yeah. Oh my god. There's a ton of people that we know that all the three of us here know that careers, friendships, right? Friendships like that's given people the opportunity to really, you know.
+
+**Reese:** Yeah. 
+
+**Austin:** That's neat. 
+
+**Reese:** Yeah. Also, it feels like a family reunion every time we're together, right?
+
+**Austin:** Yeah. No, it's great. It's like a family reunion with like 10,000 people.
+
+**Reese:** Yeah, a bunch of batteries and then we get on the other side. They have the retail technology exhibition. 
+
+**Austin:** Yep. They actually get a red carpet. Very loud burgers walking around which was exciting. It was definitely unexpected.
+
+**Reese:** Yeah, I know. We were walking yesterday and we're like well the tube it was like there's like two stops.
+
+**Austin:** Yeah, there's a station either end.
+
+**Reese:** Yeah. 
+
+**Austin:** And I heard that it's actually faster if you time it right to take the tube. 
+
+**Reese:** If you hit... if you hit the...
+
+**Austin:** It also depends on where you start from, but if you're from door to door, it's definitely faster. 
+
+**Reese:** Yeah, it's nice. You just tap in and out.
+
+**Austin:** Oh, I know. 
+
+**Reese:** Yeah, it's really card. Discovered that.
+
+**Austin:** Oh, is that better than the...
+
+**Reese:** I just use Google Pay.
+
+**Austin:** Yeah, you can use your phone. 
+
+**Reese:** Yeah. 
+
+**Austin:** Yeah. Works well. 
+
+**Reese:** Yeah, we have that in Toronto. I mean, we have tap in New York. They finally... it's Omni now. Omny instead of...
+
+**Austin:** This for another episode.
+
+**Reese:** Live stream for you from KubeCon EU. Sorry guys, it's been a long week. Thank you so much for joining us. We will have our lovely guests. Again, I'm Reese. This is Adriana. Thank you so much Austin for being here and Marilia for being here earlier. And also shout out to our behind the scenes. He is the one producing all this for you, all of our streams. Yes. Henrik said from Dana Trace. Thank you so much and we will see you next time.
 
 ## Raw YouTube Transcript
 

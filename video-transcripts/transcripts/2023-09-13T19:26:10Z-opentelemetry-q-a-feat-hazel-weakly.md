@@ -10,91 +10,283 @@ URL: https://www.youtube.com/watch?v=wMJEgrUnX7M
 
 ## Summary
 
-In this YouTube video, Hazel Weekly shares her experiences and insights on observability and the implementation of OpenTelemetry in organizations. She discusses her journey as a novice user approaching OpenTelemetry, the challenges of over-instrumentation, and the importance of asking meaningful questions to utilize telemetry effectively. Hazel explains how she navigated obstacles in organizations, such as managing excessive data volume and ensuring meaningful instrumentation, often finding herself as a one-person team tackling complex issues. She highlights the cultural and technical hurdles in convincing teams and executives to adopt observability practices while emphasizing the need for thoughtful implementation of telemetry tools. The conversation covers the intricacies of sampling, the challenges of using various programming languages, and the significance of aligning technical capabilities with business needs. Hazel also touches on the complexities of regulatory compliance, particularly in relation to government standards like FedRAMP. Overall, the discussion provides valuable insights into the practical application of OpenTelemetry and the importance of a strategic approach to observability.
+In this YouTube video, Hazel Weekly discusses her experiences with observability and OpenTelemetry, providing insights for novice users. The conversation touches on the initial challenges companies face when adopting observability, including understanding the need for meaningful telemetry and the tendency to over-instrument systems without clear intent. Hazel shares her journey of helping a company reduce unnecessary data collection and implement effective instrumentation, highlighting how cultural and organizational factors can complicate observability efforts. She emphasizes the importance of aligning observability practices with business goals and the need for effective communication between developers and stakeholders. The video also covers specific technical challenges encountered while working with OpenTelemetry, including issues with sampling, baggage, and the ergonomic difficulties of manual instrumentation in various programming languages. Overall, Hazel's insights underscore the complexity of implementing observability in real-world scenarios and the importance of thoughtful design in telemetry practices.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:00:20 Introduction of Hazel
+00:01:21 Observability definition
+00:03:00 Instrumentation challenges
+00:05:00 Cost-driven changes
+00:06:25 Sampling methods
+00:09:30 Over-instrumentation issues
+00:12:01 Context propagation challenges
+00:15:00 Convincing the team
+00:18:00 Observability improvements
+00:19:01 Anti-pattern discussion
+00:23:00 OpenTelemetry support in languages
+00:27:00 Baggage challenges
+00:30:00 Ergonomics of instrumentation
+00:34:30 Libraries for OpenTelemetry
+00:38:35 Infrastructure management experience
+00:45:00 Making the case to executives
+00:50:00 Regulatory compliance challenges
+00:56:00 Closing remarks and future events
 
-00:00:00 Introductions and welcome to Hazel  
-00:02:30 Hazel shares her initial experiences with OpenTelemetry  
-00:05:00 Definition of observability from different perspectives  
-00:08:15 Discussion about the challenges of over-instrumentation  
-00:12:45 How to encourage teams to focus on meaningful telemetry  
-00:15:30 The importance of asking the right questions in observability  
-00:20:00 Sampling methods and their impact on data collection  
-00:27:00 Challenges with asynchronous programming in OpenTelemetry  
-00:35:00 Insights into convincing executives about observability needs  
-00:42:00 The complexities of running OpenTelemetry in production environments  
-00:46:30 Wrap-up and next steps for Hazel's future talks  
+[00:00:20] **Host:** Thank you. Welcome everyone to the OpenTelemetry Q&A. We have the pleasure of having our good friend Hazel Weekly come talk to us about her experiences with observability. Welcome, Hazel.
 
-Feel free to reach out if you need more information or assistance!
+**Hazel:** Glad to be here! Very excited for this. Yay!
 
-# Observability Q&A with Hazel
+**Host:** I guess let's start with first things first because I know we still have a bunch of OpenTelemetry novice users just getting into OpenTelemetry, folks who join our end-user working group. From the perspective of somebody who's new to OpenTelemetry, can you share what that experience was like? What kind of landscape were you coming into? I guess for starters, drawing back on that experience, was the company at that point ready for observability? What kind of kick-started the conversation into OpenTelemetry in the first place?
 
-Thank you for joining us for our observability Q&A session. We have the pleasure of having our good friend Hazel Weekly here to discuss her experiences with OpenTelemetry. Welcome, Hazel!
+[00:01:21] **Hazel:** I would say, so I'm going to start off with my definition of observability because it's slightly different. The definition from control theory would be like, can you understand this system from the input and the outputs? Fred Herbert might talk about the definition from cognitive safety systems engineering, and that one is much more about the work required and the process required for a group of people to be able to understand everything and actually understand the system. That's how they discovered and think about that. Mine is the process through which you develop the capability of asking meaningful questions and getting useful answers. It's a process because it's evolutionary, and the questions have to be meaningful to you—whatever that means—and the answers don't have to be correct, but they have to be useful. 
 
-**Hazel:** I'm glad to be here! I'm very excited for this.
+[00:03:00] So when I look back at the company when we were starting to think about observability, or rather like distribution, literally, what are the questions that the company is starting to ask from the perspective of the engineers? One of the questions the company was asking from the perspective of the managers and what was it asking from the perspective of the executives? From the engineers at one of the companies that were early adopters of OpenTelemetry, they had it and they had instrumented things with it, but more from the perspective of “we know we need this,” but they didn't necessarily have that motivation yet. They weren't asking the types of sophisticated questions that motivate people to add their own telemetry. They had a bunch of telemetry, and they had a huge amount of instrumentation, and they had just the volume turned up to 11, and no one was actually querying that information. 
 
-Let's start with the basics, since we have a lot of novice users just getting into OpenTelemetry. From your perspective as someone who was new to OpenTelemetry, can you share what that experience was like? 
+What I was able to do was turn down that volume significantly. I essentially said, “You're not using this, and you're not asking any questions from your system.” So when you do, don't turn the volume back up; add that instrumentation in there with thought and intent. That was an interesting hurdle to happen because in a way, people would ask questions to understand the system. They were asking them to solve a problem, and consequently, they just wanted every bit of information ever so that whenever they needed it, they could just go through a giant stack of noise and find a needle, right? That's not really what OpenTelemetry is for. Online distribution is for, can you understand the state of your system to the point that you only collect what you actually need? That is, in and of itself, a second layer of understanding the system, and they didn't have that second layer.
 
-### The Initial Experience with OpenTelemetry
+**Host:** Right, so it sounded like they were instrumenting for the sake of instrumenting and just sort of throwing everything at the wall and hoping something would stick. 
 
-**Hazel:** Sure! When I first joined the company, I would say that the definition of observability I hold is slightly different from the traditional one. From control theory, it’s about understanding a system from its inputs and outputs. In cognitive safety systems engineering, it’s about the processes required for a group of people to understand everything about the system. My definition focuses on the capability of asking meaningful questions and getting useful answers. This process is evolutionary, and the questions must be meaningful to the people involved.
+**Hazel:** Yeah, that also sounds like a very “I came over from Vlogs and I'm used to being able to search everything ever” approach. They also still had logs, which is a surprise. Basically, nobody of course. 
 
-Looking back, the company was at a stage where they were starting to think about observability, but they weren't quite ready for it. They had a lot of instrumentation but lacked the motivation to ask sophisticated questions. They had a high volume of telemetry data, but no one was actually querying that information. I managed to turn down the volume of telemetry significantly and encouraged them to only add instrumentation thoughtfully and intentionally.
+**Host:** In terms of like, how did you convince them to kind of tamp it down and direct it, make it more directed so that it could actually work for them?
 
-### The Hurdles of Over-Instrumentation
+[00:05:00] **Hazel:** Convincing them to champion it down and turn the volume down was actually pretty easy. That came down to cost. They were about 300% over budget from the vendor, and so I said, “I need to get you under budget.” I actually have a very funny image from that time period where you see the ingestion at about like two to three hundred million events per day, and you know I'm trying to tweak it down to about like 200, 250, or like, you know, 180 to 250 million. That was with very, very aggressive sampling. Finally, I figured out a bunch of misconfigurations in the sampling information and dropped it to about like three to five million events per day. 
 
-It seemed they were instrumenting just for the sake of it, throwing everything at the wall and hoping something would stick. How did you convince them to dial it back and make it more directed?
+Once I had done that, they had concerns about, “Oh, what if I can't find something?” I said, “Well, do you need to ask that question?” Then we were able to actually start the useful dialogue of, “Now that you have a question you need to ask, go and build what you need in order to get that answer.” Naturally, that sort of feedback loop that you kind of need with observability, whether or not you need that feedback loop end-to-end is a different question, but that is currently what OpenTelemetry requires. 
 
-**Hazel:** Convincing them to reduce the volume was easier than expected, largely due to cost concerns. The company was over budget with their vendor, and I emphasized the need to get under budget. I managed to reduce the ingestion from hundreds of millions of events per day down to about three to five million. Once we established that they needed to ask specific questions, we could start building what was needed to get those answers.
+[00:06:25] **Host:** I think that's really great because being able to know what questions to ask makes it a much more meaningful experience. In your words, not searching for that needle in the haystack. I want to go back to sampling for a second. So sampling to a sampling was, we did the sampling through two methods. We had the OpenTelemetry collector, and I'll show you now, but at this company, we only had the Honeycomb Refinery set up until we had that set up. At other companies, we've had the OpenTelemetry collector setup, and I've used that. My preference is actually to use both, regardless of whether or not using Honeycomb. 
 
-### The Role of Sampling
+The reason for that is because the OpenTelemetry collector doesn't have the best steel sampling configuration, and the OpenTelemetry collector has like the most open-source line economic sort of configuration setup to consent things to multiple sources and multiple sinks so that is actually really useful. I like to use that one, and then aggregate everything and send it to Refinery and then do useful tail sampling. But running two pieces of information is kind of complicated for a lot of people. It's not going to be a huge hurdle of adoption to like my current company. They use DataDog, and one of the challenges there is they're not at the point where they can ask sophisticated questions of their infrastructure. 
 
-You mentioned sampling earlier. Can you elaborate on that?
+I'm really still more at the point of “Is it on?” The question there is, well, even if I set things up for success by switching us to the OpenTelemetry line instrumentation tooling and then still send it to the same place, we now need to run like the collector in multiple places or run like a collector and Refinery just in order to do the same thing that they already do with their built-in tooling. That can be a bit of a lift because rather than saying “install library,” it's “install a library and have like five things also.” 
 
-**Hazel:** We used two methods for sampling: the OpenTelemetry collector and Honeycomb's Refinery. My preference is to use both, but running two pieces of information can be complicated. At my current company, we use Datadog, and they’re still not at the point of asking sophisticated questions about their infrastructure. Transitioning them to OpenTelemetry would require running collectors in multiple places, which complicates the setup.
+**Host:** Going back to the first organization where they were sending like way too much data, after you convinced them to chill and do more directed instrumentation, what was the next sort of hurdle that you experienced?
 
-### Challenges with Instrumentation
+**Hazel:** There was a notch hurdle there. The way that company structured work was very much the over-platformed thing, this little towards unusual, but they had like developer productivity teams, and they didn't really have a platform team. What they had were engineers that didn't do work. The engineers didn't do infrastructure stuff; they wrote additional code, and they would have a bunch of people working on build tooling and build other stuff like that. 
 
-After convincing the first organization to streamline their instrumentation, what hurdles did you face next?
+[00:09:30] The question was, in the way that they do work in order to adopt OpenTelemetry successfully, you would need to essentially build libraries for things or write stuff into the code in a way that engineers weren't necessarily writing their own instrumentation, and that requires working at a level of abstraction that OpenTelemetry is really, really difficult. You can't propagate certain types of information down to child spans very easily or really at all. Setting up baggage is still very difficult. 
 
-**Hazel:** One major hurdle was the way the company structured its work. They had developer productivity teams but no dedicated platform team. Engineers weren't responsible for infrastructure, which made adopting OpenTelemetry challenging. Many engineers added instrumentation without understanding the full context of where it was implemented, which led to a lot of dropped information. I spent a lot of time manually tracing errors back to the source code and fixing small issues.
+I'm working with context can be really tricky. If somebody uses an async function, then you might drop that and have to reconnect it somehow, and if the lifetimes aren't like already set up nicely, people can even add their own instrumentation, and then it'll get dropped from something because they don't actually understand the full context of where it is. They're just random code, and they add something, but in OpenTelemetry, you have to understand the call stack, not just the functionality, and those aren't always the same.
 
-### Navigating Team Dynamics
+**Host:** Interesting. So how do you get over that hurdle?
 
-Were you working alone during this process?
+**Hazel:** At that company, I was never able to fully get over that hurdle. I just made it better. One of the ways that I made it better was essentially following through all of the spans manually and looking for errors. When I found errors, I would trace it down to the source code, and I would do that. I ran into a bunch of very small things of like propagating information wasn't correct. So it was probably the information of like the helper functions rather than the actual call sites to activate that. Then I had to fix like 500 small things. 
 
-**Hazel:** For a period, yes. I was the only one tackling these issues while my colleague was on parental leave. It was tricky, but I had a good intuition for what the code was doing at runtime. I had to engage in a lot of dialogue with the team to ensure they understood the issues and could trust my judgment.
+Even when I did that, I found that there were a bunch of places where these looking as contexts weren't being complicated, so functions were just being launched or, for example, calling tracing, and that was being disconnected from the actual whatever. Sometimes things had to end before they started or start before they ended, and that got confusing because the language that they were using, it's very easy to write code in that logic, and it actually is more correct to do it that way. 
 
-### Building Trust with Predictions
+But OpenTelemetry, in its design, is very much a chicken-and-egg call stack, a tree-shaped, which is really, really ergonomic for a language like Java. It's not necessarily ergonomic for languages that aren't like that. So like React is a really common example because it's a runtime that's asynchronous, and it's really difficult to write code in React to the deadline nicely. 
 
-How did you build trust with your team regarding the issues you identified?
+[00:12:01] I suppose a good one closer is a good example of one that doesn't work very well. Watch does work, but for a very interesting reason, and that is because the Rust language cares about lifetimes. So you think about the lifetime of your functions, and so you always know what those are, and those end up being the natural tracing point protocol stack-based tradition library.
 
-**Hazel:** I started making predictions about system behavior, and when they turned out to be correct, I gained their trust. For example, I predicted that a spike in database activity would cause performance issues, and when I provided a solution, it worked. However, I struggled to convince them of more fundamental architectural issues before I left the company.
+In terms of what we were able to do and how I was fixing it was really mostly in guacamole and doing some weird clever things to pack into the language runtime in order to make things hit the semantic model differences between OpenTelemetry and other language things about calling code.
 
-### Observability Improvements
+**Host:** So were you like a one-woman show doing all of this?
 
-By the time you left, did you see any positive results from your efforts in observability?
+**Hazel:** So the other person on this was off on parental leave, so for the duration, I was actually one person. 
 
-**Hazel:** Yes, there was a better understanding of observability and how to use it. I fixed a number of issues that led to more accurate error tracking, which made people more willing to utilize the tools we had. Although they had over-instrumented through auto-instrumentation, the manual instrumentation was often useless. I helped them understand how to structure their data better to facilitate useful querying.
+**Host:** That is mad impressive. Did you want to like pull your hair out some days?
 
-### Observability Challenges in Organizations
+**Hazel:** It was tricky. A lot of it was that one of the benefits of using OpenTelemetry is that you get like this intuitive sense of what the code is doing at runtime if you play with it enough. They had to sit there and kind of doodle with it and look things up and ask questions and get answers. You have to have that dialogue running, and I knew how to do that, and no one else at the company was doing that except like one or two people. 
 
-You mentioned that many organizations struggle with OpenTelemetry. What do you think is the main issue?
+**Host:** Wow, and so you had like a very small select power users, favorite people, and then you had everyone else who may not have even like used OpenTelemetry at all or even knew like a vendor in any way whatsoever. 
 
-**Hazel:** A lot of times, organizations face cultural challenges. Engineers can be very self-directed, leading to incomplete implementations. They might finish 80% of the work and then move on, leaving things half-done. This leads to a lot of noise in the telemetry data without meaningful insights.
+**Hazel:** Yes, and I would get an intuitive sense if one was broken and what was wrong or something, and I would say, “Hey, like this is an issue,” and then people wouldn't necessarily believe me.
 
-### Making the Case for OpenTelemetry
+**Host:** Interesting. So how do you end up convincing them that it is an issue, or could you convince them?
 
-Can you share your experience in making the case for OpenTelemetry to executives?
+**Hazel:** I was able to take advantage of certain people of the things, and one of the ways that I did that was essentially my predicting things, and then my predictions would turn out to be correct, and then I would give a solution to the position, and then the solution would work. One was the database was very, very spiky, and I mentioned that this was going to cause some sort of issues. One of the reasons that the database was spiky was because we had like basically the disk would slow on a database, and so we sped up the disk on the database quite a bit. 
 
-**Hazel:** Making the case involves two migrations: a technical migration and a social migration. You need to show that the time and effort saved by migrating to OpenTelemetry will pay for itself in a reasonable timeframe, typically around four months. If you can demonstrate tangible benefits, executives are more likely to invest in it.
+[00:15:00] When that happened, despite this level down, these sets were still very spiky in general, but despite going high enough to lock things down, there were small things like that added up over time, and people started to believe me a lot more when it came to certain issues. But other ones that were more fundamental in the architecture, I never actually got around to being able to convince people of that, and I actually ended up leaving that company mainly due to that.
 
-### Conclusion
+**Host:** Interesting. By the time you left, did you find there was at least like they were getting more out of their observability at that point? Because of your efforts, did you at least see some positive results because of that?
 
-Thank you again, Hazel, for sharing your insights! This has been a fantastic discussion, and I look forward to having you back for the next session on September 14th. We appreciate your expertise and the valuable lessons you've provided on navigating the complexities of OpenTelemetry!
+**Hazel:** Yeah, I did. There was a lot better understanding of where they were with the observability. People had more of an understanding of how to use it. I had like a couple of things so that it was more useful. They had a lot of it, but some things were wrong. If the error stack was there, the error stack died at the wrong spot, so it wouldn't actually tell you where the error happened. It would tell you where you defined the OpenTelemetry like the tradition helper, which is pointless. 
+
+So I fixed that, and then all of a sudden the errors were correct again, and people were happy about that. Then they would actually use it. I had fixed a bunch of things, and I had reduced the usage from like two to three hundred events per day or even maybe 50 million events per day to like right. When that happened, then people could continue to add OpenTelemetry and add instrumentation everywhere without running into the physical—they were going to blow their budget even more than their own work. 
+
+That allows people to continue to add more instrumentation. 
+
+**Host:** So then I guess there it seems like there wasn't an issue per se as far as like getting people to add the instrumentation at that point because they were obviously—they had already over-instrumented the system previously. 
+
+**Hazel:** Yes, it was interesting. They had over-instrumented it, but only via auto-instrumentation, so there was very little manual stuff done, and the manual stuff that was done was often done in a way that made the questions you could ask relatively useless. So like one example was, there's like at the top of the watched halfway down when in the life cycle of the call stack is when they would get the user ID associated with it because of how the database calls worked. 
+
+But the user ID was never propagated to the top, so it was actually impossible to figure out how many pages a user was visiting, like procession. These types of questions whether or not I usually like it's on the same thing over and over because the question we wanted to ask was, “How effective would database account should be?” But would it be effective to put radish there somewhere? Probably don't have a 60-second something TTL. We had no idea because we couldn't actually ask that question. All the information was there, but not actually in a way that made anything possible to look for. 
+
+[00:18:00] Because you couldn't look halfway down the span in order to get this span of correlated with this one, so that tree—you can only ask for things on the same level and down and filter that way. They needed to fix that, but no one necessarily knew how to, and no one necessarily knew that they wanted to because they weren't asking that type of question. 
+
+So I brought that up, and then people started to get more of a sense of, “Oh, here's kind of where we put the information in a way that's visible.” To this day, I still don't have like a really good way to explain to people how to think about that other than you do kind of need to display the system. I couldn't understand where the data needs to be in order to be useful for asking questions.
+
+[00:19:01] **Host:** Yeah, that makes a lot of sense. So yeah, that's so interesting. I find this such an interesting sort of, I don't want to use the word “use case,” but scenario, if you will. Because oftentimes we hear the stories of people just struggling with bringing OpenTelemetry into the organization and then starting to instrument, and this feels like it was like one giant anti-pattern—one giant OpenTelemetry anti-pattern—which I think is a very important thing to be able to discuss because, you know, like all tools, OpenTelemetry can be grossly misused, and then you end up with scenarios like this where you're instrumenting but you're not getting anything out of it.
+
+**Hazel:** It was really interesting to see how this happened because a lot of what happened is due to how the company works and how it thought about working. It was very anarchic in the sense that engineers were very, very self-directed, and they would do things. The company had a huge cultural issue of intricate 80 percent done with instrumentation, maybe like 90 percent done, and then they would just drop off or someone outside traffic had to do something else, and no one else would pick it up. 
+
+No one would sit there and make sure the things got fully finished, and so that essentially happened where we had one employee set up the main amount of instrumentation, and then one or two people added like some things to it, and one or two people added some things to it, but no one did like that last 20 percent of actually tuning things down. They turned everything on, they turned it all up, they added a bunch of things, and the only instrumentation, and then no one actually necessarily used it. 
+
+For example, the OpenTelemetry instrumentation library was something they had to write because they used Haskell as a language. What that meant was they had each database query; they had four different spans. It would make a span from the start of the query instead of a transaction, an end of a transaction, and an end of a query. So you had, and then you have the command of a query itself. Every single database call cost at least four to five spans to appear.
+
+**Host:** Oh wow.
+
+**Hazel:** And there's no way to configure that or turn that down or cool unless things or anything like that. What happened was that word created, and then anytime you had like an N+1 pattern just appear instantly in the database, you would have given millions of events, millions of spans all over the place. They were like, “Oh, well, what do we use? Span events instead?” Most vendors either charge per ingestion, or they charge for like the telemetry that actually doesn't shift the cost anywhere. 
+
+It sometimes meets the user interface slightly better, but it doesn't shift the cost, which is one of the reasons why people say, “Have one wide event when you put things in there, then like, you know, have timestamps and don't be afraid to use that.” But they were using the SDK essentially as the timestamp functionality to do a query event anytime, at any time, mark that something happened with a crazy fan anytime something happened, and it formed all the way down to the auto-instrumentation. 
+
+That was tricky. That was probably like 80 percent of like, “Now we have instrumentation in the database,” but no one actually said, “Well, it turns out literally every other database SDK lets you turn 90 percent of the auto-instrumentation off,” and for a good reason. Same for like instrumenting the HTTP server, like the web server. You highlight the web server and then you have the web framework, and both of them had almost identical levels of instrumentation. 
+
+Depending on which endpoint handler was in place, you either got one top-level or the other top-level or both, and so you had like a massive amount of certifications of the amount of spans that you might not need. It turns out it's largely because there wasn't really an ergonomic way to say, “Add this to a span if it exists; otherwise, create your own span.” That pattern is really necessary for libraries, and it's not actually really relevant in the SDK; it's not really mentioned anywhere, and it's not really possible for a lot of languages to do.
+
+[00:23:00] **Host:** Right. Yeah, that is an interesting problem to have. So now when you were helping this organization with OpenTelemetry, how well-versed were you in OpenTelemetry at the time?
+
+**Hazel:** I was knowledgeable of it, and I thought about it. I had done some things with it, and there had been like a previous company where I had really played with OpenTelemetry and React. I had set up like some very interesting and overly clever TypeScript helpers that made it really easy for people. I had familiarity there, but this company is where I had to really dig into the Refinery, into configuration, into operationalizing it, and to controlling the cost and understanding it from like that to the perspective of the operator rather than the end user. 
+
+So that was an interesting change in perspective, and I ended up reading pretty much the entire RFC for everything, most of the SDK code, and a whole bunch of other things. I dug really, really deeply into it, and to this day, I will still not necessarily understand baggage. Like, I understand it, but it's kind of not well implemented.
+
+**Host:** Yeah, you were mentioning earlier that it's funny because I was reading up on baggage today, and you were mentioning earlier that baggage is still kind of wonky to work with. Specifically, what were some of the challenges in working with baggage that you experienced? Because I think this would definitely be good feedback for the OpenTelemetry folks, the maintainers.
+
+**Hazel:** It comes down to baggage is a really generic tool that ends up being used for like five different things, and they mostly come up when you want to stitch together multiple services or when you want to write a library or do something like that or write like a platform for people so that they can instrument things very easily and not have to worry about certain underlying implementation details. 
+
+You can also use baggage to paper over the API of a lot of things and do what you want to even if you shouldn't necessarily do that. For example, package or just context application in general is more or less the only way you can have a directed acyclical graph. Otherwise, you only really have like a linear constant, and you have like some ability to form links, but even that is pretty under economic. But you need to know where you're linking to and where or what you're linking from. 
+
+Baggage will let you like put things in a header so that you have cost service cost registration. The actual distributive part, the markets, is also the thing that you need if you want to navigate information down to public information upper chain, and there's also what you need if you want to write some sort of demand processor as a way to work around issues. So if you want to have like something added to multiple spans down, then the only way to do that, really, as far as I can tell, is to write a span processor and use this package to pull that information out. 
+
+You would add something to the package and then ask the span processor if it's really thrown the spans, and it'll reconstruct that whole tree and figure everything out and then add that in there. You've more or less rewritten the Refinery in your code base, or rewritten the OpenTelemetry collector in your groupies in order to use packets in order to add certain features that aren't in the SDK yet.
+
+**Host:** Interesting. Did you find that with other aspects of OpenTelemetry as well that were kind of limiting for you when you were working with it, when you were digging deep?
+
+[00:27:00] **Hazel:** I think the main thing that was limiting outside of that aspect was that it's really hard to make adding instrumentation that's manual ergonomic. It's just difficult, and a lot of that comes down to OpenTelemetry really wants you to like have written the code right there, and you need to kind of know how to do that, and it's very hard to wrap the libraries themselves without adding like that extra layer of interaction that makes things hard. 
+
+So unless your language has a very massive macro system and you can use that ergonomically, it's difficult to do that. Languages like TypeScript don't. In TypeScript, what you really want is something like a decorator; you can't get that. The other issue that I really ran into ergonomically with OpenTelemetry would have been based around async/await. The async/await one was probably one of the larger beams of my existence, and the reason for that is there's multiple different ways you can write, and especially as you're going to smoke, there is one way that OpenTelemetry works, and that would be if the parent function follows a child function. 
+
+You're going to sleep, pass the context into it, and then waits and outlives the child function and then end-to-end span. So you have like a circuit historic, but actually, this only inside the lifetime of the parent's span. Anything other than that use case gets really weird.
+
+**Host:** What about span links? Aren't they supposed to kind of alleviate that though?
+
+**Hazel:** Span links do work, but you have to know how to use them. The parent still has to pull the child, and then the child has to have the parent ID in order to link to that, or I think vice versa. I don't know if you can do that, but essentially I couldn't write a function generically so I was unaware that it was being called from the parent and then had to link up to the parent. 
+
+That was tricky because a lot of languages, you want to write like a library or something, and the library can be very agnostic. So I don't necessarily want to say this function is called pharmaceutical context all the time; I want to say this function is called basically in this context that's relevant to the application domain, and sometimes that's interesting context, and in which case it's been called asynchronously. But sometimes it's more synchronously, and sometimes it's called a different context altogether, and I can't express that with OpenTelemetry very easily, if really at all.
+
+**Host:** Got it. And speaking of languages, what languages were part of that landscape in that organization?
+
+**Hazel:** This organization had TypeScript and Haskell as its main languages, but I've also done OpenTelemetry with React. I don't know what TypeScript done with, and I've done it with a little bit of your name. I thought which one was the least annoying to implement? The least annoying to instrument would be probably Python because so many other people use Python, and Python is used in more of a service-sound context, and so OpenTelemetry is often used there. 
+
+That was actually more ergonomic. Python also has like more decorators and metaprograms, how many things like that to make it easier to work with. It's interesting because it's both a front end and a back end, and so a lot of things that you can do with it may have to run both in a voucher context and server context. OpenTelemetry works really well on the service side and very not great on the client side. 
+
+Dealing with all of those issues can be really tricky, and it may survive an API that works while I'm bullet is really hard to like on the client side. You want to send as little data as possible; on the service side, you want to send as much data as possible to the collectors so the collector can filter it. And so you have a completely need to there. You also have the issue of like how do I actually send data to the cluster on the client side, which is kind of solved, but not really. You end up like writing an API endpoint that supports things to the collector so that you can transparently authenticate or not authenticate in a way that actually works, and you can start to try and filter out noise signal.
+
+**Host:** I guess someone calling the endpoint or are they just like—because of where did they answer something?
+
+**Hazel:** I was reacting. The most annoying one to instrument or was there another language that you've worked with that was even more annoying? Haskell was the most annoying one to instrument.
+
+**Host:** How big is like the OpenTelemetry support around Haskell?
+
+**Hazel:** The OpenTelemetry support for Haskell is actually pretty decent, which is really funny because Haskell has a bigger usage community-wise than Master does for OpenTelemetry. Yeah, and so Haskell is an ergonomic language; it's very expressive, it's very interesting, but the one time of Haskell is absolutely absurd and makes OpenTelemetry extremely difficult. 
+
+So Haskell is a funny lazy language, which means that if you write the code, you don't have any control over the lifetime of when the code is executed or actually evaluated or how deeply it's evaluated, and OpenTelemetry really, really wants you to explicitly call things, have it start, then have that happen and turn like point. 
+
+In Haskell, laziness makes it interesting because you end up peppering the laziness with the ones of strict functions, which are the tracing stuff, and that can mess with your memory usage, can mention your performance, your interest, and it can match a couple of other things. It's very, very difficult in that language to have something include transparent; you want the tracing to be transparent. 
+
+Otherwise, the tracing is really tricky and brings a bunch of other things, and so making it transparent actually requires the use of unstable primitives exposed by the internal implementation details of the compiler and the runtime.
+
+[00:34:30] **Host:** Interesting. I feel like I learned something new today. I want to go back to another point that you had made earlier on, and hopefully, I understood it correctly. I think you made a point saying that generally organizations do tend to like create libraries around OpenTelemetry. Did I understand you correctly?
+
+**Hazel:** Yeah, and it's not necessarily that organizations tend to do that; it's that that is one of the best ways to multiply efforts when you have like a platform team when you're thinking of things in a platform engineering manner. So in general, if you have like something people need to care about life testing or instrumentation or runtime performance or some aspect of the code that isn't necessarily functionality, getting everyone to care about that equally is really hard. 
+
+It'll live on to have the same level of knowledge; it's really hard. In fact, it's kind of not even so much as impossible, but I think it's, I think, oh, people try too hard to hit, and consequently, it ends up being very, very useful from an organization perspective to accelerate your developers by having like libraries built around things or my platforms putting on things. 
+
+So you have like maybe a standard template and then your instrumentations just don't work and your CI/CD is just dealt with, and a whole bunch of other things you're done with it, and you can use it, but these structures are already set up to give people capabilities for handling things, taking care of like distribution, so that cross-service instrumentation to support the box. All those things would be things that I would want to deal with from a platform team perspective of making telemetry easier to do.
+
+**Host:** Yeah, that makes a lot easier at home really hard. So was there, at this previous organization, or even other orgs, even subsequent organizations, is that something that—it's one thing to, I think, have the aspiration to abstract that stuff from folks to, you know, make sure that they're at the same level when it comes to instrumenting. It's another to like be able to achieve that goal. Do you feel that in any of the organizations where you worked that that has been actually achieved with these kinds of libraries?
+
+**Hazel:** I've been able to get things to a point where it was achievable; whether or not I actually achieved it is a different question. But so what I mean by that is I was able to figure out ways to like wrap and abstract away the vast majority of the setup for OpenTelemetry when I did TypeScript or Haskell, and I was able to write wrappers around functions in a way that the wrappers are transparent. 
+
+So we could have like a bunch of environment variables properly in and a bunch of like sort of stand up for things dealt with in a way that people just needed to set up their application in a certain way, and then you got like the very base skeleton of the tracer and all those things were just ready to go. They can like get the, you know, without the span sort of function and have like a more limited understandable API where you didn't need to pass in certain types of contexts manually. 
+
+I've been able to do that for both, and I've even been able to do that in a way that works isometrically in JavaScript or TypeScript.
+
+**Host:** What does that mean?
+
+**Hazel:** It means you can have the same code running in server and the browser, and it works. That involved a mild amount of crimes; it involved a lot of crimes. It involves a lot of crimes. I abused how Node modules cached a bunch of things, and then I imported certain globals and then the runtime certain stable code here and there. If you import everything in the right order in the right place and then you rely on trade shaking, then your bundle on the server can be different than your bundle on the client, and you can end up splitting that out in a way that doesn't break the global singleton pattern of observability of the OpenTelemetry stuff and also not explained anywhere. 
+
+[00:38:35] **Host:** Switching gears a bit to more managing the infrastructure side of OpenTelemetry, how was that experience for you in contrast to having to, I guess, previous roles of being more, I guess, holistically focused or having to like clean up the OpenTelemetry mess? How was that in contrast?
+
+**Hazel:** Running OpenTelemetry is interesting because like you have to open the OpenTelemetry collector to run, and the collector, like, then you have to set it up. If you go outside of essentially any of the very small documentation examples, you end up having to read the RFCs for things or you end up having to read the technical design document, and they are not obtuse, but they're understandable by like a select amount of people, and you have to really dig in to understand that. 
+
+To like even for the tail sampling configuration of the OpenTelemetry collector, like an entire document of how to do it is the most difficult thing I've ever seen. It has like different layers of things; each one has its own entire language and specification setup, and it's wild. The Honeycomb Refinery is much better in that regard, but running Refinery in production is a janky mouse in a lot of ways, and that largely comes down to Refinery is really a tool that they built for themselves, and then they made it available to other people. 
+
+So here's Refinery; if you know how it works, great, you just run it. But otherwise, you can run Refinery successfully if you're an organization with high-performance CI/CD, the ability to implement things and look at them, and you have that ability to like dial things down very rapidly. Otherwise, Refinery is not going to work super well for you, and to the organization that I ran Refinery in, split the difference; they had some amount of rapid CI/CD and some men of that, and I was able to look into logs and stuff like that and get some things down. 
+
+But they used its pattern and Refinery due to how broken the OpenTelemetry stuff was. We ran into essentially every error case and edge case of it. For example, one of the edge cases that we had was many spans were not like, you know, a minute or two long. Finished spans were hours long or even days, and we had some spans that were multiple weeks in length, and we also had some spans that had over three to five million events in them. 
+
+What ended up being was you would have something that would go, you know, I started to ask, and then that starts to span, and so this would be like an asynchronous job. Into the asynchronous job would, for every single user in the database, do a whole bunch of validation stuff, and so that would be about like 1,000 demands per user times 500,000 users or 20,000 spans per user times 40,000 users. 
+
+It's ridiculous! Or like for every single item in the database, check its consistency in one span, so that would take like 20 hours, and that would break every possible configuration of Refinery. You just can't have this span that's not broken and also have Refinery store 50 million things in memory. 
+
+I got things improved, and ultimately I ended up saying this entire way we do OpenTelemetry in like this with an asynchronous job is actually now close enough to streaming services that it doesn't work that way. The wheel dealer streaming services is to do it the way Honeycomb does, which is you just send a snapshot of this span every minute, so any rule of things in the code, and that requires you to have written your code in a way that you can roll things up and then send it every minute. 
+
+You need to completely rewrite how you do most of your task handling to have some sort of task handling manager that sits there and can collect a bunch of things in every minute, do that, and start a new span. That is not really possible the way most people write asynchronous jobs, and fixing that is really tricky because there's not really a wheel if it's now; you're not actually just rewriting the code. 
+
+It requires you to really just start a million different tasks, and each task is linked together casually by like span information. Then the collector sort of like does some things in there, or maybe your span processor can roll that up, but otherwise, you can't actually do that. 
+
+Now, you should do your tasks in that manner anyway because then it allows you to have a right-hand lock, and then you can ensure your task consistency is a longer think. It's not interested in the middle; you should do that anyway because that's how you do it if you understand distributed systems. But you run into this thing in OpenTelemetry; it was written by systems-minded people, and so a lot of design decisions that they make make sense if you know how to write a standard stability system. 
+
+Of course, you use a write-ahead log; of course, you want to just spawn an event from like respond one task somewhere for like 20 hours. Who does that? Everyone does that until they know better.
+
+[00:45:00] **Host:** That's a really good point. We've got about six minutes left, but before we wrap up, I did want to talk briefly about some of your experience in trying to make the case for OpenTelemetry to executives because that can be challenging.
+
+**Hazel:** Yeah, so there's two sides of it: there's making the case for any sort of monitoring or observability in general, and I was making the case for more OpenTelemetry specifically. The second case usually happens when you have some pre-existing stuff, and you're arguing, “We should not use the existing stuff; we should use this other thing instead.” 
+
+What you're arguing for there is a migration, two migrations: a technical migration and a social migration, and those are very tricky. You want those both migrations to happen, and so you need to be able to essentially show that the time and effort saved by via this migration will pay for itself in about four months. If you can't show that it will pay for itself in about four months, then you probably shouldn't actually do it, and you should figure out how to make it pay for itself in four months and then do it. 
+
+Otherwise, you'll end up with a migration that takes like a year or something, and it has no perceivable difference in benefit, and then people are not going to be sold on it. People need to actually tangibly feel the benefit, or the migration is going to feel on the social aspect technically. 
+
+For conventional organizations that you want to get like any sort of monitoring in general, that relies on being able to convince people that the life cycle leads to encompass more at the life cycle, and the easiest way to do that is, in my opinion, you tie the code lifecycle to the business value delivery lifecycle. 
+
+So what can happen in organizations is you have like the developer lifecycle, which is over here, and it's, “I write code, I commit code, I merge code,” and you have the business lifecycle, which is we could do some market research, or we get like some seamless research, and then we design a product, and we get the final features, and then that final feature is implemented, and then we see what the feedback is. 
+
+At no point do those two overlap or cross. So that leads to people to my product owners handing features over to developers and developers writing tune and just handing lots of production. Instead of playing frisbee, you need to merge those. When those get merged, then essentially the developers have to care about things all the way to the point where it delivers value to the customer, which is absolutely what every executive already wants to have happen. 
+
+The state they have within separated is what they think is like has to be that way, and the second is it's possible and even desirable to get developers to care about like the outcomes from the customers, get them talking to salespeople, and get them talking to product people. 
+
+That will not only improve things for the product, improve the internet, but it'll actually improve the productivity of the developers and their experience and their ability to do this. That usually sounds executives, and you need this. 
+
+The next checking after that is once they have, “You need this,” if they just look for like observability, they're going to get one of like three or four different vendors and probably going to end up an expensive vendor. You need to pick the vendor based on what the business needs and not necessarily what you like the best. Like for example, my current company, we have advanced monument compliance requirements. 
+
+We have it for only one environment that provides more than one codebase, and so because of that, no one in the company can use anything that isn't FedRAMP compliant, which significantly limits the amount of advantage we can have to basically one, and I don't necessarily want to use that vendor necessarily, but I have no plans to migrate off of it. If I were to migrate off of it, it would be in a very interesting manner. 
+
+What I would do is I would split the environment into two environments and have them be identical, one FedRAMP certified, one not FedRAMP certified, and then essentially would have a FedRAMP program, but that would be like a separate sales funnel, and anyone who actually needs it can have that because the FedRAMP is valuable in two aspects for the business. One is that it gets them certain customers, and one is that it gets some certain conversations, and for the conversations, those people may not be on federal, but they may want to eventually when it means that I can run the same codebase in both locations and use a different vendor and the one that isn't FedRAMP and that one but that whole migration for the current company would be allowed two years of work. 
+
+Are we going to do that? Who knows? Maybe. But there's a lot of other questions to ask first and a lot more that we need to do before we can even get to that point.
+
+[00:50:00] **Host:** Yeah, speaking as a vendor, we've had a lot of conversations about FedRAMP certification, and being that not 100% of our employees are in the U.S., we'd have to do exactly what you described. We tried to do that before for HIPAA, and it created kind of a weak experience for some customers, so yeah, it's a tricky problem.
+
+**Hazel:** Interesting. I think one of the most interesting things about HIPAA is that any sort of regulatory environment—there's like one regulatory environment, and then there's like FedRAMP, and the overlap between people that need any regulatory environment and people that need or really want FedRAMP is basically a circle. 
+
+So if you're going to go like, “Oh, we're going to have like a HIPAA environment, we're going to have a FIPS environment, we could have like, you know, SOC 2, like it used to be SOC 2,” whatever. But if you have one of those, you probably would actually get as much benefit, if not more, if you went straight to FedRAMP, even though it's like three times as expected to do that at least. 
+
+And the ongoing maintenance burden of that is ridiculous, but it gets you on the other customers you need, like HIPAA plus FedRAMP or FIPS plus FedRAMP, and that is a really interesting business thing that's non-obvious. Any type of regulatory environment completely changes the game for OpenTelemetry, what you can do with it, how it works, your vendors in general, and even like your hiring practices, and it's really weird that you can't really have an asset, but you can't just get HIPAA; you really should probably go all the way to a FedRAMP just because of who the market is that needs one or both.
+
+**Host:** I totally agree with you based on like our experience with that HIPAA server because it turned out there were companies camped on it that just had a desire for like more privacy, stricter controls because of how their company culture and their data worked without actually having the need for the federal regulation. 
+
+I think you're right that it makes it easier to sell. I think probably we wouldn't end up going in that direction again unless we managed to partner with somebody who was actively like bringing in FedRAMP customers, like some agency that worked with the government or whatever, like we would have to be. But I wish we had known that at the start, and we didn't. 
+
+One thing that would be interesting there would be to have OpenTelemetry have some sort of agency that—and that agency gets FedRAMP compliance. Then what you can do with that is you can have that agency essentially facilitate the onboarding of OpenTelemetry vendors or just other observability vendors into the space, and you can use that to sort of start bridging the gap and giving people more capabilities and sharing that my FedRAMP specific architecture concerns in the way that spreads their compliance load among multiple companies.
+
+**Host:** That would be a really interesting idea. 
+
+**Hazel:** Yes, it could maybe make it work through the project, and I would say for us as a small vendor, that really is a problem that if we are not allowed to have our engineers who are in other countries touch the system, we may only have one engineer working in a particular area, and so we have to hire a second person in the U.S., which is undoable. 
+
+There are certain ways, and you would need somebody to talk to someone who's experienced in FedRAMP to negotiate that, which would have to be—100% U.S. citizenship is a non-seer own requirement. It gets nuanced, and it gets tricky.
+
+[00:56:00] **Host:** Oh, interesting. Well, I think we have to leave it at that before we got into a funny side. Thank you again, Hazel, for sharing your insights. This has been really cool. I don't think we get to talk to too many people who have had like such advanced use cases for OpenTelemetry, and being able to share that with the community is really good because I think a lot of us get, you know, we do like those intro tutorials. We’re like, “Hey, that's pretty easy!” and then you get into like the guts of it, and then that's when you start getting into some of those gnarly use cases that can be really tricky in life.
+
+**Hazel:** Yeah, definitely.
+
+**Host:** So definitely appreciate that feedback and the viewpoint, and you will be back for OpenTelemetry in practice, I believe, on September 14th. Looking forward to that! 
+
+**Hazel:** No idea. I'm going to figure it out, but it's going to be a lot of fun!
+
+**Host:** Awesome! Really looking forward to that. Thank you again, as always, super, super awesome insights. Yeah, and we will hopefully see everyone for OpenTelemetry in practice with Hazel on September 14th. Thank you!
 
 ## Raw YouTube Transcript
 

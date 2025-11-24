@@ -10,101 +10,358 @@ URL: https://www.youtube.com/watch?v=Fuy3W5bro9k
 
 ## Summary
 
-In this panel discussion on observability, hosts Adriana Vela (ServiceNow), Charity Majors (Honeycomb.io), and Amy Toby (Equinix) explore the evolving landscape of observability tools and practices. They discuss the transition from traditional observability, characterized by fragmented metrics and logs, to a more integrated approach that emphasizes high cardinality data and meaningful insights. Charity defines observability as a property of socio-technical systems, while the panelists highlight the importance of understanding the context of data and the need for tighter feedback loops between engineering and operations. They also address misconceptions about observability being a standalone solution, emphasizing that it requires a cultural shift within organizations. The conversation touches on the role of AI in augmenting human decision-making and the challenges of managing data volume. As they conclude, the panelists express their hopes for a future where observability becomes more ingrained in the software development lifecycle, encouraging collaboration across teams to enhance visibility and improve the overall quality of software delivery.
+The YouTube panel discussion focuses on the topic of observability, featuring experts Adriana Vela from ServiceNow, Charity Majors from Honeycomb, and Amy Toby from Equinix. The conversation delves into the definitions of observability, with Charity emphasizing the shift from a traditional metric- and log-based approach (observability 1.0) to a more integrated and explorative method (observability 2.0). Key points include the challenges of data overload, the need for better communication among teams regarding observability, and the importance of understanding the context of data collected. The panelists also discuss the role of AI in enhancing observability, stressing that while AI can assist in data correlation and reduce cognitive load, human insight remains crucial for addressing complex, novel issues. The discussion concludes with reflections on the future of observability and the importance of fostering a culture that values continuous feedback and understanding in software development.
 
 ## Chapters
 
-Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and introductions
+00:03:00 Definition of observability
+00:05:22 Observability 1.0 vs 2.0
+00:10:30 Meaningful data in observability
+00:13:40 Challenges with open Telemetry
+00:18:00 Transitioning to observability 2.0
+00:22:10 Importance of feedback loops
+00:27:30 AI's role in observability
+00:34:00 Current challenges in observability
+00:40:00 Misconceptions about observability
 
-00:00:00 Introductions of the panelists  
-00:03:30 Adriana shares her background in observability  
-00:05:00 Charity discusses her definition of observability  
-00:09:45 Amy talks about her experience with observability at Equinix  
-00:14:00 Discussion on the evolution from observability 1.0 to 2.0  
-00:21:00 Charity explains the importance of meaningful data in observability  
-00:28:30 The panel discusses the challenges of onboarding open Telemetry  
-00:35:00 Amy mentions the need for observability features in network services  
-00:40:00 Discussion on the role of AI in enhancing observability  
-00:50:00 Panelists share their thoughts on the biggest challenges in observability  
-00:55:00 Closing remarks and future discussions on observability  
+**Host:** Here we are. Hello, hello, hello everyone! We're very excited to have a panel today around the topic of observability. Plan for the observability community. Here with us today we have Adriana, Amy, and Charity joining us. We hope to have a fun, billed conversation. Would you mind starting out, Adriana, and introducing yourself? Who you are and what you do?
 
-This format highlights the main topics covered during the livestream, making it easier for viewers to navigate through the content.
+**Adriana:** Oh yeah, so I am Adriana Vela. I work with Anna at ServiceNow Cloud Observability, formerly known as Lightstep. Say that three times fast. I, uh, yeah, I'm a senior staff developer advocate. I've been doing the dev rel thing for, what, almost two years? But before that, I was oscillating between, like, IC engineering and management roles. So yay! And I love observability.
 
-# Observability Panel Discussion Transcript
+**Charity:** I knew you before you were a dev rel, before you were in observability!
 
-**Moderator:** Here we are! Hello, hello, hello, everyone! We're very excited to have a panel today around the topic of observability. We hope to have a fun and engaging conversation. Would you mind starting out, Adriana, by introducing yourself—who you are and what you do?
+**Adriana:** Yeah! Yeah, when I was just, like, trying to figure out what the hell this stuff was all about. Time definitely has passed by. 
 
-**Adriana:** Oh yeah! So, I am Adriana Vela. I work with Anna at ServiceNow Cloud Observability, formerly known as Lightstep. I’m a senior staff developer advocate and have been doing the dev ops thing for almost two years. Before that, I oscillated between individual contributor engineering and management roles. Yay! And I love observability. I knew you before you were a developer in observability!
+**Charity:** What about you?
 
-**Charity:** Yeah! When you were just trying to figure out what the hell this stuff was all about! Time definitely has passed by. 
+**Charity:** I'm Charity Majors, co-founder and CTO of Honeycomb.io. I identify as an Ops engineer and probably always will, even though it's been a long time since I held the pager. But I feel like I started, I feel like I picked up my first pager rotation when I was 19, so I feel like I've got still like half my life on call. So I still, I can still call myself an operations engineer. 
 
-**Moderator:** Charity, what about you?
+**Adriana:** You paid your dues!
 
-**Charity:** I’m Charity Majors, co-founder and CTO of Honeycomb.io. I identify as an Ops engineer and probably always will, even though it's been a long time since I held the pager. I feel like I started picking up my first pager rotation when I was 19, so I feel like I've got half my life on call. 
+**Charity:** I think so. What about you, Amy? 
 
-**Moderator:** You paid your dues! What about you, Amy?
+**Amy:** Hi, I'm Amy Toby. I am a senior principal engineer at Equinix, which is the largest data center company in the world. I've been doing observability since pretty much my first job as well, starting back on Solara Systems in, like, '98, '99. And then into NIO stuff. I'm responsible for some things in NIO, I'm sorry. And, like, I have been doing it all along. These days I do a little bit more kind of work in the soot technical space, but initial work at Equinix was bringing OpenTelemetry into our entire Equinix Metal operational stack and pumping those metrics out to Honeycomb.
 
-**Amy:** Hi, I'm Amy Toby. I am a senior principal engineer at Equinix, which is the largest data center company in the world. I’ve been doing observability pretty much since my first job, starting back at Solara Systems in the late '90s. I’ve been responsible for some things in networking and have been working on bringing OpenTelemetry into our entire Equinix Metal operational stack, pumping those metrics out to Honeycomb.
+**Adriana:** Nice! Very exciting work that all of you are doing and creating community around observability and OpenTelemetry. And I get to call you all friends, which is super exciting to have you all today on the panel. 
 
-**Moderator:** Nice! Very exciting work that all of you are doing and creating community around observability and OpenTelemetry. I get to call you all friends, which is super exciting to have you all today on the panel. 
+[00:03:00] **Host:** Sweet! So, I think we're going to start with one of the spicy questions, and I'm going to kick it off with Charity. What is your definition of observability? The correct one, of course.
 
-Let’s kick it off with one of the spicy questions. Charity, what is your definition of observability?
+**Charity:** We'll see. Yes, spice! You know, okay, so back in the days when nobody else gave a [__] about observability, the Halcyon days of... I'm saying that even though we almost went out of business many times. You know, I think we really tried to push this idea that there was a technical definition for observability. You know, that it was high cardinality, high dimensionality, explorability, and all these things. And nowadays, you know, like everyone and their cat does observability. It's like if you have any telemetry, you do observability. And you know what? Actually, I’ve come around to this. I'm all right with this. I feel like it's actually a great definition to say that observability is a property of a socio-technical system. So it exists in a continuum, right? 
 
-**Charity:** The correct one, of course! Back in the days when nobody else cared about observability, we really pushed the idea that there was a technical definition for it—high cardinality, high dimensionality, explorability, and all these things. Nowadays, everyone and their cat does observability. If you have any telemetry, you do observability. You know what? I’ve come around to this. I think it’s a great definition to say that observability is a property of sociotechnical systems. It exists on a continuum. 
+I'm totally down with that because I think that it gives a lot of grace to people who are, you know, in the early days of their journey. Like, I don't want to be the person who, like, "Well, actually, you're not really doing observability." Nobody likes that guy, so I don't want to be that guy. 
 
-I think it gives a lot of grace to people who are in the early days of their journey. I don’t want to be the person who says, “Well, actually, you're not really doing observability.” Nobody likes that person. 
+That said, I do think that there's a real kind of step function difference in, let's call it observability 1.0, that built off the primitives of, you know, metrics, logs, and traces. Where every time you gather the data, you have to gather it again in a different format and pay for it again. So like you're gathering it once for metrics, again for logs, again for traces, again for APM, again for profiling, again for security. You know, like talk about a cost crisis in observability tooling. Like, no wonder, right? And you're very limited in each one of those by the format that you happen to gather in, and none of them can be connected to each other. The only thing that connects them is the poor human sitting in the middle guessing, right? Like guessing eyeballs, you know? 
 
-That said, I do think there's a real kind of step function difference between what I'll call observability 1.0 and 2.0. Observability 1.0 is built off the primitives of metrics, logs, and traces. Every time you gather data, you have to gather it again in a different format and pay for it again. You gather it once for metrics, again for logs, again for traces, again for APM, and again for profiling. Talk about a cost crisis in observability tooling! 
+So let's call that 1.0, and then observability 2.0 tooling, I think, is based on a single source of truth. Right? These arbitrarily wide structured data blobs you could, you can derive metrics, you can derive traces, you can derive all these things, but you've got one source of truth. It handles high cardinality, it handles, you know, it's a more explorable sort of interface. So you don't have these static dashboards; you have an interface where you can ask questions and follow breadcrumbs. Go, and then what? And then what? 
 
-You're very limited in each one of those by the format you gathered it in, and the only thing that connects them is the poor human sitting in the middle guessing. So, let’s call that observability 1.0. 
+[00:05:22] So that's my very long-winded answer. I think that there's kind of two generations of observability tooling out there right now, and I think that they lead to two very different outcomes. Like one of the, I know I'm taking a very long time here, I'm almost done, I promise. I think that one of the most, one of the soot technical factors that you really associate with observability 1.0 is it's like a checklist thing. You know, you add it at the end before you put stuff in production. Like, cool, I can monitor this. 
 
-Observability 2.0 tooling is based on a single source of truth. You can derive metrics from a structured data blob, and it handles high cardinality and provides a more explorable interface. It’s dynamic, where you can ask questions and follow breadcrumbs. 
+And for observability 2.0, I think like the fundamental truth of it is it underlies the entire software development life cycle, and your ability to hook up these fast feedback loops rests on how well you can, you know, ask questions and explore your data and have this sort of constant conversation going with your code.
 
-So, that’s my very long-winded answer. I think there are two generations of observability tooling out there right now, leading to very different outcomes. 
+**Amy:** Awesome! What about you, Amy?
 
-**Moderator:** What about you, Amy?
+**Amy:** I think I agree with most of what Charity said, but I've been learning a lot from my work lately in kind of developing a new networking product, and one of the feature sets that we have to include in that today in a modern Network as a Service kind of product is observability features, and customers demand this. And we've been scratching at this, like, what, how much do they need? Like, what, how much should we build? How much should we hand off to either, you know, ServiceNow or Honeycomb and let those tools do what they're best at? 
 
-**Amy:** I think I agree with most of what Charity said. My work lately has involved developing a new networking product, and one of the feature sets we have to include is observability features. Customers demand this. We’ve been figuring out how much observability they need and how much we should build versus handing off to services like ServiceNow or Honeycomb. 
+And so what we've been finding with customers is, like, that operational part that Charity mentioned, right? That they are tired of this world where they have to go hire very expensive people who are often cranky, who can basically carry that mental burden of tying all the context together with the metrics and divining what the heck is going on with the network. And so what they're asking and what they're demanding from us and all of the other cloud vendors is how do we get the observability telemetry, which is mostly what they ask for? Because when we talk to customers, like, most of the time when folks we're talking to don't want to talk about cardinality. 
 
-What we've found is that customers are tired of hiring expensive people to carry the mental burden of tying context together with the metrics and figuring out what’s going on. They want observability telemetry because they need insights about these hyper-complex systems to fix them and get back to business. 
+So they're asking for, like, how do we get all the stuff we need so we can feed it to our AI Ops tools, feed it to our other observability systems that we already have, so that we can start to leverage the skills we already have to get those insights? But it always drives to how do I get insights about this hyper-complex system so that we can fix it and get back to business? And sometimes folks don't even want to do the heavy lifting. They're just like, do it for me! Nobody does, right? Because almost none of our customers, any of us here, their primary business is not telemetry. It's undifferentiated lifting. They want, they got a business to run; they don't want to be messing with this stuff. So they want me to provide really high-quality telemetry, and then they want you all to make that all super easy to consume.
 
-**Adriana:** I think I started out with Charity's OG definition of observability, and I heard one recently from Hazel Weekley, which I quite like: "Observability is the ability for you to ask questions and get meaningful answers." It's up to you what is meaningful. What data are you collecting that’s meaningful to you? 
+**Adriana:** Yeah, that's very true. I love that. It makes so much sense. What is your definition, Adriana? 
 
-I believe in trace-first observability, but we need to focus on meaningful data. You can instrument the heck out of a system, but if it’s emitting garbage, you won’t be able to figure out what’s going on. Observability is a design problem. 
+**Adriana:** So I think I started out with, you know, Charity's OG definition of observability, which carried me well throughout the years. And then I heard one recently from Hazel Weekly, which I quite like, which is, "Observability is the ability for you to ask questions and get meaningful answers," which I really like because it's, you know, it's up to you as to what is meaningful, right? So what data are you collecting that's meaningful to you? And I think that's really important in our world. 
 
-I feel like we spent a long time figuring out the underlying plumbing, which is just a prerequisite. The real issue is that there’s so much data, and we need to equip ourselves to understand it. 
+I will still say that I think trace-first for observability no matter what. But I think, like, we really need to focus on the meaningful data aspect of observability because, like, sure, you can, like, instrument the crap out of a system, and it's emitting a bunch of useless garbage, right? You know, garbage in, garbage out. So if you don't have good data that you're instrumenting well, good luck trying to figure out what the hell is going on. You can have the best observability tool out there; it won't do you any good. 
 
-**Charity:** I think we’re seeing that with OpenTelemetry. It’s an awesome standard, but the challenge will be making it easy for onboarding. Many organizations are scared of instrumenting their own code.
+So you're going to need, um, to have... It takes a bit of, you know, there's that learning curve of what's important to you, what should you be collecting to be able to do the thing. Observability is a design problem, like in a huge way. Like, once you've s... Like, I feel like we spent a long time, like, just sort of like figuring out the underlying plumbing, which is just a prerequisite to what really matters. 
 
-**Amy:** Exactly. The metrics matter, and we often see folks reaching for tools to make sense of the noise they’ve built for themselves. They’re overwhelmed with alerts, and it’s challenging to know what’s important. 
+[00:10:30] This is a design problem because there's so much data, and I think Amy and I share very similar thoughts on AI Ops. But, like, there's two kinds of tools, right? There are tools that pave over complexity, and there are tools that try to help equip you to understand it. And I will always be in the second camp because at the end of the day, we are legally liable for the software that we put out into the world. Somebody somewhere is going to have to understand that [__], and the harder you've made it, the more magical you've made it, the harder that day of reckoning is going to be.
 
-**Moderator:** That leads us to the next question: What do you think is the current largest challenge in observability?
+**Charity:** Definitely interestingly enough, I think we're seeing that a little bit with open telemetry, right? OpenTelemetry is awesome. It's, you know, this awesome standard that pretty much everyone has opted vendor-wise. But then now we're looking beyond, like, that initial adoption of OpenTelemetry and, like, people really using it out in the field and making sure. I think OpenTelemetry's biggest challenge, I think, in the near future is going to be making sure that it's something that is easy for onboarding because I think that can be really off-putting for organizations, and that can be really scary. 
 
-**Amy:** Sampling! We generate a wealth of data, and while we're not sampling a lot today, as we turn on tracing, we find that it tips over our collectors. We need to get control of the data we're generating that might not provide value. 
+And then that leads to the, you know, "You instrument code? I don't want to instrument my own code!" kind of mentality. I think that the place that the metrics go really matters, though. Because we talked about AI Ops, where I see folks really reaching for these tools. Charity called it paving over. So what we've done in the network world for decades now, and it's still the case at most organizations, is we have all these devices generating gobs of alerts and metrics. Nobody knows what any of it's doing. There's a sense that we should be able to correlate all these events. 
 
-**Charity:** I think people don’t realize how badly they have it now. Many have spent their careers managing metrics without understanding how much better it could be. It’s a mental model shift that they have to make.
+So, like, some port fails on a core router, and all the stuff behind it disappears. We should be able to roll all that up, and I'm using the "should" word the way my therapist calls it, the "S" word, right? Like, we believe these things that should happen, but the real world is much harder than that. So, like, these alerts just flood through, and people fight these alerts. Sometimes they've been fighting their whole career trying to get on top of this alert stream, and so they reach for these tools to make sense of the morass that they built for themselves because they're not really empowered to go back to the telemetry and, like, dial back the cardinality or re-transform how they generate those metrics to get higher, you know, higher cardinality that they can process at the end. 
 
-**Adriana:** I agree. Organizations often get in their own way because they don’t fully understand observability and how to implement it effectively. 
+Often they don't even have choices about what to collect because they're buying network devices that offer you get your SNMP or your G, and that's what you get. Oh my God, it's a world out there of legions of people that are just fighting through the noise still. And it hasn't changed for them. Whereas in the software world, we keep advancing the state of the art, but it's going to be a challenge still to bring a lot of the classic sysadmin and network administrators who are used to this world along on that journey. 
 
-**Moderator:** What would you say is the biggest misconception around observability right now?
+[00:13:40] I feel like one of the characteristics that I often think about when we're talking about, like, transitioning from the 1.0 world to the 2.0 world, which is going to take [__] forever, no doubt. But I feel like it's part of it is generating from a push world to a pull world, where we're used to, like, the only way you could make sense of, like, a NaaS-based system is by looking at the cluster of things that just alerted you and going, like, "Ah, it's probably that." 
 
-**Adriana:** People think it will solve all their problems without putting in the work. There’s a misconception that observability is magical fairy dust.
+And so you rely on, you know, all of these alerts, but that's so noisy, and it does not scale. Right? But, like, as an ops person, I grew up thinking you only look at production when you get alerted. You don't have to look at it otherwise. And I feel like the trade-off that we have to learn to make is, okay, we're only going to alert you when users are impacted, right? We set SLOs, these are our agreements with ourselves, each other, and the world. This is the level of service we are going to give you, and we alert when the outage is bad enough that users are being affected. 
 
-**Amy:** I would extend that. The need for understanding doesn’t disappear; it just gets more efficient.
+But in order to get to that world, you have to agree that you're going to go look at your telemetry affirmatively because most problems will never rise to the level of waking you up! God, I mean, I hope, right? Like, most of the things, most of the codes you write have subtle bugs that affect a few people, or it's a small thing, right? 
 
-**Charity:** I think the biggest misconception is that observability is its own standalone project. It’s interwoven with software development and requires a holistic view. You can’t just check off an observability project; it requires continuous improvement in how we build software.
+So, like, in order to have a system, in order to have a hygienic system that is not just like a hairball that the cat coughed up, you know, we can't just keep... like in the old days, we were shipping code every day that we didn't really understand these systems. We've never really understood, and then we wonder why it's a giant trash fire, right? Like, and the way that we start improving that is by, you know, not just making the telemetry richer and better, but also by committing to closing that loop. 
 
-**Moderator:** As we wrap up, what do you think is in store for observability in the upcoming year?
+As a software engineer, my job is not done when the tests pass. My job is done when I have looked at my telemetry in production and gone, "It's doing what I expect it to do. Nothing else looks weird," right? So, like, that's asking... it's like I like the technical debt metaphor here because it's asking you to, like, put in a little bit of effort upfront in order to avoid the... you know, there's this great graph that shows that the cost of finding and fixing bugs goes up exponentially from the moment that you write them. 
 
-**Amy:** My wish for the year would be that more people grasp SLAs and SLOs and realize the power they have in understanding their systems. 
+So, like, you backspace? Good for you, good job, right? You find it in your test? Good for you! The next best time to find it is right after you deployed that [__]. After that, God knows how long it's going to take: days, months, years, who knows? But, like, the accumulation of that [__] is what makes this job a nightmare for so many people.
 
-**Adriana:** I want to see more people understanding that observability is everyone’s problem—not just the ops team. It should be part of the language across all teams involved in software delivery. 
+**Charity:** Yeah, it's so true. Like, I think back to, like, you know, my old days of having to hand off deployment instructions to, like, our ops folks who, they had no [__] clue what was, you know, what it was they were deploying. And, you know, I had to pray that my instructions were correct, and then I had to pray that they read my instructions correctly, and then they would deploy it to prod. And these quote-unquote successful deployment-like things went correctly, was considered a successful project. The machine, we're done, right? 
 
-**Charity:** I hope we can drive a deeper understanding of observability into our industry so that we don’t have to start at zero every time we discuss it.
+**Adriana:** Right, yeah. 
 
-**Moderator:** Thank you all for the amazing insights today on our panel around observability. This group will be coming back later in June for another discussion, so stay tuned for those details. Thank you for watching, and stay warm out there! 
+**Charity:** And so, I love the idea of, like, no! Like, because otherwise it becomes a hit-and-run deployment, right? You know, or drive-by deployment, rather, is a better way of putting it, where, like, you know, it's like, "Deployed! All right, great! Let's just leave it to fate." But I think, like, you know, paying attention to what's going on as soon as you deploy, like, there's something to be said because otherwise, because you, as the person writing the code, you have context that nobody else in the world has or will ever have. 
 
-**Everyone:** Yay!
+You know exactly what you're trying to do, why you're doing it, what you tried that worked, what didn't work, what the variables were named, what the [__]. You know all this stuff, and if you can close that loop before you have to concept switch another, it's so powerful. Like, these feedback loops are what socio-technical systems are all about. 
+
+Like, this is the one job of technical leadership, in my opinion, whether you're an IC or a director or VP. One job is these feedback loops to make them as tight and short and functional as possible. I think that, like, nailed down of, like, engineering responsibility has been so important, and observability really brings it to a front. But a lot of people are just not paying enough attention or, like, not willing to do it. They're just like, "My job is to code, and that's it, and maybe I'm on call twice a year, but it's someone else's problem."
+
+[00:18:00] **Amy:** There's not much we can do about that, though, like, a lot of times, right? Like, if you are an engineering leader and you're trying to build a dynamic, powerful engineering organization, you have to either lead those people to care or lead them out, right? Like, because, like, the reality is, is like, there are the customers that y'all want that have that engineering leadership and culture of, like, giving a crap. 
+
+And then there's the vast majority of organizations out there where most of the people who are writing the code that runs our world are trying to put bread on their table. And so as soon as they are done with the specification that they were given for their job, they e that code into Git, and they run because, like, why should they care? Why should they metrics? But this is a self-fulfilling prophecy because you know what makes people, like, check out, tune the [__] out? Not being connected to the results of their labor! 
+
+Like, there's something that's, like, what is it? Dan Pink says we all want in our job is autonomy, mastery, and purpose. The purpose of your work, if you're so disconnected from it, yeah, that's all there is to it. I'm like, I'm not trying to suggest that this is easy or can be done in a one-stop, you know, whatever, but I do think that every step we make along this path that tightens up the feedback loops that connects people more with the consequences of their code is good and valuable and pays off.
+
+**Charity:** Interesting, oh, sorry, go ahead.
+
+**Adriana:** I was going to say it's even letting engineers understand customers. Like, I've worked at many shops and with so many engineers that, like, that customer impact doesn't matter to them or they're unaware of how the customers are properly using their software, or they themselves are not even using the software that they're building. That's why, like, dogfooding is so important.
+
+I go in to help teams all the time where they're, you know, they're just churning. This is, like, the most common thing that I go work and help teams with, right? They just churn. They're not making progress. Like, usually I can guess that without even talking to anybody. I can just, like, look at their JIRA for two minutes and be like, "Yeah, they're churning, so let's go figure out why." 
+
+And then you go look, and I lost my train of thought. I'm sorry!
+
+**Charity:** People are not connected to their work; they're churning, right?
+
+**Adriana:** I still forgot where I was going to connect that.
+
+**Host:** It's okay! It's okay, we can move on. I wanted to add one thought to the mix because, you know, the overarching theme here is, you know, like they deploy, and then they go, or they write the code, and then that's it. And I mean, ultimately, we are failing the promise of DevOps at the end of the day, right?
+
+**Charity:** Exactly!
+
+**Host:** We did nothing to solve or to alleviate the problem because we are still continuing to do that. Yes, we've got CI/CD pipelines; that's awesome! We've got automation, but we still have not fulfilled the promise of DevOps at the end of the day. And I think it's interesting, though, because I think observability is kind of, you know, forcing us to face that once again, right? 
+
+Because now there... like, these are the consequences of... now we know. I think the opportunity here is now that we have the data to show the business how the consequences of bad engineering management are harming our customers. Like this, we didn't have back when we started DevOps, right? Like, we had no freaking idea how our failed deploys or any of this were impacting our business, right? 
+
+We were just guessing. We were throwing dark birds. And, like, some of us were fairly accurate, like, "Yeah, this is what's happening," and then go talk to a customer, and they would confirm it. Great! Now we can go do DevOps. But there's tons of shops where they just never close that loop, right? 
+
+And then you could bring the data in, though, and this is one of the things I've been slowly doing, right? Is I go talk to a team and be like, "Well, the first thing you need to do is go talk to your product manager, and I'll help them define some freaking SLOs so you know what the acceptable abuse of your customers is," because most people don't even know. 
+
+[00:22:10] Yeah, let's start observing that! Let's put in SLOs. We don't have to alert or nothing. Just start looking, getting the data. Now I can go back to the business, and I can go tell your director of engineering or your VP or even your SVP and go yell at them, be like, "Look at this data! You need to go invest in this team and change how they work because this is what your customers are going through." And I have actual data to show it, and that's a game changer! That changes the discussion.
+
+**Adriana:** It really does! 
+
+**Charity:** I always get so much energy talking to Amy because, like, all these things, I feel like I'm just sitting here thinking about, like, she's out there in the field just doing like over and over and over, and I'm just like, "Oh my God, you're so cool!" 
+
+**Amy:** Talk sounds cool, but the day-to-day is like meetings and waiting for the opportunity to go like, "Hey, here!"
+
+**Charity:** Yeah! 
+
+**Amy:** But the impact! I mean, I just think it's so cool. But, like you say, we're failing the promise of DevOps. I actually feel like DevOps is like the Band-Aid that we have on a self-inflicted wound that never should have happened. 
+
+Like, we never should have separated them from Ops! Like there's no possible world in which having one set of people write the code and another set of people understand the code makes any [__] sense! And, like, I get it. We were doing the best we could at the time. You know, we're like, "This is too complex; we got to split this up somehow." 
+
+But, like, I feel like the entire idea of having different people do these jobs, and it's a little bit unfortunate. I think that we've kind of settled on going, "Oh, well, it's because Ops sucks, and we're all going to be developers." Like, whatever! 
+
+Like, okay, fine. I mean, most of the time when this happens, it's cultural inertia because most of the corporate world, they live in this world where they think about, "Okay, I have some people who make decisions about the product, and then I go and encapsulate that in some kind of requirements or design docs or whatever, and I ship it off overseas to be manufactured." 
+
+So some other people do the labor, some stuff shows up in a warehouse I probably never even see, and it goes out to distribute, blah, blah, blah, blah, blah. Like, this is like most of the businesses in the world today are some kind of form of this kind of dis... breaking the labor away from the design of it. 
+
+And this is actually, I think, changing radically out even outside of the software world where now product design is speeding up. You see kind of things coming faster, so now they're starting to look at what we're doing in the DevOps and going like, "Oh, maybe there was something there. Maybe expertise matters. Maybe the idea that there's kind of work that isn't knowledge work is [__]!"
+
+**Adriana:** Yeah, I like that!
+
+**Charity:** I think one thing that is, is to some effect a consequence of this whole idea of separation of concerns, right? Which, you see especially in, like, large enterprises. Like, when I worked at a small to medium-sized startup, you know, I had access to, like, the freaking PR database. And then, like, I joined a bank right after I wrapped up that job, and they're like, "Oh yeah, we've got like a DBA for UAT and a DBA for prod." I'm like, "Huh? You don't even want you to log into your laptop if..."
+
+**Amy:** Yeah, that's right!
+
+**Charity:** ...to do your job! Yeah! That's changed a lot! You know, we borrowed so much of that stuff from the accounting world where things like, you know, the concept of you shouldn't have the same person file the expense report and approve the expense report totally makes sense. 
+
+You know, and I think that there are some concepts that, you know, translate nicely, and most of them really don't. I actually, the most recent talk that I wrote was called "Modern Engineering is Not Incompatible with Highly Secure or Compliance Environments" or something like that. Yeah, and it's just like, because it's been... and it was super... like, I've been wanting somebody to write this talk for like 10 years, and I finally was like, "All right, this is not my area. Just somebody's got to do this!" 
+
+So I sat down and wrote it, and I did a bunch of research, and it was so interesting because, you know, this is all probably old news to y'all, but I learned a lot about how just, like, you know, it's really engineers should not have to think about security and compliance in their day-to-day work. 
+
+Like, if you have to think about it all the time, something is very, very wrong. It should be baked into the architecture so that by default, you do the right thing, and you can use the accounting and, like, logging and, like, auditing principles of, like, your CI/CD system. And, like, engineers should just be doing the work. You really only when you need to, like, spin up a new data source or, like, build something new, then you pull your security folks in; you make those decisions from the get-go. 
+
+But, like, you know, it's just like the entire frame and what's so unfortunate is I think that security has this really unfortunate, you know, the security through security they laugh about, but they all do it. But it's like they think that talking about how they do things well is going to be bad! 
+
+**Adriana:** And it's not!
+
+**Charity:** Like, I think that the only way we're going to make progress in this as an industry is if people start to realize that all their competitors are doing this well, and they're about to be outcompeted by the fact that everyone else in the world is so able to, like, write off for, like, a modern team without being bogged down in the security theater.
+
+[00:27:30] **Host:** I know you all touched about AI, and I wanted to ask a question about it. How do you think AI can help teams adopt observability? Or how is it that AI can actually have some benefits to the observability world?
+
+**Charity:** I think I've been saying about AI for a few years now, right? Like, I think the real opportunities lie in joint cognitive systems research, where the way we're using AI isn't necessarily to replace humans in the pipeline. It's to augment humans in the pipeline. And so, for observability, I really feel that the strongest opportunities for AI are in kind of automated attention on doing correlation, basically like auto-correlation, and surfacing that to humans. Not this idea that I'm going to eliminate all my cascading alerts through this because that's a fool's errand that we've been chasing for at least my entire career. 
+
+I don't think AI really changes that game, but if we start to think about it instead of this crazy, like, we're going to make all the alerts go away, but instead I'm going to help your people do more with less, right? Less context, less expertise, maybe less work. Obvious! Now it gets super-duper powerful because that's the hardest problem to solve, is how do I reason about this hyper-complex system and draw out insights from it? That's where I think AI can help by augmenting the human, not replacing it.
+
+**Adriana:** I couldn't agree more! It's really about the inputs so much more than the outputs. Like, we are all familiar with, like, the problems of spam filters, right? Like false positives are brutal, you know, very high possibility for failure. But, like, there's so much we can do, you know, Honeycomb, we've been talking about bringing everyone up to the level of the best debugger, right? 
+
+Increasingly, like, the hard part is getting detail. Like, these socio-technical systems are made of just as much of our brains as they are the data. Like, an example I often give is like The New York Times and The Washington Post. If you just switch their people overnight, nothing would work because so much of the system is in those people's heads. And the more we can bring it out of the people's heads and put it somewhere that other people can add to it and ask questions of it, you know, then it pools our knowledge and our resources. 
+
+Like, one of the biggest things that blew my mind after becoming a CTO was how many engineering executives out there trust their vendors more than they trust their employees. And they're constantly susceptible to vendors who come up and like, "So give me $10 million and your people will never have to understand your systems again. We will tell you what to look at and we'll tell you what it means." 
+
+And that is... because people come and go and vendors last forever! But, like, come on! Like, that is just not going to work! But there are absolutely things that we can do to make your people more productive, you know, better, you know, to get better data in, to like pull your knowledge. 
+
+**Charity:** I like I wrote that down: joint cognitive research because I think that that's so true. You know, at Honeycomb, we actually built a little AI thing, Bob, which is using ChatGPT to, when you deploy some code, you can ask questions about it using natural language. Just like, "What's slow?" You know, which is super useful because using a query explorer is hard for everyone. 
+
+But, like, just being like, "What's slow? What changed?" is super valuable, and it helps those engineers that, like, just go around the room and it, like, ask a question to the person next to them. And it's like, you're now winning back time in a way!
+
+**Adriana:** So much time!
+
+**Amy:** Yeah, you know, I agree with everyone on the stance on AI because I think there's this overarching fear out there where they're like, "Everyone's like AI is gonna take our jobs!" No, I hope so! I don't think we're at Skynet levels yet, but also I think, like, we, like, personally, I like the idea of having, you know, something take away some of the cognitive load so I can focus on the cooler things and also take away some of the biases that I might have, assuming that the AI is trained without the biases, right? I guess that's the caveat. 
+
+But, you know, I like the idea of like something saying to me, "Hey, this is where you look further. You might be interested in blah." So you look and you're like, "Sorry, AI, you're wrong, but thanks for pointing it out anyway!" And I think that that can be hugely helpful to just, I don't know, just take a load off, right?
+
+**Charity:** Definitely! Or like you're getting paged about something, it's a database you're not super familiar with, and it's like, "Hmm, something like this happened last year around this time, and here's what they did to resolve it." Would this be useful to you? Yes! Exactly! 
+
+It's just your little help on your shoulder that's just telling you all the goodness that could be going on in your system anytime.
+
+**Charity:** I think about something that I, or people, spend a lot of time trying to get information out, whether that's like combing through data or trying to find stuff in the history or something, that's an AI problem! Like, they're so good at that [__]. Let computers do what computers do best so that humans can do what we do best! 
+
+And I know that, like, there's this fear that we all have about, you know, change and stuff, and some jobs are absolutely going to be lost. But many more will be changed. And I think that the way that we make this good for people is not by resisting it, fearing it, but by being thoughtful about how we involve it and how we adopt it, and, you know, making a change gracefully. 
+
+**Charity:** Obviously, now we're gonna start talking about government policies, which is... anyway, but like, yeah, like Amy said, I hope part of my job gets automated away because I could be using the cycles on something else!
+
+**Host:** Well, there’s something else I want to maybe shift to. From when you were talking, Charity, one of your favorite topics, which is the unknown unknowns. Because I think AI can eat up most of the known knowns, right? Like, we go and ask the chatbot and be like, "Hey, this seems like it's happened before. Has this happened before? And, oh look, here's all incidents reports and what happened before." Those are known knowns. We kind of know what to do. 
+
+[00:34:00] I think the place where today's efforts, anyway, we'll see if it changes, but I don't think it's going to change drastically in the next decade, um, are still not aimed at figuring out the unknown unknown, right? This is where I think humans are still going to have an edge for a very long time. 
+
+Basically, like we'll use the AI to collate the data, to do all the undifferentiated lifting, but it's still going to be people that peer into that space between the data and go, "I wonder if there's a packet loss somewhere in, you know, deep in this network that's never happened before. We've never seen it before, and now you have a novel insight." 
+
+And that's the place where today's AI really, like, it can kind of make things that seem like novel insights because it's approximating what a human would do, but those actual really tough novel insights, I think are going to remain in our domain for a long time. 
+
+They always come out with these demos that show these, like leaps of things, you're like, "Oh, I never would have thought to look at that." But, like, those are impressive because they're rare. And at the end of the day, if it was the right thing, you someone still has to go and... 
+
+Like, the thing that I keep coming back to that humans are good at is attaching meaning to things, right? Like, any computer can tell you if there's a spike or how big it was, but like only a person can come out and go, "This one really means something," because of that context that the computer won't necessarily always remember.
+
+**Host:** What do you think is the current largest challenge in observability? 
+
+**Amy:** I'll start with Amy. Sampling! Ask me again in five years; it'll probably still be sampling. Like, it's just, you know, there's a few places where we could probably tune things up, and generally we're not sampling a lot today, but some of the systems that we want to turn on, we're going to have to because they do a bunch of this is kind of circling back on like that tech debt under the covers. 
+
+Like, as soon as we turn on tracing in some of these systems, we see that they're doing a bunch of busy work that doesn't make any sense. But the first thing that happens is it tips over our collectors and overloads our upstream account, and then we got to go turn it off. And so we don't actually get to figure out what the heck is going on. 
+
+So I think, like, sampling and really just kind of getting control of all of the data we're generating that might not ever have any value is super important because it's by no means an easy problem to solve. It's probably the hardest problem in observability right now. It's like just how do we get this to a rational amount of data so that my cost is rational so I can do more observability, get deeper insights into my systems? But you got to pay the bill, and so, like, this is continually gonna be our struggle. 
+
+**Charity:** That's the answer of a super user! 
+
+**Host:** True! What do you think is the largest challenge, Charity? 
+
+**Charity:** Um, the people don't understand how badly they have it now and how much better it could be. People who have spent their careers, like, slugging it out in the salt mines using metrics, managing the overhead of metrics, not having high cardinality data, dancing around between metrics and logs and [__]. They genuinely have no idea that the way they're doing it is the hard way. 
+
+And they don't, they don't actually... nobody's optimistic in computers because why would you be optimistic about computers? But like until people see their data in our world, it doesn't... they don't understand how much easier it could be, how much better it could be. 
+
+And this, there's this mental model, you know, and observability 2.0 is dramatically easier than 1.0 because it's just interesting, shove it in, interesting, shove it in. There's no, like, custom metrics to measure or, like, manage and farm over time. There's none! But, like, the difficulty is that it's a mental model shift that people have to... and I am confident that 10 years from now, 15 years from now, people will be, you know, using the systems that, you know, we kind of sketched out a few years ago for observability to understand their systems because the rate of complexity is just going up.
+
+You know, too high! We might be out of business by then! Like, we might have been way too early! But I am extremely confident that there will be no other way to understand your systems 10 years from now but using something like this.
+
+**Adriana:** That's fair! They are definitely not getting any simpler or not. And, ironically, what that leads to is this increasingly, this increasing reliance on heroes and martyrs because if there's nothing knitting together all of your sources of the data except the people with the intuition and the scar tissue who can make good guesses, you have to... you don't have any other choice! 
+
+I call them load-bearing humans in my God because, like, when I run into that, that's how I talk to the management tree about it. I'm like, "You have a load-bearing human. This one person is doing this task, and if they go on a vacation or win the lottery, we are going to have a bad time!" Right? 
+
+And that's the way to surface the risk is like, you wouldn't put a single, you know, firewall. You would always do redundant, right? Like, so we need to make at least make that pun, and that's usually a good way to start getting people realizing that load-bearing humans are holding the world together.
+
+**Adriana:** Yes, all over the world! And even as our rhetoric has gotten better about this, and our understanding has gotten better about this, there's still these tech... it's like the finger in the dyke. So to speak, you know? 
+
+**Charity:** The little Amsterdam!
+
+**Adriana:** Yeah, dude, just like plugging the dyke with his...
+
+**Charity:** God, I got to stop using anecdotes! So terrible to say out loud! 
+
+**Host:** But like these people exist, and then they're doing a hero's job, but they shouldn't have to, and it's bad for everyone! It's also putting a lot of trust and retention...
+
+**Charity:** Oh my God! Very fragile! 
+
+**Adriana:** Yeah! 
+
+**Host:** What about you? What do you think is the biggest challenge? 
+
+[00:40:00] **Adriana:** So I think the biggest challenges are organizations getting in their own way when it comes to observability. Either because they don't... they kind of get observability in much the same way that everyone kind of got, like, Agile and DevOps is, like, important but they kind of totally missed the point at the same time. 
+
+And so we're, you know, we've made like a little bit of progress, but also not. And on a similar vein, like with OpenTelemetry, again, it's like, "Oh, I understand the benefits of observability. Let's get OpenTelemetry into the org!" And then again, like not understanding, like, what they should do with that. 
+
+Either because, you know, of vendors who oversell, right? Where we have a tracing tool, we can totally take your traces and put them on a little island by themselves with no food or water, and nobody ever freaking looks at them because they're a little island. 
+
+**Charity:** Yeah! 
+
+**Adriana:** Yeah, we'll totally do that for you. We'll take your money too. Thank you! They'll be safe! 
+
+**Host:** True! Exactly! Never use them! 
+
+**Charity:** Yeah! 
+
+**Host:** I, you know, we get, especially in large organizations, we get very tempted or drawn in by the shiny, shiny new thing that seems too good to be true, and you're sold on the vaporware, or like, some reads an article about blah, and they speak to a salesperson about at blah company, and then all of a sudden they walk in all starry-eyed. 
+
+So I feel like these are such huge barriers to actually getting [__] done for observability!
+
+**Host:** What would you say is the biggest misconception around observability right now? And I'll start with you, Adriana. 
+
+**Adriana:** Biggest misconception? I think right now I would say, like, people thinking that it'll solve all their problems without putting in the work. I think there's a lot of, like, people assuming there's a lot of, like, magical fairy dust that comes in with observability, and then when they realized that it's extra work, it was like, "Oh crap!"
+
+**Amy:** What about you, Amy? 
+
+**Amy:** I think I'll extend what Adriana said, right? Like, it's that extra work of, like, the need for understanding doesn't disappear. Ideally, as we get the data presentation into a better place, it gets easier to achieve, but the need for people to understand the world around them and be able to synthesize new information from the observability data, um, that doesn't go away. It just gets more efficient. 
+
+**Charity:** What do you think, Charity? 
+
+**Charity:** I think the biggest misconception I see is just people thinking that observability is its own sort of standalone project that you can buy or do or check off when, in fact, it's so interwoven with the development of software, iterating on software, owning, deciding what features you're going to build, you know? 
+
+I mean, deciding, figuring out how your product is working, figure out what your users are actually doing, why you should care about it, where you should spend your time. Like, it has its tentacles everywhere, and there are lots of things that we do that make observability better or worse have nothing to do with anything that's marked observability. 
+
+And this is both, I think it should be both encouraging and reassuring to people and also a little bit depressing and demoralizing because, but like it just... it sees for a more holistic view of like this is not... I don't think you could have, like, an observability project that you could just check off. 
+
+It's... it requires us to get better at understanding the mission of building something, which I think we're doing bit by bit over the years. Like we're understanding more about how to build software that is better for our users, that is better for our engineers, that is more linked to the business. 
+
+And, like, you were talking earlier about, you know, there was this great discussion that was kicked off by McKinsey, of all people, about measuring the work of software, whether or not it's measurable, you know? And of course, they're completely wrong, which meant that K Beck gave him a smackdown, and Gade gave him a smackdown, and there's a great discussion about how you measure software development. 
+
+But in one of the pieces, someone said that people have got to start realizing that building software is not like building construction. It's like, it's more like the design phase, and you would never say that a blueprint is better because it has more blue lines, right? 
+
+Which gets to your point earlier, Amy, about how this all work is knowledge work, right? And so I... where was I going with all this? I don't know! I feel like it is indivisible from the act of getting better at delivering software. 
+
+**Host:** So, if I think that a lot... God, I keep... I swear I've taken up 50% of the airtime in this, and I really apologize! I may have just had too much coffee today, but I feel like so many software orgs out there have kind of given up on saying that they're trying to get better at delivering software. 
+
+And so instead, they set these goals themselves, kind of nibble around the edges. We're going to get better at observability this year; we're going to get better at CI/CD; we're going to get better at blah, blah, blah, blah, blah. But, like, the great leaps forward that you make that you have to make in order to keep up with complexity because you can't just hire your way linearly out of this. You have to make these big leaps, and that requires taking a much, you know, a much more bird-eye view and being like, in order to deliver software better this year, it requires that we make these investments in observability, we make these investments in testing. 
+
+And I feel like, in conclusion, in conclusion, building software is an amazing job! I thank my lucky atheist stars every day that I get to be in this industry, not like picking weeds and getting dirt under my fingernails, but like sitting here at a computer solving puzzles and playing with my friends. And I feel like I wish that everyone in software could have as magical of an experience and career as I have had. 
+
+And I think that observability is a big part of how we get there.
+
+**Host:** That's true! That actually brings me to my next question as we're getting ready to close up. What do you think is in store for observability for this upcoming year?
+
+**Charity:** The first person to jump in is...
+
+**Adriana:** Okay, I'm not gonna pick on one of you!
+
+**Charity:** Oh, I haven't been keeping up on all the roadmaps and stuff, but I guess... So what is your wish? What is your wish that this year brings for observability? 
+
+**Adriana:** I guess the thing that I'm working on is a lot of folks still don't really get SLOs and SLIs as much as I think it will help both engineering management and engineers on the ground just communicate better about what they're trying to accomplish. 
+
+Like, if I had a wish, like, it would be to drive kind of that understanding deeper into our industry just so now, so I can go into a room and talk about the power that's available here and just, like, having the metrics to understand and not just get stared at like I just nailed a fish to the wall, right? Like just, you know, it would just be nice to not have to start at zero over and over.
+
+**Charity:** That's fair!
+
+**Adriana:** I personally want to see more people, like, besides like, you know, we often associate, I guess, observability with more of the Y side of things, and it is so not just that, right? I mean, it's everybody's problem, and so I want to see more conversations where we get more developers giving a crap about observability and not just developers, like folks who are planning tech projects, like software releases, whatever. 
+
+Like, make sure it's part of their language. Make sure that we empower our QAs to use... everybody misses that! Give it to your support team! Gosh! Like, what an opportunity!
+
+**Amy:** Yeah! Well, even your QA, right? Like, they're testing your software, and they could use observability to figure out what the hell is wrong and tell developers, "Hey, this is why it's wrong!" 
+
+You know? So I want to see more of that, and I think it puts us closer to, you know, Charity's observability 2.0 where it's like more part, more of a holistic part of the SDLC, right? 
+
+**Charity:** Yeah! And I think that's where it needs to be so that it's, you know, part of... it's baked in, baked into how we deliver software and how we code software and all that good stuff!
+
+**Amy:** Definitely! Everybody does a better job when they can see where they're going and see what they're doing when they are getting feedback back from the system for sure.
+
+**Host:** I had this sticker that says that SLOs are APIs for our engineering teams, and I completely agree! Like, if you don't have an agreement that you've all agreed upon, you're down in the weeds negotiating over every single decision you make about how to spend your time. 
+
+Like, it's absurdly inex... it's absurdly expensive! 
+
+**Charity:** I don't know! I expect that what's going to happen in 2024 is that everything's going to get even more muddled, and people are getting even more confused, and, um, it's fine! It's entropy! It's how it goes! 
+
+I guess my wish for Christmas would be that... my wish would be that more people just have that feeling in their gut that you get when you see telemetry feedback to you about what you've done and just go... that feeling that you get, this, like, you feel more grounded, you feel more certain, you feel more confident about what you've done. 
+
+Observability is the way that we can move swiftly and with confidence, and I feel like this is something we all know in our heads we need to learn in our bodies. And the only way that we can learn it in our body is by seeing it and experiencing it.
+
+**Adriana:** I would wish that everyone had that experience!
+
+**Host:** Most definitely! I love that! To keep that in store for 2024 as, like, find that fuzzy feeling when you start seeing your logs and metrics start showing up on your vendor. 
+
+Definitely! Well, thank you all very much for the amazing insights you've been able to provide today on our panel around observability. This group is going to be coming back later in June to have a little other chat around observability. Stay tuned to hear about those details later! 
+
+With that, we'd like to sign off and say thank you all for watching. Stay warm out there! 
+
+**All:** Yay!
 
 ## Raw YouTube Transcript
 

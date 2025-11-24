@@ -10,30 +10,22 @@ URL: https://www.youtube.com/watch?v=HLJe2RLPlWY
 
 ## Summary
 
-In this video, the speaker discusses the concept of observability as a collaborative effort within teams, advocating for a shift away from the traditional model where dedicated observability teams handle all aspects of monitoring and alerting. The speaker emphasizes that engineers are most familiar with their own code and products and should take an active role in observability practices. Instead of solely relying on observability teams to create guidelines and respond to alerts, the speaker believes in empowering engineers to lead these efforts, with observability engineers providing support and tools. The video aims to encourage a more inclusive approach to observability in software development.
+In this video, the speaker discusses the concept of observability as a collaborative effort within teams, emphasizing that it should not be solely the responsibility of dedicated observability teams. The speaker, who is passionate about this topic, argues that engineers should take ownership of observability in their code and products, while observability engineers should act as facilitators, providing tools and support. The main points include the importance of empowering engineers to handle observability and the need for a collective approach rather than a top-down model.
 
 ## Chapters
 
-00:00:00 Introductions  
-00:01:00 Overview of the topic: Observability as a team sport  
-00:02:30 Importance of shared responsibility in observability  
-00:04:15 Critique of current observability practices in companies  
-00:06:00 Empowering engineers to take charge of observability  
-00:07:45 Role of observability engineers in supporting teams  
-00:09:00 Tools and resources for effective observability  
-00:11:30 Real-life examples of successful observability practices  
-00:14:00 Discussion on the cultural shift needed for observability  
-00:16:45 Q&A session and audience interaction
+00:00:00 Welcome and intro
+00:00:10 Observability as a team sport
+00:00:20 Role of observability teams
+00:00:30 Empowering engineers
+00:00:40 Engineers taking charge
+00:00:55 Conclusion and wrap-up
 
-# Observability as a Team Sport
+[00:00:10] **Speaker:** Foreign topic will be observability as a team sport. It's something that I'm extremely passionate about. 
 
-The topic I want to discuss today is **observability as a team sport**. This is something I am extremely passionate about. 
+[00:00:20] I see that in many companies, observability teams are the ones that are making the guidelines, instrumenting the code, creating the alerts, and responding to them. I am completely against that. I think that observability, everyone should do their part. Engineers know their code and their product better. 
 
-In many companies, observability teams are responsible for creating guidelines, instrumenting the code, setting up alerts, and responding to them. However, I am completely against this approach. I believe that **observability should be a shared responsibility**. 
-
-Engineers are the ones who know their code and product best. As observability engineers, our role should be to **help and empower** them by providing the necessary tools, rather than taking charge of this aspect. 
-
-That's the core message I want to convey today.
+[00:00:40] Us as observability engineers are there to help them and empower them and provide the tools, but they should be the ones taking charge when it comes to this part. So that's what I'm going to be talking about.
 
 ## Raw YouTube Transcript
 

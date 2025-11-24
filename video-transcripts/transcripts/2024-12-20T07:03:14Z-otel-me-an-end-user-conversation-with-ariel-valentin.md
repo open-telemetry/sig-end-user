@@ -10,154 +10,288 @@ URL: https://www.youtube.com/watch?v=vB9_SiTV5CI
 
 ## Summary
 
-In this episode of the "Oh Tell Me" end user Q&A, host Reys, a Senior Developer Relations Engineer at New Relic, introduces Ariel Valentin, a Staff Software Engineer at GitHub focused on observability. The discussion centers on GitHub's adoption of OpenTelemetry, with Ariel sharing insights into the challenges and processes involved in transitioning from proprietary SDKs to OpenTelemetry for distributed tracing. Key topics include the importance of consistent terminology in observability, the architecture landscape at GitHub, the benefits of using OpenTelemetry for tracing, and the collaborative spirit within the community for contributions. Ariel also emphasizes the need for better communication regarding updates in specifications and encourages more involvement from end users in the OpenTelemetry community. The episode concludes with a light-hearted exchange about holiday plans, showcasing the friendly dynamic between the host and guest.
+In this episode of "Oh Tell Me," hosted by Reys, a Senior Developer Relations Engineer at New Relic, the focus is on open telemetry and observability, featuring guest Ariel Valentin, a Staff Software Engineer at GitHub. The discussion revolves around Ariel's experiences with observability, the adoption of open telemetry at GitHub, and the challenges faced in transitioning from proprietary SDKs to open standards. Key topics include the importance of distributed tracing, the need for a shared vocabulary in observability, and the architectural landscape at GitHub, which utilizes a customized OpenTelemetry collector. Ariel shares insights on the impact of tracing on service monitoring, the growth in usage post-adoption, and the collaboration within the open telemetry community. The episode also emphasizes the importance of community involvement, encouraging viewers to participate in SIG meetings and contribute feedback.
 
 ## Chapters
 
-Here are the key moments from the livestream with timestamps:
+00:00:00 Welcome and intro
+00:01:37 Guest introduction
+00:03:00 Format overview
+00:04:10 Warmup questions
+00:05:40 Observability discussion
+00:09:40 Adoption challenges
+00:10:50 GitHub's OpenTelemetry adoption
+00:12:10 Architecture landscape
+00:15:00 Telemetry capture methods
+00:19:01 Community contribution process
 
-00:00:00 Introductions and new format overview  
-00:01:30 Reys introduces himself and mentions the goal of the session  
-00:02:45 Ariel Valentin joins and introduces himself  
-00:04:15 Overview of the session format and audience interaction  
-00:06:00 Ariel discusses his journey into observability and open telemetry  
-00:09:00 Discussion on challenges organizations face with observability  
-00:12:00 GitHub's adoption process of open telemetry  
-00:15:30 Description of GitHub's architecture and telemetry capturing  
-00:20:00 Discussion on sampling techniques used at GitHub  
-00:25:00 Ariel shares GitHub's previous observability tools and changes since switching to open telemetry  
-00:30:15 Audience questions and interactive discussion on contributions to the project  
-00:35:00 Reys provides ways for new contributors to get involved in the end user Sig  
-00:40:00 Ariel asks about expectations for participation in the Sig  
-00:45:00 Conversation about holiday plans and cultural traditions  
+**Reys:** Hello everyone! Welcome to a brand new episode of Oh Tell Me, an end user Q&A. If you have been to one of these sessions in the past, you might notice that this looks a little bit different and it has a bit of a different name. That's right, we have done some growing up since the last few times and we're very excited to debut this new look. But don't worry, almost everything else is going to be the same. We have a great interview here for you today to learn from. 
 
-Feel free to reach out if you need more information!
+But before I introduce myself and our guest, I would love to know where everyone is connecting from. I am online from Portland, Oregon today and would love to see where people are from. It looks like someone is here from Brooklyn, New York, so thank you so much for joining out in New York. 
 
-# Oh Tell Me: End User Q&A Episode Transcript
+[00:01:37] So my name is Reys. I am a senior developer relations engineer at New Relic. I also co-lead the Ner Sig, which is our cute little logo that you see up in the right corner. At the end of your Sig, we really focus on connecting directly with users and we are dedicated to helping the rest of the SIGs get feedback from end users so they can help improve the project. To that end, this is one of those events that we host to do that. 
 
-**Host:** Hello everyone, welcome to a brand new episode of Oh Tell Me, an end user Q&A! If you have attended one of these sessions in the past, you might notice that this looks a bit different and has a new name. That's right, we’ve grown since the last few times, and we’re excited to debut this new look! But don’t worry, almost everything else is going to be the same. We have a great interview for you today to learn from.
+We are going to have Ariel on. Ariel, if you would like to join us and introduce yourself.
 
-Before I introduce myself and our guest, I’d love to know where everyone is connecting from. I am online from Portland, Oregon today, and I’d love to see where others are from. It looks like someone is here from Brooklyn, New York. Thank you so much for joining us!
+**Ariel:** Hey, how's it going, everybody? I'm Ariel Valentin. I'm a Staff Software Engineer at GitHub, working on observability. Thanks so much, Rey, for inviting me here to chat with you today. It's an absolute honor to be the first in the new format. Also, a big shout out to everybody who's done work to try to get this new platform up and running, so thank you.
 
-My name is Reyes, and I am a Senior Developer Relations Engineer at New Relic. I also co-lead the Ner SIG, which is our cute little logo that you see in the right corner. At the end user SIG, we focus on connecting directly with users and are dedicated to helping the rest of the SIGs receive feedback from end users to improve the project. This event is one of those initiatives.
+[00:03:00] **Reys:** Oh no, thank you for being here! I'm really excited. Just to get you and everyone up to speed on the format, it's similar to the ones if you've been on one of these before, but we're going to start with some warmup questions where we'll kind of massage Ariel into being comfortable, and then we'll hit him with some meaty questions. Then we will actually also get into questions more around the Open Telemetry community, where he'll have an opportunity to share feedback about his experiences with contributing, using the project, stuff like that. Then he'll get the chance to ask us questions as well in a little section we call "turn the tables." At the very end, if there are any audience questions—oh actually, scratch that—if you have questions that come up during our conversation, feel free to put them into the chat. If you're watching from YouTube, then just put them in the live chat, and then I think LinkedIn will also have its own chat, so put in your question there, and we will get to them as we can throughout the conversation. Then at the end, if you have questions at the end as well, then we will get to those. But yeah, if you have any questions that pop up as Ariel is telling us his story, we definitely want to get to those as they come in. 
 
-So, we are going to have Ariel on. Ariel, if you would like to join us and introduce yourself.
+All right, so I think we are good to get started. Ariel, tell us a little bit about your role at the company. How did you get started with observability? How did you get started with Open Telemetry?
 
-**Ariel:** Hey, how's it going, everybody? I’m Ariel Valentin, a Staff Software Engineer at GitHub, working on observability. Thank you so much, Reyes, for inviting me here to chat with you today. It's an absolute honor to be the first in this new format! Also, a big shout out to everyone who has worked to get this new platform up and running. So, thank you!
+**Ariel:** Oh, those are great questions. I mean, I should have mentioned that I'm here in Austin, Texas—Sunny Austin, Texas—so you know where I am in the world. I think a lot of us started originally, and I don't think my experience is unique, is working with sort of like APM tools, which are vendor proprietary tools, generally speaking, that didn't have distributed tracing in place at that time. As the community evolved and Open Tracing became a standard, that was my first experience with working with distributed tracing was the Open Tracing specification and working and trying out different vendors, different experiences with Open Tracing. 
 
-**Reyes:** Thank you for being here! I’m really excited. Just to get you and everyone up to speed on the format, it’s similar to the ones if you’ve been on one of these before. We’ll start with some warm-up questions to help Ariel get comfortable, and then we’ll hit him with some meaty questions. We will also get into questions around the OpenTelemetry community, where he will have an opportunity to share feedback about his experiences contributing to the project. He’ll also get a chance to ask us questions in a section we call “Turn the Tables.” At the very end, we’ll address any audience questions.
+[00:05:40] By the time that I had gotten to GitHub, I was a champion for distributed tracing because I saw the power that was in there. Around that same time, folks were already moving towards developing and transitioning away from Open Tracing and Open Census to Open Telemetry, so I got really involved very early on in trying to spread the word and learning more and working with my team, which was the observability team, to start to adopt tracing more, to embrace it more, and to make Open Telemetry sort of our North Star for all of our telemetry signals. 
 
-If you have questions that come up during our conversation, feel free to put them in the chat. If you're watching from YouTube, just put them in the live chat, and LinkedIn will also have its own chat, so put your questions there. We’ll get to them as we can throughout the conversation. If you have any questions at the end, we’ll get to those as well!
+I feel like I keep saying the word telemetry over and over again. I'm going to have to find a synonym for that. 
 
-Alright, I think we are good to get started. Ariel, tell us a little bit about your role at GitHub. How did you get started with observability and OpenTelemetry?
+**Reys:** Yeah, me too! We're both going to stumble over Open Telemetry at some point or distributed tracing at some point. It's all right; this is a safe space. 
 
-**Ariel:** Those are great questions! I should have mentioned that I’m here in sunny Austin, Texas, so now you know where I am in the world. I think a lot of us originally started working with APM tools, which are vendor-proprietary tools that didn’t have distributed tracing in place at that time. As the community evolved, and OpenTracing became a standard, that was my first experience with distributed tracing.
+What do you think is a main challenge that most organizations face when it comes to observability? Is it not just understanding the value of distributed tracing?
 
-When I got to GitHub, I was a champion for distributed tracing because I saw the power in it. Around the same time, folks were developing and transitioning away from OpenTracing and OpenCensus to OpenTelemetry. I got involved early on in trying to spread the word, learning more, and working with my observability team to adopt tracing more and embrace OpenTelemetry as our North Star for all of our telemetry signals.
+**Ariel:** Yeah, because these are all sort of new concepts to folks, right? Folks have their different levels of understanding of the tools that are available to them, and there's all this vocabulary that you hear that's a little bit hard to parse through. Sometimes it's like, "Oh, when you say trace, do you mean like a trace log? Log level is at the trace level? When you say trace, do you mean the samples taken from a profiler?" There's a lot of this sort of language that, even though we're converging on a lot of this language and we have these dictionaries that are defined and published everywhere, there's still sort of like this hump that we have to get over or like a challenge that we have with trying to get everybody speaking the same language within the same context. Very similar to in domain-driven design, we have these bounded contexts where the same term means a different thing. That flows over into sort of our domain language when it comes to observability and SRE practices, and I'm sure many folks have faced those challenges as well. It's kind of like, "Let's all get on the same page about what we mean."
 
-I feel like I keep saying the word telemetry over and over again, and I’m going to have to find a way to break that habit! 
+**Reys:** Oh, absolutely. What are currently some of the most interesting problems that you are facing in your role?
 
-**Reyes:** No worries, we’re both going to stumble over OpenTelemetry or distributed tracing at some point. This is a safe space! You mentioned you became a champion for distributed tracing. What do you think is the main challenge most organizations face when it comes to observability? 
+**Ariel:** Oh well, I mean one of those things is that transition, right? It's really hard for an organization like us, who's been around for a long time. I say a long time, but you know, whatever it is—10 years—where the system has grown and evolved. There have been acquisitions that have been brought together; there's disparate kind of backends where we're collecting this data. It's trying to transition from one way of doing things to a new way of doing things, right? So it's learning something new. That's always going to be a big challenge. Folks are trying to do their job every day; they're not trying to learn new SDKs or trying to learn new vocabulary or trying to learn how to be proficient in their backends. What they're trying to do is keep the system up and running and keep our customers happy, right? 
 
-**Ariel:** That’s a good question. There’s a lot of new language and concepts to parse through. When you say "trace," do you mean a trace log? When you say "trace," do you mean the samples taken from a profiler? There's a lot of language that even though we’re converging on it, there’s still a hump we have to get over to get everyone speaking the same language within the same context. It’s similar to domain-driven design, where the same term can mean different things. Many folks have faced these challenges as well; it’s about getting everyone on the same page.
+I think those are some of the challenges that we all face. I know I face it, and I'm sure others do, which is making these transitions with the fewest pain points as possible, trying to avoid these pain points. There's so many more we can go on and on, Reys, but I think right now that's kind of like one of the biggest challenges for adoption overall.
 
-**Reyes:** Absolutely. What are currently some of the most interesting problems you are facing in your role?
+[00:09:40] **Reys:** That's actually a great segue into the meaty section. What was the process like for GitHub to adopt Open Telemetry?
 
-**Ariel:** One of the significant challenges is that transition. It’s really hard for an organization like us, which has been around for about ten years, where the system has grown and evolved with various acquisitions. There are disparate backends where we collect data, and transitioning from one way of doing things to a new way is a challenge. People are trying to keep the system running and keep our customers happy, so making these transitions with the fewest pain points possible is a big challenge.
+**Ariel:** For us, it was the role of the advocate, right? I acted as an advocate and was a champion for Open Telemetry at the company. I was specifically brought in to help advance the mission of tracing, and it was something that I had pitched. There were other challenges that we faced too, which was, "Hey, let's get everybody building a data dictionary. Let's get everybody agreeing to the same language when it comes to what our attributes were going to be." As you can imagine, as a system of walls or acquisitions or other teams are rolled in, everybody has their own log attributes or their own metric attributes or whatever it is. 
 
-**Reyes:** That’s a great segue into the meat of our discussion. What was the process like for GitHub to adopt OpenTelemetry?
+[00:10:50] I said, "Look, here's a North Star. Here's semantic conventions from Open Telemetry. Let's anchor onto this and let's follow the rules around semantic convention so that we can all build up our own internal dictionary." That comes with its own challenges—schema migrations and trying to keep up to date with the spec and what the instrumentations are doing, right? As an advocate, I was also a lead on the rollout. One of the things I wanted to do was sunset all of our old SDKs and move over to our open-source SDKs. 
 
-**Ariel:** For us, it was a lot of advocacy. I acted as an advocate and champion for OpenTelemetry at the company. It was something I pitched, and we also faced challenges like building a data dictionary and getting everyone to agree on the same language regarding our attributes. As you can imagine, as systems grow, every team has its own log attributes or metric attributes. We anchored onto the semantic conventions from OpenTelemetry to build our internal dictionary.
+My team and I were all involved in Open Telemetry Ruby, for example, because we're a big Ruby shop. We got involved there to help the instrumentations get better and to help test different releases of the SDK and get that rolled down into our GitHub monolith. We were, like I said, very early adopters, ran into some challenges, and continued to give feedback to the community that way. I'm not only an end user, but like I said, I'm also a maintainer, so I'm playing multiple roles there, trying to help the community along.
 
-This came with its own challenges, such as schema migrations and keeping up to date with the spec. I wanted to sunset all of our old SDKs and move over to our open-source SDKs. My team and I got involved in OpenTelemetry Ruby, for example, since we are a big Ruby shop. We helped make the instrumentations better, tested different releases, and got that rolled into our GitHub monolith. We were early adopters, ran into challenges, and continued to give feedback to the community.
+**Reys:** That's a really interesting position to be in as an end user and contributor. I definitely want to circle back on that when we get to the OpenTelemetry community questions. Tell us about the architecture landscape at GitHub and the telemetry that you're capturing.
 
-**Reyes:** That’s a really interesting position to be in as both an end user and contributor. I’d love to circle back on that when we get to the OpenTelemetry community questions. Tell us about the architecture landscape at GitHub and the telemetry you’re capturing.
+[00:12:10] **Ariel:** Sure! I've got this little slide that I put together in markdown, so it's not anything official. We can bring that up now so we can take a look at it. I imagine that for a lot of folks out there who are working with virtual machines where they're running systemd units or if they're running Kubernetes, we have different deployment styles here. 
 
-**Ariel:** Sure! I have a slide I put together, which we can bring up now. For many folks working with virtual machines or Kubernetes, we have different deployment styles. Some of our main workloads are running in Kubernetes, and we run our own custom meshing. On every worker node, we’re running a deployment of the OpenTelemetry collector that we build using OCB. We chose that route to ensure we had the most secure build possible with the minimum number of dependencies and the ability to build our custom processors.
+Some of our main workloads are running in Kubernetes, and the way that we've got everything set up, you can see here as part of our Kubernetes cluster, we run our own custom messaging graph. On every worker node, we're running a deployment of the OpenTelemetry collector, which we build using OCB. We have our own version of the OpenTelemetry collector that is specific to us. We chose that route because we wanted to ensure that we had the most secure build possible with the minimum number of dependencies, and we also wanted the ability to build our own custom processors so that we can address any issues that we might have that are specific to our needs. 
 
-In each pod, we have a mesh sidecar. Ingress traffic comes into the OpenTelemetry collector over HTTP. If you have another application running your service, it sends traces to the mesh and sends them to our OpenTelemetry collectors, which generate span metrics and sample traces before sending them to a SaaS provider for aggregation.
+Inside of each of these pods, we also have a mesh sidecar. Ingress traffic is going to come into the OpenTelemetry collector over HTTP. If you have another application that's running your service, it's shooting over OTel traces over to the mesh and sending it to our OpenTelemetry collectors. From there, we generate span metrics and sample traces and send those off to a SaaS provider where we aggregate all this data. 
 
-We are currently leveraging OpenTelemetry for traces and generating span metric data, but we still collect custom metrics and logs using non-OpenTelemetry formats. On each worker node, we have a metrics agent that can speak various protocols. We have Fluent Bit running to collect logs, which get streamed out through Azure Event Hubs, processed by consumers, and sent off to our log store and search system.
+On each individual worker, we're running in this hybrid world right now. We're only leveraging OTel for traces and for generating span metric data. We're still living in a world where we're using non-OTel formats for collecting things like custom metrics, system metrics, and for collecting logs. On each one of our worker nodes, we have a metrics agent that can speak various different protocols, but mostly it's either using Open Metrics or it's using StatsD to collect data and aggregate it and send it off to the SaaS provider. 
 
-For our trace data, we’ve rolled out OpenTelemetry SDKs for different programming languages, including Ruby, Go, JavaScript, Node.js, and .NET. We had some experimental Rust and Java usage but had to scale that back. We started before automatic instrumentation was available for some of these languages, so we’re deploying them through wrapper libraries, which we maintain and update periodically.
+[00:15:00] In addition to that, on all of our worker nodes, we have Fluent Bit running, and that's what we're using to collect our logs. All of our logs end up getting streamed out through Azure Event Hubs, which are processed by a bunch of consumers and then sent off to our log store and search system. 
 
-**Reyes:** Wow, that’s a lot of information! I have many follow-up questions. You mentioned that you’re leveraging OpenTelemetry for traces right now. Is that mainly because you’re a Ruby shop and the signals for metrics and logs aren’t as mature yet?
+In addition to these Kubernetes workloads, we have our own virtual machines where we run systemd units. You have to think about the Git file system services. Those are all running on systemd, and we have the metrics agent and Fluent running there. We don't yet have the OpenTelemetry collector deployed there, but that's where we want to get to. We want to get to a world where essentially our entire platform is running open-source software, the OpenTelemetry collector, and we're converging on OTel for all these formats. So those services are also using StatsD, Open Metrics, and Fluent Bit's pulling things out of JournalD because that's where we're streaming all of our logs of the system journal. 
 
-**Ariel:** That’s one of the reasons. There’s also a lag between when something is published in the OpenTelemetry spec and when vendors or open-source platforms can leverage those things. We ran into challenges rolling out tracing that we didn’t want to take on yet, especially as some SDKs are ahead of others. With Ruby, we recently saw improvements to the metric SDK, which is something we wanted to use.
+All of that stuff again goes right through to the same channels, and it all gets aggregated in these places where we do our work. A little bit about some facts about our trace data is that we've rolled out the OpenTelemetry SDKs for different programming languages. We have them for Ruby, Go, JavaScript, Node.js, .NET. We had some experimental Rust usage, but we've had to scale that back, and we had some Java experiments that didn't pan out; we didn't roll those out to production. 
 
-**Reyes:** So, it sounds like the plan is to migrate your other signals over once they reach GA in languages?
+A lot of the stuff that we do, we started before any of the automatic instrumentation was available for some of these languages, so we're still deploying them through wrapper libraries. We maintain a set of wrapper libraries. You install those; it gives you the sort of the what we consider to be the minimal defaults that we require for our needs, and we'll do periodic updates of those through Dependabot. As we roll out new versions of those things, I feel like I've said a lot so far, and I don't know, Rey, if you had any follow-up questions for me.
 
-**Ariel:** Certainly! Once we have more time on our calendar, we want to migrate everything over. GitHub is constantly growing. We just hit 150 million users, so it’s amazing growth, and we’re here to support that volume growth.
+**Reys:** I actually have so many! 
 
-**Reyes:** That absolutely answers my question! For those who joined us later, feel free to pop any questions into the live chat of whatever platform you're watching. 
+**Ariel:** Oh, okay, great!
 
-I noticed on your second slide you mentioned probabilistic sampling. It sounds like you're not doing any kind of tail sampling.
+**Reys:** You mentioned you are leveraging OpenTelemetry for traces right now, and you talked a little bit about the plans and some of the stuff that you tried. I was curious to find out more about is that mainly because you're primarily a Ruby shop and the SDKs for metrics and logs aren't quite as mature yet? Is that the reason?
 
-**Ariel:** Not at the moment. One of the hard things about tail sampling is that traces have to go to the same collector to make that decision. We wanted to reduce the burden in complexity immediately, so we started with probabilistic sampling. More advanced remote sampling is something we want to pursue in the future.
+**Ariel:** That's one of the reasons. One of the other challenges that I didn't discuss when you asked about adoption challenges is even though OTel says, "Hey, this is what the signals look like; this is what the semantic attributes are like," there's a lag between the time that something is published or declared in the OTel spec to the time that vendors or open-source platforms are able to leverage those things. There's sort of like this feedback loop as we go through OTs and say, "Hey, we want to try this new thing out." 
 
-**Reyes:** At what point do you think you might get to the point where you could implement tail sampling?
+[00:19:01] We do a couple things in experimental languages; we'll do this stuff, and it was a big enough challenge for us to start to roll tracing out that we didn't want to take yet another thing on, which was to say, "Okay, now we're going to switch over to native OTel metrics as well." Like you said, some of the SDKs are ahead of others. So with Ruby, we're just recently, with the help of our amazing maintainers, working diligently to get the metric SDK up to speed for Ruby. So that's something that wasn't available to us to use. 
 
-**Ariel:** That’s on the pile of things I want to do. It’s hard to say right now, but it’s something I’d love to explore.
+One of the biggest advantages that I see in tracing is the ability to generate span metrics from traces. It's like, "Hey, the less things that we have to impose on our users for them to try to figure out how to do, the better for us." 
 
-**Reyes:** I’m curious about the experiments you mentioned in Java and Rust that didn’t pan out. What didn’t quite work out for those?
+**Reys:** Are you using the span metrics connector? Is that what you're using?
 
-**Ariel:** We reduced the number of Java workloads we’re running, migrating them over to different programming languages. We didn’t see the return on investment we wanted. Similarly, with Rust, we have a limited set of applications that run Rust, and they ran into performance issues that impacted their latency. I wasn’t able to get my hands dirty to help address those problems, so we had to put that on pause.
+**Ariel:** We're using a custom connector right now. I'd like to be able to get us to the point where we're using a span metrics connector, but we don't have egress in OTel right now. We're still doing sort of like vendor proprietary formats for export. Where I want to get to is, you know, that's one of the biggest strengths of OTel is that OTel is that standard format that makes things portable for us.
 
-**Reyes:** What was GitHub’s observability tool before migrating to OpenTelemetry?
+**Reys:** Absolutely. So that sounds like the plan is to migrate your other signals over once those reach GA in languages.
 
-**Ariel:** We were using proprietary SDKs for OpenTracing. GitHub is also a heavy StatsD metrics user, and logs are a big part of what we utilize. We were piecing together logs and metrics for debugging and started using distributed tracing as an additional tool in our toolbox.
+**Ariel:** Oh, certainly. And once I have more time on the calendar too, right? We have so many projects that we have to do as engineers and companies, and it's like, "Hey, where do we fit these in?" As you imagine, GitHub is constantly growing every day. We just hit 150 million users, so it's like just an amazing growth of the company. Shout out to all the people at GitHub who've been working so diligently to make this happen. We're here to support that volume growth and support our end users. I hope that answers your question.
 
-**Reyes:** How have things changed since GitHub switched to OpenTelemetry?
+**Reys:** Absolutely. I also want to mention again real quick for those who joined us a little bit later, feel free if you have questions that come up. You want to learn more about something that Ariel has gone over, feel free to pop it into the live chat of whatever platform you're watching from, whether it's YouTube or LinkedIn. Go ahead and pop the question in, and we will try to get to them throughout the show as you can. 
 
-**Ariel:** Just this year alone, we’ve seen a dramatic increase in the number of people using tracing and the number of services instrumented. When we started, around 80 services were instrumented, and now we’re closer to 300. We’ve gone from about 5 million spans per second to 32 million spans per second, which is a huge increase in usage.
+I noticed on your second slide you mentioned probabilistic sampling, so it sounds like you're not doing any kind of tail sampling.
 
-**Reyes:** How has that impacted how your services are running and the speed at which your team can debug issues?
+**Ariel:** No, not at the moment. Would you mind bringing that up again—the second slide?
 
-**Ariel:** It’s a mix of education. We have teams dedicated to improving the experience and helping identify new workflows. We try to provide insights during incidents and help teams identify issues even before they go to production. It’s been a mix of results—some teams have identified issues before they go live, while others have leveraged it during incidents to find the root cause.
+**Reys:** Yeah, that's awesome.
 
-**Reyes:** What would prevent you from implementing better telemetry?
+**Ariel:** Yeah, so we started with probabilistic sampling. One of the hard things about tail sampling, as you can imagine, is that the traces all have to go to the same collector in order to make that decision if you're using the collector for tail sampling. Right now, we wanted to reduce that burden in complexity immediately. When we started with probabilistic sampling, some of the things that we want to do in the future is more advanced remote sampling so that we can have more fine-grain control of what we're looking at. We want to be able to leverage tail sampling rules, but as you know, that's very difficult to implement and a little bit difficult to scale in our case because we have about 2,000 collectors that are supporting everything right now across all of our fleet of like 14,000 hosts or something like that. I'm making that number up off the top of my head; I think that's the last number we had. 
 
-**Ariel:** There’s a lot in early stages. We were early adopters, but some tools are risky to roll out. For example, I’m excited about the continuous profiler, but it’s still in the early stages, and we don’t want to take that risk just yet. There’s also a challenge in migrating semantic conventions from pre-1.0 to 1.x, as we’ve already sent data out, and we need to figure out a way to upgrade it.
+Right now, we're doing about 26 million spans per second. Just yesterday during our peak times, we hit our all-time high of 32 million spans per second as we continue to grow our volume. This is one of the challenges that we've had, and so on my list of all the things that I want to do, tail sampling is definitely on there.
 
-**Reyes:** Let's shift to some community questions. What was the contribution process for you and your team like to OpenTelemetry?
+**Reys:** At what point do you think you might get to the point where you could implement tail sampling? 
 
-**Ariel:** It was a short process with a lot of observation. We looked at the code of conduct and previous PRs to ensure the behaviors matched our expectations. We participated in SIG meetings, provided feedback as end users, and were able to contribute some custom propagators and instrumentations. We focused our contributions on libraries that are popular at GitHub and aimed to create an environment that lowers the barrier to entry for collaboration.
+**Ariel:** That would be more like when the processor has been more developed. I don't know how to answer that question because it's on the pile of the list of things that I want to do towards the bottom. 
 
-**Reyes:** Do you have any feedback for the SIG on ways to improve based on your experiences with Ruby and other SIGs?
+**Reys:** Got it.
 
-**Ariel:** I’d like to see better communication about changes in specs. If a change happens, it should automatically open issues for every maintainer repo to track updates. Right now, it’s hard to keep up with changes and deprecations.
+**Ariel:** Although I am curious about the other.
 
-**Reyes:** What SIGs do you interact with most right now?
+**Reys:** But that's okay! That’s all right. 
 
-**Ariel:** I mostly participate in the Ruby SIG and have limited interaction with other SIGs these days. I recently met the end user SIG at KubeCon, so I’m looking to get more involved there.
+**Ariel:** Questions that I want to get to as well.
 
-**Reyes:** For our “Turn the Tables” section, what questions do you have for me or anyone on the call?
+**Reys:** Sure! Also, just going back, you mentioned trying some experiments in Java and Rust that didn't quite pan out, and I was just curious what it was that didn't work out or didn't meet your expectations.
 
-**Ariel:** What are the best ways for newcomers to get involved in the end user SIG?
+**Ariel:** Well, we've reduced the number—I'm sorry, all the JVM people out there. We've reduced the number of Java workloads that we're running, so those have been migrated over to different programming languages. That's one of the reasons why we didn't go through and say, "Oh, let me continue to roll out JVM work." We just didn't have the return on investment that we wanted to, you know, try. 
 
-**Reyes:** There are many ways to contribute. Joining SIG meetings and sharing your experiences is a great way to start. We do surveys, open Q&A sessions, and even documentation. Joining the CNCF Slack instance is also essential. 
+Also, we don't have a lot of the same thing for Rust. We have a very limited set of applications that run Rust, and those are performing for performance reasons. They ran into some challenges with how it impacted their latency when they introduced the use of the SDK. I'm going to be honest with you: me not being a Rust expert and being able to get in there and get my hands dirty to try to help out with addressing some of those problems and reporting them upstream, that was something that we had to put on pause. Again, it's like one program versus all of these other services that are running in Go and Ruby and JavaScript that we need to pay attention to. 
 
-**Ariel:** What kind of expectations of commitment do you have from folks who want to participate?
+I think that's really where it was, where sort of like a critical mass of application services that use these programming languages, and it was like, "Hey, we have to focus our attention on those that are going to get us a higher return on investment for this."
 
-**Reyes:** We welcome contributions in various forms. We hope people can join at least once a month, but if not, that’s okay! We understand everyone has commitments. We want to make it as welcoming as possible for everyone.
+**Reys:** Absolutely. Okay, so what was GitHub's observability tool before migrating to OpenTelemetry?
 
-**Ariel:** Thank you for answering my questions, Reyes! 
+**Ariel:** Yeah, I mean, we were using a proprietary SDK for OpenTracing. OpenTracing was how we collected traces before, but generally speaking, GitHub is a huge StatsD metrics user still to this day. Logs are a big part of what we utilize here. Folks are looking at exception stack traces a lot of the times to try to understand where errors are coming from. They're looking at access log streams, and they were trying to piece together, "Hey, where's the request going, and where is it slowing down?" I showed up with my magic tool—distributed tracing. I'm like, "Hey, look, here it is on the flame graph or an icicle graph, or here's a waterfall view of this thing." It's like, "Oh, that's pretty cool!" People started looking into that as an additional tool in their toolbox for them to help try to debug things during an incident. 
 
-**Reyes:** You’re welcome! If anyone has any last-minute questions, we’ll hang out for a minute. Otherwise, I’ll ask about your holiday plans!
+I hope that answers your question there.
 
-**Ariel:** We're spending it with family, traveling on Christmas Eve. It should be fun!
+**Reys:** Yes, and kind of along those lines, how have things changed since GitHub switched to OpenTelemetry?
 
-**Reyes:** I’ll be working on house projects that have been on my to-do list for three years! 
+**Ariel:** What I'll tell you is that just this year alone, we've seen a dramatic—I wish I had these statistics off hand—but we've seen a dramatic increase in the number of people using tracing and the number of services that have been instrumented. Part of that comes from the fact that I was like, "Hey, everybody, we're all moving to this new SDK, so everybody install it." Let Dependabot go ahead and do these installations on your apps, and people started seeing the value of this investment as well. 
 
-**Ariel:** That sounds like a plan! 
+I want to say that when we started this adventure, only about 80—and I'm going to use the word services in air quotes—only about 80 services were instrumented, and now we're closer to about 300 of those services, which are effectively like Kubernetes deployment types or systemd types. As you can imagine, our monolith has, you know, maybe a thousand services within it, so there are like sub-services in there. But the monolith itself has broken down into like eight services—like web UI, API, GraphQL, background workers, stream processors, and whatnot. That's why I put them in air quotes as these are services. 
 
-**Reyes:** Thank you so much, Ariel! You were a fantastic guest. I’m excited to learn more from you. 
+We saw that that was quite an increase in the number of services that came in. We were doing something like 5 million spans per second to now we're up to 32 million spans per second. It's just a huge increase in volume and usage.
 
-If anyone wants to reach out, you can find us in the CNCF Slack's OpenTelemetry SIG end user channel. We’ll have the information in the show notes. Thank you all for joining us, and we look forward to seeing you again next time! Happy everything!
+**Reys:** Along with that volume increase in usage and data volume, how would you say that's impacted how your services are running and how quickly your team is able to debug issues as they arise?
 
-**Ariel:** Thank you for having me, Reyes! This was awesome. Thanks, everyone, for watching, and I hope to see you in a SIG room sometime!
+**Ariel:** Part of it is an education thing. A lot of things that—I mentioned that I'm on the observability team, but really, we're two groups. One of the groups is called The Experience Team that works directly with teams. They operate in a role sort of like developer relations and advocacy, but also working on cost control and improving your experience, helping you with identifying new workflows and introducing them into your incident command experience. 
 
-**Reyes:** Adios!
+Those teams set up sessions, education sessions, to bring folks on board. We try to do them not during an incident because that puts some stress. What we try to do is, if an incident is happening, it's like, "Hey, here's some insights that we're gaining, and we'll share with you that we're seeing from the traces that you might not be able to see somewhere else." That has helped in a lot of cases where we couldn't exactly pinpoint what was going on. 
+
+Then there are also these spots where not every system has been instrumented, so we have to rely a lot on sort of like client metrics or client trace data and say, "Hey, look, this client is experiencing this problem. Can we take a look deeper at this other service that hasn't yet been instrumented?" It's been sort of, I'm going to say, mixed results. Some teams have identified issues even before they go out to production, and other teams have been able to leverage it when it's like, "Oh, this, we're having an incident right now. Oh, here's the reason why this is failing." 
+
+We've been able to do things like identify bottlenecks and mistakes, like little coding mistakes—"Oh, I forgot to ack the message before I pulled it out of Kafka. I'm just retrying that same message millions of times," or "Oh, the client timeout doesn't match the server timeout, so the client times out, and the server is continuing to turn along to try to do this request." We're identifying things like that that we couldn't identify before easily.
+
+**Reys:** Oh no, that's awesome! I think I will probably be asking you more about that because I think this is really interesting. One more question from our meaty section: what would prevent you from implementing better telemetry?
+
+**Ariel:** What would prevent me from doing that? I think it's because there's so much of the stuff that's in early stages. We were early adopters on a lot of things, but then there's a lot of stuff that's a lot more risky for us to try to roll out. For example, one of the things I'm really excited about when I came back from KubeCon is the continuous profiler. 
+
+That's one of the things on my wish list that we'd be able to use today if we could. That's the thing that I would want to do, but because we're still in the early stages of the profiler and the specification, and there's still some churn with the data model, I think that there are—when it comes to the resource-intensive or sort of like introspective tools like that, we don't want to take that risk going a little bit too early to adopt those tools. 
+
+Also, there's not a lot of support from our current vendors that will be able to leverage that. It's kind of like we would be experimenting with that to go to nowhere. That's kind of, you know, once vendors start to support the OpenTelemetry profiling format, data model, I should say, and once the profiler is a little bit more stable, I'd love to jump in there and be able to roll that out a little more widely. 
+
+I think that a little bit of a bumpy road for us is still migrating Semantic conventions from pre-1.0 because we were early adopters of Semantic conventions, so we're at this pre-1.0 stage. Getting ourselves to migrate towards a 1.x version of Semantic conventions is another big challenge because we've already sent all of this data out to our backends. We have to figure out a way to upgrade it or to say, "Oh, this is version X." I kind of feel like a lot of the progress was stalled there for the moment.
+
+**Reys:** If that answers your question.
+
+**Ariel:** Oh absolutely! I think that is another interesting topic—migrating some semantic conventions, so I might jump back if we have time later. But I do want to get to some of these community questions.
+
+**Reys:** Yes, ma'am!
+
+**Ariel:** Yeah, so one of the big things I think working in the community that you've seen, I've seen, is people want to contribute to the project, but they're not really sure where to get started. We have resources such as, you know, I think in the documentation we added getting started, and you have various SIG channels and CNCF Slack. I think we all have the problem of how do we reach these people because there are still so many. What was the contribution process for you and your team like to OpenTelemetry?
+
+**Ariel:** For us, it was a short process with a lot of observation. The things that we looked for—myself and my teammates at the time—when we approached the community, we were looking at the code of conduct: what were the expectations of the code of conduct? We went through and actually looked at issues, previous PRs, the feedback that was in those PRs to see if the behaviors expected in the code of conduct were reflected in the PRs and in the issues. 
+
+There's nothing worse than you wanting to be part of this community and finding that those two things don't match. To see that that happened, then we participated in the SIGs, which was very nice for us to be able and convenient for us in the U.S. because the Ruby SIG was in U.S. hours. We joined those meetings during the day and started to provide some feedback as end users and say, "Hey, look, we ran into this challenge." If we identified something that was a challenge for us, we would contribute a PR. 
+
+The maintainers were very generous with their time, did their reviews, and we were able to get a couple of custom propagators merged. We got some instrumentations merged, and we identified other gaps for the instrumentations that we use because one of the biggest challenges, I think, as a maintainer is there's so much that you have to do. You've got the SDK, you've got the API, you've got documentation to do, and you have to have language-specific instrumentations. That's daunting, especially with all of the popular libraries that are out. 
+
+For us, we contributed back to the libraries that we use heavily. We have a subset of libraries that are very popular at GitHub and sort of blessed by their popularity. That's where we focused our energy and our contributions. Then we reached out to people. Anytime somebody comes to me and says, "Hey, I have this challenge with this thing. It's missing this attribute, or I'd really like it to work like this, or I've identified this bug," the first thing I do is say, "Let's open up an issue and let's work on this together. I'd love to review your PR." 
+
+Creating an environment that lowers the barrier to entry for folks to collaborate and submit contributions is important. I want them to feel like this is yours, this is ours—this is not mine, and I'm gatekeeping. We still have some standards for quality, obviously, and some expectations from you as a maintainer, but we try to make this a painless experience for you, at least in the Ruby community. That’s what the contribution process was like for me and getting involved in the community.
+
+**Reys:** That's awesome! So you started basically joining the SIG meetings as an end user and sharing feedback and then finding information about how you can open an issue and then building custom stuff and helping the community or sorry, the Ruby SIG build out more of their components.
+
+**Ariel:** Okay, yeah, certainly. And like, you know, with the home for open source, right? For us, we open-sourced, for example, new database drivers in Ruby for MySQL. We had that instrumentation in-house before all of that became public, and as soon as we released that new driver, I went right to the SIG and said, "Ta-da, I have a donation for you!" It's this thing where there's just this spirit of collaboration and supporting open source that’s important to our mission.
+
+**Reys:** Okay, so it sounds like you had a pretty positive experience from contributing to Ruby. Do you have any feedback for the SIG on ways to improve how things work based on your experiences with Ruby and then other SIGs? I know you mentioned also some other components that you've used, but we'll come back to that.
+
+**Ariel:** Yeah, for sure. Again, I want to thank everybody for their amazing work that they've done contributing to the collector in particular because we release our OCB build, or sorry, our custom build, every time a new version of the collector package rolls out. Every week, Dependabot is telling us, or every two weeks, it's telling us, "Hey, it's time to upgrade; a new release has rolled out." 
+
+We ran into some challenges where we identified some performance issues in the collector, and we worked with the team, provided profiles, provided feedback, and showed them our configurations, and they were so responsive to our concerns. They were happy to see that we were able to contribute back just in providing feedback, just giving them actual data of production workloads, which is very difficult to do as a maintainer. 
+
+It's really hard for me to know, "Hey, what's going on in your customer's deployment or this user's deployment?" We can't replicate it in our own environment. That spirit of collaboration was really great, and that's the thing that I'd like to see happen in all the other SIGs. I have limited experience with other SIGs. 
+
+The other part was contributing to semantic conventions, and I contributed to semantic conventions, trying to introduce some new attributes, but there's just so much churn in that repository that it was hard for me to keep up with changes and deprecations. That was a little bit on me to be able to keep up and find out that the stuff I had submitted was deprecated in favor of something else. It's those kinds of challenges that I like—I have to find a better way for us to all be able to keep up with each other. 
+
+One suggestion I might say is, "Hey, look, a change happened. Here's an OTOP—a change happened in the spec that should automatically open issues for every maintainer repo and say, 'Here's a new thing that has changed. This is a new feature we expect that the SDK should support.'" That way, we're able to track it because right now, the way it works is, "Hey, we have somebody who's a representative at the SIG spec; they collect some data, they come back to us, and they tell us, 'Hey, we need to implement this other thing.'" Sometimes we're not diligent about project management, right? We're ICs who are doing this in our spare time, so we need to improve overall at being able to keep each other informed and tracking work.
+
+**Reys:** Got it. So, making sure everyone's on the same page at the same time, which I can see obviously is a bit daunting.
+
+**Ariel:** Yeah.
+
+**Reys:** I know you mentioned some of the SIGs that you have worked with in the past. What would you say are the things you interact with most right now?
+
+**Ariel:** Right now, I almost exclusively participate in the Ruby SIG. I don't have a lot of interaction with other SIGs at the moment, other than through an occasional issue or a discussion that'll pop up, or in Slack, I'll jump into a channel and say, "Hey, I've run into this problem," or "I have this question for y'all. Can you help me?" 
+
+I have limited interactions now these days with other SIGs. Just recently, I'm meeting the end user SIG at KubeCon, so I'm going to probably get more involved in the end user SIG now that I have this special invitation from you.
+
+**Reys:** Oh, I'm so excited!
+
+**Ariel:** This brings us to our "turn the table" section where you get to ask me or anyone on the call questions, and we'll see if I can answer them or if anyone else can answer them.
+
+**Ariel:** Okay, so for me, Rey, it's like that's how I got involved, but maybe you know a special sort of formula or the best way to have someone who's new get involved, in particular in the end user SIG, to provide feedback, or how do they get involved in other SIGs that you've been involved in?
+
+**Reys:** Oh, for sure! So there are a lot of different ways to contribute, right? I think a lot of people, when they think of contribute, they think it means, "Oh, I got to open PRs. I got to be writing code." That's not necessarily the case. There are so many different ways you can provide feedback. One of the ways you mentioned was you just started out by going to a SIG meeting and sharing some stuff that you're seeing. That is an absolutely great way to contribute to the project, and that's what the end user SIG is all about. 
+
+One of the things we're all about is gathering feedback to give back to the appropriate SIG so we can help improve things. To that end, we do things like surveys, open solar Q&A interview sessions where we kind of dive deeper into the adoption implementation process and find out your pain points and specific feedback. You can contribute blogs. If you love writing, documentation is a great way. 
+
+If you are not already a part of the CNCF Slack instance, I would join, and I just realized I did not include that link, but we will have it in the show notes. Once you are a member of the CNCF Slack instance, you can scan the QR code and join the OTel Sig end user channel, and we will be happy to direct you if you have questions about your implementation or you just kind of want to know, "Hey, where do I get started?" 
+
+We are happy to help direct you. We currently have a survey going, which I also just realized I did not share the link. I'm so sorry; I'm going to see if I can get that right now, Henrik. 
+
+So yes, join the SIG meetings where they can access the calendar. It’s through the community repository; it has links to the calendar.
+
+**Ariel:** Perfect!
+
+**Reys:** Yes, if there's a specific language that you are already working in, check out the calendar to find out when the SIG meets and just hop on. When I first started, I was like, "I'm just going to check out a few different SIGs." I went to the Python SIG, and everyone there was so welcoming and so nice. I was so intimidated at first, and then I was like, "Oh wow, these people are so lovely!" That's been my experience with almost every SIG meeting that I've jumped into. Everyone is so open to answering questions, and they want your help. They want to help you help them. 
+
+One of the things is just, you know, letting people know that it doesn't have to be contributions. Of course, if that's what you want to do and are able to, we would love that, but there are so many other different ways—feedback, donation, blogs, doing interviews, and surveys. 
+
+Every little bit helps, right? Every little bit counts. If you find yourself interested in trying to contribute back or you don't know where to get started or you feel just like intimidated, just know that all of us, we do our best to make the most welcoming communities possible in our SIGs. I love that the end user SIG creates these opportunities for folks to come and just provide feedback, a space for them to say, "Hey, I'm having trouble with this," or "I like this," or "This was a great experience for me." 
+
+This part has been very enjoyable for me to be able to share my personal experience and my team's experience with you. I really hope that folks who are watching at home, hey, come on in; the water's fine! Don't worry! We have floaties, we have all kinds of gear to help you get started, right? 
+
+**Ariel:** Exactly! It's just the little things. Every little contribution can help us. If your contribution is there to help you, it'll help out the community. So come if you're having trouble with a specific problem. I guarantee you at least a dozen other people are having the same problem. If you don't understand something, I guarantee you probably at least a hundred other people don't understand it either.
+
+**Reys:** For sure!
+
+**Ariel:** I really appreciate you answering my questions here.
+
+**Reys:** Oh, you are so welcome! I guess I kind of put this at right about time in case anyone has any last-minute questions. We'll hang out here for another minute and just kind of chitchat and give people an opportunity to share if they would like. Otherwise, I will just ask about any fun Christmas or New Year plans.
+
+**Ariel:** Yeah, we're going to be just spending it with family, so that's going to be really nice. We're going to be traveling, so that might be a little bit hectic. We have to travel; we're going to go visit my father, but we are traveling on Christmas Eve, so that should be fun, right? I'm going to show up there, and we'll be singing Christmas carols at the top of our lungs and waking up the neighbors as soon as we arrive.
+
+**Reys:** Oh my gosh! How about yourself?
+
+**Ariel:** Whoa, whoa, whoa! What are these Puerto Rican Christmas songs, and where can I listen to them?
+
+**Reys:** Oh, okay! You can look at them on YouTube, on TikTok; they're all over the place. In Puerto Rico, folks and in other Caribbean islands will join and make something called the "parranda" and have a "paranda," which is a party basically. It's like a Katamari ball, so you go from house to house knocking on doors, and then you start singing these songs. 
+
+The songs are like, "Hey, open up the door! I'm here to say hello!" "Oh, you turned the lights on; I can see you in there! Let me in!" You have to feed the guests and give them beverages and stuff. What you do is you take those people whose home you invaded, and we call it an "asalto," which is like—we're showing up uninvited. We break into your home and then we bring you and add you to the "parranda," and we move to the next house, and we come and, you know, we'll sing and stuff like that. 
+
+It's really great; it's a lot of fun, and so we're looking forward to doing that with our family!
+
+**Ariel:** That sounds so fun! What did you say that was called?
+
+**Reys:** The "parranda" and the "asalto." 
+
+**Ariel:** That sounds lovely! Honestly, that sounds fantastic!
+
+**Reys:** It's a lot of fun! I'm so excited! You have to share pictures!
+
+**Ariel:** I will, thank you! Maybe videos too—who knows what kind of trouble we can get ourselves into!
+
+**Reys:** Yes! I would love to have a video of you singing one of these songs!
+
+**Ariel:** There are videos of me on the internet singing songs, but not now! 
+
+**Reys:** What are you going to be doing this holiday season?
+
+**Ariel:** I am going to be at home busting out hopefully a bunch of house projects that have been on my to-do list for three years.
+
+**Reys:** Nothing like it, right? You're going to get to the tail sampling project, right?
+
+**Ariel:** Oh my gosh! I have! But I'm really excited about it because I moved into this house about three years ago, and it's like, you know, 85% there. There are still—I just—don't look in the cabinets. That's a project; I need to organize all the inside stuff.
+
+**Ariel:** That's the thing I tell people all the time: "Hey, don't look on the inside of the repositories. You may not know; you may not like how the way things are arranged, but you know where things are, so that's totally fine." 
+
+**Reys:** Well, all right! Thank you so much, Ariel! You were a fantastic guest! I'm really excited to learn more. As I said, I did have some follow-up questions, so I'm sure I'll be slacking you to learn more about some of your adoption processes as well as some of the other components you mentioned you had used, such as the OCB. 
+
+But yeah, if anyone wants to reach out to either of us, you can find us in the CNCF Slack's OTel SIG end user channel. Again, this link is up here for you to scan, and I believe we will have the information in the show notes as well, which will be posted, I think, right after this. 
+
+Thank you so much for joining us, and we look forward to seeing you all again next time!
+
+**Ariel:** Yeah, thank you for having me again, Rey! This was really awesome. Thanks everybody for watching, wherever you are and whenever you are! I hope to see y’all in a SIG room sometime.
+
+**Reys:** Oh yes! And happy everything to everyone! Adios!
 
 ## Raw YouTube Transcript
 

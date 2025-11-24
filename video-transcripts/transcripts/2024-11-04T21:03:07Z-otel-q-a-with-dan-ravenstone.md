@@ -10,100 +10,358 @@ URL: https://www.youtube.com/watch?v=BMkckCQN8eg
 
 ## Summary
 
-In this YouTube video, Dan Ravenstone, a staff engineer at Top Hat, discusses the evolution of monitoring to observability, particularly in the context of using OpenTelemetry. The conversation includes insights about the challenges organizations face when adopting observability, the importance of user experience in guiding instrumentation choices, and the cultural shifts necessary for developers to embrace new practices. Dan reflects on his experiences transitioning Top Hat from a vendor-specific monitoring tool to OpenTelemetry, emphasizing the need for effective communication and patience while educating teams. He highlights the role of structured logging, the significance of service level objectives (SLOs), and the necessity of aligning tools with organizational needs. The discussion culminates with audience questions addressing telemetry quality, transitioning from logs to tracing, and best practices for ensuring user satisfaction.
+In this YouTube video, Dan Ravenstone, a staff engineer at Top Hat, discusses his extensive experience in the fields of monitoring and observability, particularly focusing on the transition to open telemetry. The conversation is led by Adrian, who shares insights on the upcoming Cucon event in Salt Lake City. Dan introduces his background, highlighting his journey from traditional monitoring tools to modern observability practices, and emphasizes the importance of understanding user experience as a key driver for effective observability. The discussion also tackles challenges organizations face in adopting observability, including cultural resistance, the importance of communication, and the need for developers to take ownership of instrumentation. Dan shares anecdotes from his experience at Top Hat, where they are migrating to open telemetry and highlights the necessity of aligning observability practices with user needs to drive meaningful outcomes. Throughout the Q&A, they address various audience questions related to telemetry quality, instrumentation strategies, and the impact of user experience on organizational priorities.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:01:20 Dan Ravenstone introduction
+00:03:40 Observability evolution
+00:04:00 Challenges in alerting
+00:07:00 User experience and observability
+00:09:30 Observability adoption challenges
+00:10:40 Vendor-specific libraries issues
+00:12:50 Cultural shifts in instrumentation
+00:20:00 Communication challenges
+00:30:10 Instrumentation culture at Top Hat
+00:34:22 Collector landscape discussion
+00:40:11 Questions from the audience
 
-00:00:00 Introductions and event overview  
-00:02:30 Dan Ravenstone introduces himself and shares his background  
-00:05:45 Discussion on the evolution from monitoring to observability  
-00:10:00 Key changes in observability and the challenges with alerting  
-00:15:15 The importance of understanding user experience in observability  
-00:20:00 Challenges organizations face in adopting observability  
-00:25:30 The significance of using open Telemetry versus vendor-specific libraries  
-00:30:45 Cultural and technical shifts required for observability adoption  
-00:35:00 The role of instrumentation in development and its impact on user experience  
-00:40:15 The current state of observability at Top Hat and future plans  
-00:45:00 Q&A session begins with audience questions  
+**Host:** Welcome everyone to the Otel Q&A, and thanks Dan for joining us for Otel Q&A, especially on such short notice. I'm glad we're able to squeeze you in for October, especially with KubeCon coming up in November. So for folks who are going, a few of us will be there. Dan and I will be there from the Otel team and user Sig, so it'll be busy.
 
-Let me know if you need any further assistance!
+**Dan:** Yeah, it's going to be busy. When is that happening, by the way?
 
-# Otel Q&A with Dan Ravenstone
+**Host:** It's in Salt Lake City.
 
-Welcome everyone to the Otel Q&A! Thank you, Dan, for joining us on such short notice. I’m glad we were able to squeeze you in for October, especially with KubeCon coming up in November. For those who are going, a few of us will be there—Dan and I will represent from the team. 
+**Dan:** Salt Lake City. Nice! I've never been there myself personally.
 
-### Introduction
+**Host:** Yeah, me neither.
 
-**Dan:** 
-Hello! I’m Dan Ravenstone, a staff engineer at Top Hat. I’ve been here for a bit over two and a half years, almost three by May. My background is mainly in monitoring and observability. I got my start at a company called Affiliat in Toronto, which managed the .info domain registry. 
+**Dan:** Oh, so this will be an experience for you too.
 
-I started in tech support but quickly realized that I was tired of customers calling us to report downtime. So, I took the initiative to learn monitoring tools. Back in those days, we had tools like Big Brother, Nagios, and Cacti. I loved monitoring because it was like being on the front line, finding problems before they impacted customers. 
+**Host:** Yeah, looking exciting.
 
-As technology progressed, I fell in love with observability and how it provides a different perspective. Being proactive is far superior to reactive strategies, which many people still struggle to grasp.
+**Dan:** Um, okay, let's start asking you questions. I realize I'm the one here who is supposed to be with the breaks. Folks, it's going to be a fun one.
 
-### Changes in the Industry
+**Host:** Oh yeah, not sure about informative, but it will be fun.
 
-**Interviewer:** 
-You’ve been in this field for a while. What major changes have you seen in monitoring and observability?
+**Dan:** Well, here we go. Okay, let's start. Why don't you introduce yourself and tell us what you do?
 
-**Dan:** 
-One thing that hasn’t changed is alerting; it remains a problem. However, in observability and especially with OpenTelemetry, we’ve learned to look at our services differently. In the past, monitoring was reactive—we only had symptoms to deal with. For example, Nagios would alert us to issues based on CPU, memory, or disk space, but that’s not always indicative of a problem anymore. 
+[00:01:20] **Dan:** Hello, I am Dan Ravenstone. I am a staff engineer at Top Hat. I've been there for, I guess, two and a half years maybe? No, a little bit longer than that. Come May, I think it'll be three. A little bit of my background: I have been doing monitoring and observability for the bulk of my technical career. I started back in, um, where I actually refer to as like where the bug bit, the monitoring bug bit me, was when I was at a company called Affiliat, which was at Young and 401 area in Toronto. Affiliat managed the info.org domain registry in the back end of it, for back in the day. I started there in tech support, but then I one day opened up my big mouth and said, "Hey listen, I'm tired of our customers calling us up and telling us our stuff is down. Can we fix this?" And so they said, "Well then you ask for it, you get it." So I went out and that's how I started learning about monitoring tools. 
 
-With the rise of Kubernetes and containers, we’ve had to adapt. We started aggregating logs, but even that posed challenges. Despite best practices, people would often log inconsistently. Observability has taught us to focus on overall user experience rather than getting lost in the minutiae. When in the middle of an incident, it’s crucial to decipher which data points truly matter.
+**Dan:** And that's back in the day of Big Brother, Nagios, Cacti, all those fun things. And I just loved it. This kind of like, I think one of the things I liked about monitoring in those days was that I like looking for patterns. I like detective novels; I like all the fun things. And what this does is it kind of allows for somebody to be on the front lines in operations and dive in and find problems and report them back. 
 
-### Challenges in Adoption
+**Dan:** The better your monitoring tools were, the more likely you were able to follow and find the problems a lot sooner before they actually become customer impact. And that has always been my kind of push when I did this. And of course, as things progressed and modernized and changed, we got into the wonderful world of observability and a whole different way of looking at it. I fell in love with that obviously as well and tried to grow with the times and see how being proactive is a lot better than being reactive, which is kind of like, you would think is an obvious thing, but it takes a lot of people time to kind of get their heads wrapped around. 
 
-**Interviewer:** 
-What are some challenges organizations face today regarding observability?
+**Dan:** So yeah, that is kind of how I got to this part of the world and a little bit about me. There's tons of other things, but we don't want to go into those because then we'll get lost in the weeds and we'll never get out and we'll be lost forever.
 
-**Dan:** 
-Communication is a big issue, often stemming from cultural barriers. There’s no technical reason for organizations not to adopt observability other than resource constraints. For instance, our team is moving away from a vendor-specific library to OpenTelemetry. Transitioning takes time and can be a tough sell to executives, especially when discussing costs. 
+[00:03:40] **Host:** Sounds good! Well, thanks. And, you know, you've been in this for a while. Like, when it started out with monitoring, evolved into observability. What kinds of big changes have you seen in the course of that time?
 
-Additionally, once organizations make the shift, they often struggle with implementation and proper usage. Many teams try to adopt OpenTelemetry but end up overloading their systems with data without understanding how to manage it effectively, leading to rising costs.
+[00:04:00] **Dan:** Let me start off with the things I haven't seen change, which is still a problem: alerting. Okay, alerting still has not changed, surprisingly. But what has changed, and I think this is one of the things that we're trying to get to—I focus on alerting because I was giving myself time to think—what has changed though in observability and in OpenTelemetry especially, too, is it allowed for us to actually look at our services a lot differently where monitoring was kind of a very largely reactive thing and we only had the symptoms of what was going on.
 
-### Tools and Cultural Shift
+**Dan:** So if everybody has ever used Nagios, they're well aware of the sort of out-of-the-box HTTP monitoring sort of plugin you usually include, which is like your CPU, your memory, your disk space, and these things have been carried throughout time to be indicators of a problem. But that's usually not quite the case anymore, is it? Especially when we have Kubernetes and containers and other tools now that these things shouldn't really play a role for us. So it's more like, what else is impacting the service? We never really had the ability to look at it until we started aggregating our logs. And even when we aggregated our logs, it was still strangely problematic because, you know, we had guidelines on how to do structured logging and that kind of thing, but still people would do their own thing. 
 
-**Interviewer:** 
-You mentioned that the adoption of observability tools is as much about culture as about technology. How do you approach changing the culture around instrumentation?
+**Dan:** And things were never, and so even with all the good documentation and sort of best practices around it, logs were still problematic. And again, you still have to collect a bunch of data before you can actually understand, oh wait a minute, this is a problem before actually kind of knowing beforehand what observability has taught us is how to sort of like set things up in more of a way that we're looking at it as an overall user experience. We don't get sort of sucked into minutia sometimes, and there's because there's a lot of red herrings in operations, especially when you're in the middle of an incident. You're looking at all this data and you're like, what is the actual problem? We have high CPU over here, and we have slow load times over here, we have latency here, we have some errors here, but which one of these is the smoking— I would not want to use a gun, but for lack of a better word, smoking gun, right? 
 
-**Dan:** 
-It's essential to connect instrumentation to the user journey. When developers understand how their work affects the user experience, it becomes easier to convince them of the importance of proper instrumentation. We encourage teams to document their user interactions and understand the dependencies and prerequisites. 
+**Dan:** And I see that with observability has changed how we look at that. However, that's for this group; a lot of people are familiar with it. There's a whole world of engineers out there who are still trying to get their heads wrapped around this concept. And this is why I'm glad we have these conversations. I try to get those people, this is targeted towards them, of why this is so important, why you need to start looking at this. 
 
-Ultimately, the goal is to make instrumentation part of the development culture, not just a checkbox. We must support our developers in learning and adapting to new tools without overwhelming them.
+[00:07:00] **Dan:** Because there's a number of good things. One, you know what the user is experiencing, and that's all that matters. If you know what the user is experiencing, that means you can translate that to how much you're making. It's a cost thing and it's a money thing. If you know if your users are happy, that means you're making money because they're spending money because they're going to keep using your service. If they're not happy, they're not going to be using your service, and they're going to walk away and use something else or just not use it that often and try to avoid it as much as possible. That means you're not going to be making the money anyway. 
 
-### Observability in Practice
+**Dan:** And I'm going to get in the weeds, so you're going to hear me say that a lot because I just do. So, Adrian, it's all up to you to rope me back in.
 
-**Interviewer:** 
-What is the instrumentation culture like at Top Hat?
+**Host:** Don't worry, don't worry. But I do want to— you said something really interesting in terms of translating it in terms of money because, you know, like observability adoption— and maybe I'm getting ahead of myself here— but I like the way you said in terms of observability adoption, like it's as much a top-down thing as a bottom-up thing. And one way to speak to the benefits of observability is in dollars and cents, and executives speak in dollars and cents. 
 
-**Dan:** 
-Currently, it’s still a work in progress. We have some auto instrumentation in place, but many developers are still getting used to it. There’s a tendency to view instrumentation as just a task to complete rather than a valuable part of their work. Our goal is to make it as seamless as possible and to show the value in real-time data.
+**Host:** So proving the worth of having an observable system, I think, becomes really really important. And being able to use that language with executives to be able to convince them, I think, is very valuable.
 
-### Final Thoughts
+**Dan:** And that's what I've been trying to focus more on. There are quantifiable reasons why to look at this. We can do that. Why observability, excuse me, provides value toward us at the end of the day. But I think we're still trying to get that figured out. I feel like that, um— anyway, you know what? Before we jump in, let's keep moving forward because I could go into a whole other area and I don't want to sort of suck a lot of time in there. 
 
-**Interviewer:** 
-What advice do you have for teams adopting observability practices?
+**Dan:** But it is one of those things I think that is worth having conversations, not just with those in the community, but also talk. Like, I mean, if you're out there, find out what the observability sort of platform or the concepts are where you work. What are the drivers? Why aren't you doing it? Why aren't you using these things? And ask those questions. And then maybe we could help feed that back to the community because that could help us build out the reasons why you should be doing this because it does make better sense eventually. 
 
-**Dan:** 
-Always focus on the user. If users are unhappy, it doesn’t matter how much data you collect; you need to know what frustrates them. Having clear metrics and objectives based on user experience is vital. The right tools can help, but they should be the last consideration. 
+[00:09:30] **Host:** I completely agree, and I think this takes us to our next question, which is, you know, like you've done this for a while now— first the monitoring space, now moving into the observability space. What do you think are some of the main challenges that most organizations are facing these days when it comes to observability?
 
-### Questions from the Audience
+**Dan:** There's a lot of challenges and I've been trying to get my head wrapped around some of this stuff. One is communication, I think. Some of it I think is mostly cultural, really, if you think about it. I mean, there's not a technical reason why people shouldn't go to this other than resourcing and time. 
 
-1. **What is your opinion on telemetry quality as a way to reduce spending? Is more data always better for observability?**
-   - Quality is key. More data doesn’t necessarily mean better observability. It’s essential to capture data that reflects user experience.
+[00:10:40] **Dan:** And I mean, this might be jumping ahead a little bit, but where I am right now, we are using a current vendor, which will remain nameless, but we use a current vendor right now for our monitoring and observability purposes. But we're getting away from them because the library we're using is vendor specific, and that means that we're basically—when it comes to doing any kind of telemetry, it has to use that particular library. And theirs is only getting— and that's one challenge because if you think about it, like, okay, so you're using this one vendor, it's costing you X amount per month or per year. It's exorbitant. 
 
-2. **How do you approach the "what to instrument" question with your teams?**
-   - We start with understanding the user journey. Documenting user interactions helps pinpoint what needs to be instrumented.
+**Dan:** However, to get off of that one and go into another one where you have more options, like with OpenTelemetry, takes time. It's not like, anybody who's ever gone on any kind of migration from one tool to another knows how long it takes. And you have to have a few things in place to actually say why you should do this. So one is, of course, obviously the cost, right? But you know, it's hard for some executives to say, well, we're spending this, but it'll cost us this much to get over here and then we'll see the cost value. 
 
-3. **In an organization that has adopted distributed tracing, how do you make teams leave behind outdated practices based on logs?**
-   - You need to understand their reluctance and restructure discussions around their viewpoints. Help them see the value of distributed tracing in understanding service interactions.
+**Dan:** So there's this huge challenge of just trying to shift things over, spend the time to do it, and then do it properly. And that's a whole other challenge is to say, okay, yeah, doing OpenTelemetry is one thing, but doing it properly, like every other software or any other tool that you have out there, you have to still use it for the right reasons and do it properly. If you don't, you'll still run into issues, and whatever you're trying to sort of get away from over here will still might come up in a different way over here. 
 
-4. **What questions do you ask to understand what is most important to someone's organization?**
-   - Always focus on the user experience. If you understand their needs and frustrations, you can tailor your approach effectively.
+**Dan:** So that's one of the challenges. Just doing the whole shift over, I think that's where a lot of people— and they don't know how to do it. And so what happens too is then they do a shift, they try it out, and then they get burned because, you know, they don't know how to do sampling or something like that. And then they feed it off to some tool like, let's say, a tool that you get charged by event volume. They're going to— even though they're using OpenTelemetry, they still became like, oh, I saw one company who did that. They started shifting to using OpenTelemetry, but they started sending all this volume, all this data to it. They didn't do it right; they were having like a hundred thousand spans per trace, which is a huge amount, and they weren't really getting a lot of value. 
 
-Thank you, Dan, for sharing your insights today! It was a pleasure having you on the Otel Q&A.
+**Dan:** And their costs were soaring. And so it's like, well, you know, then they kind of just dropped and said, well, we'll figure it out another way. We'll just use some other tools to figure out when there's problems with our service, which is sort of like a defeatist kind of attitude. But it does happen because they don't, you know, because there's a lot of work involved. Doing this is more than just a simple lift and shift; it's a lot more involved. 
+
+[00:12:50] **Dan:** I'm trying to think of other challenges— those to me are some of the bigger challenges. And I think a lot of people could probably empathize with that one as well. There are others, obviously, but I mean, we don't have a whole lot of time. We could probably go on just you and I alone. I bet you we both have experiences on some of those other challenges we have to experience. But I mean, I like to see like, how do I get past that is kind of where I want to target. How do we get past these challenges and move forward, which I don't have a proper answer to, but I do want to talk about it.
+
+**Host:** You touched upon something that I think is worth mentioning as well, which is moving away from vendor libraries to OpenTelemetry. Because, you know, even though I think one of the wonderful things about OpenTelemetry is that it's vendor-neutral, and so it makes it, once you've moved all of your instrumentation to that, super easy to switch vendors. I would say relatively easy, right? Because they're still— like from the instrumentation standpoint, it makes it super easy. 
+
+**Host:** But the challenge though is convincing folks to move away from those vendor libraries and I think that becomes a bit of a sticking point because you need to move away from them because maybe that vendor is too expensive and you don't want to go with them, and you want to try something fresh, but there's so much time and effort and learning curve and all that stuff associated with reinstrumentation. What are your thoughts around that?
+
+**Dan:** Well, and that's a very powerful point you’re making because first off, with vendor libraries, you get in the habit of doing things a certain way, right? So again, I do not want to—there's no—like, but the thing is, so some vendors may do things one way, but it's not part of the industry standard or the best practice we see across the industry. So they may like name things a certain way or do things a certain way, and people get used to that. 
+
+**Dan:** So not only is it just a matter of shifting a library over—if it was just a matter of shifting a library to one or the other, that's in itself a challenge. But there's also all the behavior that gets attributed to using that older library. For some things, you got to go, well listen, you don't need to look at it like that anymore. You need to look at it like this now. And so it's not just a technical shift; it's also a cultural shift and how they even envision how their service is working with the new library, with using OpenTelemetry. 
+
+**Dan:** Because OpenTelemetry is current; it's adding new things as we speak every day. We're seeing a lot more love now for mobile, which is wonderful. I'm so excited to see some of that because I feel that's largely been ignored for a long time. But we're seeing these things getting pulled together, and we're having this— and it's kind of like keep following these sort of patterns and following these standards. 
+
+**Dan:** And so it forces the developers to think a certain way. A lot of them are not used to that yet. A lot of them still want to develop—and I realize one of the things I noticed too was from a developer's perspective— I don't know if Adrian, you do—you're a coder by nature, right? Like that's kind of—yeah, that's your back, so it's not mine. But I know that when I did do some coding though, I would always print a line at certain parts in my code to say, okay, where am I at? 
+
+**Dan:** So even logging was part of your local development experience, right? Now we're telling them, don't worry so much about logging; use instrumentation. Well, you still have to have a mechanism for them to actually print that to the screen. And so it's just changing how they even develop in the beginning. And that, I think, is where we're facing some challenges. It's not just a technical shift; it's cultural. It's about even how what you've been taught in the universities and how you've been taught how to develop is changing a little bit. 
+
+**Dan:** And not everybody's quick to embrace change. And you know, especially when you've got your CEO or your features team or product team saying, we need this out now. Well, you know, you're not going to worry about trying to learn a new way of doing things. And you’re saying, oh, well now how is my service working from an OpenTelemetry perspective? It's like, well I just need to get this out, so I just slap these log lines in, boom, gone. It passed, you know, and we're going now; it's in production, and we move on, right? 
+
+**Dan:** So there's that kind of like also encouraging and supporting our developers to have the time to learn this and work with it so they can actually use it to their benefit and perhaps be able to do better code before it even hits staging or development. And then once it's in production, you know how it should be based on all your stuff. But that's—it's getting that linking those people together, getting them to work together in that thinking. That's a huge challenge.
+
+**Host:** Yeah, absolutely. And getting them used to, as you said, the nuances of, you know, instrumenting with OpenTelemetry, which OpenTelemetry wants to standardize how you're doing your main signals in a certain way, right? Which, as you said, may be different from how you've been used to doing it, whether it's like through your print statements or vendor libraries or whatever. 
+
+**Host:** It's kind of like—so back in the day, this might be pre a lot of folks, I don't know, but I used to work a lot with SNMP. And what I liked about SNMP was it was basically a protocol that was agreed upon by the community, and it was very basic. But even then, I saw this with logging too, but even with SNMP, I would still come across MIBs. I would still come across libraries that were not properly done, so it required me even—because I knew it, I would have to go in and kind of redo maybe a MIB to translate the OID properly, so when it goes into our— or create a MIB because it wasn't available. It just had these OIDs that were available from an interface or something, and you just had to guess what they were. 
+
+**Host:** Even with standards in place like that, something that has been in our sort of part of our industry for so long, no longer really being used anymore—well, actually, it still is by network devices, but that's not—hopefully we don't have to worry about that right now. 
+
+**Host:** It’s that, you know, even with those things in place, it still takes time for people to even—there are still mistakes and things that happen. So with a new thing like OpenTelemetry and being setting standards, it's taking a long time for people to understand how to use it to get the most value out of that instrumentation, the most value out of using that from the beginning of the development cycle.
+
+**Dan:** Yeah, absolutely. I do want to switch gears a little bit and talk a little bit about specifically the challenges that you're facing currently in your role when it comes to observability.
+
+[00:20:00] **Dan:** Oh, I'm really not my own mental health problems. Okay, that's different. Yeah, so my challenges have pretty much always been—I feel like it's always been the same—it's communication. And not because I'm—my challenge for me, so I've been in this business for a while, so what happens sometimes is I make the mistake or the assumption that folks know what I'm talking about. 
+
+**Dan:** I have to be careful sometimes. I can have these conversations with many people in the same community, like within the monitoring and observability community, and we could go on for hours about little nuances of something, whatever it may be—logging, or tracing, anything like that. And we can go on and talk about that ad nauseum. However, when you're talking to other people and you talk about basic things like the rate of errors, rate of requests, duration of requests, which is a very basic kind of concept in the monitoring world, which is helped—kind of like we see a lot in observability too to a certain degree—people don't understand that. 
+
+**Dan:** You make the assumption that they actually kind of look at things in that light, but they don't. They still look at it from the old school and then—like honestly, at some places I've been, it's like they still see CPU as an indicator of a performance problem. But it shouldn't be, in my opinion. It should be because CPU can be cheap; you can get more. So that should be a scaling problem. Make sure you're scaling properly; you should be good. 
+
+**Dan:** However, I make the assumption people know what I'm talking about, and that's one thing is I got to—so I have to constantly be patient and communicate the same message over and over again to make sure they understand. Because even if I tell them two or three times, they still don't clue in. I had one conversation with one engineer for about a month, and it took a month for them to actually understand what I was driving at. 
+
+**Dan:** And this is like because they were in different time zones, so that's why it took a little bit longer. But it took a while before they actually, oh, that's what you meant. And as soon as they were able to make that change, everything was working better. And like, oh, now I see where you're driving at. I now see the point you're trying to make. And it's just you have to be diligent; you have to be patient; you have to communicate. 
+
+**Dan:** And you have to change how you communicate sometimes too. Like you just can't say the same words over—you have to rethink, okay, you're not getting what I'm saying. What will help you understand? And then try to reword it so people understand. 
+
+**Dan:** Adrian, you met my friend Damian, who I work with. He's actually at the same place as I am. But Damian, who also works with me on a lot of stuff, he has a different background, but he sometimes steps in and sort of translates what I'm saying because sometimes it helps to have a different—because he puts a different spin on it. And oh, now I get it. 
+
+**Dan:** So those are some of the biggest things I find today are still the biggest sort of people get it. It's just a matter of once—just getting them—just lead the horse to water type thing, right? But I am—it's just leading them there. Once they're there, they eventually do start to drink because they kind of get, oh, I see this is good for me; I will do it now.
+
+**Host:** For sure. But getting there, sometimes you gotta kind of be patient. You gotta pause for a while and say, okay, yeah, you want to look at the pretty flowers for a moment. That's cool. You watch the grass grow. Great.
+
+**Dan:** Okay, finally, I'm equating developers and engineers to horses, so hopefully nobody will take offense to that, but in the nicest possible way. Honestly, I mean, you make such a good point though with experimenting with different ways of doing the messaging because, as you said, you can't just keep repeating the same thing and then hoping that people are going to get it. 
+
+**Dan:** You have to come up with different ways of saying it. And another thing that you and I have discussed before also is you can't tell them that they have an ugly baby. You can't say, your thing sucks; my way is the better deal because people will get very offended, rightfully so. So you have to be very tactful in your messaging.
+
+**Dan:** Exactly. No, you're— and that's right because they'll just take offense, and then everything you say afterward falls on deaf ears. So you don't want to attack them; you've got to draw them out. We wear a lot of different hats in this role when it comes to observability, I feel. It's not just about knowing how to do it technically; it's about assisting folks to see how they can learn from it and grow with it too. And that is a huge challenge. 
+
+**Dan:** That's why I've done a lot of my videos, not too many of them have been exposed publicly; I've done them internally at work. But I will put on different characters. Like I would honestly do different characters to help people understand just so they have something. So it’s not just another boring—oh, here we go, getting told off about monitoring observability. Yes, we know Dan, logs are not monitoring. Okay, but I try to build it up so they resonate a little bit because they're more engaged. 
+
+**Dan:** Because, oh, Dan's put on a funny wig and he's making a funny voice, but that point actually does make sense. So then, you know, it starts to click eventually, I hope. Maybe I'm wrong; maybe they just look at me and laugh and just walk away.
+
+**Host:** Nothing sticks. 
+
+**Dan:** Nothing sticks! I like that though because you're also putting on different personas, right? And I think people also resonate with different personas. They have to, at the end of the day, it's got to be how does this benefit me, right? Because otherwise, if they don't see where they fit into all this, then it's falling on deaf ears.
+
+**Dan:** Exactly, how does it benefit me? That's a good valid point. And it's getting them to see that there is a benefit to them. It's just like, alright, well, you just have to sort of showcase this several different times. 
+
+**Dan:** I know somewhere along the way I heard somebody say that when you're creating a message for your organization, you've got to do it like seven times in different formats to get it so people all kind of get it and think about it and understand it. And I think that's got some truth to it, to be honest, because even to this day, I'm still telling people, by the way, this is the reason why we're doing this. And you kind of go through that process.
+
+**Host:** Yeah, no, it's totally true. 
+
+**Dan:** Yeah, and I think there's also the seeing is believing sort of thing to it too, which is like, yeah, okay, understand how OpenTelemetry works in theory, right? And, but it's not until you put it in practice and instrument your code for the first time, and even if it's like, you know, I added a trace, I added a log, whatever—then you see it go through the collector and into your observability backend. And you're like, what? My life is transformed just even—and you go like, now what I do, yeah, right? 
+
+**Dan:** It's like you crave more, right? Give them a taste; the proof is in the pudding, as the saying goes, is very, very true too because I have seen a lot of success once you get the ball rolling. They start to implement something, and I’ve seen it over the years in different tooling. I think only once have I seen it not work, but that's only because that was more my arrogance than anything else. So I've dropped arrogance at the door after that and never did it again because I wanted to use a specific tool for the job and realized that that's not the way to approach it. 
+
+**Host:** And that's the other thing too; as engineers, as leaders, technical leaders, we should never push a tool, in my opinion. I think we should always look at what the organization needs, what's the most important thing, what's the most value to the organization, and then make sure we have the right practices in place, the right standards in place, and that will eventually then we can figure out what tooling we'll use after that. Tooling should be always the last thing you should decide on how you want to visualize or work with your data. That's just my two cents. I don't know how the people that might cause problems, but who knows?
+
+**Dan:** Now here's a question for you along the lines of tooling because we see this a lot in tech where you've got a team, they start using a tool, but then the corporate standard for tooling comes out. How do you reconcile the teams that are off doing their own thing with the corporate standard? Because sometimes it's really hard to get folks unstuck from that. 
+
+**Dan:** You can, you know, try to force them, but some folks are very adamant and passionate about the tooling that they use, right?
+
+**Host:** They are, and you know what? You've got to—I honestly personally, when it comes to that thing, is like, okay, try to get them to—as long as they're following best practices, following industry standards, then you can only push so far. You know, like you could say, hey listen, you know, stop using this particular tool because it's archaic; it doesn't give you the same value for what you have. But, you know, and then you—you’re going to have pushback. I mean, it doesn't matter where you are. Even when everybody's on board, you're going to get pushback because people want to do things their own way, right? 
+
+**Host:** There's always that kind of like I know better; I know what I'm doing. 
+
+**Dan:** Yeah, and you have to be delicate, and you have to be patient, and you have to be tactful. So it's better to just—I would say just try to encourage them to use best practices and standards, but don't try to push them off the tool if that's—I mean, if somebody higher up wants to make that decision and call them out on it, let them do it. 
+
+**Dan:** But you want to—I think it's more important to have the standards in place because if you can tie everything together and you have a proper process flow and everybody can still get to the root cause of the issue, then that's better than just saying you need to use X for your stuff moving forward. Tough luck, because that kind of thing doesn't work either, in my opinion.
+
+**Host:** Yeah, that makes a lot of sense, especially like, you know, I'd almost prefer to like, okay, you use whatever observability backend you want as long as we're all instrumenting with OpenTelemetry. I feel like that is the main thing.
+
+**Dan:** Yeah, that is the bar. 
+
+**Host:** Now when you joined your organization, was Top Hat doing observability at the time? What was the landscape like at the time?
+
+[00:30:10] **Dan:** So at that time, we were not, but we were. So this is one of those things where I kind of had to be very patient. But they were like—so when I first joined, we were using a vendor. Everything was there; there was instrumentation in place. There was logging in place. Well, I should say there were traces in place and there was logging in place. They were linked, but they weren't—it was done—initially it was rolled out about five years ago, but no real work was done; it was just kind of building on what they already knew moving forward. 
+
+**Dan:** I was asked to come on and actually bring—take the company off the vendor and migrate to OpenTelemetry, so that was two and a half years ago. We are almost there. I think we have one more service to migrate over to OpenTelemetry this month, and then we're done. So it's taken us almost about two and a half years to get to this point.
+
+**Host:** Amazing!
+
+**Dan:** Yeah, it was hard, obviously, but it was also—it was challenging. It had to be a lot of patience involved. And what I did though in the beginning was actually kind of go back to—remember when we were at Monorama together? I did a talk on alerting, and I did that talk because I kind of was—that was a precursor to where I really wanted to go, which is actually getting into SLOs, right? 
+
+**Dan:** But that was sort of like, here’s how you can first sort of understand your landscape when it comes to alerts and why you’ve got to categorize them in a certain way and realize a bulk of them were a lot of noise and didn’t have any value. Help people start seeing those things in that kind of light and then start showing the value of using service level objectives and how that can actually help with end-user journeys, help actually bring the user experience home to the developer. 
+
+**Dan:** So they understand, okay, I don’t need to alert on, you know, when the load balancer is hitting 5xx errors when I should be alerting on whether or not the service is being impacted by that and how it’s being impacted. And then, yeah, I mean those 5xx errors are important, but where are they important? How is that impacting the user experience? If it's for some feature that we don’t really care about, we don’t care about the 5xx because we don’t need or we don’t need to be alerted about that in the middle of the night. 
+
+**Dan:** But that was how we were trying to get that process going. And then they start doing the migration. Okay, now that we know how our service should look, now we can do our instrumentation on that moving forward. So we've started off a lot of instrumentation, but now we have those user journeys to reflect upon and go, okay, we’re missing this function in our auto instrumentation. Let’s make sure that’s part of that because that impacts the user’s experience. 
+
+**Dan:** So yeah, it’s been a while, but we are getting closer and closer to getting over to OpenTelemetry. We've set a lot of service level objectives—two of them have already helped out, like alerted us like two days before an incident actually happened. So we're already seeing some value in this. So it does, again, proof is in the pudding, right? And we're already seeing some of that, and we're, you know, it's great. A lot of churn, but a lot of like turmoil. A lot of folks were like, oh no, we’re losing this, but they’re seeing that they’re getting more value out of how we’re doing things moving forward, and they’re able to query things better because they’re able to have more richer data available at their fingertips. 
+
+**Host:** So in terms of vendor, did you end up switching vendors from the one that you were using when you first came in?
+
+**Dan:** So we had the one vendor we were using; we're still on that same vendor. But as of the end of this month, we're no longer going to be using that vendor. We'll be on another vendor moving forward because we're pulling all their vendor-specific SDKs out, and we're just putting in OpenTelemetry, and we're doing that replacement. So it's kind of like now we're getting to the point where the last of those OpenTelemetry SDKs are pointing to a different vendor for our visualization of data.
+
+[00:34:22] **Host:** Cool, awesome. Alright, moving on. The next question I had is, you know, now that you've gone through the exercise of doing the instrumentation, what's the instrumentation culture like at Top Hat? 
+
+**Dan:** Um, not as of yet. And there's a reason why, and this is nothing against anybody, so I hope anybody who's at Top Hat listening doesn't take offense. I love you all! 
+
+**Dan:** No, but it's because we were kind of like, once we started getting going on this whole transition, we had a very short period of time. So there have been a few instances where staff engineers and principal engineers have stepped in and done some of the work, laid the groundwork for the other team, and they kind of just flipped over things and did things. The most effort they put in was actually in the user journeys themselves. 
+
+**Dan:** So the auto instrumentation has been more largely kind of like, we moved this, put this in, and they’ve just looked at it and done it, so they haven't really— it hasn't been ingrained in part of their cultural thinking yet. It's still largely kind of like a checkbox for them to sort of, okay, we've gotten, we've moved, migrated to OpenTelemetry, job done, move on to something else. 
+
+**Dan:** And little do they know that there's a lot more work involved. But don't scare them off yet because it will help them. But it is something that has to be—I think we've tried to do it so as easy as possible, less not as impacting as far as their day-to-day life, but try to slowly get them to start looking at things and so going over things and saying— and using the tooling that we have available saying, here, we know you did it in this particular tool; this is how you should do it in this tool, and providing that data and then doing training on that too. 
+
+**Dan:** So trying—so it's slowly becoming part, but I would not say it’s 100%—it’s far from 100% yet. There’s still a lot of work to be done there just so that they start to understand why it’s part of the value, right? 
+
+**Host:** In terms of instrumentation, like what languages are part of your application landscape?
+
+**Dan:** Mostly Python.
+
+**Host:** Okay, okay. So mostly—so you alluded to some auto instrumentation there.
+
+**Dan:** Yeah, so we did auto instrumentation in our Python code, and we use a couple different frameworks, but I think we're just trying to work towards getting to one framework. And then we have—unfortunately, there’s not—so we can almost kind of get away with doing a wrapper sort of library for people and have them just use that. 
+
+**Dan:** And that’s kind of what we did. We have this little wrapper library set up that uses OpenTelemetry with all the different things that they need to pull in there, and people just kind of just dump it in and do auto instrumentation and away they go. So it’s kind of like all done for them, and they just kind of include this and away they go. 
+
+**Dan:** But I think as we progress, it’s going to be like, okay, let’s start targeting—this is my next stage—talking to first off the PMs, talking to them: okay, this is what we have so far, these are the gaps we have in our telemetry data, these are the SLOs we have set so far; let’s decide on how that should look because your team needs to own this. 
+
+**Dan:** Your team needs to act on this. So when your error budget gets exhausted, your team needs to take that on in the next sprint. And that’s one of—again, the technical side is not that difficult; it's the cultural change process change requires a lot of effort, right? Because now you have to get people to say, okay, well, instead of when we burn through our error budget, we need to deal with this next sprint—well, that's usually, well, that feature that we need to push out. 
+
+**Dan:** Which one do we do? And so—but that’s what I said when I first started this is that you have to agree upon this process. You have to think about you are making a contract with the company to say, yeah, we will act on these SLOs because they will impact the user journey. They will impact our users, and that's what's most important to us today. 
+
+**Host:** For those who are not aware, Top Hat is an educational platform, so our users are teachers or professors and students. So imagine, you know, if they're taking an exam and then everything goes sideways, that's going to be really— I mean, anybody who has kids or has been to university knows that that could be a huge frustrating factor when you're not—you know, if that's not working properly.
+
+**Dan:** Yeah, so it's important that—oh, I did get a message. Somebody did tell me, we all love it. Thanks, Mark! 
+
+**Dan:** Yeah, so now I just completely thrown off there. What was I talking about? 
+
+**Host:** ADHD!
+
+**Dan:** You were talking about the SLOs and how frustrating it is if the consumers of your platform if it's not working as they expected.
+
+**Dan:** Yeah. So, and that’s this kind of fundamental shift is going to SLOs and helping them see that and get through that.
+
+**Host:** Yeah, because I think—now I just went off the rails. 
+
+**Dan:** I can relate! So, but that’s all good.
+
+[00:40:11] **Host:** Cool, I have one more question that I wanted to ask, and then we actually do have some questions from folks. See that our on our board, which I’m very excited about. Final, final question. I guess there are two questions, I guess. Are you using Kubernetes, and if so, are you using the OpenTelemetry operator to manage your collectors and to manage your auto instrumentation?
+
+**Dan:** No, no. 
+
+**Host:** Yeah, so we—I'm glad we're not just because—and this is not because I think that Kubernetes has its place and all tools have their place. And I think for what we're doing today, it would not make sense. It would add a layer of complexity that would completely destroy our service. So glad we're not using Kubernetes; I don't think it—not saying that there’s anything wrong with Kubernetes; I just think that if you’re going to run a Kubernetes environment, you need to know it. 
+
+**Dan:** Yeah, absolutely. 
+
+**Host:** And if you don't know what you're doing with Kubernetes, you can really mess up your service. And I’ve been at places where we only had one or two people who knew Kubernetes and we had a number of problems always with our clusters. So I’m—when we’re ready though, I think we’ll probably make that push. But right now, we’re just in containers, so it’s all just through—yeah, just containers, but not Kubernetes.
+
+**Host:** Gotcha, gotcha. So you're using like another container management service, like a cloud-provided one kind of thing?
+
+**Dan:** A cloud provider container service, yes. 
+
+**Host:** Gotcha, gotcha. You're trying to avoid all names of vendors right now.
+
+**Dan:** Yeah, yeah. Let's be agnostic. 
+
+**Host:** And final question before we get to the questions. Collectors, what's your collector landscape like?
+
+**Dan:** So we're using a combination of OpenTelemetry Collector as a SAR, and then a primary one that aggregates it. And then for our traces, we use one company that we're working with. They have their own collector that we send our traces to that we can do additional sampling rules on and send off. 
+
+**Dan:** Yeah, so we—right now because, and I really, really love the fact that you could choose. You could send from code itself, but I love the OpenTelemetry Collector simply because you have these processors, you have these exporters, and you can send to different places as you see fit. I've had conversations with our data team saying, hey listen, if you want stuff, OpenTelemetry is collecting a lot of this, right? 
+
+**Dan:** And we don’t have to send all of it to our— for production, as far as what we're looking at, as far as like would give us an idea of the user experience. But there may be things you are collecting from OpenTelemetry that we can send to an S3 bucket that you can pull in later for whatever you need. 
+
+**Dan:** However, you know, we still haven't gotten to that point, but that's the beauty of the OpenTelemetry collectors, that you can kind of like just point to different things. And I love that because then there's no code change. So if we decide we no longer want to use this or we want to add logging or we want to add—let's say we start using Prometheus as an open-source tool, as an example, though, you would—we can easily just start getting that information right off the mark. 
+
+**Dan:** So I just—if anything, try not to use the sampling and the old push from this code itself. Use a collector because I love the fact that it makes life so much easier. Then you can just—if you have to do little tiny changes or tweaks to your sampling or whatever, you don’t have to go push it out to like the production environment again. It’s just a small change on your collectors themselves, which makes life so much easier. That's just how I think of it.
+
+**Host:** Absolutely. And you're using all three major signals: traces, logs, metrics right now for OpenTelemetry, or mostly traces right now?
+
+**Dan:** So there was a decision to not do—so metrics we still are capturing the infrastructure metrics from the cloud, and the logs are primarily staying in our cloud provider. So all of our services are just logging by default from container to the logging in our cloud provider, and they are staying there for the time being because that was another thing to start tackling. 
+
+**Dan:** And I didn't—I just—I felt like that’d be too much for folks as they're transitioning from the one vendor to OpenTelemetry for them to like get their heads wrapped around would be like, oh, by the way, you also need to have structured logs too, and this is how you should do it. No, this is just going to—it’ll make more confusion. 
+
+**Dan:** And so I figured just focusing on one and then adding things as they go along, as they prove useful, so yeah, that's how we kind of approach that whole process.
+
+**Host:** Makes sense, baby steps.
+
+**Dan:** Exactly, cool. Okay, so we're going to turn to the board. And if you want, you can take a peek at the questions; they're on the chat window. There's a link to the board. 
+
+**Host:** Take a look. So let's have a look at the questions. 
+
+**Host:** So the first one is, what is your opinion on telemetry quality as a way to reduce spend? Is more data always better observability? 
+
+**Dan:** Great question! Awesome question, and that's a tough one. I don't think I can—I hope I can answer that. In my opinion, it's—quality is—you need to actually—because really with the end of the—because you can have a bunch of things going through, but if you're sort of—so let's just take a standard trace, right? If you have a bunch of spans in there that are doing some things that you really know it's just back and forth and you really—like there's—I’ve noticed some traces where there— I forget what it's called, and I wish I had a sample of the code before. It's been like two weeks ago; one of our engineers cleaned this up, and what he did though is he looked and realized we’re making these calls in the code that we’re adding span events to, and we don’t need to because—so you're looking at the quality there, and then you're not—you're seeing what's invaluable and what's not. 
+
+**Dan:** So more data doesn't always mean better telemetry; quality data means better telemetry. So in my opinion, you've got to look at what you're getting, making sure—does that reflect the user experience? If it doesn't reflect the user experience or is not exposing things where you would say, oh, you know, like that's kind of like the whole concept of the unknowns, right? Like you're exposing those unknowns. You're not able to see those things, and then you're not—the quality doesn't matter how much you have if you're not seeing that stuff, then it doesn't mean you're—it's the quality of the data that's most important, and that will help you reduce spend because then you know what's good, you can sample that partially out, and you're going to make sure that those error-prone things bubble up and become more apparent when you're looking at your data. Hopefully, that answered the question.
+
+**Host:** Yeah, that was a really great answer. 
+
+**Dan:** Yeah, and I agree with you. It's really like what's the point of capturing telemetry for your system that's useless to you? Like that's just—and I think that's a pitfall that a lot of people run into also with auto instrumentation initially, right? Because there's a lot of stuff coming in. And fortunately now, I think there's a way to actually switch off auto instrumentation for certain libraries so that you can really zero in on the stuff that's super meaningful to you.
+
+**Host:** So, yay!
+
+**Dan:** Yay!
+
+**Host:** Cool. Okay, next question. How do you approach the what to instrument and how much to instrument questions with your teams?
+
+**Dan:** So that kind of is linked to the previous question too, in my opinion, because what to instrument is again—it goes back to this. So I went through the whole process of working with the development teams and the product teams to understand what the user journey looks like. So I went through and said, okay, what is the—so we did the user journey. We looked at their servers, and I asked—some did more than others—but more or less it was like I asked them what are the typical interactions a user would have with your service? And write it down. 
+
+**Dan:** And then write in plain language, and then in plain language describe the tech, what's happening in the background, and then we also talk about the prerequisites of what people expect when they interact with that system. So they have to be logged in, they have to have this tech—maybe this cookie or this cache or whatever—and then what are the dependencies? And then we just kind of work through and go, okay, what are the things that where a user will potentially see problems based on this information? 
+
+**Dan:** And we went through that. So that's how I kind of approach what to instrument because then once you kind of know, okay, so we know that user logs in, so they know they have to do that. They have to interact with maybe—let's hypothetically say they interact with a database, they interact with an authorization service, maybe they interact with something in the back end for something else—another database—and so all these queries are checked in there. 
+
+**Dan:** Now that all those things—all those functions are like talking to these different things. If they don't work, it means they can't log in. Therefore, we have key spots what they should be mostly looking at to make sure. There are always going to be times where people miss things. This is why we have the SLOs. This is why we have to have this constant part of our cycle to go back and make sure that those things are identified. So you know, we’re having problems with our servers, but we don’t know why that means maybe you’re not instrumenting. 
+
+**Dan:** So what that means you have to go revisit some of the things you did because maybe you did some changes that no longer use this kind of database. Maybe it uses a cache service or uses a Redis cluster instead of these things. And so does your code or your user journey reflect that change? And does your instrumentation reflect that change? And if not, let’s make sure they do. 
+
+**Dan:** So, but it always boils down to the user journey and what the user is experiencing. If as long as we're capturing that, you're like 80% of the way—in my opinion, 80% of the way there, because you at least have a general idea. But you have to know—you have to have that conversation.
+
+**Host:** Awesome, thank you. 
+
+**Host:** Okay, next question. In an organization that has adopted distributed tracing, how do you make individual teams leave behind their outdated practices based on logs? How do you show value?
+
+**Dan:** That was a spicy question! That's a spicy one. You slap them around and tell them what—no, you do not. That's not the way to do things. You have to be very—exactly, that’s number one: do not call their baby ugly. 
+
+**Dan:** Um, that's a tough one because you really, really have to be patient. And sometimes you do have to say, okay, listen, this has been dictated by the upper management that we're doing this. And you try to offer them as much help as possible, but you have to find out too why they’re reticent about switching over. 
+
+**Dan:** Having these conversations is important because then you understand how they're looking at things, and then you can restructure your discussions around that. So, oh, I like using logging because, you know, I get to see immediately when I'm doing my development. I can see it point out on the screen; I know where things are broken, so I can go back and fix it and blum blum blum. And that's why they love logging, as an example. 
+
+**Dan:** So how you have to then help them bridge that gap and say, okay, well this is how you would do it with tracing, and this is why you would probably want to do it because then with distributed tracing, you're not just getting the value out of your service, but you're seeing how service A interacted with your service, service B, and how service B is going to interact with service C and how all that kind of works together. 
+
+**Dan:** So this is how—why you want to have these pieces in the puzzle so you can get that full picture. But it takes time; it takes patience. It takes—and again, going back to which one of the things we talked about before, restructuring how you approach their challenge of switching over. It's not just repeating yourself with the same words over and over again because eventually, people are just going to tune you out. 
+
+**Dan:** Like at my work, I think they tune me out half the time, okay?
+
+**Host:** Final question; we can squeeze it in hopefully in two minutes. 
+
+**Host:** I really love what you said about the tooling. Is the last thing you should think about, and that you should lead with the question, what is most important to your organization? What are some of the questions you ask to understand what is most important to someone's organization?
+
+**Dan:** It's always about the user, in my opinion. It's always about the user because first—because you're looking at—if the user is not happy and you can't measure that or you don't know that, then you're in trouble, right? 
+
+**Dan:** And I always use streaming services, like video streaming services, as an example because everybody has tuned into one of many of these streaming services we have now today. So if you pull up a movie, you push play, and it gets all pixelated for the first three seconds, and then it clears up after that, do you care? No. 
+
+**Dan:** So if a person comes by—do the streaming service know that? They probably are measuring that because they want to make sure that that doesn't become a bigger issue because they know that runway of where you're okay to where you're not okay and you're going to get frustrated and go, I'm going to go switch to this now because they have better quality. 
+
+**Dan:** And so it's not—it's always about what the user—how we are—we measuring the user experience. Do we know what the user experience is like? Do we know what frustrates them? And if we don't, how do we get there? And that's how we get—so that is usually with the tooling that we have available today, with the SDKs and other things and the philosophies we have. 
+
+**Dan:** Eventually, then you can go—because you know what? The tools come out all the time. There are so many tools out there that the landscape has gotten bigger and bigger as people become more and more involved, but it doesn't mean they're all good. And you know, but you have to find the one that kind of works for you at the time. 
+
+**Dan:** And this is why we like OpenTelemetry is because you can switch from one to the other to the other without with very minimal change. And that’s why I like about getting people on OpenTelemetry. But when it comes to the tooling, that should be your last thing to think about. Don't build your solution around this tool in your spot. Build your solution around what your users are thinking, and that's how I think a lot of people—that resonates when you start talking in that light, especially with the higher-ups. 
+
+**Host:** Anyway, I think we got through them all.
+
+**Dan:** Yeah, absolutely. 
+
+**Host:** Well, we got through all the questions! Yay! We filled up this hour quite nicely. So thank you so much, Dan, for joining us for Otel Q&A. Stay tuned for our next Otel Q&A and/or Otel in Practice. And again, thank you, Dan, for joining today. I really appreciate it.
+
+**Dan:** Oh yeah, you know, it’s my pleasure. Thank you for having me. You know how much I love talking about these things. So, you know, I think I actually did not go down a rabbit hole today. I think I was pretty good.
+
+**Host:** Perfect! It was great. Thank you again!
+
+**Dan:** Alright, thank you everyone! Thank you for showing up. See you!
 
 ## Raw YouTube Transcript
 

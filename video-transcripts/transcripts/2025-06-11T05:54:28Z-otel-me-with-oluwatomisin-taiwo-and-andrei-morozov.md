@@ -10,105 +10,262 @@ URL: https://www.youtube.com/watch?v=tTCuTAPE5aQ
 
 ## Summary
 
-In this episode of Hotel Me, hosts Adriana Vila and Andre Kapolski discuss observability practices at Compass Digital with guests Tommy and Andre M. from the S3 team. They delve into the roles of observability in ensuring system reliability and scalability, touching on the use of AWS services like Lambda and ECS, and the integration of OpenTelemetry for distributed tracing and performance monitoring. Key challenges addressed include context propagation in microservices, manual instrumentation for business logic, and the need for effective log management. The conversation highlights the importance of community support, with participants sharing their experiences and encouraging more complex examples in OpenTelemetry resources. They also discuss future expectations for OpenTelemetry, emphasizing the potential for enhanced data insights and improved developer experiences. The session concludes with an invitation for audience engagement and a reminder of upcoming community events.
+In this episode of "Hotel Me," hosts Adriana Vila and Andre Kapolski are joined by guests Tommy and Andre M. from Compass Digital, who discuss their experiences with observability in distributed systems using OpenTelemetry. Tommy focuses on the reliability and scalability of their web platform, while Andre M. specializes in developer experience and platform engineering. The conversation delves into the architecture of their systems, which primarily utilize AWS services like Lambdas and ECS, as well as the challenges they face with distributed tracing, performance monitoring, and error tracking. They share insights on their instrumentation practices, including the use of OpenTelemetry for logs, metrics, and traces, and discuss their approach to managing large amounts of telemetry data. Additionally, they highlight their journey towards adopting OpenTelemetry, the importance of community engagement, and the potential for future contributions to the project. The session concludes with a Q&A from the audience, covering topics such as instrumentation of legacy systems and reporting business value metrics. The hosts encourage viewers to participate in future sessions and community discussions.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream along with their timestamps:
+00:00:00 Welcome and intro
+00:01:30 Guest introductions
+00:03:35 System architecture overview
+00:06:32 Observability challenges
+00:10:01 Instrumentation methods
+00:13:12 Context propagation issues
+00:19:00 OpenTelemetry setup discussion
+00:22:50 Data storage optimization
+00:30:00 Collector setup and management
+00:36:10 Future of OpenTelemetry
 
-00:00:00 Introductions by Adriana Vila and Andre Kapolski  
-00:02:00 Guests Introduce Themselves: Tommy and Andre M  
-00:04:30 Discussion on Roles at Compass Digital  
-00:06:15 Overview of System Architecture and Technologies Used  
-00:10:00 Challenges Faced in Achieving Observability  
-00:13:45 Insights on System Instrumentation Techniques  
-00:18:30 Discussion on OpenTelemetry Setup and Configuration  
-00:25:00 Audience Questions on Metrics and Logging  
-00:30:00 Collecting and Managing Observability Data  
-00:35:00 Future of OpenTelemetry in Their Workflow  
-00:40:00 Closing Remarks and Upcoming Events  
+**Adriana:** Heat. Heat. Hello everyone and welcome to our latest hotel me. Super excited for those who are able to join and for those who are not, we do have this recording available after the fact both on LinkedIn and YouTube. My name is Adriana Vila and I am one of the maintainers of the hotel enduser SIG, and I am happy to introduce my co-presenter today, Andre.
 
-Feel free to ask if you need further details!
+**Andre:** Hi everyone and yeah, awesome to be here. My name is Andre Kapolski and I'm a fairly recent contributor to the end user SIG. So yeah, I'm super excited to hear more from our guests today.
 
-# Hotel Me Session Transcript
+[00:01:30] **Adriana:** Yeah, and I think this is a perfect segue as we bring on our guests. And as we do, folks on the chat, please feel free to say where you're watching from.
 
-**Adriana:** Heat. Heat. Hello everyone and welcome to our latest Hotel Me. I'm super excited for those who are able to join, and for those who are not, we do have this recording available after the fact, both on LinkedIn and YouTube. My name is Adriana Vila, and I am one of the maintainers of the Hotel End User SIG. I am happy to introduce my co-presenter today, Andre.
+**Andre:** Yeah, I can perhaps start. I'm watching from the Czech Republic, in the EU, specifically in Brno. Adriana, what about you? Where are you joining from?
 
-**Andre:** Hi everyone! Yeah, awesome to be here. My name is Andre Kapolski, and I'm a fairly recent contributor to the End User SIG. I'm super excited to hear more from our guests today.
+**Adriana:** Oh, yeah, that's right. I'm in Toronto, Canada, so it's, I guess, 1:00 for me and I guess it's evening for you, right? You're probably 7 o'clock in the...
 
-**Adriana:** I think this is a perfect segue as we bring on our guests. Folks in the chat, please feel free to say where you're watching from.
+**Andre:** That's correct. That's correct. 
 
-**Andre:** I can start. I'm joining from the Czech Republic, specifically from Brno.
+**Adriana:** Yeah. Awesome. Awesome. All right. I guess let's bring our guests on. Hello everyone.
 
-**Adriana:** Oh, that’s right! I'm in Toronto, Canada, so it's I guess 1:00 PM for me and evening for you, right? 
-
-**Andre:** That's correct!
-
-**Adriana:** Awesome! All right, let's bring our guests on. Hello everyone!
-
-**Tommy:** Hello!
+**Tommy:** Hello. 
 
 **Andre M:** Hey.
 
-**Adriana:** Why don't you both introduce yourselves? Let's start with Tommy.
+**Adriana:** So, why don't you both introduce yourselves? Let's start with Tommy.
 
-**Tommy:** My name is Tommy. I'm an SRE here at Compass Digital, and my primary responsibility is ensuring the reliability, scalability, and observability of our web platform. I work closely with the engineering team, product teams, and test engineers to ensure that our systems are robust and we have actionable insights into what's going on within our services. I'm calling from Cambridge, Ontario, Canada.
+**Tommy:** My name is Tommy. I'm an SRE here at Compass Digital and my primary responsibility essentially is ensuring the reliability, scalability, and observability of our web platform. I work closely with the engineering team, product teams, and test engineers to ensure that our systems are robust and we have actionable insights into what's going on within our services. So yeah, that's me. 
 
-**Adriana:** Awesome! We're practically neighbors, just a few hours away from each other.
+**Adriana:** And where are you calling from?
 
-**Andre M:** Hi, I'm Andre M, from Bonneville, Durham region, also in Ontario. I've been in this industry for 11 years, always interested in tech since I was a kid. I work with Tommy on the same SRE team at Compass Digital and have similar responsibilities focused on observability and on-call incidents for our systems.
+**Tommy:** Oh yeah, I'm calling from Cambridge, Ontario in Canada.
 
-**Adriana:** Well, we're super excited to have you both on! Just a reminder for folks watching: if you have questions along the way, please feel free to post them in the chat. We will also take questions at the end.
+**Adriana:** Awesome. We're practically neighbors, a few hours away from each other.
 
-**Andre:** Let's get started! You both talked a little bit about your roles; could you talk a bit more about your respective roles at Compass Digital in more detail?
+**Tommy:** Oh yeah. Awesome. 
 
-**Tommy:** Sure! Most of my role is focused on ensuring the reliability and scalability of our systems. Recently, I've been working on one of our products, which is E-Club. I'm helping to get observability into what they're doing there. I work with AWS SDK, CDK, Terraform, and PagerDuty. I also help with observability backend data tracing, where we send all our OpenTelemetry data.
+**Adriana:** Okay. And then we have another Andre today.
 
-**Andre M:** When I started with Compass about five years ago, I began as a senior software engineer. My background is primarily in software engineering, but I've developed an interest in ops and infrastructure. My focus is on developer experience and platform engineering. Recently, I've been working on understanding systems and promoting observability, especially given our microservices architecture.
+**Andre M:** Hi. I'm out from the Bonneville Durham region. So, same type of area. And for me, I've been in this industry for 11 years, but always been into the tech stuff since I was a kid. I work with Tommy on the same team, SRE at Compass Digital here, and very similar responsibilities across observability, on-call, PI, all the type of stuff for our systems.
 
-**Adriana:** Folks, can you tell us a bit more about the system you are operating? What is its architecture and what programming languages are used?
+[00:03:35] **Adriana:** Awesome. Well, we're super excited to have you both on, and just a reminder for folks watching, if you do have questions along the way, please feel free to post them in the chat. And also, we will be taking questions at the end if anyone has questions. So I guess let us get started. So I know you guys both talked a little bit about your intros. Maybe you could talk a little bit about your respective roles at Compass Digital in a little bit more detail.
 
-**Tommy:** We have two products, but I’ll focus on E-Club. Our main infrastructure is about 95% Lambda functions. We have over 300 Lambdas in our ecosystem, utilizing a hybrid of DynamoDB and Aurora RDS, and we're starting to use Fargate services. 
+**Tommy:** Sounds good. I'll start.
 
-**Andre M:** On the E-Club side, we have a blend of Python and Django on the backend and JavaScript/TypeScript on the frontend. Everything runs on AWS ECS, which gives us flexibility and consistency across environments. Our CI/CD pipelines automate the process of building Docker images and deploying them onto ECS.
+**Andre M:** Okay. Yeah, sorry. I'll go first then. As I said, most of my role is primarily focused on ensuring the reliability and scalability of our systems. Very recently, or for the most part that I've been here, I've been working on one of our products. It's a company I actually bought over, it's e-club, to help get observability into what they're doing there. And largely, I work with things like AWS SDK, the CDK, TF rather, and PA duty. We have observability backend data trace where we send all our OpenTelemetry stuff to. So pretty much just SRE, there's nothing too crazy happening on there, but I believe as we go along on this podcast, I'll get more nuanced into what I do and how your architecture is structured and the stack there.
 
-**Adriana:** Thank you! As a follow-up, what were the top three problems that compelled you to implement observability?
+**Adriana:** Sounds good. And Andre M, if you could elaborate a little bit on your...
 
-**Tommy:** Observability in a distributed system is never fully solved. One major challenge was distributed tracing. A single user request can touch many services, and without distributed tracing, reconstructing the journey of a request is nearly impossible, especially during issues. Another challenge was performance monitoring. For instance, we needed to know not just if a task succeeded, but how long it took and what resources were consumed. Finally, error tracking was crucial for us to correlate errors with logs and traces.
+**Andre M:** Yeah, certainly. So when I started with Compass about five years now, I started off as a senior software engineer. So that's my background in software engineering, less so on the ops and infra side, but that's kind of been a new love with Terraform and services. But primarily about the developer experience, the platform engineering aspect of it. And more recently, it's more about understanding the system that you can worry about and they'll tell us that linkability, how potentially across that, and give us the insights with our platform and a vendor that we utilize that with. 
 
-**Andre M:** For our end, context propagation was a primary concern due to our microservices and distributed nature. Additionally, we needed to provide developers with the ability to create their own alerts via Terraform instead of relying on a single team.
+**Tommy:** So just to give you some pretty cool things is like identifying any services that are looping into each other, for instance, via API rather than just calling it internally with a function. So it's more about just setting up these guard rails and looking into the optimization of our system. And the other aspect is, because we are a microservice shop, it's been a challenge for us to get that context propagation and seeing all the services all together. And now we're able to kind of have that full aspect all together and actually run real, I guess, business impacts and analysis onto that. 
 
-**Adriana:** Can you elaborate on the instrumentation of your systems and what types of instrumentation you are using?
+**Adriana:** Yeah, that's primarily an area I've been looking at more or less.
 
-**Tommy:** We use an agent for instrumentation on the E-Club side. It works well with our infrastructure, especially with Lambdas using Lambda layers. For ECS, we utilize AWS FireLens for log management, redirecting logs to a sidecar that handles exporting.
+**Tommy:** Cool. Folks, can you start with, can you tell us a bit more about the system that you are operating? What is its architecture? What programming languages are used and how it is deployed and so on?
 
-**Andre M:** Our platform uses a vendor agent that integrates seamlessly with our Lambda functions. We manage our ECS Fargate tasks using Terraform, which allows us to customize configurations and manage the collectors effectively.
+**Tommy:** Okay. So we have two products. So I'll talk about the one that I primarily focus on. So for us, our main infrastructure and architecture all runs, 90, 95% is all Lambdas. We have about 300 plus Lambdas in our ecosystem. We run a hybrid of DynamoDB with Aurora RDS and that's the exact thing progress, and we're slowly getting into Argate services. So that's a little bit different model, but that's the primary architecture of our ecosystem. You know the standard services like S3, API Gateway, just standard service stuff that the ecosystem provides.
 
-**Adriana:** Who is responsible for instrumentation in your teams?
+**Andre M:** Oh yeah. On the E-Club side, what we have is a blend of Python and Django on the backend. And then JavaScript, TypeScript on the frontend, and we run everything on that side on AWS ECS, which gives us that flexibility and consistency across all our environments.
 
-**Tommy:** We're trying to build a pre-packaged solution for developers to leverage for their own instrumentation. For now, most of the initial instrumentation was done manually for critical code paths.
+**Tommy:** Okay, thank you. Our CI/CD pipelines automate the process of building those Docker images and then deploying them onto ECS so we can roll out those changes quickly and safely. But to do a quick walkthrough across this little diagram that I have here, so imagine a user interacting with the application. What they hit first is the load balancers that we have here, and then it distributes traffic to the web service that we have on the backend, which runs ECS and is instrumented with the OpenTelemetry SDK. 
 
-**Andre M:** We’re evolving our processes and looking to provide more out-of-the-box solutions. The goal is to empower developers to manage their own instrumentation.
+[00:10:01] As this web service or web services begin to process this request, what it does is offload some heavy tasks or async tasks to this Celery worker down here, which also runs on ECS and is also instrumented with the OpenTelemetry SDK. Thanks to the context—oops, typo—context propagation here, the trace context can flow seamlessly between the web service and the worker. With the introduction of the OpenTelemetry SDK, now we can follow a request end to end from inception to the end, right? Both these services, that's the web service and Celery worker, emit traces, logs, and metrics, and we sample them, make sure they have high cardinality and they are batched also for efficiency. All this data that I'm talking about is sent to OpenTelemetry collectors that run as a sidecar on ECS to send this data to our observability backend. So this is pretty much in a nutshell what the architecture on the E-Club side of what we are doing looks like.
 
-**Adriana:** Do you have any current challenges with OpenTelemetry that you think could be improved?
+**Adriana:** Awesome. Thanks for that. As a follow-up question, you know, given your system architecture, what were the top three problems that you were facing that kind of compelled you to say, "Hey, I need observability"?
 
-**Tommy:** One major challenge was the initial setup and ensuring context propagation across services. The API can be overwhelming, and more complex examples would help us navigate this better.
+[00:06:32] **Tommy:** Oh yeah, sure. I'm sure you know, and probably everyone listening knows that observability in a distributed system is never a solved problem. Some of the nuanced challenges that we faced was, again, as I said, distributed tracing. With microservices, a single user request can touch so many services and background jobs, and without distributed tracing, it's almost impossible to reconstruct that full journey of a request from the user's end to the response back to the user, especially when something goes wrong. For instance, if a user says that they had a slow order placement, we need to trace our request from the web frontend, the backend, the Celery workers, and even to third-party APIs. The introduction of OpenTelemetry helps us stitch all these things together, right? And also have consistent context propagation across all these boundaries. 
 
-**Andre M:** I've mostly been learning through experience, and I agree that more real-world examples would be beneficial.
+One of the things that we were also looking at was performance monitoring because we rely on Celery heavily on E-Club for background processing. However, these things can be black boxes if you don't instrument them properly. So, we need to know not just if a task has succeeded, but how long it took, what resources consumed, and whether it's causing bottlenecks along the way. Introducing Celery with, sorry, instrumenting Celery with OpenTelemetry required us to go with out-of-the-box solutions, again thanks for that. To be able to add custom spans and metrics to these things. Also, error tracking, you know, errors can manifest in logs, traces, or metrics, wherever. The most important thing for us at the time was to be able to correlate these things together, so that's having your trace ID and span ID in logs and being able to look at that trace ID in the log and correlate it with an actual trace. A spike in error log sometimes might correspond with a specific trace or a drop in a metric that probably we're tracking. What we've done is we've worked to ensure that our telemetry includes enough context, like I said, the trace ID, request ID, so we can pivot between the logs, traces, and metrics seamlessly. So yeah, that's what got us to where we are now.
 
-**Adriana:** How do you see OpenTelemetry evolving in your workflow over the next year?
+**Andre M:** Awesome. 
 
-**Tommy:** I believe the real value lies in the data we extract. We want to apply user journeys and business events to gain insights. 
+**Adriana:** Andre, do you have anything else to add?
 
-**Andre M:** I see OpenTelemetry helping us mature our observability processes further, especially around logs and complex setups. More out-of-the-box integrations would simplify our configurations.
+[00:13:12] **Andre M:** So for our end, I think the primary problem again really was that context propagation because again, the microservices and distributed nature of that. I think the other part that we weren't even really aware about is just how the system really behaves. So a big part of it is tying back into alerting. So depending on what vendor you use, it might have automatic alerting, but being able to provide that to our developers, in our case via Terraform. So developers can open up PR, create their own alerts, and now we have that across our ecosystems has really changed a lot of how we're able to empower the different developer teams to just take control of their own alerting and systems rather than just one team kind of owning that.
 
-**Adriana:** Thank you both for sharing your insights today! Before we wrap up, do you have any final thoughts or shoutouts?
+**Adriana:** Can you tell us a bit more about how your systems are instrumented? What types of instrumentation are you using?
 
-**Tommy:** Just a big thank you for having us!
+**Andre M:** Certainly. So on our platform, currently, for us, we do use our vendor agent. So in our end, the agent's really nice for the most part. It works seamlessly with both of our infrastructure pieces for Lambda. Lambda has the concept of a Lambda layer where you can basically put on something. So their agent just goes onto that, kind of bolts right on and works essentially right out of the box. The second part to that that we had to play around with a little bit was our ECS Fargate. There is a solution from AWS called AWS FireLens, which allows you to kind of have your task logs, standard error, and send it out to basically be sent to a specific sidecar where then that sidecar will run something like Fluent Bit or they could be it, and essentially take your logs and ship them to where you need them.
 
-**Andre M:** Same here! It's great to share our experiences.
+**Adriana:** Yeah, that makes sense. I would ask a follow-up right away. So are you using auto instrumentation or are you manually instrumenting your services?
 
-**Adriana:** Thank you to everyone who attended! The recording will be available on LinkedIn and YouTube. Be sure to check out the Hotel End User SIG group on CNCF Slack to share your stories and join us for our meetings every two weeks. Thanks again, and see you next time!
+**Tommy:** So for us, because we do have the 300 Lambdas, each one need, we basically have like a core library that all these Lambdas will utilize, a very thin layer, but in there we do have OpenTelemetry instrumentation for Node.js. I believe it's just the auto instrument or I think we might have changed that for the fine-tuner because it needs to be small because Lambdas, you want to keep them really tiny. So I think we do have the custom one where it's not the auto instrument.
+
+**Adriana:** And how was your experience with doing that so far?
+
+**Tommy:** I haven't heard any issues. So I didn't do that one. It was actually our coworker Matt who did that one, but I didn't see any too many issues with that. PR went through pretty smoothly and the primary purpose was we use our own custom logger, one that isn't supported by OpenTelemetry or our vendor. So we had to use that to kind of pull in the trace ID from the headers and everything else and be able to actually populate the spans that we require.
+
+**Andre M:** Cool. So to clarify then, in a nutshell, you basically have like a wrapper around OpenTelemetry from what it sounds like.
+
+**Tommy:** Kind of, I guess so. 
+
+**Andre M:** Yeah. 
+
+**Adriana:** Cool. And a question for you around just to keep on the instrumentation thread. Who is responsible for instrumenting?
+
+**Andre M:** Well, that's an interesting journey. So we actually do have a new project upcoming. So the way our system has kind of evolved with Terraform in particular is, you know, we're IAC first for no matter what we do, infrastructure as code. A big part of that is we use the Cloud Development Kit extension on Terraform. So it gives us the ability to kind of have this inheritance model and allows us to build these L1, L2 constructs. So if anyone's familiar with that, it's a very useful way of building abstractions for your infrastructure and enabling teams to kind of handle that as well. 
+
+In our case, what we're trying to build right now is kind of an L3 construct, which is like an application service level where we can give it to developers and they can essentially have all the nuts and bolts kind of already instrumented out of the box with the right permissions and the right access and the right agents and everything else. We kind of support this golden path for them.
+
+**Adriana:** Awesome. Tommy, do you have anything else that you want to add?
+
+**Tommy:** No, not really. As I said, what I think we're trying to get to a point where all of these things are, would I say, prepackaged for the devs to be able to use them, to leverage them, to do their own instrumentation on their own. I would say for the most part, we are automating many of our collector setup or the OpenTelemetry setup. But I think at the beginning, especially on the E-Club side, was to auto instrument so we can have quick wins and move quickly. But when we're getting down to things like business logic, salary tasks, and things that were unique to the E-Club side, we manually created spans along some critical code paths and added some custom attributes here and there so we can get more than just what OpenTelemetry offers out of the box. So I think for E-Club, it's just a little slightly different from what we have on the Centric side.
+
+**Adriana:** Nice. That's really cool because I think that's a path that a lot of organizations start with anyway. Like the auto instrumentation is that quick win and then it's like, oh yeah, we're lacking a little bit more. Let's go with the manual instrumentation. That's awesome. 
+
+[00:19:00] We do have a question from someone in the audience, from Buddha. Hi Buddha, nice to have you join us. So, Buddha asks, are you currently using all OpenTelemetry signals: logs, metrics, traces, profiles, or a combination of them?
+
+**Tommy:** So we are using logs, metrics, and traces. Logs are coming through depending on which infrastructure piece. So if it's Fargate, it'll come through the AWS FireLens and Fluent Bit solution and then be sent to our vendor. Sorry, to our vendor. Otherwise, if it's Lambda, it comes straight from the Lambda layer agent. 
+
+For metrics, that comes in through a different connector with our vendor. They have a solution we install in our cloud environment, and then it kind of pulls all the metrics over to that. Now profiles is interesting. We don't use profiles but the use case I think for profiles is enabling maybe common attributes or standardization, and we handle that through, again, our vendor has a solution out of the box that allows us to kind of set the schema and richer data as it gets ingested.
+
+**Adriana:** Great. And then another follow-up question from Buddha. And by the way, actually before I ask that, there was a question from Manish, who's asking if we are recording the session, and yes, we are recording the session. So it should be available on LinkedIn and YouTube on demand after the fact. So, great question. So the follow-up question from Buddha was, was this how you started or slowly built up to it? Who would like to take that one on?
+
+**Tommy:** Was that one for like the Terraform aspect or just in general? 
+
+**Adriana:** I'm assuming it was for the instrumentation in general, I would say.
+
+**Tommy:** Yeah. At least one for Tommy. Tommy had a fun time doing that.
+
+**Tommy:** Okay. Well, this was not how we started. And for context, I joined about 10 months ago. And yeah, as time I joined, we did not have OpenTelemetry setup anywhere, at least best of my knowledge. I know that some of, yeah, a couple of the motivations for adopting OpenTelemetry on our side was standardization because we had like a patchwork of monitoring tools, like logs, metrics, everything scattered all over the place, but OpenTelemetry gave us a way to now unify all these and to reduce cognitive load and then the interaction overhead that comes with that. 
+
+Additionally, we wanted to be vendor neutral, you know, using OpenTelemetry allows us not to be locked to a single vendor. I say, I know I'm getting into the motivations for why we adopted it, but it also cuts back into the fact that we did not start out that way, slowly built into it, and these were some of the decisions that drove us to using OpenTelemetry. 
+
+**Adriana:** Yeah, I hope that answered the question.
+
+**Tommy:** I hope so as well. 
+
+**Adriana:** How long did it take you to get to the point where you are at currently?
+
+**Tommy:** I'd say we're still getting there, right? If I remember correctly, we started somewhere around September, Andre, keep me honest here. I think by March, we closed the chapter on that one. From, I would say, from conceptualization, but I say from implementation to when we thought that we were in a good place, so roughly seven months trying out stuff. Yeah, I think we're in a good place now.
+
+**Adriana:** Alrighty. 
+
+[00:22:50] **Tommy:** Yeah, we have a question in chat from Manish. When we talk of OpenTelemetry data, there is always a huge amount of data. How are you optimizing your storage and managing doing it?
+
+**Tommy:** Okay. I'll take this one a bit and then I'll let Andre finish off because he's the geek with that. One of the things we do is sampling, of course. I know when we query for stuff, we do a sampling ratio of I think 1 to 1,000 for traces at least on the E-Club side. This is tuned in this way to balance cost, performance, and visibility. Of course, we monitor the effectiveness of this sampling setting and adjust it dynamically during incidents or specific services that require deeper analysis. 
+
+For logs, for querying and most of the other things we do with logs, we enforce a scan limit of 500 GB per query to keep the backend performant and cost-effective. But I know again, Andre geeks out on things like this, so I think you'll be able to give a better response.
+
+**Andre M:** Technically, we've got a really big budget for our vendors, so we actually have zero sampling at the moment. So we just grab it all. We're just trying to understand from that point and slim it down. You know, the first exercise that we kind of ran through was grab all the logs, run a pivot on it like the error logs, do I count on, you know, just general logs, and are there any useless logs that are being constantly created by the system or just noise? Can we remove that? And the answer was yes. So I think we had something like two billion, three billion logs coming in that are just like success that we just didn't need to have in place for it. 
+
+Yeah, we could have been cleaning up the system a lot. We go through all our pods and kind of hand out tickets to them as we find through the investigation and be like, "Yeah, let's get rid of this," or "You make it a debug log potentially if you guys actually need it, enable it during your debug sessions." Otherwise, let's not try to have too much noise in our ecosystem. I will say though that one caveat is because we are running Lambda, that one agent and CloudWatch requires certain logs to come out. So we can't get away from certain noise. Right now, I think we're ingesting 54 million logs a day that we just can't get away from and they're just noise at the moment. So another motivation to move to Fargate where we have a bit more control over the system as we adapt a bit more of the observability ecosystem.
+
+**Adriana:** Cool. 
+
+**Tommy:** Yeah, Manish, if you have any follow-ups, feel free to post them in chat. I would continue with the next question about collectors. Can you folks tell us a bit about the way how you set up your collector or collectors? What is the distribution and what is the architecture overall? Super curious about that.
+
+**Tommy:** Okay, well, I'll begin again with the E-Club side. And again, for context, as I said, I handle most of the E-Club side of things. For E-Club, what we do is try to make our collector environment aware. So in Sandbox, because what we have is Sandbox, staging, and production on E-Club. So on Sandbox, we sample a little more aggressively to capture as much data as possible for debugging, especially for me, right? To really know what's going on there and also help the devs really debug stuff that they have going on there. But in production, what we do is a little more probabilistic, I hope I got that right, to balance visibility with cost. 
+
+What we do is we dynamically also adjust that sampling ratio if there's an incident, and then we temporarily increase that to capture more data. The collector definitely does all the batching, filtering, and exporting telemetry to the backend of our vendor. Of course, this is done in a YAML config to define our pipeline for traces, for metrics, and logs, and also set the environment-specific parameters like service name, the host type, and then all the OpenTelemetry options we want to set on that. So that's what we have for our collector on E-Club. As I said, it runs as a sidecar through the services that Celery, the Django application also.
+
+**Andre M:** So as a follow-up on your collector setup, do you have a way to manage a fleet of your... because it sounds like you have a number of collectors. Do you have a way to manage them effectively? Like do you use OpenTelemetry for that or do you use a homegrown thing? 
+
+**Tommy:** And also, do you use a collector gateway to funnel all of your collectors into a central gateway before pushing that off to your observability?
+
+**Andre M:** To be honest, not really. We just manage the fleet using ECS, as I said, and then we run them as a sidecar to our standalone services. The environment variables that I said help us customize those things, I said earlier, which are the sampling rates, the exporter, and the service names. So we don't really manage the fleets independently or independent of our services. We just run them as a sidecar and let them do the rest for us. 
+
+We also monitor the performance, right? Definitely. Things like the queue length and then we have some drop spans along the way, so we can scale them horizontally if we do need to. But for high throughput services, like I can't remember the name, one of our Celery, I think it's Celery Flower, right? We have, of course, a higher instance for that to manage the size and scale of how things can be and to avoid bottlenecks. 
+
+**Adriana:** So just to clarify, do all your sidecar collectors then, do each of them go directly to your backend?
+
+**Andre M:** Oh, okay, got it.
+
+**Adriana:** And it sounds like Andre M had a screen share for us.
+
+**Andre M:** Yeah. So just, it's a visual essentially the same idea that Tommy was walking through there. Before we get started though, shout out to Skydraw for anyone using that, the best platform for brainstorming ideas and a little whiteboard place. But essentially the ECS Fargate, again I was mentioning the AWS FireLens configuration for us. The management all of it comes back to Terraform. So that allows us to easily manage our collectors because even the configurations are all in code. So it makes that part a little bit easier. 
+
+[00:30:00] If that's what you're trying to guess, prelude to our vendor does have that instance within our account, but we don't utilize that as we've found that sometimes the logs are being dropped. Either we under-provisioned it, and we found that if we just directly send them straight to the vendor, there weren't any issues that we've noticed aside from losing some of the benefits of that additional collecting if we have to do some data masking or dropping those logs prior to being sent and ingested by the vendor there. So definitely an area we're trying to balance. 
+
+**Adriana:** But the other part is, obviously, the Lambda, which again is super straightforward. It's just straight from the Lambda and straight to the vendor, again, without any additional pieces there. 
+
+**Tommy:** So, that may be an area now that we're talking here, an area for improvement because if we have those 54 million logs that are just noise, we might benefit by going to that filtering agent first. So very useful.
+
+**Adriana:** Cool. Thanks for sharing. You already mentioned areas for improvement, and I'm wondering, do you have any challenges with OpenTelemetry currently and anything that perhaps the project could do better to serve you as its user?
+
+**Tommy:** Well, I'll say for me, one of the biggest challenges was just initial setup, right? Configuring the connector and ensuring context propagation across all the services, which required me to do manual instrumentation. Of course, there's a learning curve. Telemetry is powerful, but again, the API is just so large. Of course, in terms of best practices, we are still evolving. 
+
+One of the things that I'll probably like to see, and I think I'm speaking to the community when I say this, is maybe more complex example projects, speaking to myself too, of course, putting it out there. But I would say the community has been really helpful, right? There were so many things that I benefited from, from GitHub mainly, and then a bunch of articles that people have written on Medium, right? For me, it's just more real-world examples, more complex setups like probably what we have. Maybe, you know, somebody just doing something that big and putting it out there for anybody to be able to use, but say for me that's just been the challenge. Nothing too crazy.
+
+**Andre M:** What about you? Do you have anything in mind?
+
+**Andre M:** Not so much I can give feedback to really improve. I mean, the whole time has just been learning, learning, learning, right? There's just a lot. I mean, it's my first exposure to it really for me. It's not even that I had experience with other observability tooling; it's just straight to our vendor and then also OpenTelemetry. So just learning the best of the best right off the bat basically, right? And then learn the history. For me, it's just been a constant uphill battle to learn all the different intricacies. Probably just want to echo Tommy's message: just more examples, right? Being able to pull things down, play with it, getting it into your hands really quickly. That's usually the best place to learn.
+
+**Adriana:** Yeah, I totally agree. I think we're at where OpenTelemetry has been around long enough now that I think many organizations are kind of past that 101 phase and are eager to get into the more gnarly use cases. And that's why, you know, we really appreciate folks like you jumping onto these Hotel Me sessions talking about your mature OpenTelemetry setups because it really helps others in the community. We definitely appreciate that.
+
+Switching gears a little bit, we were wondering if you could, if you have had any interactions with the OpenTelemetry community, things around, you know, like if you got stuck on a particular issue, like how did you go about it? Did you go on Slack or did you Google stuff? How did that work for you?
+
+**Tommy:** I remember the first thing, it was for E-Club. When we were trying to instrument it originally, there’s an extension we use for, is it parallel processing, Tommy? Do you remember that one? It's not AWS Wake, there's another one. Well, it's a Django app that we run. The problem with that is that there's an extension we use, I think it optimizes performance. The problem with that is that it somehow was fighting OpenTelemetry. 
+
+**Andre M:** Yeah, I really can't remember the name, but I know they were fighting for the threading running in the background. I think that was one of the challenges that we had in the beginning. I really can't remember what specifically it was, but I know that was a big uphill battle back then. 
+
+**Tommy:** Yeah, so we had an open issue on GitHub with that. Luckily our vendor was able to get their agent working, so it worked for that environment. But I think the issue is still open, but wasn't sure if it was like upstream with Django or was it so much with OpenTelemetry itself.
+
+**Adriana:** Cool. Cool. 
+
+**Adriana:** As a follow-up, have you gotten to the point where you have made any contributions to OpenTelemetry or planning to make any contributions?
+
+**Tommy:** 100%. Nothing yet in terms of contribution or commit, but 100% we'll probably be looking at something within the ecosystem of probably Node or Go, one of those two.
+
+[00:36:10] **Adriana:** Awesome. Final thing. I think we've covered most of the base questions. We do have a cool audience question that came in from Esther. It says, "How do you see OpenTelemetry evolving in your workflow over the next year?" Really great question.
+
+**Tommy:** That is a tough question. Well, because I mean OpenTelemetry, I mean it's more about is it so much like the framework itself or is it more about the data we're getting out of it? Because for me, I think the value, I mean both are great, right? Because one gives us a standardized tooling and framework to be able to switch vendors or anything else we have the capability now. 
+
+For me, I think the real value comes into what type of data do we really pull out of that OpenTelemetry and what can we really get from it. I think that's where real value is. So being able to now take that data and apply user journeys and business events, like those things, I think are where our organization can really, I guess, expand or benefit from for the most part.
+
+**Andre M:** Tom, do you have anything to add?
+
+**Tommy:** Not much, but I think just like OpenTelemetry also keeps maturing in our observability journey, especially around logs and for complex setups like Celery or serverless with Lambda. Because I know there were also some battles fought there. 
+
+I also think we are probably going to have more out-of-the-box integration and tools to simplify the configuration for our collector, right? I mean the ecosystem is growing so fast. So I would not be surprised to see us adopting it a little bit more. As Andre said, we are growing every day. We are learning every day. But I think we'll be leaning more towards probably much better or more standard industry practices when it comes to adopting OpenTelemetry and using it to really observe our system. 
+
+**Adriana:** So that's what I see happening over the next year, but who knows? 
+
+**Adriana:** Sounds good. Sounds good. 
+
+**Adriana:** Yeah, we have more audience questions. Today we just talked over at the end with Adrian that we have a really, really engaged audience. So that’s amazing. So Manish is asking, how are you doing the instrumentation of legacy systems? Is anything like that happening? Do you have a use case for that?
+
+**Tommy:** I think we have some older .NET projects, but it seems as if our vendor supports out of the box, and anything I think we even with that solution, the vendor allows us to still have it in OpenTelemetry format as it comes through. So not really a concern for on our side from what I've seen so far.
+
+**Adriana:** Alrighty. Alrighty. 
+
+**Adriana:** And one more from Buddha. How do you report on business value metrics for decision makers? What metrics do you report on? 
+
+**Tommy:** Yeah, I know I think Tommy you mentioned it that for that business logic you had to do some manual instrumentation. Can you tell us a bit more about that?
+
+**Tommy:** Yeah. So, as I said earlier, there were certain business logic that we needed to especially on the Celery side because that's where we upload stuff to really see how data was flowing through that and then report on, I think specifically it was a reporting service or I think an order service at the time. 
+
+What we got out of that really was just the rise and fall or the spike of the, would I say the order process within that within a certain period or within a certain trace. But you know reporting back to business people, I think that one comes more out of the box with our vendor. And we, as Andre said, build stuff that aggregates the amount of logs that we use that translate into how much we pay for these things. Even though we have a big budget, we still don't want to be overshooting that. But I think again, Andre would have more context into this because he builds most of the stuff that I report back to business leaders and that's something he's so in love with. 
+
+**Andre M:** So I think for me, the biggest one at least it's been months in development is the most important key metric I've come to love recently is users. So what is a single user doing across a system and aggregate that over a certain period of time? That alone allowed us to find a particular leak where we had a single user, was a bug in our client and within our service that wasn't like a batch request where this one user within a short period of time was invoking over 200,000 requests into our system. 
+
+With Lambda, pay as you go, it's not a good model there. So without this observability in place, we wouldn't even know that there is, you know, one single user somehow invoking 200,000 requests within like a six-hour period. So these tips, it's small little things where now we can focus on a single user or aggregate it across a grouping and be able to find behaviors. And it's really good when you throw into like a time series or flame graph and you can see these kind of fat spots where you can just visually identify something doesn't look good here. Investigate.
+
+**Adriana:** That's great. Thank you so much, both of you, Andre and Tommy, for joining us. And thank you to my co-host, the other Andre, for joining. And also this is Andre K's first time on a stream, so big kudos. Awesome job as co-hosts. 
+
+I want to give a shout-out, and you know, as always, we appreciate all the stories that we hear from our community members showing how they use OpenTelemetry out in the wild. It really helps us. And it helps show folks in the community, like, you know, OpenTelemetry is here to stay. We've got some gnarly use cases of it being used out in the wild and it's great to hear those stories. 
+
+Coming up next, stay tuned. We should have another Hotel Me planned, I think, in July. So, stay tuned on the hotel socials for that. In the meantime, coming up at the end of this month, we have Hotel Community Day. It's part of Open Observability Con. It's combined with Hotel Community Day. So that's happening on the heels of Open Source Summit in Denver. Open Source Summit North America in Denver. So if you're around for Open Source Summit, check out Hotel Community Day and Open Observability Con that are happening together. 
+
+I think we've got a couple of KubeCons also coming up. We've got, I think, I want to say this week is KubeCon China. And then next week, I'm actually jetting off to Japan at the end of this week for KubeCon Japan. And it's the first KubeCon Japan, so very exciting stuff. So if anyone's around for KubeCon Japan, come say hello. We'd love to meet you and talk. 
+
+I think that is a wrap. And again for those who attended, tell your friends if they missed it, the recording will be available both on LinkedIn and YouTube. Also, check out the hotel end user SIG. We also have a group on CNCF Slack we are called, I think we're called SIG-User, so come share your stories on the hotel end user SIG chat. Also, if you'd love to join us for one of our meetings, we meet every two weeks, so I think our next one is next week. 
+
+Thank you everyone once again for joining and we'll see you next time.
+
+**Tommy:** Thanks so much for having us.
 
 ## Raw YouTube Transcript
 

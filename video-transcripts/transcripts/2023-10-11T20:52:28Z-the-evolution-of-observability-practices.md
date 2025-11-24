@@ -10,98 +10,276 @@ URL: https://www.youtube.com/watch?v=zSeKL2-_sVg
 
 ## Summary
 
-In this YouTube panel discussion hosted by the OpenTelemetry User Working Group, panelists David Win, Iris, VJ Samuel, Austin Parker, and Noika Melera explored the evolution and current state of observability practices, particularly focusing on OpenTelemetry (OTel). David initiated the conversation by sharing his background in observability and the challenges faced when transitioning to cloud-native architectures, emphasizing the need for better tools for developers to understand complex systems. The discussion highlighted how OTel provides a standardized approach to telemetry data, enhancing developer productivity and enabling smoother integrations. Panelists shared personal experiences with implementing OTel in their organizations, addressing both successful strategies and lingering challenges, such as the need for improved logging capabilities and dynamic configuration management. The conversation concluded with a forward-looking perspective, expressing excitement about future developments in OTel and its potential to revolutionize observability practices across the industry.
+The video features a panel discussion on the evolution of observability practices, hosted by the OpenTelemetry and User Working Group. Panelists include David Win, Iris Dear Mishi, VJ Samuel, Austin Parker, and Noika Melera. They share their experiences and insights on the transition to OpenTelemetry, discussing the challenges and benefits of adopting this standard in their respective organizations. Key points include the importance of developer engagement with observability tools, the need for standardization across platforms, and the shift in focus from merely collecting data to making it actionable. The panel also highlights the ongoing improvements in OpenTelemetry, such as the Collector Builder tool, and anticipates future advancements that will further integrate observability into development workflows. Throughout the discussion, panelists emphasize that the real challenges are often people-related rather than purely technical.
 
 ## Chapters
 
-Here are the key moments from the livestream, along with their timestamps:
+00:00:00 Welcome and introductions
+00:05:10 State of observability before OpenTelemetry
+00:10:50 Challenges in observability practices
+00:14:40 Evolution of observability tools
+00:19:30 OpenTelemetry standardization benefits
+00:24:00 Observability culture and leadership buy-in
+00:29:00 Collector Builder introduction
+00:33:56 Surprising challenges in implementation
+00:40:06 Observability practice focus changes
+00:45:00 Future of OpenTelemetry and industry impact
 
-00:00:00 Introductions of panelists and overview of the discussion  
-00:02:30 David's introduction and the concept of evolving observability practices  
-00:05:00 Iris shares her experience as an observability engineer  
-00:06:30 Vijay discusses his role in observability architecture at eBay  
-00:08:15 Austin introduces his background with OpenTelemetry  
-00:09:45 Noika talks about her experience working with observability and OpenTelemetry  
-00:13:00 Discussion on the state of observability before OpenTelemetry adoption  
-00:19:30 Challenges faced with observability tools and getting developers on board  
-00:27:00 The importance of standardization in observability practices  
-00:32:15 Insights on the role of open source in observability evolution  
+**Moderator:** All right, I think we can go ahead and get started. Thank you all so much for being here. The panelists we have today are David W., Austin Parker, VJ Samuel, Iris Dear, Mishi, and Noika Melera. I'm hoping I got all those correct. We'll do a quick run of introductions. This discussion is hosted by the OpenTelemetry and User Working Group, which I am part of, as is Adriana. I see her there. Today we're going to just have a casual conversation. Feel free to get as opinionated as possible about basically the evolution of observability practices. 
 
-# Observability Panel Discussion Transcript
+**Moderator:** David, since you kind of inspired this, I would love for you to do a quick introduction, and after that, we'll just kind of go through the rest of the panelists. Yeah, let's hear a little bit more from David, whose brainchild this was.
 
-**Moderator:** All right, I think we can go ahead and get started. Thank you all so much for being here. The panelists we have today are David W., Austin Parker, VJ Samuel, Iris Dear, Mishi, and Noika Melera. I'm hoping I got all those correct. 
+**David:** Hello everyone, my name is David W. I am Principal at Edge Delta, which is in the observability pipeline space. The thing about being a startup is you just sort of do whatever needs to be done, so I flex the title appropriately as such. Ree and I were chatting about different ideas that might be fun to discuss, and one of them that seemed very apropos to the group would be sort of the evolution of observability and where things are going, how people are tackling the challenge of shifting to OpenTelemetry, and what are some of the interesting lessons learned along the way. Not only from the 10,000-foot view of like we see where the mountains will go but also at the 10-foot view of boy, this grass is tall sometimes, trying to get a little bit of feedback on all different directions of it. 
 
-This discussion is hosted by the OpenTelemetry User Working Group, which I am part of, as is Adriana. Today, we're just going to have a casual conversation. Feel free to get as opinionated as possible about the evolution of observability practices. 
+**David:** To continue with introductions, I'll go ahead and do it popcorn style. Iris, why don't you introduce yourself next?
 
-**David**, since you inspired this, I would love for you to do a quick introduction, and then we can go through the rest of the panelists.
+**Iris:** Hello everyone, my name is Iris, Iris Dear, depending on the country where I am. Currently, I'm based in Portugal. I'm a Platform Engineer, Observability Engineer at Farfetch. My day-to-day is building an observability platform, maintaining it, modernizing it, and offering this kind of service to the engineers in my company. I don't know, that's all about it. Go ahead and call someone else out.
 
-### Introductions
+**VJ:** Hi everyone, I'm VJ Samuel. I work at eBay. My day job predominantly revolves around doing architecture for the observability platform internally. Everything—logs, metrics, events, tracing—helping all our developers do alerting, visualization, anomaly detection, the whole shebang with regards to observability. That's pretty much what I do.
 
-**David:** Hello everyone, my name is David W. I am a principal at Edge Delta, which is in the observability pipeline space. The thing about being a startup is you just sort of do whatever it needs to be doing, so I flex the title appropriately. Ree and I were chatting about different ideas that might be fun to discuss, and one of them that seemed very appropriate to the group would be the evolution of observability. We can discuss how people are tackling the challenge of shifting to OpenTelemetry and what some of the interesting lessons learned are along the way. 
+**Austin:** Hi everybody, I'm Austin Parker, Community Maintainer for OpenTelemetry. Formerly at LightStep, part of ServiceNow, and currently—it's a surprise, and you'll find out very soon what I'm currently doing. I've been a part of OpenTelemetry since it was created. I was an OpenTracing maintainer. I've been working in observability for over five years now and got a lot of thoughts from seeing it kind of grow and evolve from what it was to what it is.
 
-So, to continue with introductions, I'll go ahead and do it popcorn style. **Iris**, why don't you introduce yourself next?
+**Noika:** Hi everybody, I'm Noika. I'm at the open-source startup Signos and have been working with observability stuff from back when we called it Real's Performance Management. Mainly now working with OpenTelemetry and Kubernetes stuff.
 
-**Iris:** Hello everyone! My name is Iris, or Iris Dear, depending on the country. I'm currently based in Portugal. I'm a platform engineer, specifically an observability engineer at Farfetch. My day-to-day involves building, maintaining, and modernizing our observability platform and offering this kind of service to the engineers in my company. That's about it. Go ahead and call someone else out, **VJ**.
+**Moderator:** Excellent, thank you all so much again. We have a list of questions that are kind of intended to help guide the conversation, but once everyone gets going, I expect it to become a lot more dynamic. I think we're all totally happy to see where this takes us. 
 
-**VJ:** Hi everyone, I'm VJ Samuel. I work at eBay. My day job predominantly revolves around doing architecture for our observability platform internally. This includes everything like logs, metrics, events, and tracing—helping all our developers with alerting, visualization, anomaly detection, the whole shebang.
+[00:05:10] **Moderator:** To get us going, we want to know about the state of the world before you all undertook your OpenTelemetry journey. What was working pretty well? What did not work, or what sucked? What was the moment that prompted you to change? Feel free to raise your hand. All the panelists at least are on camera, so if you need visual cues as to when you can step in, hopefully that helps, but feel free to raise your hand too. 
 
-**Austin:** Hi everybody, I'm Austin Parker, a community maintainer for OpenTelemetry. Formerly, I was at LightStep, then part of ServiceNow, and currently, I'm involved in something you'll find out about very soon. I've been part of OpenTelemetry since it was created and have worked in observability for over five years now. I have a lot of thoughts from seeing it grow and evolve.
+**David:** I'll actually start because I think I have what is probably not a very unique story but an interesting one. Before I got into observability as a field, I started out in software doing QA. I was a software developer in test, and this was, you know, 2013, 2014, I guess is when I started really getting into technology as a career, or software as a career, I should say. The cloud was a thing, but Cloud Native wasn't quite a word yet. We didn't have this concept of like, oh, we're just building all these things with all these cool APIs and this idea of infrastructure on demand or whatever. 
 
-**Noika:** Hi everyone, I'm Noika, and I'm at the open-source startup Signos. I've been working with observability since back when we called it Real Performance Management. Now, I'm mainly working with OpenTelemetry and Kubernetes stuff.
+**David:** I saw the company I was at go through these various transformations, and one of them was a DevOps transformation where we went from, okay, when you build your code and you deploy your CI, you write, you pull a ticket, you write some code, it works on your machine, great, you push it, and then that night someone else gets to deploy it and see if it actually worked. One of the things we wanted to do was really tighten up the feedback loop here. We wanted to get from 24, 48 hours before changes got into test to minutes or hours. 
 
-**Moderator:** Thank you all so much again! We have a list of questions intended to help guide the conversation, but I expect it to become a lot more dynamic as we go. 
+**David:** A big part of that was getting on-demand infrastructure rather than sort of static infrastructure. We're going through this, and we're building all this out, getting stuff into the cloud, and it's great. What we started to see, though, was it wasn't actually fixing a lot of the problems we had. There was kind of this ground truth that everyone had agreed on beforehand: the problem is that we have bad infrastructure. These servers are not properly cared for. We're just wiping stuff and recreating it rather than actually getting fresh images every time. 
 
-### State of Observability Before OpenTelemetry
+**David:** So it must be some config thing; it's probably not the code. Then something would go into production, and we would make it into a patch, and then the customer would come back and say, "Hey, this is actually broken," and we missed it because we thought this was because of our testing infrastructure. When we started going into the cloud, we had fresh images, all this stuff, and we're finding all these problems that we really didn't even know about before. 
 
-To get us going, we want to know about the state of the world before you all undertook your OpenTelemetry journey. What was working well, what didn't work, or what sucked? What was the moment that prompted you to change? Feel free to raise your hand, and we'll go from there.
+**David:** The question came back, "How do we know what's going on? How do we know what's breaking our product?" It was a platform as a service, so we had hundreds and hundreds of nodes, various logs in all sorts of different places. It was Windows servers, it was Linux servers, we had all these different databases, and it was very difficult; it was kind of big. It was hard to keep your head around. Someone, one of the engineers, actually came back and said, "Okay, I made a topology service topology," and it looked like if you've seen one of those nail art things where someone will make a picture by putting a bunch of nails in a piece of wood and then tying string together—it was like that, where you have just lines everywhere and things connecting to each other. 
 
-**David:** I’ll start. I think I have what is probably not a very unique story, but an interesting one. Before I got into observability, I started out in software doing QA. I was a software developer in test around 2013-2014. The cloud was a thing, but "cloud-native" wasn't quite a term yet. I saw my company go through various transformations, one of which was a DevOps transformation. 
+**David:** Nobody could keep this in their head. Nobody could understand how services actually talk to one another. You could look at a very small section and say, "Okay, I get this," but looking at it holistically was impossible. I brought in, at the time, we tried New Relic, we tried Datadog, we tried a couple of things. What I found was, ironically enough, that it didn't matter what tools I brought in; the developers weren't interested in using them just because it wasn't data, it wasn't information that was kind of like at their level. 
 
-We wanted to tighten the feedback loop and move from 24-48 hours before changes got into tests to minutes. A big part of this was getting on-demand infrastructure rather than static infrastructure. We found that moving to the cloud didn’t actually fix many of the problems we had. 
+**David:** They didn't understand how do these things correlate, what does it mean when SQL Server spikes and memory usage increases, but there's no way to really tell what was happening, and that got me into observability—trying to answer that fundamental question. 
 
-We started seeing issues we didn’t know existed before, and the question became, “How do we know what’s breaking?” We had hundreds of nodes with logs in various places, which made it difficult to understand. An engineer created a topology service that looked like a nail art project with strings everywhere, and nobody could keep it in their head. 
+**Austin:** Right off of that, I remember working in New Relic during my time there, and there was this really fundamental thing of like, oh, this shows how this request hit all these spots, and it shows it as a trace with a bunch of time spans including individual function calls on all these different services. Pretty cool, but we get these questions back that were like, "Well, just show me where the request went, show me what services were hit, and also like in an interpretable version." 
 
-We tried tools like New Relic and DataDog, but developers weren't interested in using them because the data wasn't at their level. This got me into observability—trying to answer that fundamental question.
+[00:10:50] **Austin:** It was an example where there was a lot of focus on getting a certain piece of information back, right? But the developers wanted information that was at a different level. This was exactly it: I just want to know where the request is going, which services are involved, and how the failure on the SQL Server might come back up and affect the front end in these ways. That was very hard to tease out, whatever this was seven years ago, but it's a similar theme, right? It's really about making sense of a pile of stuff again. 
 
-**VJ:** I resonate with that, David. Our problem space was a bit different. Pre-OpenTelemetry, we had a centralized logging platform for over 20 years. Developers had to learn proprietary clients, which limited our observability efforts. 
+**Austin:** Trying to zero in on that moment before we get into these things, there's the point where you have everything, and then you realize that having everything was the problem, and then it's not. Then you're like, "Wow, this computer doesn't know how to draw maps," and somehow it just looks like a bowl of spaghetti. Then you're like, "Cool, how do I zone this back down again?" 
 
-With the cloud-native era and large-scale Kubernetes adoption, we needed standardized SDKs across the board. OpenTelemetry came in with the promise of standardization, allowing us to offer our developers a community-managed solution they could use across the board.
+**David:** It seems like sense-making is at least one of the unifying concepts we see there. VJ, Iris, whoever wants to take it— is that a similar feeling that you guys got when you were hitting this inflection point?
 
-**Iris:** My experience is similar to VJ's. I started with companies that had zero observability. When I joined my current company, I encountered a robust observability culture. Our challenge was that we were using multiple open-source and APM vendors, which meant we had to gather information from ten different places. 
+**VJ:** For us, the problem space was a little bit different in the sense that pre-OpenTelemetry, we had a pre-cloud native era and during Cloud native as well. If you take the pre-cloud native era, we had something called the Centralized Application Logging Platform inside of eBay for more than 20 years, and it had the concept of transactional logging, where you have a root transaction, nested transaction events, very similar to what we have in the tracing world today. 
 
-We decided to go the OpenTelemetry route because it centralized everything, allowing us to move from vendor to vendor easily. 
+**VJ:** But the problem with the pre-cloud native era is always that developers come into eBay; they have to learn proprietary clients. We had clients only for a few languages, so if they are not using that or writing their own code, you cannot observe things inside the company or you're on your own to figure out—spin up your own ELK stack or anything that you can do to monitor the system. 
 
-**Austin:** To both of your points, I think what’s transformative about OpenTelemetry is that it offers a universal idea of how developers should emit telemetry information. Many companies have had some form of transactional tracing for years, but the difference is that OpenTelemetry makes it a core part of being a developer—an essential tool in your toolbox.
+**VJ:** When Cloud native came in and we had the large-scale Kubernetes adoption, we had the Prometheus endpoints scraping from log files, a little more flexible, but you do not have standardized SDKs across the board. Even for metrics, it used to be that a few people used the official Prometheus client, some used Micrometer, and for Node.js, you didn't even have an official community-supported SDK. 
 
-### Surprising Aspects of the OpenTelemetry Journey
+**VJ:** I think that's where OpenTelemetry came in with the promise of standardization. It was like, "Okay, now we can just offer all our developers one standard, and it's community-managed. They can hop from any company into eBay, and they should be able to use the observability platform as long as we are OpenTelemetry compliant." 
 
-**Moderator:** As we move along, what was most surprising as your OpenTelemetry journey got underway? What were the trickiest stakeholders you encountered?
+**Iris:** I would say that my viewpoint, my story, is kind of a bit like VJ. My observability experience first started with some companies that had zero observability in place, and that's how I got to know it. Where I'm currently working, I jumped into a completely different world that had a very nice observability platform, a very nice observability culture, which was a big shock. Our job was actually not to come up with ways to monitor but to just keep improving. 
 
-**David:** I often say in observability, there are no technical problems, only people problems. So, what were some of the surprising things you found either that were sticky and tricky to navigate or that were surprisingly smooth?
+[00:14:40] **Iris:** Of course, we came to that bottleneck that we were using a lot of open source, we were using APM vendors, and to get the information, you have to go in 10 different places, which is not great. I would say that it is from a developer productivity viewpoint as well why we went the OpenTelemetry route, because everything is centralized, and we can move from vendor to vendor if we need. We are collecting everything, standardizing everything, so I would say we have kind of the same case here. 
 
-**Iris:** For us, there hasn’t been a challenge we couldn’t find a solution for. The challenges we’re working on now involve the OpenTelemetry operator and the collector. We have a love-hate relationship there. The presets often differ from the normal collector, which creates challenges.
+**Austin:** I think to both of your points, like that to me is what is really transformative about OpenTelemetry. It offers, for the first time, this truly universal idea of how should I, as a developer, emit this telemetry information. I think your story, VJ, is not unique. Most especially in large distributed systems, companies that have large distributed systems have had some sort of transactional tracing, some sort of structured logs with transaction IDs that they can look at for a decade or more. 
 
-Logging isn’t part of OpenTelemetry at all in our case, so I would like to see more stability in that area.
+**Austin:** When we think about an OpenTelemetry trace, the actual data model is very similar to what Google produced in Dapper almost 25 years ago now. There’s nothing new under the sun. What's been missing is the idea that this is actually a core part of being a developer—a core tool in the toolbox, a core part of your trade is learning how to emit good telemetry about what your system is doing. OpenTelemetry provides a standards-based way to do this that also can be natively integrated and available through your service framework, your RPC library, or whatever else. 
 
-**VJ:** I agree, Iris. One of the features we were shocked didn’t exist was dynamic reloading of configurations. This was crucial for us while scraping Prometheus endpoints in Kubernetes. If that existed in the collector, it would simplify a lot for us.
+**Austin:** To me, we're at the beginning of the beginning almost of seeing how that actually impacts the industry. 
 
-**Austin:** I think everyone will be excited about the announcements we have coming up at KubeCon this November, which will address many of these concerns.
+**Iris:** I just want to add a little bit to what Austin was saying. It's absolutely true. The other good thing about OpenTelemetry is that you don't have to break your whole system to implement it as well. That is one of the great things because it's compatible with almost all technologies that we currently have, especially the open source ones. You don't have to cause downtime or have your developers blind for hours and days; you can just put it there flawlessly. 
 
-### Future Focus of Observability Practices
+**Austin:** I think there's really two fundamental shifts. One is we started adopting architectures that became much harder to diagnose with the stuff that you taught yourself when you taught yourself to code. Adding in some logging lines and such is not going to work on a large microservice architecture. 
 
-**Moderator:** How has the focus of your observability practice changed, or not changed, after implementing OpenTelemetry? What are you looking forward to next, either from the project or as a result of your observability efforts?
+**Austin:** The other change—and this has been a while, but it's still there—is that when you have conversations about funding, when you have conversations with VCs, they're going to ask you about your observability setup. Those two changes combined have really changed where the conversation is with observability, where it went from an internal discussion about maybe developer velocity and rollback times to, “Yeah, we have to have this, and it has to be applicable across this stack.” 
 
-**David:** We’re seeing enterprises realize that the amount of control they have with OpenTelemetry compensates for some of the grit in meeting their needs. New developers are also realizing that implementing observability is part of being a competent developer.
+**David:** I think there is a fair bit of standardization that gets promoted on the consumer side of things as well, given that there is a standard in how you instrument tech metrics, for example, gauges, counters, exponential histograms, whatever. Earlier, it used to be that if you picked one time series database, you would get certain capabilities defined in a certain way. If you have to switch, then the likelihood of that capability existing may not be always possible. 
 
-**Iris:** I would like to see improvements in logging and overall stability in the OpenTelemetry operator. 
+**David:** But now since there is a standardization, eventually there will be a good amount of standardization on what technology the providers—either open source projects or vendors—provide. The net benefits are definitely there across the board, not just on the instrumentation side.
 
-**VJ:** I agree. More reference implementations for tracing and metrics would be beneficial. Case studies on how to use OpenTelemetry effectively would also help.
+[00:19:30] **Austin:** You bring up a really interesting point, right? Historically, everything about telemetry has really been a pretty binding abstraction to the data store. If you were using StatsD, metrics worked in the way they did because of the way that StatsD, you know, stored and let you query that. Prometheus metrics work the way they do because of how you store and query them. Logging databases tend to, you know, if you're using Elasticsearch or something, the format mattered, and that influenced how the client libraries were designed and so on and so forth. 
 
-**Austin:** I think OpenTelemetry is foundational for the future of observability. We’re just beginning to see its impact, and there’s still plenty of room for growth.
+**Austin:** With OpenTelemetry, we kind of break that, right? OpenTelemetry tells you, “Hey, this is what a histogram looks like; this is what a structured event of any kind looks like.” I think it's interesting that you also see this rise in popularity of column stores for storing observability data—like metrics, logs, traces, sessions, whatever. You throw a rock, and you'll hit a new column store-based or heck, new ClickHouse-based telemetry thing. 
 
-**Moderator:** Thank you all for your insights today. This has been a fruitful discussion, and I look forward to seeing how OpenTelemetry evolves in the future. If anyone has to go, feel free to jump off. 
+**Austin:** It's great, and I think OpenTelemetry has actually been a huge factor in this because it used to be if you wanted to go and build an observability tool or build some sort of analysis tool, you would have to come up with all this stuff or no one would use it. You'd have to come up with your API, you'd have to come up with your SDKs, you'd have to build integrations for 40 billion things, and OpenTelemetry means, actually, that's all a commodity now. You just get that for free with OpenTelemetry, and you can build really interesting workflows on top of that data. 
 
-**Everyone:** Thank you!
+**Austin:** I think that's very friendly for developers, right? Going forward, we haven't even really started to see how do these tools become integral in development workflows, right? When do we get to IDE-level integration and all that? 
+
+**Iris:** I know it's very easy to feel like OpenTelemetry is done or like that it's kind of hitting this plateau, but I think we're really, really still in the early days with what people can actually do with it.
+
+**David:** I have to agree on this being early days for OpenTelemetry. A little bit about my background is I was in observability before I hopped over to CL for a bunch of years, and now I'm back in the observability space. The conversations that I'm having with people today remind me a lot about conversations about Git, like 15 years ago or something like that, when it was sort of a perennial joke that everyone's like, “Oh yeah, Git looks really interesting, we're thinking about moving to Git, but we're still on, you know, insert system here.” 
+
+**David:** It feels almost every conversation I have—and again we're in the pipeline space—it's about routing and moving and transforming all the data to the right spot. But everything that comes out of us is OpenTelemetry. If they just need to bolt on something, they want to do that. But the first thing they talk to us about is something with some sort of data not being in the right place, and the second thing is, “Oh, also we're starting to look at OpenTelemetry. Is that good?” Being the second question, I think is a good sign of climbing the curve. 
+
+**Moderator:** Speaking of that, how did you first hear about the projects? I think it’s kind of clear like some of the things that have drawn you all to it. Something I think, too, that people might be interested in is how did you get leadership buy-in?
+
+**Iris:** I can say something about this because for me, it’s easy. When I started working with observability, I became obsessed with tracing. I’m still fascinated by tracing, so I was like, “Oh, tracing is so amazing,” and I started just searching online about it. Then I came across OpenTelemetry. I started playing with it for a long time and not actually implementing anything. 
+
+[00:24:00] **Iris:** When I joined Farfetch, we were like, “Okay, we need something new, something better,” and we thought about OpenTelemetry. It was very surprising because there was immediate support. I like to say and brag that we have a very good observability culture, but maybe everyone had heard about it. We just made a small presentation, and our leadership was on board. Of course, it has a lot of benefits, and we had to present what we were lacking, the issues that we were currently facing, and how MRI can help us with. It was immediate support, so every time I tell the story, some people don't believe me, but that's exactly how it happened. It was very interesting, very fast support.
+
+**VJ:** I can maybe go next. At least in our case, I first came to know about it as part of the OpenTelemetry will basically be the standard, and we would eventually retire OpenTracing and OpenCensus. I think we were passively trying out OpenTracing around that time, and this announcement came, and it was like, “Hey, interesting, this is something that we need to watch out for.” 
+
+**VJ:** We were doing passive experiments with the OpenTelemetry SDK and the Collector for a few months, and once it hit stability, that’s when we made the informed call that, “Okay, we’ll start tracing with OpenTelemetry as an offering inside the company.” So now we had the OpenTelemetry SDK for traces and the OpenTelemetry Collector for accepting all the spans, but on the other hand, we had Metricbeat and Filebeat for collecting logs, events, and metrics. 
+
+**VJ:** At that point, we were at a crossroads of if we should support multiple agents or just standardize across OpenTelemetry Collector for everything. I wrote a very big memo internally on what it would take to migrate out of Beats for metrics, logs, and events, presented it to leadership, and I think we felt that being on a vendor-neutral industry standard would be the better thing for us in the long run. It’s best to do it now than later on, so that’s how we did the migration. 
+
+**VJ:** The metric migration was a massive one because we, at that time, if I'm not wrong, we were already at 32 million samples per second across more than 100 Kubernetes clusters—million-plus Prometheus endpoints and whatnot. It was a very, very involved migration that we did, but the benefits are definitely there now.
+
+**Austin:** Were there any other challenges when you're coming from a culture that has a strong kind of build vibe? What I'm trying to get is, do you guys run your own Collector or are you taking something? How do you manage that in terms of the particular flavor that you decided to land on?
+
+**VJ:** We do run our own Collector internally, but I think the number of custom processors that we run is very less. It's mostly that we don't need all the exporters for all the various vendors that are packaged in, so we create only the ones that we absolutely need. For now, we export using either OpenTelemetry Protocol or Prometheus Remote Write, which are pretty much open standards right now, so it's about being lean.
+
+**Iris:** Are you all using the Collector Builder to make your images?
+
+**VJ:** Right now, no. We just craft our own Go mod and then just do it ourselves.
+
+**Austin:** Y’all thinking about using the Collector Builder?
+
+**VJ:** I think we can. We haven't really explored it, but yeah, we should.
+
+[00:45:00] **Austin:** I'm just trying to get more people aware of the Collector Builder, because I think it's really cool. The Collector Builder, or OCB, is a tool that we provide from the Collector repo, and what you can do is you can give it a manifest of Go modules, and it will create a custom image or a custom build of the OpenTelemetry Collector for you. So you, like eBay, can get something that has just the receivers, processors, exporters, connectors, and extensions that you want. 
+
+[00:29:00] **Austin:** It’s also a really great way to extend the Collector because in this way, instead of having to fork contrib or fork whichever raw base you want and then bring in the code, you can simply have a Go module published in wherever GitHub and pull that in through the Collector Builder and bring in your custom extensions and things that way. 
+
+**Austin:** It’s a really great tool. It’s also very friendly for your security teams because it gives them a manifest that they can kind of look at and say, “Hey, this is exactly what's in there,” and that way I know if you're at a larger security review can be extremely taxing, and if you're trying to use the contrib image, there's an awful lot of dependencies. 
+
+**Austin:** Something to kind of cut that down to size is very friendly to your friends in security.
+
+**Iris:** There's a new user now for the Builder. I actually had missed this, so there’s actually some—there’s check out the website, OpenTelemetry.io does have a little tutorial on building with the Collector. 
+
+**Iris:** I actually recently used it for a personal project where I was making some custom processors to talk to an API and do some data, so it was really, really fun to use and makes it really easy to use the Collector, maybe the way it's sort of intended. 
+
+**VJ:** As long as we—oh, go on.
+
+**Austin:** I was just going to point out that VJ and Seth very helpfully shared a couple of links about the custom Collector Builder.
+
+**VJ:** Perfect.
+
+**Austin:** The other, sorry, go ahead.
+
+**Iris:** Go on first; you were talking.
+
+**VJ:** Yeah, I'm just going to mention we’ve found it very useful. We have forked just an exporter and are working on trying to get a whole request approved for it. But in the meantime, we continue to need to persist those features and newer versions of the Collector, so this helps us to kind of drag our single exporter along the way and keep rebuilding it with new releases, so it's been really helpful.
+
+**Austin:** That’s another really great use case. If you have custom stuff or modifications, I know that PRs can sit for a bit sometimes.
+
+**Moderator:** I think it’s going to require several moving parts. 
+
+**Austin:** Moving the conversation along since we’re coming up on time almost, what was most surprising as your observability journey got underway? What were the trickiest stakeholders in your case? 
+
+[00:33:56] **David:** I think I should stop saying that, even though I'm probably going to keep saying that, but there's particularly in this space, the technical problems mostly are straightforward. It's all the people problems. To the whole panel, what were some of the surprising things that you found either that were sticky and a little bit tricky and had to navigate or that were surprisingly smooth? Both of those are valid surprises because we've gone over some of the key selling points here that I think a lot of people would recognize as being useful with going in an OpenTelemetry direction, but what's the part we didn't say that was either good or that was almost good?
+
+**VJ:** I'm currently running a poll on LinkedIn where I ask people if they think OpenTelemetry is easy to use. I won't disclose the results of that poll quite yet. I think there's a—I’d be interested to hear from people that have gone through implementation journeys. 
+
+**VJ:** I can say we're in a pilot for integration with applications, and the .NET library is not quite having the log exporter stable until just very recently. That’s been a large deterrent for a very long time. About two years ago, I started trying to convince the application teams to all integrate with OpenTelemetry, and there’s been kind of an appetite for some of the more cutting-edge teams in our company to try out something that still doesn’t have a stable label. 
+
+**VJ:** That was a big deterrent, but now, with I think it’s the 16 release now that that’s stable on the .NET instrumentation library, there’s a better story there, and there's more acceptance now. Outside of that, the Collector itself, just getting lots of new features for free has been amazing. So that’s part of the reason we know about the Builder, just because we have these custom features that we really want, and we keep seeing better, newer versions of the Collector come out. It's like, “Oh wow, we better upgrade because we don't want to sit on this old stuff,” and all these other great people have been contributing a lot of good enhancements, so that's been an easy sell to say here's why part of the why of helping teams move to this instrumentation challenge that will take some time for them to work through.
+
+**Austin:** Actually, I have a—can we play a fun game? Can I get everyone to open up your Zoom chat and tell me what language you use OpenTelemetry in, and do you think it's good? Do you think the SDK is good in that language? This data may be used by the project.
+
+**David:** You don't know is that the part of this request that's hard for me is that the Zoom client on my machine is very temperamental in terms of opening the chat window, so that's the hard part.
+
+**Austin:** Okay, well, I can see the chat node.
+
+**David:** Yes, it’s good. I think JS has gotten a lot better. I think most of the problems in JS right now have a lot more to do with like ESM and CJS and various JavaScript ecosystem things rather than any problem with the language SDK.
+
+**Austin:** Go needs some love. I feel like Go was written by several dear friends of mine who know Go in and out left right and indifferent, and it's great, and it's actually pretty idiomatic Go, I think, but it's kind of hard to use because it's idiomatic Go, personal opinion.
+
+**Iris:** Exemplars not getting implemented in what? Which language? All of them? Some of them? Most of them?
+
+**Austin:** I think the only one where it’s actually implemented is Java, and then from what I've asked around, not really anywhere else. I've seen a bunch of open PRs around that, but no actual implementations. I think we need to get better about closing PRs.
+
+**Iris:** .NET, Python, Java—pretty good.
+
+**Austin:** Yeah, I’d say Java—Kotlin, multiplatform, nonexistent.
+
+**VJ:** Have you looked at the—Derek, there's—I don't know if it actually is in the repos yet, but I know Splunk donated their Android client SDK thing that I think targets Kotlin. I know they want—it either has been donated or is being donated. 
+
+**David:** I’ve been watching that donation process.
+
+**Austin:** Okay, yeah. I've been looking for an SDK that could be used by Kotlin multiplatform to go both on iOS and Android clients. I know some people are using the Java SDK, you know, purely for Android, but we have to just implement that separately.
+
+**VJ:** That is interesting. Will you be at KubeCon, by any chance?
+
+**Austin:** I will.
+
+**VJ:** Look me up when you're there. We’ll talk about it.
+
+**Austin:** Cool. 
+
+**VJ:** Go—terrible. 
+
+**Austin:** Yeah, Go's right now a little bit of a hobby horse for me. I think it's high on my list of languages that feels like it needs some developer experience love.
+
+**Iris:** I'm sorry for taking over your panel, Reese.
+
+**Moderator:** Good. I kind of like it. It's always—I feel like it's hard to get a big group of people online to participate.
+
+**Austin:** So down API.
+
+[00:40:06] **VJ:** Kubernetes is also an interesting one. When I went to Kubernetes years ago, if you're not aware, Kubernetes has started to feature gate an alpha and beta native OpenTelemetry traces from things like CUE and a few other components, and the API server. So there is more support for OpenTelemetry coming in. 
+
+**VJ:** The biggest thing is Kubernetes metrics are all super Prometheus out, and that is probably not going to change anytime soon. But there is some interesting stuff with Prometheus talking about should Prometheus just use OpenTelemetry libraries and stuff like that, so we might see some changes there. 
+
+**David:** Hopefully that can lead to a more unified telemetry story for Kubernetes.
+
+**Austin:** Your functions as a service—I'm sure the majority of people are using Lambda, and that seems to be the main focus of the community at this point.
+
+**David:** I think we really just need people to—I actually—I mean, I will also plead ignorance. I don't know if they have an equivalent for Lambda layers or extension layers. Do you know?
+
+**Austin:** I've looked across the project, and while at the top of the OpenTelemetry site, if you look at the documentation, it says, for example, for Azure Functions, AWS Lambda, there's really not much integration, if any, with Azure itself.
+
+**David:** So my experience on the pipeline side with Azure Functions, I believe is the official name—spending a lot on that naming convention—is there's a dual writer that you can enable, but then you essentially have to set up something that collects all of that information. 
+
+**David:** We recommend throwing up a small Cassandra cluster depending on how much traffic you want to throw at it. But you could be running anything in there, and it's basically a pretty good dual writing mechanism, whereas the Lambda layer stuff tends to have startup and cooldown times that I think—I think actually Azure Functions is probably a more scalable approach, particularly if you get really—
+
+**Austin:** Is it function to App Insights, and then App Insights split out into OpenTelemetry?
+
+**David:** It doesn't bounce off of App Insights; it's from the function itself, I believe.
+
+**Austin:** Yeah, a writer SDK that Microsoft provides to write out to wherever. Part of the challenge was like, "Well, is there a way from Azure Monitor to monitor the actual use of it rather than incurring extra cycles within the function itself?" 
+
+**Moderator:** Sorry, very interesting discussion. Feel free to ping me on the CNCF Slack if you'd like to continue it, but I think it's going to require several moving parts.
+
+**Austin:** Thank you for that. We can definitely host this in another conversation around this another time. 
+
+**Moderator:** To bring it back to this panel, I would like to know how has the focus of your observability practice changed or not changed after implementing OpenTelemetry, and what are you looking forward to next, either from the project or as a result of your observability efforts? 
+
+**David:** I think there are two things we're seeing. One, of course, is we're seeing enterprises really see that the amount of control they have with running OpenTelemetry sort of compensates for some of the grit that exists in the gearbox as they try to make it meet their needs. And then on the other side, we're seeing new developers realize that part of being a competent new developer—and I think the Git comparison is very apt—is, you know, like, "Yeah, of course you know source control if you're going to write code of any kind for production," right? 
+
+**David:** The same thing's happening with observability where previously, maybe, "Hey, you were just entering a few log lines, and then you were ready to go." It's like, "No, we need to know how to actually implement one of these tools from the start and implement tracing from the start." So, sort of from two directions, I think OpenTelemetry is getting a lot of momentum in the next year.
+
+**Austin:** I am looking forward to the day when you have to have a reason to be off OpenTelemetry instead of to be on OpenTelemetry, and to see how that affects the vendor landscape. I’m here on behalf of a vendor, but because we’re in pipelines, if I could get rid of all of our integrations that weren't OpenTelemetry, it would just be so much easier instead of having to do something really bespoke for everything that's out there. 
+
+**Austin:** There was a great article not that long ago that you wrote, right, Noika? Isn't that right? About how OpenTelemetry, at the moment, is being treated in various tools differently? 
+
+**Noika:** We need to talk about that.
+
+**Austin:** I've got some great stuff coming out next week that is not quite so mean to my good friends at New Relic, but I think we all need a little bit of a kick in the pants sometimes. 
+
+**VJ:** One of the really fundamental things, like when I was working at New Relic on the integration with X-Ray data, right, is that it's like, "Hey, yes, we can get—we can shove these things together, and we can make it kind of work." But until we all adopt one open standard, this is just too complex a data type to just really fluidly chart in one view and see from one view and do things like what is the average amount of time consumed by this single function, by the single DB call, right? That is going to be very tough to do until you just say, "Look, we all have to be on these open standards." 
+
+**David:** Some really weird LLM training task, yes. Okay, it's going to use some super strange system for—for this doesn't really look like tracing or time spans at all, cool. But everything else, we need to adopt an open standard to really be able to have OpenTelemetry data be a first-class citizen, so I'm looking forward to OpenTelemetry winning. 
+
+**Austin:** Same. I think it's already won in many ways, right? Just not to toot my own horn or to toot the project's horn, but in, you know, everyone likes to refer to the XKCD, like there's 14 competing standards. I'm going to make the unifying one now; there are 15 competing standards. 
+
+**Austin:** I think, whatever, you know, I’m under no delusion that this is the apex of innovation in the space. There will be future developments and other things, but I think in terms of consolidating the last two, three decades' worth of thinking about application and infrastructure telemetry data and how it can be used together, I think OpenTelemetry is going to be foundational for a generation of observability practitioners, for engineers, right? There will be something in the future, but I think in terms of where we are now, this is kind of the thing. 
+
+**Austin:** Whatever comes next is going to be influenced by things that we don't even see. I've been doing a lot of research on AI and large language models and stuff, and if you look at what you're actually doing when you make a request to a large language model, you're making a trace. It's literally a trace. It is a Dapper-style trace where you have requests and responses. Even the most advanced thing we can think about in terms of software architectures right now, and whatever looks like stuff that we have a way to model in OpenTelemetry today. 
+
+**David:** So until that changes, I feel like OpenTelemetry is, you know, long term going to be what—at least until I am retired, so give it 30 years, but like it's going to be the thing.
+
+**Austin:** Justin in the chat asks any thought on Micrometer’s approach of blending the signals into a single observation API from which traces, logs, and metrics are all derived? 
+
+**David:** I think that's fine. I think it's—I do think that the thing you actually need is we need as a project for people to commit to OTL as being an output format, and we need people to respect, you know, hey, this is trace data, and it should be interpreted differently than metric data or whatever. Even if you are going to like splay those out into a generic sort of event data structure, there are use cases for keeping those things separate in terms of observability pipelining. 
+
+**David:** Yeah, it's—there's maybe not a cut-and-dry answer to this. 
+
+**Moderator:** I would like to point out that it is the top of the hour, so if you have to go, obviously feel free to jump. 
+
+**Austin:** See you all. Have a good day, everyone.
+
+**David:** Thank you all so much. 
+
+**Iris:** Bye-bye!
 
 ## Raw YouTube Transcript
 

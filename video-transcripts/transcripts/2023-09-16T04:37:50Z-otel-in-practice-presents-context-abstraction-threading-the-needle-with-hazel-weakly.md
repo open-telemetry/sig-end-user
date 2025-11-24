@@ -10,71 +10,272 @@ URL: https://www.youtube.com/watch?v=1a7GyarlGAQ
 
 ## Summary
 
-In this video, the speaker, Hazel, discusses the complexities of observability in distributed systems, focusing on concepts such as context abstraction and the challenges associated with implementing observability in real-world applications. Hazel provides a primer on observability, exploring its definitions from consumer theory and cognitive systems engineering, and emphasizes the importance of asking meaningful questions to derive useful insights from systems. The discussion covers the role of context in open telemetry, the significance of tracing in understanding system interactions, and the difficulties encountered when trying to instrument code without intrusive methods. Key points include the challenges of managing context propagation, the lifecycle of spans in tracing, and the implications of abstraction on observability practices. The session also includes audience engagement, with questions and reflections on the current state and future of observability practices, highlighting the need for effective collaboration among engineers to enhance system understanding and problem-solving.
+In this YouTube video, Hazel discusses the complexities of observability and distributed systems, focusing on concepts like context, abstraction, and the challenges of building observability frameworks. The presentation begins with a primer on observability, exploring its definitions and the importance of asking meaningful questions to derive useful answers about system performance and behavior. Hazel highlights the role of context in linking disparate components of a system and the difficulties faced when attempting to instrument code for observability without intrusive methods. The talk also touches on issues related to graph structures in tracing, life cycle problems, and the limitations of current frameworks like OpenTelemetry. The session concludes with a Q&A, where Hazel addresses audience inquiries related to post-processing of trace data and the evolution of observability practices. The video emphasizes collaboration among engineers to enhance system understanding and improve observability.
 
 ## Chapters
 
-00:00:00 Introductions  
-00:02:30 Overview of the topic: Context Abstraction and Observability  
-00:04:00 Definition of Observability from Consumer Theory  
-00:06:15 Cognitive Systems Engineering definition of Observability  
-00:08:45 Personal definition of Observability  
-00:12:00 The importance of asking meaningful questions in observability  
-00:17:00 Introduction to Context Propagation in OpenTelemetry  
-00:22:30 Explanation of different types of context: In-Process and Cross-Process  
-00:30:00 Discussion on the Life Cycle Problem in tracing  
-00:36:00 Graph Rewriting Problem in instrumentation  
-00:45:00 Conclusion and final thoughts on Observability challenges  
+00:00:00 Welcome and intro
+00:01:40 Definitions of observability
+00:04:20 Personal definition of observability
+00:06:50 Context in observability
+00:09:28 Types of context in OpenTelemetry
+00:12:30 In-process context explanation
+00:15:00 Cross-cutting concerns in instrumentation
+00:19:00 Life cycle problem in tracing
+00:24:01 Graph rewriting problem
+00:35:56 Conclusion and Q&A
 
-# Transcript Cleanup
+**Speaker:** Foreign
 
-**Introduction**
-Hello everyone! I’m having a lot of fun hoping to run innovation and developer experience in my current company. I also serve on the board of directors of the hospital foundation, and I have a lot of opinions online. You can find me pretty much everywhere, and I’m really excited to be here today talking about context abstraction and typing the needle.
+I am having a lot of fun hoping to run Innovation and developer experience in my current company. I also serve on the board of directors of the hospital foundation and I have a lot of opinions online. You can find me pretty much everywhere, and I am really excited to be here today talking about contact abstraction and typing the needle. 
 
-**Observability Primer**
-I’m going to cover a primer on observability and discuss how I think about it, what the context is, and the historical reasons we need distribution. Then, we’ll tie that into observability, along with some components of social filtration, mainly context. We’ll also explore abstraction and some difficulties you may encounter when trying to build libraries or platform teams, rather than just manually instrumenting all your code and writing everything from scratch.
+I'm gonna go over kind of like a primer of observability and talk to you a little bit about how I think about it and sort of what that context is, and the historical why do we need distribution and how does that tie into observability. Then we're going to talk about some components of the social filtration, mainly context, and then we're going to talk about abstraction and one of the difficulties that you can run into when you're trying to actually in real life build down libraries or build on platform team or build out something other than just manually instrumenting all of your code and writing everything from scratch.
 
-When you start with observability, you have your system, and you want to figure out what’s going on. Over time, people have encountered this problem, and different groups have come up with various definitions of observability.
+Don't you started with observability? You have essentially your system, you have everything, and you want to figure out what's going on. Over time, people have run into this problem, and different groups of people have come up with different definitions for observability. 
 
-**Definitions of Observability**
-One definition you might hear from Journey Majors and others in the open telemetry and tracing backgrounds is from consumer theory. It defines observability as the ability to measure the internal state of a system based on its external outputs. This is a great definition, but it doesn’t tell the whole story.
+[00:01:40] One definition that you've heard journey majors and a lot of other people open telemetry and tracing backgrounds and distribution system background to talk about is the one from consumer theory, and that is the ability to measure the internal state of a system based on its external objects. This is a definition that you see repeated in a lot of places. It's a great definition, I like it a lot, but it isn't necessarily the entire story. 
 
-Another definition comes from cognitive systems engineering, which defines it as feedback that provides insight into the process and the work required to derive meaning from available data. This definition highlights that observability is a back-and-forth dialogue. It’s not just about observing everything; it’s about the process of getting there and understanding what it means.
+One other definition comes from a different theory of practice which is cognitive systems engineering, and so for them their definition is feedback that provides insight into process and the work required to start to mean from available data. We like this definition for a lot of reasons, mainly that it does a really good job at showing that observability is really this back and forth dialogue. You need to not just have, you know, oh, you can observe everything. Well, that's cool once everything is built out, but like how do you get there? What does it mean? And the whole process of people are involved too is something that this definition kind of highlights, and I love any technical definition that includes people. It's my favorite.
 
-My personal definition, which blends elements from both definitions, is that observability is the process through which one develops the ability to ask meaningful questions and receive useful answers. This means it’s an evolving process; what observability means to you can change over time. 
+Speaking of which, my personal definition is I'm not biased, but I like this one the most. I took the other two definitions from cognitive systems and from contour theory. They're kind of blending them together. For me, my definition of observability is the process through which one develops the ability to ask meaningful questions and get useful answers. 
 
-**Meaningful Questions**
-A meaningful question is one that maximizes how much you learn about the system you’re participating in. For example, if a CEO wants to know their market position compared to where they want to be, an observable system should enable them to answer that. For engineers, observability questions often relate to system performance and code behavior, which we’ll delve into more today.
+The way I think about that is it's a process, which means it has to be evolved and you start from somewhere, but you're not going to stay there. You're going to continually figure out what observability means to you, and it may mean something different today than it does tomorrow, than it will not show you than it did last week. Additionally, meaningful questions is really the thing that observability to me hinges around. 
 
-**Early Observability Practices**
-In the early days of observability, when you had a web server but no data, you might have resorted to stopping production, launching a debugger, and stepping through the entire system. This method could lead to meaningful questions and useful answers, but it’s not the most efficient approach. 
+Can you ask a meaningful question of your system, which may or may not involve computers, may or may not around people? It may involve like a whole bunch of different things, and are those questions meaningful to business, meaningful to you, meaningful to what you need out of that learning? And in asking those questions, can you get a useful answer? 
 
-As we moved forward, the desire to observe without interruption became essential. The introduction of logging led to a more structured approach, but it still required careful consideration to connect the front end and back end of systems for a complete understanding.
+[00:04:20] I like this definition for me because it includes every aspect of observability in my opinion. If a CEO wants to say, "Hey, I have this meaningful question, which is I want to know where we are in the market compared to where we want to be in the market and how feasible am I going to get there?" Can they answer that to build like what we need in order to approach our problems for the next five years? I only said in Los Angeles, so I'm keeping them happy and healthy. That's a meaningful question. An observable system will let you answer that.
 
-**Context in OpenTelemetry**
-Context in OpenTelemetry is crucial for managing cross-cutting concerns. It acts as a propagation mechanism, carrying execution context values across API boundaries and between logically associated execution units. Context allows us to unify disparate pieces of information and understand the system as a whole.
+For engineers, a lot of that observability questions, it's going to come down to things about the system, things about code, and we're going to dig a lot more into that today than the other questions. We should all be working together, and we should all be able to collaborate in order to actually solve all these problems into these answers. 
 
-For each span, there is a variety of context elements, including span IDs, trace IDs, and trace states, which help identify relationships between spans and facilitate tracing across services. However, there are challenges in managing these contexts, especially when dealing with baggage and how it propagates through systems.
+For me, a meaningful question is one that maximizes how much you learn about the system that you're participating in. If you have that system and you want to know more about it, what does that mean? How do you get there? What are you doing right? 
 
-**Process of Context Management**
-When dealing with context, you have in-process context (the normal context created in your code) and cross-process context (how that context is serialized and transmitted over the network). It’s essential to ensure that the context is correctly integrated at various points in your system.
+For programming, we have all my camera disappeared. Brilliant. I love silent problems. Alright, so I'm going to figure out what happened there super briefly and then fix that, and if I can't fix it, then I'll just tell everyone what's on the slide. Oh well. Alright, let me share my screen again and I'll just tell you what was on the slide. Sorry about that. I debugged everything and we're learning information. Awesome. 
 
-When you receive context from another service, you typically deserialize it and make it your current context. However, if you don’t own your systems end-to-end, it can be challenging to ensure that context propagation remains consistent.
+[00:06:50] So imagine on the slide that you have a typical system in which you have someone and they're running a web server, and they are asking themselves, "What is this web server doing?" and should they look at the ones and the lots? And once you have no data whatsoever, absolutely nothing, nothing's there, and they're like, "Okay, now what? What do I do?" 
 
-**Challenges of Manual Instrumentation**
-The biggest issue with manual instrumentation is that it assumes you’re writing all your code and instrumentation in an intrusive manner. This can lead to problems, especially when you have to manage multiple spans and their relationships. 
+Back in the good old days, well, what you probably would have done was you would have just killed production, taken the whole thing down, launched the debugger, and just stepped through the entire system step by step, solving everything. You can ask a lot of meaningful questions that way, and it can get a lot of useful answers. Everything's solved, and all you had to do is completely change production in order to do it, which is, you know, maybe not the best approach, but it is, you know, it's in vogue; that's what we did for a long time, and in many ways it still works. 
 
-For instance, once a span is created, you can’t add information to it after it has ended. This limitation can lead to confusion and silent failures in your system. Moreover, the life cycle of spans complicates the ability to trace and sample effectively.
+But one of you have to constraint of, "I want to observe without interruption." I want to, you know, keep everything running and ask me to focus into the system. Now I'm considering the system running as part of that question. 
 
-**The Graph Rewriting Problem**
-The graph rewriting problem arises when you want to manipulate spans in a way that isn’t straightforward. You may want to collapse spans or add attributes without creating additional spans unnecessarily. However, existing instrumentation frameworks often don’t provide a clear way to do this.
+Let me try, you know, adding some French statements, which again, we're seeing a little bit of lack of observability here in the slides. That's fine. So if we have a French statement, and we've added them everywhere, now we have a real login. This is awesome. So you can imagine us taking the web server and getting those alarms and looking through, and you can see, "Oh hey, this one usually locked in this one." 
 
-**Conclusion**
-In conclusion, observability is about developing the ability to ask meaningful questions and derive useful answers from the system you’re working with. The more you can observe, the more correlations you can infer. However, be cautious about the additional complexity and noise that can come from adding more data.
+I use a middle transaction; they're able to do something, and then they locked out. That's awesome. We have everything there. We have it done, and we're ready to go, right? Is everything there? Well, you have the web server and you have the back end, and unless you have very carefully, you know, done everything with your logging, you'll notice that the front end and the back end, nothing's tied together. 
 
-Context plays a vital role in turning disparate data points into a unified trace. Understanding how to effectively manage context and its implications can significantly enhance your observability practices.
+The pen might say, "Oh, you should check down," and the back end might say, "This database middle transaction, this little visual transaction, this individual transaction," and you have nothing to tie those two disparate pieces of information together. You're like, "Okay, I still can't really understand anything about the system. I know what each individual piece is doing, but I have nothing to tie it all together." 
 
-Thank you all for your attention! If anyone has questions or thoughts, I’m here to discuss further.
+[00:09:28] Context really ties the system together. Context, in OpenTelemetry, is for cross-cutting concerns. The documentation for OpenTelemetry says that context is a propagation mechanism which carries execution script values across API boundaries and between logically associated execution units. That is awesome. 
+
+Let's break that down just a tiny bit. So context, let's skip on the middle bit, carries values. Context is the blue, the terms of metadata into unified trees. What does that mean for you? What does that mean when you're trying to understand it and instrument it? 
+
+So let's break down and decent context. They're going to have for each span, they're going to have a whole bunch of context in there. You'll have like this span ID, which identifies that, the trace ID, some trace files, and a trace state. They're going to have essentially everything that identifies to spam, of which there are many spans in one trace and many traces in one system. 
+
+Scan links or another type of context, and they say, "Hey, this advantage is related to market." So you can think of traces as a graph, spans are nodes, and then links to the edges. If you have a graph that's a tree and you're like sort of building it down, and all of a sudden you need to take this one span over here and this one span over here and say, "But they're kind of linked together," you build that link, and that's an edge in that graph. 
+
+Links can be really confusing. They can be kind of weird. They're not always integrated very well in the whole setup, but they are needed for especially in some types and patterns, and they are what turn OpenTelemetry traces from a tree into a graph. They are the most expensive thing you have in there and also the hardest thing to work with at the same time. 
+
+Currently, you can only add them at span creation time, but people want to be able to add them anytime, and that may happen in the future. You'll be able to have a non-directed graph and a little drag, which will be fascinating. 
+
+Another type of context is baggage. Packets want to keep valued parents downstream. It is widely regarded as a questionable thing to use. I know many people who might ban it in their code base. It's a bit of a on, but also very, very powerful and flexible. It is one of the ways to send information downstream, but you still can't use it to send information upstream, and I'll get more into what I mean by that later. 
+
+[00:12:30] The package is there; you may eventually need it. I kind of hope you don't, but it's there. And when you have all these different types of context and you have these different services and you have the different processes, how do you take this context and actually use it to glue together everything and make it usable? 
+
+You have the in-process context, and then you have the cross-process, and how to complicate things from one thing to another. Then you have fun process, which is in everything, and actually taking it in the next service and going down that way. So I'm going to go over all of them in order. 
+
+So there's some code here. Sorry about that. I've never even probably known as context in process. It's the normal context; it's very typical, very standard, and this is what you've seen in the documentation. This is the in-process context. You create an octaves fan, and then in that disadvantage, and work, you create another active span, and then that context and links the two actually happens pretty much automatically, and you never really need to think about it. 
+
+The library and the SDK will handle all of that for you. Sometimes, however, you do need to add it explicitly. This is an invisible example showing you that you need to do it, especially when it comes to making links and doing things that way. 
+
+I'm going to one second. Oh, amazing. I'm going to watch my screen shoot, stop sharing, and then share something different. It turns out I accidentally made my syntax highlight and only work in Firefox. That's what that was. Cool, yay. 
+
+There you go. You can see here that we have the current span, we have these span contents, and we get that context and pull it out manually. So then we can create a span with a link. We need to do that in order to propagate things manually for this type of context information. But typically, you don't really need to do that, and things through it just naturally work with the links you need to do normally. 
+
+[00:15:00] That can be a little tricky. Cross-process, there's two steps involved. You serialize the context. Foreign, it can actually secretly, don't tell anyone I told you this, but there's no reason context needs to be an adder. You can do anything with any transform mechanism that you want to. It's just really serializing the context needs to happen somewhere, and then that needs to be attached to the payload of your call. 
+
+I know some people who have actually serialized the context and embedded it into an RPC account as a way of actually instrumenting and tracing embedded systems. Some people have done that with their own bootloaders, which is actually really cool. It doesn't need to be a matter; a little wild if you want to use the library should not write everything yourself down. All the OpenTelemetry stuff will stick it in each TV header for you. 
+
+So what that looks like is you have from the sending service, the sending service is going to inject what's the publication object, the current context into some output, and so that will do the serialization process. Then you'll have a transparent and a trace state, and then output, and you can use that over the internet. The transparent is actually the only thing that you need. The twisted has a bunch of other stuff, but you don't actually kneel in and you may not want it. 
+
+So the transparent is the trace ID and everything required to actually link the span from the net system over the trace state has on the other fun goodies that you may want but may not want. Some people I know have been using twisted and can't touch specification because of issues it has. 
+
+Then I'll get to later the context one process. This is the second process. We've yielded everything up on the internet, and now I'm ready to receive that and actually integrate it. You'll have, you get the fabricator, you ingest everything, and you deserialize the context and you extract it, and then you did that. It's not a context, and you make it your current context. You don't need to make it the current context, but typically that's what people do. 
+
+Sometimes, people use the trace state in order to determine whether or not they should make the contents the current context, and you can maybe want to do that sometimes if you don't always own your systems end to end. Someone may be putting something in the middle somewhere, and that can be really tricky. 
+
+I know that some OpenTelemetry vendors, for example, have run into this problem of you need to really make sure that you're contacted your contacts before actually making it your current context. So that's a lot of fun. Once you have that context, then you've started it, you set your span and just done working from there. 
+
+So that is moving the context, wrapping everything together, and you have all of that, and that is great, but that is all really about manual instrumentation. That assumes that at every single point in every service you are writing all of your code, you're writing all of your instrumentation, you're writing everything from scratch, and you're writing it right there in line with all the code in an intrusive manner. 
+
+If you don't want that intrusive style and you want to be able to build something for other people to use, this is where you run into a lot of problems, and we'll get into this now. This is, in my opinion, one of the weakest aspects of fishing in general, and it's a sign of the image journey in the ecosystem. I'm gonna have a lot of hope that can be improved, and I'm looking forward to seeing what happens there. 
+
+[00:19:00] Do you remember earlier when I said that context is about to cause any concerns when they have a cross-Canadian concern and you tie everything together? What you also have is cross-cutting breakage because one of my favorite, um, laws out there is Hiram's law, which tells them with a sufficient number of users of an API, it does not matter what you promise in the contact. All observable behaviors of your system will be dependent on by someone, which means that the more instrumentation that you add into your system, the more things that you're adding that can be observed by yourself but also the rest of the system. 
+
+So paradoxically, when you come on service boundaries, in theory, you can only depend on the public API and service. It's a very standard service-oriented architecture and things like that. The tracing actually doesn't do that; it's out of hand intentionally invisible, not apparently API. 
+
+If you've been with anything anywhere, it'll propagate to the rest of the system, and you'll end up having a lot of essentially convention and hand-holding and little manual pieces put together that will break every time you change something. Those out-of-band information become in-band semantics, and this problem is something that you see in a lot of different ways. 
+
+More OpenTelemetry, it's actually specifically about this context modification, but in terms of verification, you see this in terms of the internal implementation details of a function changing the proof required to show the scratch verified for property. And in distributed systems, you can see this in the end-to-end property of networks and in lots of other places. 
+
+You can see it probably one of the easiest ones is different agility of snapshot testing for fun and design systems. If you've ever worked on those, you know that you can meet the tiniest little change. Everything's the worst, and somehow you just broke your entire test suite because some lines moved here and there in the code itself or something changed here and there in the code itself or in like the HTML, but the actual appearance and everything's fine, and you end up dealing with this frustration and description of the out-of-band information becoming in-band semantics, and that mismatch causing wreckage.
+
+In OpenTelemetry, the package is not simple enough to cause a lot of honey. It's abused. One context is key, and when you have this cross-process propagation, you lose the ability to have your out-of-band and inbound semantics match up and be enforced across boundaries. 
+
+Additionally, in Winter designing options, or you're wrapping them, that same Alabama information will be very painful because you can't necessarily build anything that actually lets you do this in a reusable way unless you build a shared library of semantic conventions. 
+
+Speaking of which, good options are both transparent and opaque. What I mean by that is they're transparent in that you don't have to know that they're there, any condition about them at that level of abstraction. A good way to think about that is, for example, HTTP requests; they just happen and they're just there, and you don't really have to know that they're implemented on top of a bunch of wire or glue, terrible crimes, and weird packet header loss information, blah blah blah. 
+
+There's a lot of trauma behind that, but you don't have to know that. With that said, you can't know that, and the transparency there is that you can reason about everything at that level as if the abstraction was in there, and you can write things that are aware of the fact that they actually work through it in order to know and understand the underlying system. 
+
+Having that absorption means that you don't need to know the system underneath it, but that the system underneath it doesn't make it less understandable of inflammatory, and out-of-band information in general meets both of those goals. 
+
+Hard to achieve, the Louisiana ban information is not actually semantically embedded in the system and becomes relevant to the system, and so you can't build an abstraction that lets you operate without knowing the internal implementation details, and you don't actually have a way to observe the internal implementation details and know what they are without disapproved forms memorizing those conventions. 
+
+That gives you this quandary: what do you do with that? This can manifest in a couple interesting ways. But a different problem of abstraction is I'll show you this one, and this is a problem that I run into the most, which is what I call the life cycle problem. 
+
+[00:24:01] That is you have tracing which is a graph, but you don't actually have a way to really manipulate the graph very well, and that shows up in two ways. The livestock of how much the first flame, which is that sending information up a graph or back in time, so to speak, isn't super possible or convenient or really ergonomic in any way. 
+
+Then adding, and then adding things after the fact is not possible either. So you can't like pack to things as a graph and like incrementally build up or out of beyond build up a view of the graph that's more complete. 
+
+So here's an example. We have a web server, a service, and a client. The web server has, you know, one event, a one span, and then a second span. Two fish has one span, and then a plan has one span, and they have overlapping timelines. There are problems that I ran into trying to deal with building this. 
+
+So the first span in the web server can pass information to the second span when creating it. That's totally fine; that works. That's amazing. That's awesome. However, it has no real way to pass information to the second span after creating it. 
+
+So after you've created that challenge span, the root doesn't really have any way to continue to add information. It doesn't have any way to modify that, and it doesn't have any way to like dig down into the tree and continue to add things. If you have intuitively instruments and everything, you do have the reference to this span, and in theory, you can work with it. 
+
+One of your building apps into new building libraries, you don't have that; so you don't have a way to send information down. They have baggage, but it almost feels like a workaround. It doesn't feel like it's embedded in this idea of how do I add things into the system and build this graph. 
+
+Conversely, the challenge span doesn't have any good way to send information to the parent span conveniently at all. It's possible if you know how to do it; it's possible if you know how to build a workaround for that. You can even build conventions to make it easier, but it's not absolutely convenient in any way. 
+
+The lump server is able to pass information to the service and then the client via contact configuration, which I talked about earlier, and that's possible not to create networks. However, the service and the client essentially have no way to pass any information back up to the web server. Forget about it. 
+
+Another thing that's interesting here is if you notice the life cycle of the web server watched is actually shorter than the life cycle of the whole trees, which means that Taylor sampling is not going to work as you might expect. Taylor sampling really wants you to have a full stitched treat with a scooped corn snack life cycle to the web server or the root span has to be the longest span and everything else has to be inside of it and organized nicely so that you can make a decision once you've collected everything. 
+
+When you have these Instagram timelines and you don't actually know how long everything is going to be, if you don't know how long to wait to make your final decision, you end up discussing until it becomes heuristic faced rather than, "Oh, and let's actually do things." 
+
+But you can really bring you, if those heuristics are used as part of filtering your traces and actually trying to sample things. 
+
+So Taylor sampling distributing choices is actually really, really hard. Another problem is that once each fan has ended, you have no way to add information to it. So even though it is technically possible to try and add information to expand from the parent, you can add a permission to a challenge fan in some ways; that only works if the child span hasn't ended yet. 
+
+You can have a really weird and rich conditions essentially. Speaking of that, also happens. Yeah, you can add information to the service, and also the child and parents have the same problem too. Even in context and even in process versus under severe process, you still run into the same issue. 
+
+This means that you have a ton of internal implementation details of the instrumentation, the shape of the code, how the code works, the life cycle of their code, the column staff of everything to keep track of, which if you are the engineer writing everything, interviewing with the whole system and working end to end with it, that may not be a huge deal for you, and that may actually be there. 
+
+That's one of the reasons why OpenTelemetry is so deeply in hand with people owning their systems end to end and having that feedback. 
+
+There's actually, in some ways, available compensation because you can't build an abstraction unless a lot of people work on top of that. So you have to own your system end to end intrusively rather than being able to build these abstractions that let you instrument things more effectively. 
+
+The second problem that you run into a lot is what I call the graph rewriting problem. So we dig back into this livestock problem. You have a bunch of information based on life cycle. 
+
+So when you make lesbians, lens fans, and how that interfaces with the constant of the stimulate system in general, the graph rewriting problem is this one. The rule of thumb when doing instrumentation is that you have like this final instrumentation that can build this scaffolding. You would take all of your manual instrumentation and hang it on that. 
+
+So in theory, you're not really creating one span. You usually understand that auto instrumentation already set up, and you're just adding attributes in my spots, which sometimes that doesn't work, especially when you're trying to write abstract code. You end up wanting to create this fan only abstract; couldn't do that. 
+
+In general, the more you can just add attributes to an existing span created by Honor instrumentation but not sad, where do libraries go in this, and how do they work, and how do you actually do this? 
+
+So let's look at this as an example. We have a tree. It's fast client, and then it smash client has some action. Someone called make request on the client side, and then the auto instrumentation has that git endpoint. The next step on the client side to half the function call, and then you have the honor instrumentation of the actual that response. Awesome. 
+
+That's great. That's cool. Then we go over into the server, and the server has the server endpoint that has three manaway functions that it has a post endpoint for the sending for an internal call. Then that has the same chain; you post on one thing, and then you go to the next one, then you keep going and keep going, and you can run into the same middleware, and you're going to do all that. 
+
+If you're going to run into a couple problems here, the first problem is how do you collapse spans? You don't actually have a good one to do that. What if I don't actually want all of the middleware to be their own spans, and I want to have just one span for everything? Just add information to the development to it with attributes as I go down to me. If you want some spam events, maybe I just want the attributes, maybe I want things like that, and I don't actually need this fan for like the middleware around, or maybe I don't need a fan for some other things. 
+
+I don't have a way to like collapse that tree down, and that can be activated by the Fall. That's that if you want to search through your system, typically the root span is where you search, or the same level of a span is when you search when you're trying to like index through your data. 
+
+So if you have dealer at different span levels, you essentially have no way to correlate those two pieces of datum and do a query in which you aggregate things across those spans. That's one reason why a lot of good practice is to have very, very wide events and a very wide spans and less of them so that way you have all the data at the same level and you can do all the correlation and grouping and aggregation and everything else there that you need to in order to effectively look through your data and find something. 
+
+But if you have all of your instrumentation and your honor instrumentation building a nested tree of like 10 or 20-inch spans before you get to run any of your code, where do you stick in so that it's at the level that it needs to be? 
+
+On top of that, every library, auto instrumentation, and things like that reinvent their weird set of configuration. I want you to try and make it to that they can help solve some of these problems. So you'll have, if you look through all the SDKs or all the contributors contributing libraries for OpenTelemetry, you'll notice this problem over and over. 
+
+You're like, "Oh, how do I use, for example, the express server auto instrumentation?" It'll say, "You can just use it, and also here's like 15 different options. Do you want to silence some endpoints? Do you want to filter some endpoints? Do you want to silence submit awareness? Do you want to whatever?" Here's a whole bunch of functions you can use. Here's some callbacks, and we're going to call this compact before and after this; we're going to call these to these endpoints. 
+
+Essentially, it gives you every possible hook point to you can think of to enter into the system and stick your own code there as if you haven't written it yourself. But when you don't have this way to write an abstraction and you end up having to sit there and write the code yourself in all these intuition endpoints and you need to have people having foresight in their libraries to put these insertion points for you, you have this very, very weird platform of really people wanting to like more or less patch the source to go to the libraries and the other instrumentation, and they want to have written all of it themselves graph effectively. 
+
+Why can't we deal with that, right? What's going on? I think I cut out for a brief second there. Did everyone catch the last things that I said? Awesome. 
+
+[00:35:56] So in conclusion, there are some problems here. There are a lot of things going on. There's some advice on what to do, and I'm gonna go through all of that now. 
+
+Observability is the process through which one develops the ability to ask meaningful questions and get useful answers. Meaningful questions for you are going to be about learning about the system: how do you collectively get together and advance your understanding of the system, its behavior, how it interacts with you, and everything, and how do you get that knowledge as quickly as possible? 
+
+Those are meaningful questions. Continue can use for answers from them. If you can, your system is becoming observable. However, observability is interesting because the more you can observe, the more correlations you're going to infer with your data, and the harder it's going to be to discover contributing factors. 
+
+So just because you can find a needle, it doesn't mean you need to build a haystack. When you have more and more data and you keep shoving more things in there, then you have more and more out-of-band data, and you just add more and more layers of things that can give you observing money into the system. 
+
+You should be really careful to look at everything and go, "Is this actually an intervention or understanding of the system, or is this adding noise?" Context plus configuration is traces; it is the glue that turns and back of data points into a unified trace. 
+
+When working with context, it interfaces with everything that has to do with OpenTelemetry and in many ways remains invisible the entire time using until you're wondering where the entire or how to use it, or maybe you're confused. 
+
+But if you know how to use context and know what to think about when using context, it can become your friend. One way to map contacts and map different aspects of OpenTelemetry together is thinking about the shape of those contacts of those concepts. 
+
+So traces are a graph; spans are your nodes and links are your edges. Despite choices being a graph, they're often actually mostly thought of and best most ergonomically designed as a card stock, which is a training that is like perhaps multi-branched. 
+
+That tree is very scooped in. The top node is always the whitest and the longest, and everything is only encapsulated all the way down, and that's the most natural and ergonomic way to do OpenTelemetry and tracing, and everything's going to push you towards that. 
+
+But traces are a graph, and you can actually access all of that graph power when you need it, and sometimes you wish you didn't. Observability and abstraction are natural enemies. They are the chief people in high school that love to take in on each other the entire time they're doing everything. 
+
+So even though we love OpenTelemetry and we love observability and we love my other sister meditation, the problem of needing a large amount of out-of-band context but also wanting the ability to add and annotate is a very complicated problem of your entire system, its business logic, the flow of information throughout the system. 
+
+Those are all problems that we don't actually have good answers for. In general, we don't have good leverage for that, and it stands beyond OpenTelemetry and beyond observability. This is just one of those ways that it becomes a very, very obvious problem. 
+
+Two ways of having an average problem are the life cycle problem, which we talked about, which is where you have this graph, you have the whole power of a graph where you don't have a graph that is like convergent. You have a graph that you kind of have to satanically know the shape of an Azure building out, and you can't really patch it up and picture them later. 
+
+Speaking of that graph, reminding it is really difficult, if not impossible. It's very much convention and ad hoc based. 
+
+Does anyone have any questions, thoughts, or anything else? 
+
+**Speaker:** Hazel
+
+I just want to say, Hazel, that the way that you describe these concepts in distributed tracing and OpenTelemetry are like I think the clearest I've heard. So thank you for that. I definitely really appreciate that. I think it's like everything now like just fully makes sense. 
+
+So yeah, I just want to echo that, but that's definitely the vibe; it's like, "Oh yeah, cool, now I know what I'm writing about for the next six months." The stuff that Hazel has put so clearly is very good. 
+
+I’m really happy to hear that. The question that I had is I'm curious how you feel like post-processing fits into that picture. Like with the collector, a lot of your times revolved around like developers, DevOps people who are working with the code, like how they're able to propagate data. But what about that? 
+
+Like not so much like tail-based sampling, where you're deciding right at the moment, but like maybe a little further down the line being able to connect data points, you know, once you're holding five minutes of trace data? 
+
+**Speaker:** Foreign
+
+Yeah, so one thing that's interesting there is that OpenTelemetry feels in many ways like an event-based emitting style of instruments in your code, but it's actually not that. The collector and other ways of post-processing data is where you start to feel that sort of impedance mismatch in particular. 
+
+And so because of that, you can run into certain problems. A great way, a great example of that is that links can't be added after expanded there. And so even, as far as I know, like once you create this fan, you can't add a link to it, even in push processing. 
+
+If you're trying to do that, things are going to be really tricky. Maybe post-processing can fit that, but I don't know that that's now I'm gonna go like research that. 
+
+**Speaker:** Hazel
+
+That's wow, okay, cool. Yeah, I mean, I realize I have not done it. I've been like digging through it; I haven't done it. So wow, okay. 
+
+So there is interesting historical contents there in that there used to be a method in the OpenTelemetry specification of you can add a link to this fan as long as this man is active. Then they took that method out several years ago, and it's been an open discussion in the GitHub tracker for about three or four years now of this is absolutely useful. We do end up needing this a lot, and can we do that? 
+
+Apparently, as far as I know, the only way to do that is that's fan creation in the options of the, for each band, you can add links in there, and that's the only time. 
+
+Which means certain types of Instagram patterns or certain types of like that type of thing are really, really difficult to do, and also means, you know, when you can approach process and then after that pretty much. 
+
+**Speaker:** Foreign
+
+And then another way to think about the OpenTelemetry commentary that's interesting is I actually view the counter and how to set up libraries and baggage and other things like that all as different types of convention-based out-of-band information and handling. 
+
+So when you build up conventions in your company or in your system or in anything like that, you can start to say, "Oh yeah, if you set this information here, then it'll be there," or "You can actually just assume that we'll have this information because the clutter will add it here." 
+
+So as an example, when it's metal and a blog post in which they talked about, they said of their collectors to actually add to every span what data center that span came from, what machine that span came from, what, and then where everything was, what cluster it was in, and all this actual information. So everyone can always clear all that information. 
+
+You don't know that, like, it's there because you read the documentation in the internal tooling, and you can build internal tooling that works on top of that natural convention rather than something you can actually express in your telemetry itself. 
+
+Anything else? 
+
+**Speaker:** Hazel
+
+Well, I guess if there are no further questions, thank you so much for coming on, for coming on twice, and for putting this together. I know presentations are definitely a lot more work to put together compared to just, you know, sitting there answering questions. 
+
+So definitely appreciate the time that you took to put this together and to share your knowledge with folks. I think there's, you know, so much out there on like the novice hotel stuff, but when it starts to get into the gnarly bits, we're definitely lacking in that information. 
+
+So we definitely appreciate you sharing that, and call out to anybody if you or you know anybody who is interested in sharing some hotel goodies in hotel in practice, we would absolutely love to have you. 
+
+Also, if you want to share your hotel story, we would love to have you for Open A. And I think we've got a session coming up later this month, right, Rhys? 
+
+**Speaker:** Rhys
+
+We do. We have a special discussion actually coming up on the 28th. It's going to be about the evolution of observability practices, and actually Nika is going to be part of that panel. We'll do a full announcement. 
+
+So thank you, Hazel, for everything, and I guess we'll see y'all on the internet. Thank you.
 
 ## Raw YouTube Transcript
 

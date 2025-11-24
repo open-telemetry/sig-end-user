@@ -10,101 +10,186 @@ URL: https://www.youtube.com/watch?v=8JlFuGTDCXQ
 
 ## Summary
 
-In this YouTube video, Lariel, a principal AI engineer at Dash Zero, shares insights into applying AI to open telemetry data, focusing on a case study about log processing. Lariel discusses the challenges of parsing unstructured logs and the limitations of existing models, such as the drain model and large language models (LLMs). The presentation outlines a novel approach combining various techniques to efficiently predict log formats and patterns without requiring extensive human intervention. Key points include the importance of resource clustering, the integration of traditional machine learning with LLMs, and the evaluation of the system’s performance, which demonstrated a 98% success rate in log parsing. Lariel highlights the significance of context and semantic conventions in improving AI predictions. The video concludes with insights into future developments and the potential for further collaboration in the observability space.
+In this video, Lariel, a principal AI engineer at Dash Zero, discusses his experience applying AI to open telemetry data, specifically focusing on a case study involving log parsing. He outlines the challenges of working with unstructured logs that lack the attributes needed for effective analysis and explains the motivation behind developing their log AI solution. Lariel explains their approach, which involves combining various methods for log pattern recognition without relying on custom regular expressions or large language models (LLMs) for every log. He details their process of clustering logs by resource attributes and using a combination of heuristics and prompt engineering to extract valuable information. The results show a high success rate in accurately parsing log severity and patterns, and he emphasizes the importance of context and evaluation in AI applications. The video concludes with key takeaways and an invitation for questions.
 
 ## Chapters
 
-Sure! Here are the key moments from the livestream with their corresponding timestamps:
+00:00:00 Welcome and intro
+00:00:40 Overview of D-Zero
+00:02:40 Log AI motivation
+00:04:10 Limitations of existing models
+00:06:40 Challenges with LLMs
+00:09:46 Combining different approaches
+00:10:40 Predicting log formats
+00:12:00 Evaluation methodology
+00:13:01 Results and success metrics
+00:19:20 Key takeaways
 
-00:00:00 Introductions and background of Lariel  
-00:02:15 Overview of Dash Zero and its focus on observability  
-00:04:00 Introduction to the case study on log AI  
-00:05:30 Challenges with unstructured logs in real-world applications  
-00:08:00 Limitations of existing models for log parsing  
-00:11:45 Exploring alternatives like LLMs and deep learning for log parsing  
-00:15:00 Explanation of the combined approach to log parsing  
-00:18:30 Overview of the log parsing pipeline and resource clustering  
-00:23:00 Evaluation of the log AI model and its success rates  
-00:27:00 Demonstration of results and visualization in the UI  
-00:30:30 Key takeaways and additional experiments with AI agents  
+**Lariel:** All right. So, hello everyone. I'm Lariel. Today I'm going to share a little bit of my experience in applying AI to open telemetry data. So, short intro about myself. I'm from Brazil, moved to Berlin a couple of years ago. Nowadays, I work as principal AI engineer at Dash Zero with these guys here. Before that, I had been around playing different roles in data and AI, ranging from data engineering to data scientist, ML ops. My CV kind of looks like a mess nowadays.
 
-Feel free to ask if you need any further assistance!
+[00:00:40] Also, for those of you who have not heard of D-Zero, just a quick introduction: we are an open telemetry native SAS solution for observability. We work with metrics, traces, logs, we do dashboarding, alerting. We're built on open standards like Prometheus and Persis. Obviously, we are building lots of cool AI capabilities to help our users get more value from the data that they send to us. And that brings me to the subject of today's talk. Actually, the main subject, which is a case study on our log AI. So how to make sense of unstructured logs.
 
-# AI and Open Telemetry Data: A Case Study on Log AI
+Many of you probably had a similar disappointment at some point. You plug in the open telemetry demo data set and then the logs look beautiful. The logs are shipped via OTLP. They have plenty of useful attributes. They are formatted as JSON, so they're very easy to work with, right? But in reality, most people's logs look like this. You have something running on Kubernetes, and you have those file listeners that get the logs from every node, and in the end, the result is something like this. Your log has some raw string body and some attributes saying what file it was collected from, and that's not very useful. But you know that there is information there. If you look into the log, there is something that looks like a module name, something that looks like a duration, a timestamp, a severity at debug level. How can we harness that information? That's the motivation behind the log AI that we developed. 
 
-**Introduction**
+[00:02:40] We want to do log parsing and log abstraction at scale for any logs of any application, without a human in the loop, without having to write custom regular expressions. For example, if I have an application writing logs like this, I want to parse them by separating this prefix from the message. I have in the prefix timestamp, host, severity text, and we can see that the messages follow different patterns. I have some "ad lookup failed," "display this ad to this user." There are basically two different patterns of log messages that my application is writing, and there are some structured fields that I would like to be able to query. There is some ad ID in the middle, there is some user ID, and we want to abstract that in the form of a pattern without writing a regular expression manually. We want to do that for every log of every application. That's the challenge and the motivation behind our log AI.
 
-Hello everyone, I'm Lariel. Today, I'm going to share my experience in applying AI to open telemetry data. A brief introduction about myself: I'm from Brazil and moved to Berlin a couple of years ago. Currently, I work as a Principal AI Engineer at Dash Zero. Before that, I held various roles in data and AI, ranging from data engineering to data science and ML Ops. My CV looks a bit chaotic nowadays!
+[00:04:10] We started looking into the available options to do that. The most famous one is the drain model that some of you might have seen already. Drain comes from this family of natural language processing models that work with word frequency. They basically compare the parts of the text that change frequently with the parts that are often the same. They can identify where the variables are and what the patterns should be. But those algorithms have plenty of limitations. First, they assume that the log is already prepared, so you have already separated that prefix from the message that can change from one pattern to another. For that, you need custom regular expressions written by hand for each log source. That is already a deal breaker. Secondly, those algorithms are very dependent on pre-processing. 
 
-For those who haven't heard of Dash Zero, we are an open telemetry native SaaS solution for observability, working with metrics, traces, and logs. We provide dashboarding and alerting services, built on open standards like Prometheus and Persis. We're also developing several AI capabilities to help our users derive more value from the data they send to us.
+There is this paper called "pre-processing is all you need," where they describe this manual iterative process of coming up with tokenization rules, variable identification rules, text cleaning rules for each of your applications. Unless you do that, you cannot expect these models to produce any decent results for your custom logs. Believe me or not, the screenshot here on the left side is real code from the repository where they have the benchmarks for these models. You can see that for each log data set that they are benchmarking on, they have hardcoded rules; otherwise, the model doesn't work. That's a real deal breaker for us. We cannot just apply this drain model to every log and expect it to work.
 
-**Main Subject: Log AI Case Study**
+We started looking into other alternatives. What's very popular nowadays is just throwing things at a large language model. If you ask GPT to parse a log, it's going to get everything right on the first try. You get the fields really nice. The problem is, with hundreds of customers instrumenting thousands of applications and sending billions of logs every day, using an LLM for everything would be very cost ineffective and slow. So what do we do? 
 
-The main subject of today's talk is a case study on our Log AI, focusing on how to make sense of unstructured logs.
+[00:06:40] Yet another option is, like this paper suggests, using a deep learning model that is trained to predict the pattern on every log. But in order to train a model in the first place, you need to have lots of labeled data, logs where you already know what the correct pattern should be, so you can teach the model how to infer that. We cannot possibly have such a dataset for all of our customers. Yet another problem with these models is that although they have nice benchmarks, those can be interpreted as a form of data contamination because the logs used to benchmark the model were produced from the same applications with the same templates as the logs that were used to train the model in the first place. This indicates that the model can actually only identify patterns that it is already familiar with or parse logs of applications that it is already familiar with. It doesn't generalize for any logs of any applications. 
 
-Many of you may have experienced disappointment when using open telemetry demo datasets. Initially, the logs look beautiful, shipped via OTLP with useful attributes and formatted as JSON, which makes them easy to work with. However, in reality, most people's logs look quite different. For instance, when running applications on Kubernetes, logs collected from each node often result in raw string bodies with minimal useful attributes. While there is information embedded in these logs, such as module names, durations, timestamps, and severity levels, the challenge is finding a way to harness that information effectively.
+This was the status quo: plenty of challenges, different options, each one with their limitations. How we solved this in the end was no magic at all. We actually just combined different approaches, trying to balance out the limitations of some with the advantages of others. The first thing we did was figure out the right level of granularity for predicting log formats and patterns. I don't know if anyone here has already worked with predictive AI in production, but you usually have the concept of an instance. For example, if you are doing customer churn prediction, then every customer is an instance. If you're doing product sales forecast, then every product is an instance. It's quite straightforward. 
 
-This is the motivation behind our Log AI. We aim to perform log parsing and abstraction at scale for any logs from any application without requiring human intervention or custom regular expressions. For example, when parsing logs, we want to separate the prefix (containing timestamps, host, and severity) from the message itself. Within the messages, there are patterns that we want to identify without manual regex. 
+When it comes to open telemetry data, it's quite challenging because there are different levels of granularity, and the schema is very nested. What is an instance? We started with the concept of the open telemetry resource. We tried to predict the log format and patterns for every resource, but it wasn't efficient at all. If you think for example of a Kubernetes deployment with autoscale, it is creating new pods and killing old pods all the time, and every new pod has different resource attributes. So it's treated as a new resource. If we would predict log formats and patterns for every resource, our model would be working all the time, which would not be efficient at all. 
 
-**Challenges and Alternatives**
+Instead of doing this, we came up with resource clustering rules that we apply to resource attributes of different resource types. This allows us to scope and cache and reuse the predicted log formats and log patterns between different resources that belong in the same group. To make this work in production, we also came up with a recommended configuration for the open telemetry collector that guarantees that the logs that we get from our customers always contain all the resource attributes that are relevant for our resource clustering rules. 
 
-We explored various methods to tackle these challenges. One of the most well-known is the Drain model, which comes from the family of natural language processing models that analyze word frequency. However, these algorithms have limitations:
+[00:09:46] Now we have a concept of an instance that we want to make predictions for. Next step, how do we predict the patterns? We came up with this pipeline where we start with all the logs, and then we first cluster by resource attributes, like I said before. Then we focus on parsing. We use a combination of heuristics and prompt engineering to identify what is the prefix, what is the message, what parts of the prefix are worth extracting, like the log severity, and we come up with log formats for each resource cluster. 
 
-1. They assume that logs are already prepared—meaning the prefix is separated from the message—requiring custom regular expressions for each log source.
-2. They are highly dependent on pre-processing and manual tokenization rules. 
+[00:10:40] After the logs are parsed, we apply those traditional word frequency models like drain in order to cluster the log messages by structure. Every log message that has kind of the same structure goes into the same cluster. Looking at each log cluster, we take the output of the drain model and inject it into the prompt for a language model in order to identify the final variables and also give names and types to the variables. At this stage, we observe that including semantic convention information and resource attributes in the prompt helps a lot in getting variable names and types that make sense for each application. 
 
-The reality is that these models cannot be applied to every log uniformly and expect good results.
+Then, in the end, we just apply some heuristics to optimize the patterns that we get so they match as best as possible the respective log cluster. At ingestion time, it's actually really straightforward. In our open telemetry collector, the processor is going to match the logs against patterns from the respective cluster and attach the attributes with the variables that it finds. 
 
-Another option is using large language models (LLMs) to parse logs. While they can produce impressive results, processing billions of logs daily across numerous customers would be very costly and slow. 
+[00:12:00] This is an overview of our solution. But before I show you what the results look like in our beautiful UI, I'm just going to have a quick word about evaluation. This is really important. Before we applied this to every log of every customer all the time in production, we needed to build some confidence to know that it would produce the expected results. We came up with an evaluation dataset that combines logs from community datasets with logs from our own proprietary data. The focus was not to have too many logs or quantity, but rather to have diversity of logs so we could really stress the model and confirm that it was working as expected for many different edge cases. 
 
-We also considered deep learning models trained to predict log patterns. However, this approach requires substantial labeled data—logs with known patterns—which we cannot obtain for all our customers. Additionally, benchmarked models often suffer from data contamination, meaning they perform well on familiar patterns but fail to generalize to new ones.
+[00:13:01] Our main goal with this evaluation was to confirm that our approach had this kind of built-in graceful degradation. What does that mean? It means that the model doesn't need to work all the time. It doesn't need to work for every log from the billions of logs that we are ingesting. Whenever it works, it needs to produce correct information. When it doesn't work, then it cannot produce any unwanted side effects. That’s graceful degradation, and that's basically what we observed in the evaluation. We had a 98% success rate at the log parsing step with 100% log severity accuracy among the cases that are successfully parsed. The model almost always understands the log format, and when it does, the log severity that it extracts is always correct. When it does not, then it doesn't extract anything, and the log stays as it was before. 
 
-**Our Solution**
+Besides that, the patterns that we extracted for each application's logs cover an average of 85% of that application's logs. That means we successfully abstracted almost all the information that is available to be abstracted. 
 
-After analyzing various options, we decided to combine different approaches to address the limitations of each. 
+Oh, sorry. Ask a question right at the end. Let's save the questions for the end if you don't mind. Don't forget it. I'm just quickly going to show what the results look like in our UI. This is a histogram of log severities over time. The gray bars are logs with unknown severity. As soon as we plug in the new log processor that applies the log formats and patterns, we start having colorful logs in the histogram indicating the information and warning and error logs. 
 
-First, we established the right level of granularity for predicting log formats and patterns. In open telemetry data, the schema is highly nested, making it challenging to define an instance. We initially attempted to predict log formats for every resource but realized this was inefficient. Instead, we implemented resource clustering rules that allow us to cache and reuse predicted log formats across similar resources.
+We also observe a couple of examples here of errors and warnings that would have passed by unnoticed if it wasn't for the correct log parsing. We come up with this dedicated visualization for the patterns. This is data from the open telemetry demo, and we have different patterns where the variable is in the middle, things that say, for example, "targeted ad request received for ad category," and then ad category is a variable or a method name called with user ID. The method name and the user ID are variables. If we open one log record like this one with product ID name, then we know which pattern it matches, and we have the product ID and product name as dedicated variables. This is structured data that can be referenced in queries, in filters, in group by expressions, also in Prometheus query language.
 
-Next, we built a pipeline that starts by clustering logs based on resource attributes. We then use a combination of heuristics and prompt engineering to identify log prefixes and messages, extracting valuable parts like log severity. After parsing, we apply traditional word frequency models, such as Drain, to cluster log messages with similar structures.
+For example, if I want to create an alert based on log frequency using the patterns, I have some logs that say "product ID lookup failed," and then it has some ID in the end. This one matches a pattern, and the product ID is a variable. So I can create a log frequency alert with the filter saying that the pattern should be that one and grouping by the product ID field that comes from the semi-structured text. 
 
-At this stage, we inject the outputs from the Drain model into the prompts for a language model to identify final variables and assign appropriate names and types. Including semantic convention information and resource attributes significantly improves the model's ability to generate meaningful variable names.
+This is the Prometheus query language expression to alert on that log frequency, and the result is when I'm having too many lookup errors for that product, I get a nice failed check with the custom message up here that says "lookup failures increasing for product with the ID of the product." So basically, alerting based on semi-structured information that was abstracted from logs. 
 
-Finally, during ingestion, our open telemetry collector matches logs against cached patterns and attaches relevant attributes to the identified variables.
+This happens without any metrics, without needing an extra metric, without needing to write any regular expression, without depending on traces and anything else, just based on the logs. This is really cool. So yeah, this was the case study on the log AI that we have been developing. 
 
-**Evaluation**
+I'm just going to quickly comment on a couple of other experiments that we have been running. We have been experimenting with AI agents to write and debug Prometheus query language expressions and also to diagnose and find the root cause of failed checks and alerts. The agent that we work with has access to a model context protocol, MCP server that allows it to browse through every metric and log and trace, kind of like the same way that a human would do in our UI. 
 
-Before deploying this solution across all logs and customers, we needed to evaluate its effectiveness. We created a diverse evaluation dataset combining community and proprietary logs to stress-test the model and confirm its performance across different edge cases. Our goal was to ensure the model exhibited *graceful degradation*, meaning it doesn't need to work perfectly all the time, but when it does, it must produce accurate information without side effects.
+In this context, we also observe that if we feed the agent with information about semantic conventions and resource attributes, then it gets way better at writing correct queries in the first try. It doesn't take so many iterations to figure out the correct metric names, the relevant attributes, and so on because it builds on top of the semantic conventions. Yet another use case is our trace AI, where we group duplicated spans in our trace explorer by their attribute similarity, and we also generate trace names and trace descriptions to clusters of similar traces. 
 
-We achieved a 98% success rate in log parsing, with 100% accuracy in identifying log severity among successfully parsed logs. Notably, our patterns covered an average of 85% of each application's logs, indicating our ability to abstract most available information.
+In this context, we also observe that giving semantic convention information to the prompt increases the quality of the names and the descriptions that we get. Also, when clusterizing the traces by their semantic embeddings, if we include the resource attributes in the embedding, we get way more meaningful embeddings, therefore a better clustering of similar traces. 
 
-**Results and User Interface**
+[00:19:20] Those were just a couple of other examples of use cases that we have been working on. Before we go on to the questions, I just wanted to leave you with four key takeaways. 
 
-Now, let me briefly share what the results look like in our user interface. 
+First, applying AI in production at scale can be expensive. It can get expensive very quickly. But remember that in the open telemetry schema, we have plenty of attributes that you can use to cluster similar resources. This way, you can scope, cache, and reuse AI predictions between different resources. 
 
-- We visualize log severities over time, with the introduction of our log processor leading to colorful histograms that reflect various log severities. 
-- We also developed a dedicated visualization for log patterns, allowing users to see variable names and values in structured data, which can be referenced in queries and filters. 
+Second, LLMs are cool, but they are expensive. We always try to see what we can do with traditional machine learning techniques or how we can combine them with LLMs to get the best of both worlds. 
 
-For instance, if we want to create an alert based on log frequency using extracted patterns, we can do so without requiring additional metrics or writing custom regular expressions.
+Third, evaluation is very important. Even if you're building a simple LLM application and you're not really training or fine-tuning any model, you can always try to model the expected behavior of your application and measure how often and how close it gets to the expected results. You kind of quantify the limitations and the risks before shipping it to production. 
 
-**Conclusion and Key Takeaways**
+Lastly, context is everything when it comes to LLMs. Always benefit from resource attributes from the rich open telemetry schema and the semantic conventions so you contextualize your prompts and get better results from language models. 
 
-In summary, this case study on Log AI demonstrates our approach to making unstructured logs actionable. 
+That was it. If you want to connect with us, please follow us on LinkedIn. We also have a blog on our website. We're always posting some cool stuff. We have the Code Red podcast on Spotify and Apple. We have a couple of open positions on our careers website too, including one for another AI engineer and for a product manager with a background in observability. 
 
-Here are four key takeaways:
+That was it. Thanks for your attention. 
 
-1. **Cost Management**: Applying AI at scale can become expensive quickly. However, leveraging attributes in the open telemetry schema allows for clustering similar resources, making predictions efficient.
-   
-2. **Balancing Techniques**: While LLMs are powerful, they are also costly. Combining traditional machine learning techniques with LLMs can yield better results.
+**Audience Member:** I'm sorry. Do you remember your question?
 
-3. **Importance of Evaluation**: Regardless of whether you're building a simple LLM application or a complex model, it's crucial to evaluate expected behaviors and measure performance before deploying.
+**Lariel:** Yes. I think it was about the log levels. You had 98% with log levels, but there are some logs that do not have a log level. How is that working out?
 
-4. **Context is Key**: Always utilize resource attributes and semantic conventions to contextualize prompts for better results with language models.
+**Lariel:** We only measure the accuracy where there is a ground truth. For a log that really doesn't make sense to assign a level to, it doesn't have the level, even in an unstructured way or in the form of a status code or anything, then we do not assign it a log level. Actually, in that case, if we would assign a log level, let's say error, warning, or anything to a log that doesn't contain any textual information that references that, it would count as a false positive. We have a separate metric for measuring how often that occurs. It's the specificity metric. It's how often we avoid false positives, and that one is maximized as well, but it wasn't on the slide.
 
-Thank you for your attention! If you wish to connect with us, please follow us on LinkedIn. We also have a blog on our website, a podcast on Spotify and Apple, and several open positions, including roles for AI engineers and product managers with a background in observability.
+**Audience Member:** Okay. I think there's even an unspecified level for open telemetry, right?
 
-**Q&A Session**
+**Lariel:** Yes, but it is the default. At least when we ingest, if that field is not set, we set it to unspecified, and then after the AI runs, if we don't identify an explicit level, it remains unidentified.
 
-Now, I would like to open the floor for any questions you may have!
+**Audience Member:** Any other questions?
+
+**Audience Member:** I didn't get this specifically about the semantic conventions and resource. Did you use them to insert resource attributes and semantic conventions into logs that don't have it, or what was the...
+
+**Lariel:** No. The thing is, whenever we get any signal that has attributes or a span name, a metric name that matches the latest semantic conventions, then we have access to the documentation of that metric or attribute, and we include that documentation in the prompt. The model has context on what that metric means in which system it belongs. It is able to, for example, give an appropriate name to a variable or give a better description to a trace. So that's how we work with semantic conventions for prompt contextualization.
+
+**Audience Member:** That's very interesting. I was thinking it would also be nice to have these kinds of resource attributes and conventions. Sometimes the values are not correct, especially if you have your own semantic conventions on top of OpenTelemetry, like business-relevant semantic conventions. If you could use AI to rectify basically the discrepancies in what the users are putting in, because usually they put in a lot of stuff, a lot of different stuff. Even if you have it written down, please use these values, they make up their own values and their own writing systems. Instead of going there and telling them every time, "No, please lower case, not uppercase," or something along the lines, if we could use AI to understand the...
+
+**Lariel:** I'm not sure if AI is really necessary. Sometimes regular expressions do the trick, but sometimes they don't. That can actually be a challenge. Every case where I mentioned that we employed so many conventions, it was the official ones, like from the open source repositories.
+
+**Audience Member:** I have a follow-up question on this. A question I asked myself, I don't know how D-Zero works as an observability platform, but my assumption is that the log AI feature is the same for every customer because you used something like...
+
+**Audience Member:** Yeah, now someone is turning around if you're not...
+
+**Lariel:** You found an approach to leverage different kinds of AI technologies to have log AI enabled, and it's the same for every customer. 
+
+**Audience Member:** With my own semantics, does my own and everyone have something like a slightly different implemented AI approach?
+
+**Lariel:** That's a good question. The approach right now is the same for everyone, but we work in a multi-tenant way. Even if two customers have, let's say, Oracle databases, we don't mix the log formats and patterns of one customer with the other. All of your data will be processed with formats and patterns that we inferred from your data only. It is pre-trained, yes. We are not customizing by customer, although not right now, maybe in the future.
+
+**Audience Member:** Thank you very much. Are there plans on open sourcing any of that?
+
+**Lariel:** I suppose that—I mean, I love the log AI part, but I suppose the Prometheus part would also have that kind of feature, and I think I heard other companies doing the same, right?
+
+**Lariel:** I think I heard some other companies doing something very similar. I see a lot of potential collaboration opportunities there.
+
+**Audience Member:** Regarding any kind of open source, you know, need to talk to our CTO, but what we are planning to do is to release an MCP, so anyone can connect their agents to D-Zero data if they want to over there.
+
+**Audience Member:** So you apply a model to every single log. Do you use an LLM?
+
+**Lariel:** No.
+
+**Audience Member:** Okay. So how do we apply?
+
+**Lariel:** We do it in a batch where the logs are already clustered by resource, and then they are clustered by structure. Within each log cluster, we identify the pattern with the LLM, and then we store that pattern. During ingestion time, we don't invoke the LLM at all; we just apply the patterns that we have already cached.
+
+**Audience Member:** So by pattern, you mean regular expression?
+
+**Lariel:** Yes. No. You can try that. Maybe the newer ones will succeed for some cases, but LLMs are usually bad at writing regular expressions on their first try. We actually use them to infer parts of the log, extract variables, get some insights on the log structure, and then we apply heuristics to these results to compose the regular expression ourselves.
+
+**Audience Member:** I hope that rests on the data at rest.
+
+**Lariel:** Yes, it was also part of the processor, which was done on the fly.
+
+**Audience Member:** On the fly during ingestion, we apply log formats and patterns that have already been cached. 
+
+**Audience Member:** So at what frequency do you refresh the cache?
+
+**Lariel:** That's in our documentation. It should be every two hours.
+
+**Audience Member:** Every two hours?
+
+**Lariel:** Yes. It's in beta phase. I'm working on it, but yeah, it's meant to be every two hours. There is obviously a quota per customer. If you're sending logs of different formats and different patterns all the time, like generating random formats just to make us spend money, it's not going to work. Refreshes are for when patterns change, but actually, it's only needed when it changes.
+
+**Audience Member:** Sorry, you said the cache refreshes every two hours?
+
+**Lariel:** Yes.
+
+**Audience Member:** So that cache is for, you're caching the log patterns?
+
+**Lariel:** Yes. When the log pattern changes, the cache needs to be refreshed too.
+
+**Audience Member:** Yes. So then, yeah, it would be good if you could do this on demand.
+
+**Lariel:** It is on demand, every two hours.
+
+**Audience Member:** Okay. Seriously, that wasn't a joke. I mean, if they change, we realize that they changed at latest two hours after, and then update them. One very important aspect of Dash Zero is that we do not sell AI capabilities as separate modules. We provide them kind of for free. You only pay for the data that you send, and all the capabilities, all the cool stuff in the UI, you get out of the box. Whenever we implement something like this, we have to establish rate limits and optimize it as best as we can to make it cost-effective.
+
+**Audience Member:** But if I, as a customer, know that mine won't change, let's say, or I know when it will change, is there a possibility to tell Dash Zero that now there's a new pattern coming?
+
+**Lariel:** Right now, the way to do that would be you message our customer success people, and then they would ping me. But we wouldn't need to do anything if they change, and at latest two hours later, the pipeline would realize exactly.
+
+**Audience Member:** So what it means is, within the first two hours, I might not recognize all of the new fields or all of the new patterns that are flowing through the pipeline?
+
+**Lariel:** Yes. After two hours, it's going to be recognized.
+
+**Audience Member:** That graph you've shown with the gray bars, we could see a difference there for the first two hours, and then it goes back to the same level.
+
+**Lariel:** Exactly. That's very cool. 
+
+**Audience Member:** Go on.
+
+**Audience Member:** One question is, you mentioned that you have some kind of prompt engineering in the pipeline detecting the patterns. Do customers somehow, can they involve, are they involved in this process? Can they change something like, for example, adding their own smart?
+
+**Lariel:** We use the same workflow for every customer, but the more information we have for each customer, the better we could contextualize the prompt. Maybe having custom semantic conventions for each customer's domain would be something to help improve the prompt. That's something we could build.
+
+**Audience Member:** And a second question, how do you monitor end to end, for example, how much money you spent on how many tokens and so on?
+
+**Lariel:** We use D-Zero to monitor. We also use the community libraries for instrumenting LLM applications, the ones from the OpenTelemetry Python contrib. From those, we get LLM traces and a cost for every LLM request that we make. The costs are also contextualized with the price per token of each vendor and model variant. We have a nice LLM trace view in our UI where we can debug LLM interactions, like with what tools were called and so on.
+
+**Lariel:** Folks, if anyone has other questions, we can chat later, here around in the kitchen. I'm going to give it to the next, and thanks for having me.
 
 ## Raw YouTube Transcript
 

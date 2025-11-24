@@ -10,110 +10,274 @@ URL: https://www.youtube.com/watch?v=U1yLXnMONkc
 
 ## Summary
 
-In this YouTube video, Iris, a platform engineer specializing in observability at Farfetch, leads an open discussion about the importance of observability as a collaborative effort within engineering teams. She emphasizes that observability is not the sole responsibility of a central team but rather a shared duty among all engineers, regardless of their specific roles. Iris outlines what she considers a perfect observability system, highlighting the necessity for centralized access to metrics, optimized data costs, reliable alerting, and team involvement in incident response and monitoring. Throughout the session, she encourages audience participation, discussing challenges such as excessive data, the need for structured telemetry, and the integration of observability into team processes and culture. The conversation also touches on practical tools and frameworks used in observability, such as OpenTelemetry, Prometheus, and Grafana, and the significance of creating a culture that values observability across the organization. The discussion concludes with an invitation for further community engagement and sharing of best practices in observability.
+In this YouTube video, Iris, a platform engineer at Farfetch with a strong focus on observability, discusses the importance of fostering an observability culture within engineering teams. She emphasizes that observability is a collective responsibility rather than the duty of a single team, advocating for active participation from all engineers in creating and maintaining observability systems. Key points include defining a perfect observability system, the significance of team ownership in monitoring and alerting, the challenges of managing telemetry data, and the need for a collaborative approach to optimize observability practices. Iris also highlights the role of observability engineers in guiding teams without taking over responsibilities, and she shares insights into the tools and frameworks used at Farfetch, such as OpenTelemetry and Grafana. The discussion touches on various topics, including incident response, auto-scaling, and the need for structured data to avoid excessive costs associated with observability. The video concludes with an invitation for further dialogue and collaboration in the observability community.
 
 ## Chapters
 
-00:00:00 Introductions  
-00:01:30 Overview of Observability Culture  
-00:05:00 Discussion on Responsibility of Observability  
-00:10:00 Defining a Perfect Observability System  
-00:15:30 Importance of Team Involvement in Observability  
-00:20:00 Role of Observability Engineers  
-00:25:00 Challenges in Observability and Incident Response  
-00:30:00 Custom Solutions and Tools for Observability  
-00:35:00 Addressing Anomaly Detection in Data  
-00:40:00 Centralizing Observability Tools and Data
+00:00:00 Welcome and introduction
+00:01:10 Observability as a team sport
+00:03:05 Perfect observability system overview
+00:05:30 Importance of observability engineers
+00:08:42 Incident response and team involvement
+00:10:40 Custom dashboards and alerts
+00:12:30 Challenges of observability data
+00:15:00 Observability culture and team ownership
+00:20:00 Changing observability culture
+00:24:00 Q&A session
 
-# Observability Culture Discussion
+**Iris:** Thank you for joining us again. We had her for the Q&A last month, a couple of weeks ago I guess, and she did a bang-up job, so we asked her to come back and I'll let you take it away.
 
-**Iris**: Thank you for joining us again! We had her for a Q&A last month, and she did a fantastic job, so we asked her to come back. I’ll let her take it away.
+Hello everyone, thank you so much for joining today. My name is Iris, I'm a platform engineer with a focus on observability working at Firefits currently, and I'm a super passionate person when it comes to observability. So yeah, I like to talk about it as much as I can, and I like to share the observability culture all over, not just in my company. 
 
----
+[00:01:10] So today I wanted to have a talk, and I would like to have it as an open discussion. I would love to hear about the observability culture in your companies as well. I believe that observability is a team sport, and it is not something that is being done just by one central team in a company, no matter how big or small it is. I think everyone should put their hands and be involved in the observability. 
 
-**Iris**: Hello everyone! Thank you so much for joining today. My name is Iris, and I’m a platform engineer focused on observability at Farfetch. I’m passionate about observability and love to share its culture, not just within my company but across the board.
+But of course, let's say observability has been there forever, but now it's becoming this huge thing, and now we have this amazing culture that is spreading, but we're still not there. I feel like this conversation and these discussions are so important to put out there for us to discuss and then to take them to our companies and to learn obviously from each other. 
 
-Today, I want this to be an open discussion. I would love to hear about the observability culture in your companies as well. I believe that observability is a team sport; it shouldn’t be confined to a single central team, regardless of the company size. Everyone should contribute and be involved in observability.
+So yeah, this was just a small intro. Please interrupt me because I do not have a good visibility, so if you have a question, please don't hesitate to unmute yourself and just speak. If you have any opinions about something that I'm saying, I just want to have a spoiler alert: these are mostly things that I've learned from my job and things that I believe in. So of course, if you have a completely different opinion, please let me know. Let's discuss it; it would be amazing to have a conversation about this here.
 
-Observability has existed for a long time, but it’s becoming a significant focus now, and we have this amazing culture spreading. However, we still have a long way to go. Conversations like this are essential for us to learn from each other and improve our practices.
+Okay, so the first question that I ask all engineers that are being interviewed for a job in my team is: whose responsibility is observability? Because, let's be honest, observability is being implemented differently in many different companies. I've seen so many ways everywhere that I've interviewed for; it's different. So of course, observability is everyone's responsibility. It's simple. If your engineer says that answer to me, then I'm like, "Okay, okay, we're on board, we're getting somewhere." 
 
-### Introduction
+[00:03:05] And why do I believe this? First of all, in order to get deeper into why I believe that everyone is responsible for the observability in their company, I want to give an overview of what I think a perfect observability system is. And that's perfect—let's take it with a grain of salt, of course. It's perfect for me; my company works in another person's company, doesn't work. 
 
-Please feel free to interrupt me if you have questions or opinions about what I'm saying. A spoiler alert: these are mostly insights I've gained from my job, and I welcome any differing opinions for discussion.
+So if you have any more ideas here, this was just what came to the top of my mind. For me, a perfect observability system has a centralized view of systems observability. Data engineers can go, and they can access their traces, metrics, logs, dashboards, alerts, everywhere. They don't have to memorize a lot of URLs or have to go to many places to find the information. 
 
-The first question I ask all engineers interviewing for my team is: *Whose responsibility is observability?* Let’s be honest, observability is implemented differently across various companies. I've seen many approaches, and the consensus is that observability is everyone’s responsibility. If an engineer answers that question affirmatively, I know we are on the right path.
+So that's the first thing. The second one is optimized data will optimize costs because doing observability doesn't necessarily mean that you will send everything that you can and rack up huge bills. But it needs to be optimized data and some good old data that is actually going to help other teams troubleshoot and monitor their systems. Obviously, reliable alerting, reliable and custom dashboards, rich traces, correlation between the different telemetry signals—so this is something that makes a perfect observability system for us. 
 
-### Defining a Perfect Observability System
+And my job as an observability engineer, especially in perfect, is to provide that for the engineers. But I cannot do it alone because no matter how much I try, many—let's say most of these characteristics—are a teamwork and something that other people also have to contribute. 
 
-To understand why I believe everyone should be responsible for observability, let me outline what I think a perfect observability system looks like. Of course, this is subjective and may not apply universally, but here are the key characteristics I envision:
+This means the engineers that are part of, I would say, our customers. I don't know if anyone has any other ideas about what a perfect observability system is for them. I would love to hear more about it or if you completely agree with my goals of having this system. But at least I'm with you all throughout me any moment.
 
-1. **Centralized View**: Engineers should have easy access to traces, metrics, logs, dashboards, and alerts without memorizing multiple URLs.
-   
-2. **Optimized Data**: Sending everything doesn’t mean better observability. It’s crucial to optimize data to control costs while ensuring it remains useful for troubleshooting.
+**Derek:** Thank you! I definitely agree with a lot of the things that you said. Like, it's just, yeah, spot on. Sorry, I'm not able to see the comments here, but if there is something interesting, do let me know, please.
 
-3. **Reliable Alerting**: Alerts must be dependable and customizable.
+[00:05:30] **Iris:** Okay, so the question is: okay, you have this vision of a perfect observability system. How do we get to this observability system? Well, observability engineers like myself, my team with the knowledge to shape observability systems into the correct path, I'm not saying that observability is something that a simple engineer that is working can't get into. They can be participants and active participants in it, but of course, it is important that there are engineers who know observability better than everyone, who know what guidelines to implement, what tools to use, or how to optimize data. It's very important that these people exist in the company.
 
-4. **Trace Correlation**: There should be correlation between different telemetry signals.
+Because as I said before, observability is one of those fields that is moving so fast that it is impossible for a person that is working, let's say, with databases or in Java and their full-time job is called getting back-end, whatever else, to keep up with this. So it is important for people like us to be in the company and to preach, let's say, these values and to bring all these good tools and good things that are being developed and shared in the community. 
 
-My job as an observability engineer at Farfetch is to provide these systems for engineers, but this is a collaborative effort. Many characteristics of a perfect observability system require teamwork from various individuals who understand the nuances of their products.
+Of course, as I mentioned, observability engineers also bring the data to collect and process telemetry data. But my fourth favorite so far, of course, is open telemetry, which I'm a huge fan of. We have fans, Grafana, Prometheus; those are some of the tools that are open source that are being used so massively right now by observability engineers. 
 
-I would love to hear if anyone has different thoughts or additional ideas about what makes a perfect observability system.
+And now I'm getting to what the rest of the presentation will be about. It's not only observability engineers that are needed when it seems to actively participate in optimizing the data that they're sending and actively building their monitoring. Five people, 10 people, 20, depending on the size of the observability team, cannot do the work of two thousand, three thousand, depending on the work of so many engineers. Everyone needs to have control of their own code. 
 
-### The Importance of Team Involvement
+So some of the things why observability is so important to be done as a team is because of how crucial it is in a company. I don't—in some, let's say that in some companies, it's still not understood how important it is to have observability. But that is, well, what I believe is because of the small scale. But the more that the companies grow, they understand how important it is to have highly available and reliable systems. It is crucial to have optimized performance because you could have—you could allocate a lot of resources, and you are not saving on cost. Basically, you're spending too much money or you're cutting back on resources, and you are basically not giving a good performance or a good experience to your users, depending on the type of product it is. 
 
-Observability is crucial in a company, especially as it grows. Many organizations still don’t grasp its importance until they face issues. Here’s why I believe teams should be involved:
+[00:08:42] Also, it is crucial for incident response. This is something that is very important—in my company, incident response is very important, considering that we have a lot of customers that rely on our product, very expensive products at times. So having all the teams involved in the crucial incident response is extremely important. We have around 2000 engineers. I actually thought that we were 3000; we were actually 2000 that are working in completely different areas, some of them I don't even know, except for what they are. So when I hear about them, I'm like, "Wow, okay," because it's so big and so diverse in our company. 
 
-- **Incident Response**: In our company, incident response is vital. With a large user base relying on our product, it’s crucial for all teams to be involved in incident management. If engineers are not engaged in monitoring their systems, it could take hours to respond to incidents instead of minutes.
+And if these engineers were not involved in the part of building their own dashboard, building their own alert, knowing what data they're sending for their observability reasons, they will not be able to respond to an incident in time, simple as that. If I was the one making the alerting for them, it would be something extremely generic with some thresholds that I just thought would be right because I don't know their products or their code, obviously. 
 
-- **Custom Alerts and Dashboards**: Custom alerts created by the engineering teams will be more effective than generic ones set by someone outside the team. This ensures that alerts are relevant and actionable.
+The dashboards would be completely generic, but if those were done by a person inside the team itself, it would be so easy for them because they know it inside out, their work, what are some of the issues that they might have. So if an incident happens, you reduce the response from hours that it would be if it was for me dealing with their incident to seconds or minutes if someone from their engineering team is involved. 
 
-- **Auto-scaling**: Effective auto-scaling relies on telemetry data. Engineers who know their systems can set appropriate scaling rules based on their unique needs.
+[00:10:40] Also, it is crucial for incident detection, as I said before. Us as engineers, the rebuilt engineers, we can provide a set of alerting dashboards that are very generic that each team can have as a baseline to implement their monitoring system, but I don't feel comfortable in a way to go and implement custom alerts, custom dashboards for these teams. Again, it goes to this: even if I wanted to, there are thousands and thousands of engineers, technologies, hundreds of teams. I would never be able to do that properly. 
 
-To summarize, observability isn’t just about having a system; it’s about ensuring everyone involved in building and maintaining the product takes ownership of observability.
+That's why it's so important that each team is involved and does it themselves. If they need it, they change it; they don't need our permission; they are owners of that solution. It's extremely important and also critical for auto-scaling. I say this because in perfect, we rely heavily on telemetry data to auto-scale, because you never know the amount of traffic that you're going to have in your application. 
 
-### Challenges and Solutions
+But for example, let's say for me or for another person in the observability, if we were to set some auto-scaling rules for you to be based on CPU or on memory, it would be something that is completely generic. But an engineer that knows their system so well, they would go and say, "Let's do a custom auto-scaling depending on the number of throughput," or whatever. 
 
-Observability can get messy, especially in large organizations. It’s common for engineers to add custom metrics and logs, leading to a cluttered environment. Here are some challenges I’ve encountered:
+Basically, my bottom goal here would be to say that all this requires people from the teams that are monitoring the system to take part in. If it is done by people that are outside—I am an infrastructure engineer; I work with Kubernetes, I work with VMs, with Azure, with cloud, and I'm not very good at back-end coding, let's say. So if I was the one doing this, I wouldn't do it properly, no matter how much I tried and how much effort I put. 
 
-- **Too Many Metrics/Logs**: Engineers may flood the system with unnecessary data, making it hard to sift through and find valuable information.
+[00:12:30] So let's not do observability for the sake of it. Yeah, let's have some generic alerts just for having them. No, let's do it properly. Let's have the people that are working day-to-day with the product implement them, make it their baby as well. It's very important to show it to the engineers. And I am very proud to say that in my company, we have a pretty good observability culture that started a few years back, so now it is widely accepted. 
 
-- **Lack of Structure**: Unstructured logs can be particularly frustrating. If engineers can’t easily query and analyze data, it hampers their ability to troubleshoot effectively.
+But I've seen it happen that teams rely heavily on other people to set up alerting for them, and that is something that scares me. If something happens, if an incident happens, and I wouldn't be comfortable working in a team like that if I wasn't the one setting up my own monitoring for the system. Also, observability can be so messy depending on the scale of the company. 
 
-- **Cost Concerns**: Observability can be expensive, and it’s essential to strike a balance between collecting sufficient data and managing costs.
+And so many people that come and go, everyone wants to add the custom metric, the custom log. It can get extremely messy. It can get too many metrics, too many logs, especially—for example, living debugging logs flowing all day. You know, because it can—yeah, you just sense, "I'm an engineer; I want to have full observability of my application." It's not affecting my performance, so I'm sending everything: debugging info, warning metrics. I create like a bunch of them on top of each other, or the same metric with different names. 
 
-### Creating a Culture of Observability
+And yeah, what can I, as an observability engineer, do about it alone? I detect it; I see it, and I say, "Okay, this is completely wrong." But of course, I'm going to need the collaboration of the engineers that are working with our product to actually change it. Otherwise, it would never be optimized, and it should never be, let's say, good observability. 
 
-For a successful observability culture, we need to:
+Too many traces—well, I'm a firm believer that there is no such thing as too many traces. I'm a big advocate of that. But yeah, it's possible that we are sending 100% of traces with a mess and completely no information there. And what can I do, considering that I'm not the one doing the day-to-day developing? I have to go and talk to the teams that they need to be active participants on that. Without it, for me, there is no durability, or it is something very generic just for the sake of it. That happens so much, and to be honest, it rates me. 
 
-- **Educate and Empower**: Provide engineers with the tools and knowledge to take ownership of observability. It’s crucial to avoid judgment and create a supportive environment where engineers can learn and adapt.
+[00:15:00] But there are also too many dashboards, too many alerts. If someone else creates the alerts or they're just created automatically, you have them ringing back and forth, and nobody actually looks at them because they know that it is spam. So it is very important for people to go and for engineers to go there and say, "Hey, okay, I don't need this alert; I need this. I need to create this." And the same for the dashboards. 
 
-- **Be Patient**: Transitioning to a robust observability culture takes time, especially for new team members who may have different experiences from previous roles.
+It can be thousands and thousands of dashboards, and when you actually have an incident, that's at midnight, 3 a.m. in the morning, you wake up, your eyes cannot open, and you have to scroll through thousands of those or try to find a person that might know what this is. It's very important to be about as simple as that. 
 
-- **Foster Collaboration**: Encourage a collaborative atmosphere where observability is a shared responsibility, and everyone feels empowered to contribute.
+Also, it is not easy; it makes it easy. I think they go hand in hand. It's, let's say, mostly the same thing with too many alerts and dashboards, and you just cannot get the hang of it, and you just give up. So basically, you do not rely on this to troubleshoot them. On what do you rely? Maybe the application logs or it takes you hours to solve an incident, which is not great either. 
 
-### Conclusion
+Too few or too many telemetry signals—I talked about too many, but there is also one thing: it is possible that you don't know how metrics are, how logs are generated, how traces are generated. In this case, that same place is considering right now, it’s this huge movement to make them first-class citizens. Many engineers, let's say, do not know how important tracing is and not how the great capabilities that they can achieve to that. 
 
-In summary, we all need to work together to cultivate a great observability culture and system, making our lives significantly easier. If anyone has questions or would like to share their experiences, please feel free to speak up!
+And my job as an engineer would be to advise them and to help them with it, but not to do it for them because I don't know the type of information they might need. It's simple. And it is not cheap. Absolutely, it is not cheap. Depending on the scale of the information that we are having, it could rack up to millions. 
 
----
+I was reading some articles recently about some companies that were paying a huge bill in observability, and the question in those articles was, "Who wants to blame?" And the stack of different billing is a team sport. It is also the blame is to share because the engineers of observability are clearly doing a great job at educating, or maybe they're not even there; that could be one of the cases, or the teams are not participating. 
 
-**Derek**: One comment related to what you said about observability is the ability to form rich queries against data once it's in your analytics backend. If you can’t query effectively, it leads to frustration. 
+Basically, you have this framework that just sends 100% of logging, tracing, metrics, and that is all sent somewhere. So yeah, observability is something that is a very delicate topic when it comes to costs because so many engineers consider it as not a very important thing until they actually need it. For example, when something happens and they don't receive an alert, "Oh my God, it is actually important!" Or "Oh my God, the information on that dashboard now would be so nice!" 
 
-**Iris**: Absolutely, I completely agree. 
+But at the same time, we have to know what to collect, how to, and to also advise our team to do it and to empower them to do it themselves. It's not an easy task, especially when it's so comfortable for them to have all that information. Let's say, for example, logging. I have a vision of talking in general, but nothing against it; it's used so much. They say, "Okay, I just will have the debug logs, and even if something happens, I will have it there." 
 
-**Derek**: What was the observability culture like when you joined your company, and how did you make improvements?
+Yeah, it's our job to convince them to show them and to actually make a plan and follow it through together. I would say our mission as observability engineers is not just to teach people and to show them because sometimes that sounds like, I don't know if it is the right word, but like stack ups. "Oh yeah, you do it." It's not that; it's just trying to do it in a collaborative manner to consider it as a teamwork. 
 
-**Iris**: I was fortunate because my company had already laid a strong foundation for observability. We continue to improve it by holding presentations, sharing articles, and being available for questions.
+That's a real team. It's not an external team that just works completely away from you, but it's, let's say, part of your team. And at the same time, it's not—it serves as an advisory. 
 
-**Derek**: How have you encouraged application teams to take ownership of observability without overwhelming them?
+So how do we change to this observability culture? It is very, very difficult. Because of my passion for observability, I talk a lot about it, and it is very, very difficult to convince an engineer with a higher grade than you to follow a certain observability culture if sometimes it's not even the engineers themselves. 
 
-**Iris**: We promote ownership by making it clear that each team is responsible for their monitoring and alerting. We’re here to guide them with documentation and support, but the responsibility lies with them.
+[00:20:00] It could be senior leadership; it could be higher-ups. They just do not believe it, and some companies—this is very prevalent and it's very difficult to crack in there to actually implement it. But I think that our job is to make a change. We need to be ambassadors in our companies, and I think what we're doing today and all these sessions are a great way for us to talk and to share opinions and to know how to approach our teams better, how to be better at what we're doing, and to actually show the importance of our work. 
 
-**Derek**: What has been the reaction from teams when you enforce this?
+We need to show the importance of the observability of the data. In fact, you can just go and say, "Hey, observability, a rainbow is amazing, beautiful." We have to show data, and that's very important to collect and very easy as well, considering the amount of incidents that are happening. Or you just show how easy it is to get information about one aspect of the application that they never thought about. 
 
-**Iris**: Most teams respond positively. They often ask for guidance, and we have the support of management to reinforce this approach.
+It's important to provide up-to-date tools. Our job is amazing because we can work with someone in modern technologies that are moving so fast. At the same time, it is very difficult because you need to provide tools that aren't mature enough. You have to provide tools that the engineers need and are looking for, and sometimes this can get overwhelming. But it is part of the challenge, and actually, this is my favorite aspect of the job: how fast it moves and how fast you have to adapt. It's part of being an observability engineer.
 
-**Iris**: Thank you all for the insightful discussion! If you’re interested in sharing your stories or participating in future sessions, please reach out on Slack. Thank you for having me today!
+Yeah, we have to provide guidelines. Not everyone knows—I mentioned this before, but I'm a firm believer of not judging. It might sound like a childish thing to say or kindergarten issue, but I know that tech people judge each other. "Oh, you don't know that much about Kubernetes parts of durability." It's very important for us to offer help and to avoid judgment of that sort because observability is not difficult, but at the same time, it's not easy, as I said before. 
+
+It's very fast; it's moving; it's modern. You need to adapt very fast, and the person that is completely detached from that will not be able to do it. So there is no place for judgment here, and I think that if there is judgment, that doesn't make you a good observability engineer. I think we're like the saints of the engineers. 
+
+And also, we need to give space and time to adapt. In some companies where the durability cultures exist, it's easy, obviously. If you have a majority of engineers that follow these practices, let's say, it becomes very easy for it to spread. But when you're starting from zero, it needs time. People that have been working in other companies that have completely different working mentality, it's going to be difficult for them to just land in the company and be like, "Ah, okay, now I accept observability as this amazing thing that it is." 
+
+No, we have to give them space and time to adapt, show them, be patient, be there to help, to implement. Even an engineer that is excellent at his job but has no idea how observability works, we have to be there for them. I think the human aspect of this job is more important than the technical one because it is good; it's important to be technical and to adapt and to build, but also the human aspect and spreading the culture and talking to people and being a people's person professionally. 
+
+You don't have to be an extrovert and have these beautiful conversations. It's a very important aspect of observability. 
+
+[00:24:00] These are all the slides that I had prepared for this presentation, but I just want to say my summary, or let's say the message that I have through this, is that we all need to work as a team to have a great observability culture and a great observability system, and that's going to make our lives much easier. 
+
+So that's pretty much it. I don't know if you have any questions, please let me know.
+
+**Derek:** It was a comment from Derek, actually. I think when you're talking about what is important in observability, they mentioned the ability to form rich queries against the data once it's in your analytics backend. It's when you're just asking what's important in the design of a perfect system. You can pop all the perfect data that you want into your backend, but if you don't have a way to quickly and effectively query that to get the answers you want, then you're just going to be frustrated. 
+
+I think that's one of the reasons why we get frustrated with unstructured logs so much is because you end up having to craft these complicated regexes and pattern matching of unstructured strings, and it's really frustrating to try and find what you want. So if we can do our part to make sure the data going in is nicely structured, it makes it a lot easier to get the signals you want out of it.
+
+**Iris:** Absolutely, absolutely agree. 
+
+**Derek:** I had a question too, but I can go to the back if someone else has one.
+
+**Iris:** Oh no, go ahead, Derek.
+
+**Derek:** I have one, but I can go after.
+
+So, I guess my question would be: what was the observability culture like when you joined your company? And kind of like what was ground zero? Where were you starting from? And then kind of how did you make improvements to that, or how did you kind of watch that culture improve?
+
+**Iris:** So actually, I'm pretty lucky when it comes to that extent where in this company, when I joined, I think the previous team and just a few members that are currently part of my team had done most of the heavy lifting. They had started the spreading of the observability culture and how to do it correctly. 
+
+So when I joined, I think everything was put in place. But of course, we are improving that day-to-day because you can have a culture there, but you have to, let's say, you have to water it every day and you have to keep it and to improve it. 
+
+So what do we do? We have presentation sessions with other engineers in the company showing them how to use our tools best of or what our tools can do. We are always open—the team—for just a Slack message to help them on how to create metrics dashboards. Even though the simplest questions, we're always there for them. We also share articles, share presentations for observability, and it's actually interesting because many people read them. 
+
+And we're also making sure that we're also always on top of the new technologies. In this case, for example, it was open telemetry; it was something that was very well accepted in Firefits, and some people were actually requested, so we provided. And just saying like always providing with the newest technologies, with the newest updates, so nothing is missing. And if, I don't know if it's called "bribing," but for example, we make sure that it's one of our engineers who reads something on the Internet. It's like, "Oh, this new cool feature in Grafana that I saw! Can we have it?" We make sure that we've had it before we always make sure that we're on top of things because that makes people want to use the system more and use it well and implement all the new changes. 
+
+So it's great for us.
+
+**Derek:** That's really good. If I can ask one more quick follow-up question, then I can give someone else a turn. So in your slide deck, you talk about how developing ownership by everybody of observability is super important for success. Because ultimately, like application engineers, they're the ones who have the context for how their applications run and for the things they need to look for. 
+
+So how, in your experience, have you gotten application teams to kind of take that ownership without making it feel like it's just one more thing you're trying to chuck over the wall at them? Right? Because again, like it's a unique spot that we're at as infrastructure platform people because we're not like the best at writing code, like we're not—that's not going to be our strongest skill. So it feels weird to me, at least in the past, saying, "Hey, can y'all go learn this thing and put it into practice, and I'll coach you from the sidelines? But I can't do it as well as you."
+
+**Iris:** Yeah, I think what helps, as I said again, we are lucky because we have a very good observability culture already ingrained. So most of the engineers just do it. But yeah, I think what really helped was that we have given full ownership to the teams on building their own dashboards, alerting, and sending their own telemetry signals. 
+
+So basically, when they come to us like, "Hey, can you help us set up an alert?" We're like, "Well, say you are full owners of that part of the observability," and that actually helps the teams knowing that they're owners of that. They want to make it grow and improve it rather than just leaving it there. 
+
+And we've also made it very clear that we will not be going there and implementing anything related to monitoring. So if you need monitoring, you have to do it yourself. We are here for you; we provide guidance, of course. We have tons of documentation on how to do everything. They're not alone, but we've made it very clear that we're not going to do that for you. It's simple.
+
+And considering that all our incidents are coming from the alerting that is set up on our platform, let's say they're kind of forced to implement it. But I think just the fact that they're owners of that, and it's part of their team responsibility coming from the higher structures of the company, "Okay, you'll have this amazing product that you are building and maintaining, but you also have observability that is your full ownership." So if it's not good, then it is your responsibility, not somebody else's. 
+
+So I think that has motivated the teams to really work on that. Sometimes it happens that when a junior enters the team, they're the ones that have to take care of all the monitoring without knowing well the code, but I think they soon realize how important it is for everyone to put their hands in to contribute there; otherwise, it does not work out.
+
+**Derek:** That's great, thank you!
+
+**Iris:** I have a question for you. It is, um, so you're saying like you guys hold your ground as far as like not being the ones to instrument code for folks. What kind of reactions do you get from teams when you say that? Like, are they like, "Oh, okay, I'll do it," or did they—like defensive pushback? Like, what's it like? How do you deal with it?
+
+**Iris:** Most of the time, they're like, "Oh, okay. Is there a framework? Can you send me to the framework so that I can find it?" And we usually also have a team that helps build this framework, so we send it to them. But most of the time, yeah, we just hold our ground. If they say that, "Oh, but I really need to help me," like, "Okay, I'm gonna help it. I don't know how to do it for yourself; I don't know your code." 
+
+And of course, there are cases that people are not happy, and they could go to a higher structure in the company and complain. But considering that this is not just something that as the durability team have decided today, that, "Oh, we're not going to build anything for anyone because it's their responsibility." It's not something that is, of course, supported and signed by upper management. They're like, "Sorry, but you have to do it; it's documented, and you have to do it." And it's simple as that.
+
+**Derek:** It's great having support; that's awesome. Because I think you've nailed it: that is the key thing. Because you're right, like if you don't have the management supporting that decision to like, you know, have an observability team, we're not going to instrument your code. Yeah, you're gonna have back channeling, and I mean, I've experienced that—it's really annoying. 
+
+And it ends up kind of ruining the thing that you're trying to build, like as far as that observability culture.
+
+**Iris:** Yeah, exactly. As I said, yeah, in Firefits, we are very, very happy in this aspect because, yeah, being forced to instrument somebody's code, that would be the breaking point for me as an engineer in believing that observability is lived preaching with everyone and talking about it and then being forced to go against these values that we have. That would be the breaking point for me; I have to stay.
+
+**Derek:** Yeah, I don't blame you.
+
+**Iris:** I have a question. Firefits is an e-commerce site, correct? And so I was curious—and Derek, I guess actually this question is inspired by your question in the hotel end-users channel this morning. How do you—or do you—like, what do you use for client-side instrumentation? Are you— 
+
+**Iris:** Well, we are using a vendor currently. I’d rather not say, but yeah, we're using a vendor for that part, which is very, very small. The rest—the rest of the platform is all instrumented by our own custom framework.
+
+**Derek:** Okay, okay. Do you have that integrated at all, or is it kind of like its own view of the client? And then you have trouble correlating signals with your back end? 
+
+**Iris:** Currently, it is a bit segregated, but we're working on changing it because it's such a small part of our platform. But yeah, it's not fully integrated. We're focusing more on, let's say, on our own custom solution that we have locally, and that one is a bit segregated from it, and it has only specific information, which is not great. But that's our goal for 2023 and 2024 to integrate everything together.
+
+**Derek:** What's your custom solution involve? Like, what makes it custom, I guess, is the question?
+
+**Iris:** I mean, it's using open telemetry now. We're using thousands, Prometheus, Grafana, Alert Manager—basically all open source—and we built it, let's say, we have around 100 Kubernetes clusters. We have created our agent based on this open source and just adding them on each of the classes, collecting information, centralizing it.
+
+**Derek:** Oh, so custom solution, like you're talking specifically around tooling and not like—I thought maybe you meant like having some abstraction layer on top of like telemetry, which I've seen some organizations do.
+
+**Iris:** No, no, no.
+
+**Derek:** Okay, cool.
+
+**Iris:** Any other thoughts or questions for Iris?
+
+**Derek:** Yeah, I guess I'm a little curious. So you said, you know, there's no such thing as like too many traces. And I know some people, you know, prefer to do some form of tail sampling. So they're just—they're still getting like a subset of, you know, randomized 200s and then like, you know, whatever traces with errors or latency or whatever attributes that they might be interested in. 
+
+So I was just curious if you could expound on that a little bit more, especially like, you know, when talking about like increased costs with excessive amounts of data.
+
+**Iris:** Yeah, so tracing is something that we are working a lot because it's not one of the telemetry signals that are being used a lot in the company. So we are trying to advocate it and push it a lot. And for your—when I say too few traces, I would say, uh, 0.01 sampling, like normal sampling, let's say, in younger. So the teams were considering it extremely low, and they weren't even caring about it, even though some of them you could find very good information there. 
+
+For example, I use it a lot to troubleshoot our Thanos queries; it's amazing. So where we are right now, we increased because we were able to change our back-end solution from Cassandra to Grafana Tempo, which is also open source. So of course, before we were spending a crazy amount of money for 0.01 tracing, we were spending so much money. I don't want to say numbers, so there was no place for us to grow more; it was completely out of budget. 
+
+So now we implemented Tempo, and we are able to send more traces, and we increased to five percent and increasing that just a few applications. And actually, uh, implemented this change because, of course, it's a custom framework, and they can do it however they want. And we already went for 1,000 spans per second to 40,000 from just one application, and this application is not even using most of what they're sending. 
+
+And imagine we have hundreds of applications, all of this sending—all that is going to be millions of spans per second. It's going to require a lot of computation power, and it's going to require a lot of storage. It's going to be a mess, and the cost will be out of this world, in conclusion. So I think that we really need to go there, like we're in the process of doing, and try to see—to implement better tracing because just normal sampling is not working. 
+
+Yeah, we're looking into a tail base; that's why open telemetry was brought up in the first place. So the perfect—to look at the tail base—and yeah, we were sending too little or basically there was not enough information. Now we're sending too much, so we are trying to find something that is in between. Tail sampling is one of them, and also we're also making changes to the framework so not everything goes through. Some of the information is just not usable, and the engineers are not needed.
+
+Yeah, it's a work in progress that is taking a lot of our time. I'd rather spend more money and send more information, obviously, but at the same time, we could not spend millions of dollars a year for information that's not going to be used.
+
+**Derek:** I see a raised hand.
+
+**John:** I did. I wanted to ask if you're doing anything around anomaly detection, especially as you increase the volume of information coming in, to avoid having to look at everything to look at those anomalies that are out of the time frame.
+
+**Iris:** You mean anomaly detection in the—?
+
+**John:** Yeah, well, so the scenario of, you know, here's a high volume event, but it's normal, and here's a high volume at what's normally a low time of day, right? Just to look for anomalies and everything that you're receiving without having to have a human look at it.
+
+**Iris:** Yeah, we actually have some alerting implemented there based on standard deviation, and it's like a simple PromQL-based alerting for that. And they are accurate, but we haven't gone about that because it's a custom solution, and we actually need to apply some machine learning there, which we haven't really been able to get to. 
+
+So it's do some alerts with the standard deviation that are okay; they can detect some anomalies and some very big changes, but also are highly inaccurate. So it's not my favorite, but they are there. We need to work better on it, but yeah, for example, if we have a huge anomaly or a huge flow of sudden that is not predicted, it is okay, let's say, it's not perfect. 
+
+I know you can get into some really interesting solutions with that that can come with a high cost, but there's some really interesting things you can do with that too. So I would love to know more if you have any links, any suggestions for me, please let me know, because the more solutions we can implement, hahaha! Like you mentioned, cost is always a worry, obviously, but if it's actually a quality solution that we are introducing, of course, it is a cost that is needed. 
+
+And that's it, you know. It's really enjoyable when you start to use tools like that to solve the problems because then you see things you didn't expect to see. We were experimenting with something a few years ago, and we intended to point at the top 10 issuers. And, you know, the engineer mistakenly didn't put the top 10 in, so he was actually looking for anomalies across the entire user set. 
+
+So, you know, thousands of customers, and they were in entities. So, you know, you can start to see, "Oh look, they're not sending at this time of day when they usually are! That's a low volume, low center, but they're sending nothing, and they usually send 70 per hour!" And we could see that before it finally blew up from running out of memory. But you know, you really get to say, "Now what can I do with that for my business?" 
+
+So that was interesting. We presented to them at the team who wanted to own that and didn't want to develop the expertise in that tooling, even though we could show them what it could do. So a 500 gigabyte EC2 instance was running that before it blew up.
+
+**Iris:** Yeah, a challenge that we have currently is with our metrics as well, and detecting which applications are sending higher technology, more number of times series. And we have dashboards and alerts for that, but nothing is based on machine learning. It's just pure statistical data, and it is being evaluated for standard deviation or simple queries. 
+
+So some more insight there would be amazing.
+
+**John:** Yeah, that too much data problem is very interesting to have, especially as the open telemetry standards evolve and add more fields. So now you have more fields to consider.
+
+**Iris:** Yeah, and they're good. It's good that those are coming, absolutely. 
+
+**John:** One thing that I wanted to ask you is: is your team involved at all in the creation of SLOs?
+
+**Iris:** Foreign, yes, but also no. Well, let's say we are the ones that are providing the tool for creating SLOs. 
+
+So basically, the teams can implement the structure or basically create alerting dashboards based on it, but we are not the ones that are providing the guidelines and the instructions on how to create them. We just provide the tooling.
+
+**John:** Is it like an open-source tool that you guys are using, or is it some like commercial?
+
+**Iris:** We're actually using—we have our own alerting solution, so we are doing the same for SLOs as well, and we are currently using Thanos ruler to send the alerts and to evaluate them, Alert Manager to send the alerts, and we also have a custom tool that reads the SLOs that are written in Terraform and makes them compatible with a Thanos ruler, so Thanos ruler can read them.
+
+**John:** Okay, and do you—so the reason why I'm asking specifically about SLOs is because one of the, I'd say, one of the practices a team should aim for is like using observability data to help generate their SLOs or not generate, to, you know, create their SLOs based on observability data. 
+
+So I'm just wondering if that's something that your team is planning on providing guidance on? Like, what's—are there any plans around that?
+
+**Iris:** So basically, we are providing the data and the tooling to do it. Most of the guidance, like how the SLO should be built, most of them are our business, and we're not really involved in that part. 
+
+So we cannot give guidelines, so that's completely different. But yeah, for example, for infrastructure, we provide some basic guidelines on SLOs. But I would say that, yeah, we just want to provide the data; they feed off of our metrics and the tooling that they can do it and how they can actually build them, but not really how we can go and or like how to calculate the SLOs or what is best and what is worse. 
+
+And we haven't gotten there. I don't think we have the plans currently to move into that as we have other teams that give advice or recommendations on that matter. There is so much to do in observability in our company. I think we've done a pretty good job so far, but there is so much more that we can do.
+
+**John:** Is there something that your team is working on implementing, like that you're excited about in the near future?
+
+**Iris:** Well, we decided that because of the huge amount of data and we do not have capability to process it as good as we would like, we are currently trying to see if we can—well, let me put some precedent. We are using different tools for different things. We're using Prometheus styles for metrics, we're using open telemetry for traces and open telemetry for metrics to a certain degree as well, Grafana for dashboards, and we're using a different tool for logging. 
+
+And currently, it's all a mess. So what we're trying to do right now is we want to centralize them in one platform. What we don't know yet if it's going to be an outside platform that we are feeding the data to or like a vendor or if we're going to provide it ourselves. So that's something that we're working on right now: centralizing everything in one place and sending all telemetry signals through one transporter, that is open telemetry, so we could have better correlation, which we are also lacking currently.
+
+**John:** Awesome, so exciting times!
+
+**Iris:** It is amazing! I love the work that you're doing right now, and it's going to be the next two years at least. I know after that, it's going to be very exciting for us.
+
+**John:** Well, it's very, very awesome. We're coming up on time, but I did want to give folks an opportunity to ask any other final burning questions.
+
+Nope, everyone's questioned out. Thank you, everyone, so much for joining. And if anyone who's in the audience is interested in giving a presentation for hotel and practice or would like to participate in one of our hotel Q&As, please reach out on Slack. We are more than happy to hear your stories, share your stories so that we can continue to build this amazing open telemetry community. 
+
+Thank you so much for having me today!
 
 ## Raw YouTube Transcript
 

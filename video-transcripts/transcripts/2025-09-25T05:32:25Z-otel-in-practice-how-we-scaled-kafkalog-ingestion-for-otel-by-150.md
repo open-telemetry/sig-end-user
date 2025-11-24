@@ -10,129 +10,152 @@ URL: https://www.youtube.com/watch?v=GrQyUPeCljo
 
 ## Summary
 
-In this edition of "Hotel in Practice," host Henrik welcomed Dakota Passman from Bindplane to discuss scaling open telemetry logs with Kafka. Dakota, a software engineer at Bindplane, shared insights from a project where they helped a customer overcome performance bottlenecks while pulling events from Kafka. The customer initially faced issues with only 12,000 events per second per partition, which led to a growing backlog. Dakota highlighted key strategies that improved performance, including using a new Kafka client, optimizing log encoding, reconfiguring the data processing pipeline to prioritize batching, and switching the exporter protocol. After implementing these changes, the throughput increased significantly, demonstrating how careful configuration can enhance system performance. The session concluded with a Q&A segment where Dakota addressed audience questions related to performance tuning and configuration best practices. Viewers were encouraged to access the recording on YouTube and LinkedIn for further learning.
+In this episode of "Hotel in Practice," host Dakota Passman from Bindplane discusses scaling open telemetry logs using Kafka. Dakota, a software engineer with over two years at Bindplane, presents a case study involving a customer who faced performance bottlenecks pulling events from Kafka, initially processing only 12,000 events per second per partition, while needing to reach 30,000. Key strategies to resolve this included switching to a more efficient Kafka client, optimizing configuration settings, adjusting log encoding from OTLP JSON to raw JSON, and repositioning the batching processor to improve throughput. The presentation also features a live demo showcasing the improvements in event processing capabilities after implementing these changes. Audience questions addressed the impacts of different exporters on performance, the configuration of batching, and resource usage considerations. The session concludes with reminders about upcoming events and opportunities for community engagement.
 
 ## Chapters
 
-Here are the key moments from the livestream with timestamps:
+00:00:00 Welcome and intro
+00:01:40 Guest introduction: Dakota Passman
+00:02:50 Overview of scaling issues
+00:05:01 Key takeaways for performance
+00:06:30 Customer performance metrics
+00:09:00 Changes made to improve performance
+00:12:00 Demo setup explanation
+00:15:02 Live demo of performance changes
+00:19:00 Q&A session begins
+00:25:26 Closing remarks and housekeeping
 
-00:00:00 Introductions and welcome to the stream  
-00:01:45 Introduction of speaker Dakota Passman  
-00:03:10 Overview of the topic: Scaling OpenTelemetry logs with Kafka  
-00:05:00 Discussing performance issues with the customer's Kafka integration  
-00:07:30 Key takeaways for improving Kafka receiver performance   
-00:09:20 Explanation of the customer's original configuration and bottleneck  
-00:13:00 Live demo setup and initial performance metrics  
-00:15:30 Implementation of changes to improve performance  
-00:20:00 Analysis of the changes made and their impact on throughput  
-00:25:00 Q&A session discussing exporters and batching strategies  
-00:30:00 Closing remarks and information about future events and community engagement
+**Host:** Hello everyone and welcome to our latest edition of Hotel in Practice. We are so excited to have you join here today. And remember, tell your friends for anyone who wasn't able to make it today that we will have our recordings available after the fact. You can go to our YouTube channel at hotel-official, and you can also check out the hotel LinkedIn page. We should have the recording available on there too.
 
-# Hotel in Practice: Scaling OpenTelemetry Logs with Kafka
+We have a very special hotel in practice today. We have Dakota Passman from Bindplane talking about doing some gnarly scaling of open telemetry logs with Kafka. So without further ado, let's bring Dakota on.
 
-Hello everyone, and welcome to our latest edition of Hotel in Practice! We are so excited to have you join us today. Remember to tell your friends that if they weren't able to make it, the recordings will be available afterward. You can check out our recordings on our YouTube channel at **hotel-official** and also on the Hotel LinkedIn page.
+**Dakota:** Hello.
 
-Today, we have a very special guest, Dakota Passman from Bindplane, who will talk about scaling OpenTelemetry logs with Kafka. Without further ado, let’s bring Dakota on!
+**Host:** Welcome Dakota.
 
----
+**Dakota:** Hi. Thanks for having me.
 
-### Introduction
+**Host:** Super excited to have you here. Would you like to do a brief intro of yourself before starting?
 
-**Dakota:** Hi! Thanks for having me. I'm Dakota, and I've been a software engineer at Bindplane for a little over two and a half years. I work on our platform, focusing a lot on the hotel project and making various contributions, especially regarding the supervisor. I'm happy to be here.
+[00:01:40] **Dakota:** Yeah. Yeah. I'm Dakota. I've been a software engineer at Bindplane for a little over two and a half years now. Working on our platform, focusing a lot on the hotel project and making some different contributions. Focusing a lot these days on the supervisor. It's a pretty cool project going on there. But yeah, happy to be here.
 
-**Host:** Excellent! If you're ready, let’s get started. For anyone interested, we will have time for questions after Dakota's presentation, so please feel free to post them in the chat.
+**Host:** Excellent. If you're ready to go, then let's get started. By the way, for anyone who is interested, we will have some time after Dakota's presentation for questions. So please feel free to post them in the chat, and we will address them after the presentation.
 
----
+[00:02:50] **Dakota:** Yeah. Cool. All right. So yeah, today I want to talk about a situation we handled with a customer of ours using the Kafka receiver at scale. We had to scale their environment. They were having performance issues. They were running into a bottleneck trying to pull events from Kafka. When we started talking to them, they were pulling only 12,000 events per second per partition in their topic, which was just not enough to keep up.
 
-### Presentation Overview
+So we're going to talk about that bottleneck, how we got them to get up to a target EPS of 30,000. And then we're going to demo those changes live in a replica environment. To start, we're going to go over some of the takeaways just so that we can keep these in mind as we're going through this and see where they're coming up.
 
-**Dakota:** Today, I want to discuss a situation we handled with a customer using the Kafka receiver at scale. They were experiencing performance issues and encountered a bottleneck while trying to pull events from Kafka. Initially, they were pulling only 12,000 events per second per partition, which was not enough to keep up. We're going to cover that bottleneck and how we helped them reach a target of 30,000 events per second (EPS). We’ll also demo those changes live in a replica environment.
+For starters, don't trust defaults. The Kafka receiver by default uses a certain Kafka client, and these clients behave differently. They perform differently. It's a default. However, shortly before we had this issue with the customer, there was a new client implementation added that we were able to use, and using that client over the default client was a big improvement.
 
-**Key Takeaways:**
-1. **Don't Trust Defaults:** The Kafka receiver uses a default Kafka client that performs differently. A new client implementation added shortly before we encountered issues provided a significant improvement.
-  
-2. **Configuration Matters:** Proper configuration of the collector can make a huge difference. This might seem obvious, but it’s easy to overlook if you’re unsure of the configuration options.
-  
-3. **Pipeline Configuration:** The configuration of the pipeline is also crucial. It can greatly affect performance.
-  
-4. **Understand Your Observability Goals:** This understanding helps tune the environment effectively to ensure your Kafka receiver performs well and meets your observability goals.
+Secondly, configuration of the collector makes a huge difference. That might seem kind of obvious, but it's sometimes easy to overlook that, especially if you're not entirely sure of what configuration options you have and what they might exactly do. Something else that I think gets overlooked sometimes is configuration of the pipeline matters a lot too, especially in this situation.
 
----
+Finally, it's important to understand your observability goals so you can tune the environment to get it right and make sure that your Kafka receiver or really any receiver that you might be using is performing well in your environment and hitting the observability goals that you're looking for.
 
-### The Customer's Situation
+To kind of set the stage a bit, this customer of ours was pulling 192,000 events per second across all of their partitions. They had just a single topic with 16 partitions, again doing roughly 12,000 events per second per partition, which sums up to 192,000 events per second. However, they needed to really be at 480,000 events per second in order to keep up with the amount of data going into Kafka. At that point, they would be able to start cutting down the backlog that they had going.
 
-The customer was pulling 192,000 events per second across all their partitions, with a single topic of 16 partitions. They needed to reach 480,000 events per second to keep up with the data going into Kafka and start cutting down their backlog. They were using the OpenTelemetry collector and had many default options set, leading to rapid backlog growth. Kafka was ingesting 30,000 events per second per partition, resulting in a backlog increasing by 288,000 events per second.
+They were using the open telemetry collector using the Kafka receiver with a lot of default options set. One topic, 16 partitions, each one only doing 12,000 events per second. The backlog was growing rapidly. Kafka was ingesting 30,000 events per second per partition roughly, and so their backlog was growing by 288,000 events per second across all the partitions. They were quickly falling behind.
 
----
+[00:06:30] In this situation, it was security telemetry that they were collecting from Kafka and trying to send to a SIEM backend. Already, they were dealing with delayed telemetry, and at this poor performance, they were at risk of starting to drop some of this telemetry too.
 
-### Changes Made
+Some of the changes we made, this is kind of like an illustration of the configuration and the pipeline that they had going. You can see some of these changes as we moved through the pipeline. So first off, the Kafka receiver using the new FronGo client, which was the Kafka client I mentioned before, using that implementation, we saw a big jump. We started, we jumped up to about 30% just using that client instead of the default.
 
-Here are some changes we implemented:
+Another thing, the log encoding that we were pulling from Kafka made a big difference. The receiver was configured to use OTLP JSON, which didn't really make sense in their situation. There was a lot of unnecessary work being done to handle OTLP JSON. So instead, we switched it to just raw JSON or normal JSON, not OTLP specifically, and that was another big performance boost there.
 
-1. **Client Upgrade:** We switched to the new FronGo client, which improved throughput by about 30%.
-  
-2. **Log Encoding:** The receiver was initially set to use OTLP JSON, which was inefficient for their use case. Switching it to raw JSON provided a significant performance boost.
+One other thing, batching. We moved our batch processor to the start of the processor pipeline, right after the receiver. The reason we did this, it allowed the receiver to pump out large quantities of events rather than being restricted by the data flow of the processor in front of it. It was reliably able to push out thousands of events in a batch at once rather than maybe a couple hundred and then jump up to a couple thousand back to a couple hundred. It was much more consistent performance batching right after the receiver. That's what we saw. As a result, we were able to boost our throughput doing that.
 
-3. **Batching:** We moved the batch processor to the start of the pipeline, allowing the receiver to push out large quantities of events consistently.
+[00:09:00] One final change we made, this is again specific to their environment and their pipeline. They were sending the SecOps SIEM backend, and we saw that changing the protocol used from gRPC to HTTP actually increased performance. In their specific case, this made a big impact. We were able to get increased throughput doing this as well. The idea here is similar to the batch processor we discussed. The exporter is just able to handle throughput better at HTTP than using gRPC. This affected the receiver upstream from the exporter, allowing it to push data out a lot faster.
 
-4. **Protocol Change:** Changing the protocol from gRPC to HTTP for the exporter also improved performance significantly in their specific case.
+In this demo, the customer had one topic, 16 partitions. They had a single collector per partition. In this demo, we're just going to be using a single collector, a single partition. Demoing with 16 partitions and managing collectors at that scale is difficult to do manually. We're just going to keep it simple here, just a single collector.
 
----
+We're going to start the environment, should be about 12,000 events per second that we're pulling. Then we're going to apply the changes to the environment, and then we'll see, you know, we'll discuss those changes more in depth and see how it's performing afterwards. 
 
-### Demo
+So if I come over here and check this out. I started this up shortly before we started here. This green line up here, this is going to be the events per second that the Kafka topic in the partition is pulling in. We're stable at around 26,000 to 27,000 events per second. And then down here is our single receiver, a single copy receiver. This is using the default client. It's pulling in these events as OTLP JSON, and batching is being done afterwards. Here you can see that we're stable at 12,000 events.
 
-In the demo, we will use a single collector and a single partition for simplicity. Initially, we were pulling around 12,000 events per second. After applying the changes, we expect to see significant improvements.
+Now, I'm going to just quickly stop this collector, and then I'm going to start it up using the new config. Crucially here, I'm going to start it up using this feature gate to enable the FronGo client. I'm going to start that. I'm going to let that run in the background for a little bit, let these changes trickle through. I'm going to talk about the changes we made more in depth.
 
-(At this point in the presentation, Dakota demonstrates the changes made to the configuration and shows the performance metrics.)
+[00:12:00] On the left here, this is the first configuration that the collector was using. This is the configuration for the Kafka receiver. This is a pretty default config. The key difference here again is this OTLP JSON encoding versus on the right here in the new config. We're going to be using text. Using text is just going to be able to pull the data faster. It's not going to have to worry about transforming or handling that data as much. It can just push the events through faster. It's not going to get bogged down trying to transform it.
 
----
+I've got some collecting the metrics from this receiver. Here I've got some processors. These are defined the same across the two here. This is to generate or to simulate how moving the batch processor around in the pipeline affects the actual throughput. These processors are all the same, just pretty basic, adding some fields.
 
-### Results
+Next exporters, we've got no exporter. We're not going to show the effects of the SecOps exporter in this demo just because it's a little much. We're going to just keep it simple here using the OP exporter, you know, eliminate that lever from the situation. We're sending our internal telemetry.
 
-We witnessed a jump from 12,000 events per second to around 25,000-26,000 events per second after implementing the changes. This improvement allowed the customer to catch up with Kafka's ingestion rate and start reducing their backlog.
+The other important part here, this is the initial configuration. We can see here the order we define our processors. We've got our two transform processors and then the batch. Again, the improvement we saw was adding the batch processor at the start of this processors definition list. This is so that the receiver is sending directly to the batch processor. It can get consistent performance, consistently pushing out a high number of events rather than being bottlenecked by the other processors in front of it.
 
----
+The other crucial thing, again I pointed out when I restarted the collector, I used the new feature gate to use the FronGo client instead of the default. 
 
-### Conclusion
+We'll come back here. We'll give this a refresh. This is going to keep going. But at the moment, we can see this new collector here. This is the old one turning off, and this is the new one coming back on. We briefly spike up, and I expect if we let this go for a little while, we'll see this stabilize and mirror the Kafka line. 
 
-In summary, we identified several key factors that contributed to the bottleneck:
-- Back pressure from upstream components affecting the receiver.
-- The performance differences between the FronGo client and the default client.
-- Avoiding unnecessary encoding conversions based on telemetry goals.
+[00:15:02] Let this go for a little bit. But I guess, just to kind of go back here and reiterate some of these points again, use the FronGo feature flag to use a FronGo client; it just performs a lot better than the default client in the Kafka receiver. Your log encoding, again, if you're handling the data unnecessarily, in this case, we're pulling data from Kafka that's not necessarily OTLP JSON, but because we have a receiver set up for that encoding, there's unnecessary work being done to transform it into that. We can just pull it in as normal JSON and handle it afterwards. That was a big source of improvement.
 
-Thank you for attending this session! We have some links to share, including a blog post about this topic and a link to the CNCF Slack.
+Again, batching early, the receiver is able to consistently push out a consistent number of events rather than having seen that fluctuate based on what's happening upstream of it. Again, in a similar vein, not shown in the demo but for SecOps or for this exporter, tuning and configuring that affects the receiver upstream of it.
 
----
+Those were again some of the changes we made. We'll see if we've got some better data here. It's still early, but you can see how this collector is starting to stabilize, kind of right around the throughput that the Kafka topic is getting. I expect this to get closer as it comes online and starts to stabilize. But again, you can see we jumped from doing 12,000 events per second, and then with all those changes we made, now we're closing in around 25,000 to 26,000 events per second. Drastically better improvement. This is how we were able to help this customer scale up their throughput so that they're able to keep up with Kafka. In their case, we were able to get past what Kafka was ingesting so that we could also start cutting down the backlog and catch up.
 
-### Q&A Session
+Got to refresh this a bit. Cool. You can see this is stabilizing. Why it worked? Back pressure. Back pressure is the term for this idea I've been talking about where what's happening upstream or downstream of the receiver is affecting the receiver. It's just not able to push events through as fast because it's got to wait on the components ahead of it to process their events. You don't notice it until, in this case, the receiver starts falling behind and is affected by it.
 
-**Host:** Now, let’s move on to questions from the audience.
+Again, very similar to the early batching. The FronGo client just performs a lot better than the default client in terms of pulling events from Kafka. Again, use that feature gate to enable it. Finally, avoid doing unnecessary encoding conversions. Again, this is understanding your telemetry goals in your environment, understanding what the data you're sending looks like so that you can make sure that your receivers and other components are configured properly to handle it.
 
-1. **How do different exporters impact performance?**
-   - The impact will depend on the exporters used. For this customer, switching from gRPC to HTTP for the SecOps exporter resulted in better throughput.
+I think that's all I have for a demo. We can keep checking out that graph to see how it's looking as it's coming online. Got a couple links here, one to the blog post that we made about this, and then also the link out to the CNCF Slack. I think that is it for my slides.
 
-2. **What was the initial reason to put batching at the end of the pipeline?**
-   - This approach may have worked better in other environments, but it depends on the processors in your pipeline.
+[00:19:00] **Host:** Cool. Sorry, muted mic. Looks like we have a question coming in from LinkedIn. How do different exporters impact performance?
 
-3. **Would using a memory limiter bring extra performance?**
-   - I'm not familiar enough with that processor to give a definitive answer, but I’m open to looking into it.
+**Dakota:** Yeah. I think that's definitely going to be very dependent on the exporters being used. It's going to be something you have to investigate per case and, again, fine-tune the configuration of them. In this case for the customer, the SecOps exporter using gRPC just wasn't able to keep up with the throughput we had, and in this situation, HTTP was able to perform a lot better. It's just a matter of trial and error to see what works best for your environment based on your telemetry and your goals.
 
-4. **Is the FronGo feature flag only useful for the Kafka receiver?**
-   - No, it's a general implementation not specific to the receiver. Other Kafka components might utilize this client as well.
+**Host:** Awesome. Looks like we have another question. Batch has been recommended to be the first processor of the pipeline. What was the initial reason to put it at the end of the first pipeline?
 
-5. **Did you size the batching to improve performance?**
-   - Yes, we experimented with the size of batching to find what worked best for our environment.
+**Dakota:** Yeah, so the reason for putting it at the end, you know, I'm not entirely sure of the decision to do that or what went into that decision. I think it's a perfectly valid approach. I know maybe in other environments that works better. I think it depends on the processors in your pipeline. I think some processors, it would be better to batch afterwards rather than before. Again, it's very dependent on what your pipeline looks like, what your goals are, and what you're trying to achieve.
 
-6. **What about resource usage? Does it have any consequences?**
-   - The configuration changes didn’t significantly affect resource consumption, which remained reasonable.
+**Host:** Awesome. Another follow-up question or another question. You did not use the memory limiter. Would that bring extra performance from using it if you used the memory limiter?
 
----
+**Dakota:** That's a great question. I can't say I'm too familiar with that processor, so I don't know if I have a good answer for that. I would certainly be willing to look into it and understand it and see if that could have applied here.
 
-### Closing Remarks
+**Host:** Fair enough. Another one that we have is, the FronGo feature flag, is it only useful for the Kafka receiver?
 
-If there are no more questions, that wraps up our session. Thank you all for attending! Remember, the recording will be available on our LinkedIn page and YouTube channel. Also, for those interested in sharing their stories with the Hotel End User SIG, please reach out to us on CNCF Slack.
+**Dakota:** It's a good question too. Yeah. No, the FronGo client implementation is just a general implementation not specific to the receiver. Some of the other Kafka components in the project, it's a matter of whether or not they utilize this client as well, and looking into seeing if there's a way to enable them to use this client or not. If not, I imagine that's something that will happen shortly, the ability to use the other Kafka components with that FronGo client.
 
-We would love to hear from you, especially if you have experiences with OpenTelemetry to share. Thank you so much, and we hope to see you at CubeCon North America!
+**Host:** All right. Awesome. Another question we have. Did you size the batching to get improvements, and did you adjust the exporter batch as well?
+
+**Dakota:** Yeah, that's another good question. We definitely did play around with the size of the batching. In this demo, we've got it configured like this. That's definitely something that you can play around with, toggle that, fine-tune it, see what works best for your environment and your throughput.
+
+**Host:** And then the final question that we have here, what about the resource usage? Does it have any consequences?
+
+**Dakota:** Yeah, that's a great question too. Definitely something you want to be aware of. With our customer, making these configuration changes, they didn't affect the resource consumption and usage like that. The amount of resources the collector was using was still pretty, not negligible, but it didn't affect the system. It wasn't like all of a sudden we jumped from using 20% memory to 80% memory or CPU. It was very reasonable, so it wasn't necessarily a concern.
+
+**Host:** Excellent. Do we have any other questions from the audience? Let me share these links in the chat as well.
+
+**Dakota:** Oh, perfect. Yeah. Stay tuned.
+
+**Host:** We need like a little drum roll.
+
+**Dakota:** Yeah.
+
+**Host:** Okay. Awesome. Henrik has shared the links.
+
+**Dakota:** Perfect.
+
+**Host:** Amazing. Well, I suppose then if we don't have any other questions, I guess that is a wrap. Short and sweet informative. That's a lot to cover in a short time and also lots of great questions, lots of great considerations from a performance side as well. So definitely appreciate the questions that we've gotten. Again, tell your friends for those who are on the stream that this recording will be available after the fact, both on our LinkedIn page, the open telemetry LinkedIn page, and on the open telemetry YouTube channel, which is hotel-official.
+
+[00:25:26] A couple of housekeeping notes for anyone who is interested. The CFPs are still open for CubeCon, and I think in the last week, the CFPs have also opened for the CubeCon collocated events. That's the CubeCon in Europe in Amsterdam. Not the upcoming one; the upcoming one is done. Those CFPs are closed. But if you are interested in applying to CubeCon EU and Amsterdam and/or to the collocated events, these are the links. Remember folks that the submission limit for CubeCon is now three proposals per person, and that includes whether you're the main submitter or a co-speaker. The submission limit for the collocated events is 10 across all collocated events, which is very cool.
+
+For anyone who is interested in sharing their stories with the hotel end user SIG, we love hearing from the community. Please reach out to us. You can find us in CNCF Slack. We have a lovely Slack channel, which is, I believe, SIG hotel end user. Henrik has been nice enough to put the link to our Slack channel on there as well. 
+
+Oh, yeah, sorry, I had it backwards; it's hotel-end user. We would love to hear your stories, whether it is through hotel in practice, this type of presentation. If you have a presentation that you want to test out, this is a great proving ground. Or if it's a talk you've given somewhere, and you just want to share it with more folks, this is also another great way to get the topic out there.
+
+Dakota, you presented this at open source summit, right? The collo observability day or the, I forget what the hotel day was, is that correct?
+
+**Dakota:** I didn't present anything, but one of our coworkers at Bindplane did present a topic about the Kafka receiver.
+
+**Host:** Ah, okay.
+
+**Dakota:** His presentation was a deep dive into his understanding of it and some of the unique aspects of it he figured out.
+
+**Host:** Oh nice. Very nice. That's awesome. We would love to hear topics like that. We also love to hear anything where you've learned cool stuff about open telemetry. We would love to hear from you, so hit us up on our Slack channel. We also have hotel Q&A, so for anyone who wants to talk about their hotel journey, this one's an interview style format. Both of these are live streams. We would love to hear from you.
+
+We have recently had, I think our previous hotel in practice was with folks from Alibaba in the APAC region. We are looking for more folks in the APAC region as well who would love to share their story because, you know, open telemetry and CNCF, it's a global undertaking. We have lots of love from folks all across the globe. If you're in the APAC region and you have a story to share, we would schedule an APAC-friendly hotel in practice or hotel Q&A to cater to the time zone.
+
+That is it for us. If you're going to CubeCon North America, you'll probably see some of our crew at CubeCon North America. Excited to have folks connect in person on open telemetry. Thank you so much everyone for attending.
+
+**Dakota:** Thanks.
 
 ## Raw YouTube Transcript
 

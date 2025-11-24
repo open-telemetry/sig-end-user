@@ -10,143 +10,218 @@ URL: https://www.youtube.com/watch?v=KzqY4roXhHs
 
 ## Summary
 
-In this episode of "O Tell Me," host Adriana Vila, along with co-host Victoria, engages in a discussion with guest Mole Aigbe, a developer advocate at Step Security and a member of the OpenTelemetry community. They explore Mole's journey into open source through the Outreachy program, which supports underrepresented communities in contributing to open source projects. Mole shares insights on the challenges of applying for Outreachy, the application process, and his experiences learning Go and contributing to OpenTelemetry, including building an exporter for the OpenTelemetry Collector. He emphasizes the importance of supportive mentors and the community's welcoming nature, as well as the value of studying existing code to accelerate learning. The conversation also touches on the need for improved documentation and resources for newcomers to OpenTelemetry. The episode concludes with announcements about upcoming events and opportunities for community engagement.
+In the latest episode of "O Tell Me," host Adriana Vila, along with co-host Victoria, welcomes guest Mole Aigbe, a developer advocate at Step Security and an OpenTelemetry community member. The discussion revolves around Mole's journey into open source through the Outreachy program, which aims to support underrepresented communities in tech. Mole shares his initial hesitations about contributing to open source, his learning process in Golang, and the challenges faced while creating an OpenTelemetry exporter. He emphasizes the importance of mentorship and community support, particularly from figures like Adriana and his mentors, who encouraged him throughout his journey. The conversation highlights the value of community, advocacy for open source, and the resources that helped Mole, such as YouTube channels and blog posts. The episode wraps up with mentions of upcoming events and initiatives within the OpenTelemetry community.
 
 ## Chapters
 
-Here are 10 key moments from the livestream along with their timestamps:
+00:00:00 Welcome and introductions
+00:02:30 Outreachy program overview
+00:05:20 Application process discussion
+00:10:00 Internship duration and mentors
+00:11:30 Contributions to OpenTelemetry
+00:14:02 Securing first job experience
+00:15:50 Learning resources and methods
+00:20:01 Documentation feedback and suggestions
+00:25:00 Experience creating first PR
+00:30:00 Building an OpenTelemetry exporter
 
-00:00:00 Introductions and welcome message  
-00:02:30 Introduction of co-host Victoria  
-00:04:00 Introduction of guest Mole Aigbe  
-00:06:00 Overview of the Outreachy program  
-00:10:30 Mole's initial thoughts on open source before Outreachy  
-00:15:00 Discussion on the application process for Outreachy  
-00:20:00 Mole shares his first contribution experience  
-00:30:00 Mole talks about building an exporter for OpenTelemetry  
-00:40:00 Insights on learning Go programming language  
-00:50:00 Discussion about the OpenTelemetry community and its support  
+**Adriana:** Hey everyone, welcome to the latest edition of O tellme. My name is Adriana Vila. I am one of the maintainers of the open telemetry enduser SIG. Super excited to have folks joining us here, and please feel free in the chat to just say where you're joining from. I'm joining from Toronto, Canada. I have some very special folks here joining today. First of all, I have Victoria who is co-hosting with me. So, Victoria, why don't you introduce yourself?
 
-Feel free to ask if you need any more details!
+**Victoria:** Hi everyone. I'm Victoria. I'm a user experience designer. I'm currently interning with the Prometheus project as an LFM. My project has got me interfacing with a lot of hotel members, which is how I learned about this program. I'm looking forward to interviewing and learning all about his experience.
 
-# O Tellme Episode Transcript
+**Adriana:** Awesome. And now it's time to introduce our guest for the day.
 
-**Adriana:**  
-Hey everyone, welcome to the latest edition of O Tellme. My name is Adriana Vila, and I am one of the maintainers of the OpenTelemetry End User SIG. I'm super excited to have folks joining us here, and please feel free in the chat to just say where you're joining from. I'm joining from Toronto, Canada. 
+**Mole:** Hello everyone. It's so nice to be here. Thank you so much, Adriana. My name is Mole Aigbe. I am a developer advocate at step security. I'm also an open telemetry member. I was a former algi intern and that's where I got introduced to open telemetry, and I'm so excited to share my experience with hotel here today. Thank you for having me.
 
-I have some very special folks here joining today. First of all, I have Victoria, who is co-hosting with me. So, Victoria, why don't you introduce yourself?
+[00:02:30] **Adriana:** Amazing. Yeah, super excited. Well, you mentioned outreachy in your intro. Why don't you tell folks a little bit about the outreachy program?
 
-**Victoria:**  
-Hi everyone! I'm Victoria. I'm a user experience designer, currently interning with the Prometheus project as an LFM. My project has got me interfacing with a lot of OpenTelemetry members, which is how I learned about this program. I'm looking forward to interviewing and learning all about this experience.
+**Mole:** Okay. So, the outreach program is an initiative that aims to help people from underrepresented communities, you know, marginalized, looked down on communities, get into open source. They encourage them to put their first leg into open source and they also give some kind of incentive to assist them, right? To get their first leg into the open source community at large. So, that is what outreachy is. It's not just for open source; it's for both open source and open science. They have projects that cover biological things, projects that cover geomaps, you know, different diverse projects—not just open source projects. But my love, since I'm a tech guy, I love open source, and that's where I got to know about open source and the amazing open telemetry community.
 
-**Adriana:**  
-Awesome. And now it's time to introduce our guest, Mole.
+**Adriana:** Did you know about open source before you applied for outreachy, or was outreachy your awareness into open source then?
 
-**Mole:**  
-Hello everyone, it's so nice to be here. Thank you so much, Adriana. My name is Mole Aigbe. I am a developer advocate at Sematext and also an OpenTelemetry member. I was a former Outreachy intern, and that's where I got introduced to OpenTelemetry. I'm so excited to share my experience with OpenTelemetry here today. Thank you for having me.
+[00:14:02] **Mole:** Okay. So, yeah. I always knew that open source existed, right? I always knew that, okay, there's something out there in the world called open source that some cool dudes, very smart, very intelligent, are doing awesome work in, right? But I just never believed that someone like me could contribute to open source because I was like, bro, what do you know? You do not work in Microsoft. You don't work in Google. You don't have that knowledge, man. You don't have experience. So just chill when you're skilled enough, maybe you can start playing in the big leagues, right? So open source was something I remember, you know, several times I would use YouTube to learn how to contribute to open source, and then I would try to watch some videos, I’d get scared and then I'd run away, right? But outreachy provided that platform. We had mentors that actually directed and showed us the step-by-step process on how to make your first contribution. And then once you make your first contribution, you realize that wait a second man, it's not that hard. It's all in your head, right? And once you make that first contribution, you just keep making and making, and then it just became so cool. So, yeah, that's how I got to learn about open source. I knew about open source, but outreachy gave me the platform to take that first step into open source.
 
-**Adriana:**  
-Amazing! Yeah, I'm super excited. You mentioned Outreachy in your intro. Why don't you tell folks a little bit about the Outreachy program?
+**Adriana:** Yeah, really interesting. Could you tell us more about the application process? What was it like?
 
-**Mole:**  
-Sure! The Outreachy program is an initiative aimed at helping people from underrepresented communities—marginalized and overlooked communities—get into open source. They encourage them to take their first steps into open source and provide incentives to assist them in doing so. It's not just for open source; it's also for open science. They have projects covering biological topics, geomaps, and various diverse areas, not just open source projects. However, my love is in tech, and I love open source. That's where I got to know about OpenTelemetry and the amazing community.
+[00:05:20] **Mole:** Okay. So first of all, I almost did not apply for outreachy because I also had that whole mentality that, okay man, this is open source. This is for the cool kids. I'm not a cool kid, right? So I was like, you know, my very good friend was like, no, you can do it. Just apply. What's the worst that can happen? They tell you no, you go back, you cry, and you're fine. So, I decided to take that step. The application process is that you have to write like five essays on why you believe that you should be awarded the internship. Because, like I said, the internship is not about they’re not looking for very skilled people. They're looking to actually support, you know, people that come from the minorities of society, like people that you would hear about on a regular day, right? Like people that are looked down on, you know, that people don’t even like—the big leagues don’t even look at in society. So that's their goal, right? Those are the people they are trying to support. So, you can be quote unquote very smart or high and mighty, and they won’t accept you. But you know, if you feel like man, who will hear my voice, no one cares about me, I’ll say go for outreachy. They care. The people actually sit down and read people's essays to see and to look for those kinds of people that they know they can support. So, I know people have heard a lot of things about job applications that they use one AI tracker to just wipe people's applications, but I can tell you from experience that outreachy is not like that. Real people actually read your essays and you can tell your story, and through your story, you know, you might get a chance to walk into and begin your own open source journey. 
 
-**Adriana:**  
-Were you aware of open source before you applied for Outreachy, or was Outreachy like your introduction to open source?
+[00:11:30] **Mole:** So you have to write five essays. Once you write the five essays, you get into the first phase. There are actually two stages. The first phase is the essay phase where you have to prove that you need the internship. The second phase is where you actually have to now do the work. In doing that work, I’ll say there were a million times I wanted to give up because I did not know Golang. That's the language that most cloud-native applications are written in. I remember in December 2023, two months before I was learning about DevOps. So I just in that February I started learning Golang. I was trying to learn open telemetry; I was trying to learn Golang; and I was trying to contribute—all in one month. So it was a whole lot. But you know, I always say shout out to Henrik and Adriana. Their content really, you know, ramped me up to speed on how to first understand the project and then make some reasonable contributions. I was able to get like 70 hours merged, and then my mentors were like, "You're so cool. Come on board." My mentors, by the way, Jurassi and Yuri are the coolest guys out there. Shout out to them. I love them so much with all my heart, and I'm always grateful to them for the forever they will be part of my tech journey. I always mention their names everywhere I go, you know, as the ones that helped me like a baby and trained me up to be this man that I am now. 
 
-**Mole:**  
-I always knew open source existed. I knew there were smart people doing awesome work in that space. But I never believed someone like me could contribute to open source. I thought, "What do I know?" I didn't work at Microsoft or Google; I didn't have that knowledge or experience. I would often use YouTube to figure out how to contribute to open source, but I'd get scared and run away. Outreachy provided a platform with mentors who directed us step-by-step on how to make our first contributions. Once I made my first contribution, I realized it wasn't that hard; it was all in my head. 
+**Adriana:** That's like a summary of the application process.
 
-**Adriana:**  
-That’s amazing! Could you tell us more about the application process? What was it like?
+**Mole:** Yeah, that's so great. And you know, I can't underscore enough the importance of programs like outreachy because they give opportunities to people who otherwise wouldn't necessarily have gotten the opportunity. And especially like nowadays, I'm going to get on my little soap box and talk about the fact that so many DEI programs are getting cut and there's so much, I don't know, there's like global hate towards DEI programs. So it's so nice to have a reminder that programs like outreach exist. They benefit folks. They elevate folks who are awesome who we wouldn't necessarily have known about. I love that you got so much out of the program. I love that the program exists. I wanted to ask you, how long was your internship?
 
-**Mole:**  
-Sure! I almost didn't apply because of the same mentality I had—that open source was for the "cool kids." But my good friend encouraged me to apply, saying, "What's the worst that can happen? They tell you no, and you move on." So, I decided to take that step. The application process involves writing five essays about why you believe you should be awarded the internship. They're not looking for highly skilled people; they want to support those from minority backgrounds. 
+[00:10:00] **Mole:** Okay, so the internship was for three months. But if I want to combine the whole application process, everything together was like six months, right? But officially, the internship is just for three months. 
 
-Once you write the essays, there's a two-phase process. The first phase is the essay phase, followed by a phase where you have to do the work. I remember wanting to give up many times because I didn't know Go, which is the language most cloud-native applications are written in. I started learning Go just two months before the internship while trying to learn about OpenTelemetry. It was hectic, but with the help of mentors and resources, I managed to get my contributions in.
+**Adriana:** Awesome. You talked a little bit about your mentors. How do you get paired up with a mentor?
 
-**Adriana:**  
-That's really interesting. I can't underscore enough the importance of programs like Outreachy. They provide opportunities to people who might not otherwise have them. How long was your internship?
+**Mole:** Okay, so when you pick a project, every project has mentors for the project, right? So when I picked the project open telemetry, it was Jurassi and Yuri that actually volunteered to be mentors for a particular project, right? And so they became my mentors.
 
-**Mole:**  
-The internship lasted for three months. However, if you include the entire application process, it was about six months in total.
+**Adriana:** Cool. I would like to ask—I know that hotel is a very big project—what specific areas did you contribute to?
 
-**Adriana:**  
-How do you get paired up with a mentor?
+**Mole:** Okay. So the, I'll go before the actual internship. I remember scrolling through the different repos on GitHub and I was like, oh my god, where do I even start from? I found solace in the collector contrib. In outreachy, the project that I worked on was building a logging bridge in Golang, and by the end of the internship, I was able to build the zero log bridge for Golang. So those are the projects that I'm working on, and currently I still contribute to the collector contributions.
 
-**Mole:**  
-When you pick a project, each project has mentors who volunteer to guide participants. In my case, Jurassi and Yuri volunteered to be mentors for the OpenTelemetry project, so they became my mentors.
+**Adriana:** Wow! But like it's funny to see how you went from not knowing about school to completing your internship to building something that the community is making. That's huge. Could you share with us how the outreachy internship helped you secure your first job?
 
-**Adriana:**  
-What specific areas did you contribute to in OpenTelemetry?
+**Mole:** Okay. So what happened was I had done a lot of work and then I was writing articles for Signals. Signals is a very cool collab observability platform that also supports open telemetry natively. I think my former boss, Otus, the CEO of Semantex, saw some of the articles that I wrote and, you know, had a conversation with me that, oh hey man, you worked on open telemetry, right? I'm like yeah, I did. What did you do? I showed him what I did. We got on a call, I did some demos on how auto instrumentation works. He was like, wow, this is so cool. I was like, yeah, it's so cool. Oh, open telemetry is so cool. And he was like, okay, they want to integrate their platform with open telemetry and am I up for it? I'm like, okay, sure, I'm up for it. Let's go. And at Semantex, what I was working on was building an exporter for their platform so that they can receive data from open telemetry data into their platform directly using the open telemetry collector. So that was the project I worked on while at Semantex, and it was very stressful but it was very cool.
 
-**Mole:**  
-Before the internship, I explored various repos on GitHub, but I found solace in the Collector contrib. The project I worked on during Outreachy was building a logging bridge in Go. By the end of the internship, I successfully built the Zero log bridge for Go.
+**Adriana:** That's amazing. I think it really underscores like two things. First of all, outreachy kind of gave you the tools to contribute to open source, contribute to open telemetry, but then you did another awesome thing, which is putting yourself out there, writing these blog posts, which is so important. It's so hard sometimes to put ourselves out there. And you know, I think we all in tech suffer from impostor syndrome at some point or another. Maybe constantly feel it comes in waves for me. And you just have to push past that impostor syndrome and do it anyway. Mega kudos to what you're doing. Now you've made a few references about learning open telemetry, learning Golang. What did you use for—can you dig a little bit deeper on how you learned open telemetry?
 
-**Adriana:**  
-Can you share how the Outreachy internship helped you secure your first job?
+[00:15:50] **Mole:** Okay, yeah. I'll start from my first introduction to open telemetry. I just Googled open telemetry, entered, and I saw the documentation. I was like, oh, this looks so cool. And then I tried to read the docs and my brain wanted to blow. So I went to—I'm more of a visual learner, right? So I went to YouTube and I typed "what is open telemetry?" and Henrik, he is the owner of the channel—is it observable?—and I was just watching a lot of his videos at that time. I would say those videos gave me a lot of context because how I learn is I like specific information before general information. So I used his videos a lot to ramp up my knowledge on open telemetry. And then our wonderful co-host here, Adriana—her blogs are so awesome. I read a lot of her blogs at that time just to ramp up because the documentation was very overwhelming for me. After reading those two things, I then began to go to the docs and actually narrow down on what I was looking for. I really knew what I was looking for because documentation sometimes can be very overwhelming because there's so much information packed in the documentation and it's trying to talk to different classes of people—both beginners, intermediate, and advanced people. So beginners sometimes always feel overwhelmed right from those documentation. But I'll say, when it came to running the open telemetry demo, the docs did a good job.
 
-**Mole:**  
-I had done a lot of work and was writing articles for Sematext. The CEO, Otus, saw some of my articles and reached out to me about integrating their platform with OpenTelemetry. I showed him what I did, and he offered me a position to build an exporter for their platform using the OpenTelemetry Collector. That’s how I got my first job.
+**Adriana:** Wow, that's great. Personally, I'm more of a reader. I prefer to consume text-based resources than watching.
 
-**Adriana:**  
-That’s amazing! It really underscores how Outreachy gave you the tools to contribute to OpenTelemetry, but you also put yourself out there by writing blog posts. What were your resources for learning OpenTelemetry?
+**Mole:** Cool. I'm with you on that.
 
-**Mole:**  
-I initially stumbled upon the OpenTelemetry documentation, but it felt overwhelming. As a visual learner, I turned to YouTube and found Henrik's channel, which provided a lot of context. I also read Adriana's blogs, which were immensely helpful. After getting a foundational understanding, I could go back to the documentation, knowing what I was looking for.
+**Adriana:** That's interesting to know. Good for you. Of all these resources that you mentioned, the YouTube videos, which of them would you say was the most useful for you to learn about?
 
-**Adriana:**  
-What specific resources were most useful for you?
+**Mole:** So you want me to pick one? If you tell me to pick one, I'm very biased. I always go for videos. So, if you tell me to pick one, I'll go for Henrik's channel. Hands up.
 
-**Mole:**  
-For videos, I would definitely go with Henrik’s channel. For text, I would recommend Adriana's blog on Medium.
+**Adriana:** I mean, Henrik produces amazing content, so I can definitely vouch for that.
 
-**Adriana:**  
-What was your experience like creating your first PR?
+**Mole:** Yep. So, for video, I'll say Henrik's channel, Is it observable? If you haven't, go and check it out. It's awesome. And then for text, Adriana's blog on Medium. I don't know if she's hearing me right now, but Adriana's blog, yeah. So, you should also check that out.
 
-**Mole:**  
-Creating my first PR was a whole experience. I spent about two weeks learning and then realized I needed to make my first PR. I studied other people's PRs and found an issue that I could tackle. With the guidance of others, I was able to submit my first PR, and when it got merged, I was ecstatic!
+**Adriana:** That's cool.
 
-**Adriana:**  
-Can you tell us about your experience creating the OpenTelemetry exporter?
+**Mole:** Yeah. 
 
-**Mole:**  
-When I started working on the exporter, I found that there was no documentation on how to create one. I had to study existing exporters and use the OpenTelemetry Collector Builder. It was a lot of trial and error, but eventually, after much effort, I succeeded in building the exporter.
+**Adriana:** Now, you said you have a preference for the videos, right? Is there a reason why?
 
-**Adriana:**  
-What was your experience learning Go for this project?
+**Mole:** Okay. So how I reason is I'm a very imaginative thinker. I can sit down and just go on and just be imagining a lot of things. I like pictures, visual things because if I'm just reading a bunch of text of a concept I haven't understood yet, I get bored. I will just easily get bored and zone off. So, if I'm watching a video, you know, the sound of the person, the tone, the infographics, the pictures, you know, just keeps me excited to keep going. Before I know it, I've tricked my brain into learning a new concept, right? So, yeah. So that's just what works for me. I've observed it over time.
 
-**Mole:**  
-Learning Go was challenging because I had to apply it directly to real-life projects. I made many mistakes, but my team at Sematext was supportive. I took a course that provided context, which helped me understand the language better. It was a tough but rewarding experience.
+[00:20:01] **Adriana:** That's awesome. Yeah, makes sense. The next question that we were wondering about, you mentioned that you use the hotel docs as a reference. One of the goals of these sessions that we have like with hotel me is also to provide feedback to the hotel community on areas for improvement. Is there anything that you found about the third-party documentation more useful than the official hotel docs and what would you do to improve the docs experience if it were up to you as a new learner?
 
-**Adriana:**  
-What plans do you have for documenting the exporter for future users?
+**Mole:** Okay. So, sorry, this is an issue with multiple questions. The first question is what made me prefer the docs or maybe leave the docs? 
 
-**Mole:**  
-While there is a template for exporter documentation, I think it would be more beneficial to write about the thought process rather than a step-by-step guide, as each context is different. Additionally, I believe sharing experiences and practical advice would be more helpful for new learners.
+**Adriana:** Yeah. Why did you choose third-party documentation over the hotel docs for starters?
 
-**Adriana:**  
-What feedback do you have for the OpenTelemetry documentation?
+**Mole:** Okay. Well, because number one, there’s no video documentation yet. That's why.
 
-**Mole:**  
-I think creating video documentation would be beneficial for visual learners. The documentation can be overwhelming, so having video resources would help bridge the gap for different kinds of learners.
+**Adriana:** Fair.
 
-**Adriana:**  
-What was your first impression of the OpenTelemetry community?
+**Mole:** But also, when I'm reading someone's content, right? Like I'm learning your content or someone else out there, I am not just reading. I can feel human connection. You can say something like, "Ah, I got stuck at this." This is what I had to do, and then this got solved. But in a documentation, it's just man, it's like reading a textbook, you know? Do this, do this, do this, do that, move on, you know? But when you're writing your content, you can say, "Oh, do this. If this does not work, try this." So, I'd say that's why I preferred. When I entered the documentation, I got overwhelmed because I was scrolling through a lot of things. I didn't understand what instrumentation was, and documentation has so many links that link you to so many things, and before you know, you're lost in the rabbit hole of the documentation. So, I’d be reading something, I'm like, what is instrumentation? I'll see a link, click the link, and I'm going to a different entire part, and then before you know, I'm like, where am I? What am I learning? So, I got overwhelmed. 
 
-**Mole:**  
-I found the community to be very welcoming and supportive. I felt encouraged from the start, especially from my mentors. The OpenTelemetry community is caring, and I love being a part of it. Meeting everyone in person at KubeCon was a fantastic experience.
+**Mole:** What made me go back to the docs? I already had a foundation. So I was not overwhelmed when I saw what instrumentation was or when I saw what a collector was. So imagine someone that is new that does not know anything about a collector trying to learn open telemetry. They're seeing open telemetry. What is open telemetry? You can't really define open telemetry without the four components: instrumentation, collector, and you’re like, what? What is an open telemetry operator? Oh my gosh, they're seeing Kubernetes—like where am I, you know? So, I already got that foundational knowledge. I could now go and head for the docs. Because now I already knew what I was looking for in the documentation. So, let's say I want to do a particular task, I can just search for that particular part in the docs and focus on just that side.
 
-**Adriana:**  
-Have you made any recent contributions to the OpenTelemetry community?
+**Adriana:** And what would you do to improve the doc experience?
 
-**Mole:**  
-Yes! I’ve been advocating for OpenTelemetry in Nigeria. I realized it wasn't a widely discussed topic here, so I started attending conferences to share knowledge about OpenTelemetry and how to get started with open source. I'm also still working on pushing the exporter into the OpenTelemetry Collector contrib.
+**Mole:** I’d say I'd make video documentation for those who do follow the hotel content. We do have our first video, like instructional video, on the hotel YouTube channel. There will be more to come. You can also satisfy both at the same time. 
 
----
+**Adriana:** That is a super fair point. It's interesting too, like what you were saying, that basically you use the hotel docs for more of a directed search, right? Like first understand stuff from people's experiences and then, okay, I want to learn about this, I will go into the docs to learn about that.
 
-**Adriana:**  
-Thank you so much, Mole, for sharing your experiences. And thank you, Victoria, for co-hosting with me today. We will see everyone at the next event!
+**Mole:** That’s the approach that has worked for me to learn everything and that’s what I’ll keep using. By the way, Adriana, I started learning Kubernetes—just a side note.
+
+**Adriana:** Oh, right on! Good luck!
+
+**Mole:** Thank you!
+
+[00:25:00] **Adriana:** Yeah. Could you tell us what your experience was like creating your first PR?
+
+**Mole:** Ah, okay. We're here. So, creating my first PR, I’ll say it was a whole experience, right? After watching some videos, reading some documentation, I think I did this for two weeks. I was just learning a whole lot and then I was like, you know what? You need to make your first PR. You can't waste any more time. I went to the repos and I was like, okay, so which repo do I pick? I think that was the first issue I had. Open telemetry has a bunch of repos, so I was like, which one do I go for? For a while, I was just lost. Do I contribute to NodeJS? Do I know Node? I don't know Node. Let me go to collector. I don't know—I'm like, okay. 
+
+**Mole:** Then, what I started doing was I started reading other people's PRs. I would literally go to an issue that is closed, go under the PR, you know, because when an issue is closed, the link to the PR that closed the issue will always be there. I would literally go and be studying their code. That's why I did a lot. I don't think I've said this anywhere before, but that's why I did a lot. I would go and literally be studying people's PRs, studying their code, studying how they framed things. Okay, this is how you write this in Go because remember I was still learning Go at this point. So, it was like a—I was learning so much in one month because I was studying people's code, I was doing a course at the same time, right? 
+
+**Mole:** After studying people's PRs for a while, I gained some confidence. I found an issue that someone had done something similar. That's the beautiful thing about open source. Sometimes you want to update a bunch of components at the same time. I saw a similar issue to one of the PRs I had studied and I was like, I can tackle this. I asked, “Hello, my name is this. Can I please be assigned to this issue?” I didn’t think the person would answer me, and he was like, "Oh yeah, sure, why not? Go ahead." I think his username is MX-Psi. I don't know his real name. 
+
+**Mole:** He was like, "Why not go ahead?" I tried it out. I made mistakes, obviously, because I was new to Go. I didn't understand the whole lint check thing. But he, you know, like I said, the open telemetry community is so wonderful. They do not look down on you. They don't look down on where you are as long as you're honest, right? Don't come and prove to be a senior developer when you're actually not. Just come clean. I told the guy, man, I haven't done this before. Please help my life. I went to his DMs and he was like, "Okay, do this, do this, do this." At the end of, you know, I think after two days, it got merged. I was like, "Yay, my first PR!" And then from there, it was just a full journey, right? It was a full journey, you know, from there. Really, really nice journey. 
+
+**Adriana:** I have to agree with you that like that first PR getting merged is like the most glorious experience ever. But I will tell you, like every time I have a PR merged, I do like a little happy dance at home. It's like, oh my god, I'm up for something. By the way, I gotta say hats off to you in your approach to working on issues too, studying the PRs and the code behind the PRs. You have the heart and soul of a software engineer. It's like you were made for this. That's amazing. 
+
+**Adriana:** I think this is a good lead-in to our next area that we want to talk about, which is—I believe you mentioned earlier that you did some work on creating an open telemetry exporter for the collector. Do talk about that. What was that experience like?
+
+[00:30:00] **Mole:** Okay, I have a lot of funny experiences. Sorry. When I got the project with my former company, Semantex, I was like, okay, let's do this, right? How hard can it be? So I went to the documentation and there was no documentation on how to create an exporter, right? The only documentation was how to create a receiver, and I was trying to understand it, and it wasn't working. One thing I realized later that I didn't know then was that there's not really a standard way of creating an exporter. Well, there’s a template you have to follow, but there’s no standardized way because exporters depend on your vendor back end. So at Semantex, we were receiving logs over influx 5 protocol and we were receiving metrics over elastic bulk index format, right? So I had to build an exporter that would convert hotel data to these two sources. 
+
+**Mole:** What I did, like I did for my other PRs, was I started studying other people's exporters. I studied the influx DB exporter because that way our metrics would look like. Then I studied the elastic search exporter. I did a lot of study. I tried to break down a lot of things with the help of my assistant—great assistant. I tried to break it down. I tried to fit things in our own context. So how do I take this part from here, put it here, remove this part, you know? It was a whole trial and error. There was really no content that I could look to; okay, this is what assisted me in this journey. Oh, sorry, pardon me on that. I remember the open telemetry collector builder. 
+
+**Mole:** While learning how to build the exporter, I had to use the OCB, the open telemetry collector builder, and that's when I came across Bind Plane's content on YouTube. They have a full series on open telemetry collector—a very wonderful series. I enjoyed every bit. That's why I learned how to use the open telemetry collector builder. The OCB is very fun. It's so cool, man. It's like you can build your own custom collector, you know, with whatever component you want. It's cool. It's like play-doh, right? You can build as you want, play with it as you want, connect things, join things, break things, and you know, it's fine. 
+
+**Mole:** I learned how to use the OCB. After lots of trial and error, I got my first metric into Semantex, and it was an exciting feeling, right? After a while again, I got the logs in, and then awesome. Then I built the exporter. That was the summarized version of the experience of building the exporter.
+
+**Adriana:** It's really interesting. Believe me, I'm sharing in your excitement right now. I can only imagine. So for our next question, could you tell us a bit about learning Go to be able to work on this hotel exporter that you just talked about?
+
+**Mole:** Learning Go has been a very interesting journey because I did not learn Go the normal way, right? The normal way is just watching a course and just building some interesting projects, you know, maybe to-do app stuff. I learned Go the hard way because I was actually learning it and had to apply it directly into real-life projects that go into production, right? I remember I had a lot of help from the people I worked with at Semantex—Bora and Akshhat, really cool guys, part of my team. They were so—I’d make mistakes, and they would be like, no, this is not the right way to do this. I know this is the YouTube way, this is the course way, but in production, this would break, this would fail. 
+
+**Mole:** I say I learned Go hands-on, you know, contributing to things, right? It was a very interesting journey. I actually had a course from Code Cloud that gave me a lot of context. I could understand code; if you give me any Golang code, I can know okay this is what this is, what this is, this is a struct, this is an interface, this is what this does, this is what it should do. But then I had a lot of building things in real life. I feel like that’s really the best way to learn, you know, although it’s very stressful. You feel very dumb sometimes because some things—I remember sometimes at night I’d literally be up by 2:00 a.m. and the test kept failing, and I’m like please just run, please just run. I’d literally be praying. I’d be praying over and over and over again. Finally, it would run, and I’d be like yay, let’s go! Another milestone achieved!
+
+**Adriana:** Cool. Throughout our conversation, you’ve talked a lot about the resources that helped you to learn open telemetry, that helped you to learn Golang, helped you to build the auto exporter. Now, could you tell me what plan you had for documenting this exporter that you built so that other people could use it?
+
+**Mole:** What do you mean document it? Do you mean like you want me to document my journey or how I built the exporter? Can you clarify documentation for me?
+
+**Adriana:** Documentation for the exporter itself, for those who would be using it.
+
+**Mole:** Okay. So, I think when you're contributing an exporter, there's actually a template of documentation that you have to do. I’ll answer your question from the standpoint because I think Adriana and I spoke about this last time. Even if I document it, and she actually put an idea that I should write an article on how it's not really possible to show you how to build an exporter because I tried. I actually sat down after building the exporter, and I was like, okay, how can I help the community with this? Even if I show you how I did it, it's not going to be useful to you because your context might be different, right? 
+
+**Mole:** So what I would say is maybe the article I can write on or maybe the documentation will be: don't give up. Try, try, try again. Even when it fails, keep trying. It's going to work. Another thing I'll say is study other code. Studying other people's code—like I’ll say that’s one thing that has helped me in my whole coding journey and has really accelerated my speed. I always studied people's code and understood the patterns in the code. From understanding those patterns, I can now create my own, you know, find how to remove parts and then join to what I'm looking for.
+
+**Adriana:** That's great. It sounds like a great plan. 
+
+**Mole:** Because I guess from the sounds of it, like the other two components—receivers and processors—I think there is some documentation around creating those because it's more formulaic, right? Whereas exporters are not. But the thing that's in common is like what's the thought process that you need for creating it.
+
+**Adriana:** But not just this is the exporter template, this is step by step.
+
+**Mole:** Now, yeah, I think that would be such a great blog post to write because I think, you know, again, it all goes back to what you were saying too about some of these third-party sources being about personal experiences and having that human touch, human connection. I think that would be so beneficial. It would also be interesting—I'm just giving an idea—to put in the docs something along the lines of like why is it that we don't have a template for creating open telemetry exporters? Because that was like, I remember at some point I was looking into that as well, and I'm like, I don't get it. Why is there no template for this?
+
+**Mole:** Yeah, absolutely. There’s no official template. I think it’s when you start and then you speak to the maintainers, they tell you, oh no, no, no, this should be here, this shouldn’t be here. I’d be like, okay, let’s change things up, right? 
+
+**Adriana:** Yeah, I think that’s great. 
+
+**Mole:** That’s great feedback.
+
+**Adriana:** The other thing that you mentioned that I want to dig into is the open telemetry collector builder. Specifically, what was your experience around that? Because I’ve played around with the builder; you’ve played around with the builder. Was it as easy as you thought it would be? If not, what would you say is some feedback that you would like to give on what can be done to make it easier?
+
+**Mole:** Okay. You know, in my journey—and I’m going to be very honest here—in my journey with learning to try to get the understanding of the exporter, I didn’t really get any good information from the documentation. I’ll say for a while I just did not look at the docs anymore. I just went to YouTube and was doing the research. That’s why I found Bind Plane, right? They did a whole video on how to build your own custom collector—a 45, 46-minute video—and that basically showed me, okay, yeah, this works, this can do this. 
+
+**Mole:** I think also the readme files—some of the open telemetry collector builder are more documented in the readme file than well at that time than the documentation itself. So I think I got more value from the readme files at that time than the actual documentation. I don't know if it has been updated yet. I'll probably check, but yeah.
+
+**Adriana:** I did just get a PR merged in the hotel docs about—because when I was doing it, I’m like, okay, I built this DRO—how the hell do I containerize it? And there was no documentation around that. I had to ask, and then I wrote a blog post about it. But I’m like, it should be in the docs too. I just had that PR merged, I think today or yesterday.
+
+**Mole:** That’s cool. That’s so cool.
+
+**Adriana:** Yeah. So that was my experience with the open telemetry collector.
+
+**Mole:** Awesome. 
+
+**Adriana:** I think I have just one more question. Could you tell us a bit about the open telemetry community? What’s your first impression of the community? How have you been able to collaborate with the community from the time you contributed to it as an intern and beyond that?
+
+**Mole:** Okay, I love the open telemetry community so much. My first experience with them was, I introduced myself: hello guys, I am—so I used to be introverted in some sort of way, but the people don’t really believe it because I’m very outspoken. But I used to be introverted, right? I was kind of shy because I was like, okay, I’m a newbie; I don’t really know much about stuff; I don’t know anything about open source. Who’s going to listen to me, right? I was like hello, my name is Mole from Nigeria. Nice to meet you all. And people said hi back. People waved back. Oh, nice to meet you, welcome to the open telemetry community. I was like, oh, that’s so cool. 
+
+**Mole:** When I stumbled into a lot of like—back to my mentors, right? So Jurassi was my major mentor for the outreach internship. We had a lot of calls, right? In those calls, he just kept encouraging me that I know this is tough, but don’t worry, you’re going to get it. Just keep pushing, you know, keep trying. I believe in you. He’d come and say, I believe in you, I know you can do this. 
+
+**Mole:** It was like a collective effort. I’d go to some people's DMs and I’d be like I’d be crying that please help me. I don’t understand this issue. How do I solve it? You’ve already assigned it to me. I tried this; it did not work. They’d be like, "Okay, you know what? Try this. Make this change." I remember when I wrote my first blog, my first blog post on open telemetry, and I had already read some of Adriana’s blog posts. I was like I’m going to send a DM to Adriana because I like to hear her thoughts on my blog post. I was like hello Adriana, hi, I’m Mole. Please can you review my blog post for me? She replied, and she reviewed my blog post. I was like wow, she doesn’t know me from anywhere, you know? We are not in the same continent or in different tribes, and she’s actually willing to assist, right? 
+
+**Mole:** I would say the open telemetry community is very loving. I can’t really vouch for a lot of open source communities, but I can vouch for the open telemetry community. They’re really cool and it’s a very nice community to join, by the way. I’m now a member of the open telemetry community. You can also text me. I’m very cool if you have questions about it, and she can text me. I’m cool. They are also cool, right? The community is loving, nice, really caring, and I love it. But then when I got to KubeCon and I met everyone in person, it was cooler. I met Adriana in person. I met Henrik. I met Tras and some other really awesome people. It was really nice.
+
+**Adriana:** I’m going to completely agree with everything you just said because I just recently joined the community too, and everyone has been amazing. Plus one to that; Adriana is very cool. It’s been nice getting to interact with her. 
+
+**Adriana:** One more question before we go. Have you made any recent—I believe as an open telemetry community member now, you have to contribute to the open telemetry community. Have you had any recent contributions to the community that you’d like to talk about?
+
+**Mole:** Yeah. Okay. So what I have been doing majorly right now is—when I came back from KubeCon, I think when I started learning the whole open telemetry thing, I realized that open telemetry was not a topic that was spoken about a lot in my country locally, you know, in Africa. Kubernetes is very popular here; everyone knows Kubernetes, right? So, open telemetry is not really heard a lot. I started advocating a lot about it. I think that’s how I even slided into my developer advocate role. 
+
+**Mole:** Currently, I’m a developer advocate. I’m not a full software engineer anymore. I started attending conferences, talking about open telemetry, showing people how to get started with open telemetry, how to get into open source, you know, because I experienced the dramas, the struggles, you know? I understand when people come to me and tell me I’m so confused about open source; how do I start? I can also give them practical steps I took to get started. I would say I’ve been doing more of that, and then I’m actually still—the exporter has not been built fully, but I’m still pushing it into the open telemetry collector contrib. So, I’d say that’s the—aside from related to code, those are the contributions that I’ve been making, but then I’ve been doing more of advocacy about open telemetry in my country.
+
+**Adriana:** That’s amazing. And I think that makes a really good point as well because contributing to open telemetry isn't just about the PRs that you're making; it's also about the advocacy, the bringing that awareness. I think that's great. 
+
+**Adriana:** I think this wraps up the main Q&A, and we do have a few minutes left. If anyone from the audience has any questions that they would like to ask at this point, we are happy to take your questions. 
+
+**Mole:** I feel like we need some music. This is where you take out the guitar for this.
+
+**Adriana:** Dang it! Who’s the music? Is that you? Was that—I think that was Henrik, our amazing producer.
+
+**Mole:** Well, it doesn’t look like we have any questions. So, what I will say is we’ll wrap up, but before we go, a few quick announcements, promotions. First of all, for anyone who is planning on attending OpenSource Summit in Denver, Colorado, there’s also going to be as a collocated event, there’s an open observability con and hotel community day that is going on. The CFPs for hotel community day are closed, but open observability con CFPs are still open. That’s going to be at the end of June. Feel free to submit CFPs to attend if you’re in the area or if you’re planning on attending. OpenSource Summit also is like lots of fun. It’s like KubeCon lite. It’s all the awesome people who attend without the flash, so it’s tons of fun.
+
+**Adriana:** The other thing, for anyone who is interested, as I mentioned, I’m one of the maintainers of the hotel end user SIG. Victoria is a newly joined member of the hotel end user SIG. If you’re interested in joining us, seeing what we’re up to, Henrik just flashed a link for our GitHub repo. We do a bunch of things like these types of events. We have hotel me. We have hotel in practice, where if anyone who's watching is interested, if you have a topic—an observability hotel topic that you’d like to present on, maybe you’re testing out a topic for a conference for a talk, want to flesh it out, use us. Just DM us on the hotel end user SIG Slack and just let us know if you’re interested in doing a presentation for hotel in practice. 
+
+**Adriana:** We also run surveys in collaboration with the various hotel SIGs. Stay tuned; there will be more surveys heading your way. The surveys are a great way for us to get feedback from our user community on ways to improve the SIGs. That information is super important, super valuable to the community. Thank you to the folks who have responded to the surveys. Thank you to the folks who have engaged in the hotel end user SIG. 
+
+**Adriana:** Also, for those who aren’t able to attend and for those who were able to attend, tell your friends that this video will be posted on our hotel YouTube channel. It’s hotel-official on YouTube. You can catch all of our previous hotel in practice and hotel me sessions. We do have our first how-to hotel video on the hotel YouTube channel, so for those who are visual learners, this is your opportunity to check that out. 
+
+**Adriana:** Thank you so much, Mole, for joining and for Victoria for co-hosting with me today. This has been lots of fun. I always enjoy having these conversations, and we will see everyone at the next event.
+
+**Mole:** Sure. Thanks, Adriana.
+
+**Victoria:** Thank you.
+
+**Mole:** Thanks, Adriana. Thanks, Victoria. It was nice meeting you.
 
 ## Raw YouTube Transcript
 

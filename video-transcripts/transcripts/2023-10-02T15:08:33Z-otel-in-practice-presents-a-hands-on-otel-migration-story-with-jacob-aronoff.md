@@ -10,114 +10,266 @@ URL: https://www.youtube.com/watch?v=pHHINe9D94w
 
 ## Summary
 
-In this YouTube video, Jacob Arof, a staff software engineer at Lightstep, discusses the migration from StatsD and OpenTracing to OpenTelemetry, focusing on the challenges and strategies involved in the process. Jacob outlines various migration paths, such as the "All or Nothing" approach, the "Slow Tail" method, and using a bridge for gradual migration. He emphasizes the importance of gaining organizational buy-in, the need for thorough testing, and the benefits of OpenTelemetry's API support across multiple programming languages. Jacob also shares personal insights from their migration journey, including performance issues encountered and solutions implemented. The session encourages audience participation, with attendees asking questions about practical challenges and seeking advice on transitioning to OpenTelemetry effectively. The video concludes by inviting viewers to engage with the OpenTelemetry community and participate in future discussions.
+In this YouTube video from the "otel in practice" series, Jacob Arof, a staff software engineer at Lightstep, discusses the migration process from StatsD and OpenTracing to OpenTelemetry (otel). Jacob shares insights from his experience leading this migration, highlighting various strategies such as the "All or Nothing," "Slow Tail," and "Bridge" approaches to transitioning to OpenTelemetry while addressing challenges like organizational buy-in and compatibility issues. He emphasizes the importance of getting leadership support, the need for thorough testing, and managing the migration's complexity across multiple services. The session encourages audience participation, allowing viewers to ask questions and share their experiences. Jacob concludes by discussing the future steps of the migration journey, including potential log migrations and adapting to new infrastructure metrics. The video serves as a valuable resource for those navigating similar transitions to OpenTelemetry.
 
 ## Chapters
 
-Here's a summary of the key moments from the livestream:
+00:00:00 Welcome and intro
+00:01:30 Migration overview
+00:03:40 Challenges in migration
+00:04:50 Importance of organizational buy-in
+00:08:00 Migration paths discussion
+00:10:15 All or Nothing approach
+00:12:15 Slow Tail method
+00:15:16 Bridge approach
+00:17:34 Q&A session
+00:32:50 Future migration plans
 
-00:00:00 Welcome and Introductions  
-00:01:30 Jacob's Background and Role  
-00:02:45 Overview of the Migration from StatsD to OpenTelemetry  
-00:05:00 Challenges in Migration and Gaining Organizational Buy-in  
-00:08:15 Different Migration Paths Explained  
-00:12:30 Discussion on the All or Nothing Migration Approach  
-00:16:45 Exploring the Slow Tail Migration Method  
-00:20:00 Advantages and Disadvantages of the Bridge Approach  
-00:25:00 Audience Questions on Migration Experiences  
-00:30:00 Jacob Shares His Team's Migration Process and Insights  
-00:35:00 Discussion on OpenTelemetry Protocols and Collectors  
-00:40:00 Managing Access Tokens and Security in OpenTelemetry  
-00:45:00 Future Plans for Logging Migration and Infrastructure Updates  
-00:50:00 Closing Remarks and Encouragement for Further Discussion  
+**Speaker 1:** Welcome everyone to Otel in Practice. Really stoked for such a good turnout. I think this is one of our best turnouts. Yay! And for anyone who could make it today, there will be a recording. So if you have friends who are like, "Damn it, I missed this," you can let them know that we will be posting the recording and prettying it up once it's available. 
 
-Feel free to ask if you need more details or have other questions!
+**Speaker 1:** Jacob presented, I want to say last month for Otel Q&A. We worked together at Lightstep from ServiceNow. And I'll let Jacob take it away.
 
-# OpenTelemetry in Practice
+**Jacob:** Thank you! My name is Jacob Arof. I am a staff software engineer. I work on our Telemetry pipeline team. Our team is sort of in charge of our internal and external open-source Telemetry efforts, whether it's like OTL SDKs and Go, or The Collector, or the operator. Sort of anything that you would be using to collect and send data to your vendor is what we do. 
 
-Welcome everyone to OpenTelemetry in Practice! I'm really excited about such a great turnout; I think this is one of our best turnouts yet. For anyone who couldn't make it today, there will be a recording available. If you have friends who missed this, please let them know we will be posting the recording soon and polishing it up once it's ready.
+[00:01:30] **Jacob:** So today I'm going to be talking about a migration that we led last year and a little bit a year and a half ago, for when we migrated from StatsD to OpenTelemetry and also from OpenTracing to OpenTelemetry. I'm going to talk about the various migration paths that are out there, some of the things that went well and went wrong in our migration. But I also would like this to be, you know, feel free to ask as many questions as you have. My slides are pretty light, so I'm really interested to hear, you know, where people struggle currently, what type of challenges you're running into, what features you're interested in. 
 
-Jacob presented last month for the OpenTelemetry Q&A. We worked together at Lightstep, which is now part of ServiceNow. Without further ado, I'll let Jacob take it away.
+**Jacob:** So please, you know, raise a hand or comment in the chat, and I'd be happy to answer any questions and go down any interesting avenues that you might have. So with that, I will share my screen. Can we all see my slides? Yes? Great, thank you very much. 
 
----
+**Jacob:** So yeah, today I'll be talking about that Otel migration story. So first, let's talk about a problem. I've been in the industry for many years, and I've had to lead a few of these migrations where your hand-rolled metrics or tracing or logging library just isn't cutting it anymore. Something where it's not performant enough, maybe the maintenance is really expensive, maybe there's a feature that everybody wants that you just can't implement. You know, whatever it might be, you want to do a migration. 
 
-## Presentation by Jacob Arof
+[00:03:40] **Jacob:** It can be very challenging and daunting depending on the amount of services that your company runs, depending on what the organization's willingness to undergo this migration might be. So all of these are problems that I've faced in various jobs, not just where I am now, but you know, a few past roles as well. It can be really hard to make this happen, especially when you, as maybe an SRE or a DevOps person, or maybe just an engineer, just want to make this work. When you feel very passionate about making it happen and you just can't seem to get the buy-in that you need, so that is sort of the theme for today. 
 
-Thank you! My name is Jacob Arof, and I am a Staff Software Engineer working on our Telemetry Pipeline team. Our team is responsible for our internal and external open-source telemetry efforts, including OpenTelemetry SDKs in Go, the Collector, and the Operator. Essentially, we handle everything you would use to collect and send data to your vendor.
+**Jacob:** And there is a solution, right? It's like migrating to this new thing. Otel's metric API—I'm going to be talking about metrics, traces—but you know, this is really true about a lot of stuff. For Otel, the metric API, the traces API, and even the logging API is accepted by most major vendors out of the box now. The API supports all these instrument types in all of your favorite languages, probably very few that don't. The performance and compatibility is always top of mind for us throughout the stack of Otel components. Everybody is always thinking about performance. 
 
-Today, I’m going to talk about a migration we led last year, transitioning from StatsD to OpenTelemetry and from OpenTracing to OpenTelemetry. I’ll cover various migration paths, what went well, what went wrong during our migration, and I'm open to questions throughout, so please feel free to ask. My slides are pretty light, and I'm interested to hear about the challenges you're facing and the features you're interested in.
+[00:04:50] **Jacob:** So, you know, with all this in mind, you're like, "Yeah, this sounds great. I want to start using this." But there's a problem, right? Using these new tools, migrating these new tools is hard. How do you break up the work? How do you know all of your Telemetry is working the same as before? What are the risks of these different migration models? What even are the different migration models? 
 
-Let's dive into the migration story.
+**Jacob:** And probably the most important one here is how do you convince leadership that this is worth doing? You can try and brute force your way into doing a migration, but that to me is a recipe for burnout. Doing a migration in general, where you know there's a new architecture that you think is really going to improve quality of life for your team, for your company, without getting organizational buy-in is how you spend months in a project that may never see the light of day. And that is really demoralizing and very difficult to work around. 
 
-### The Problem
+**Jacob:** So the first thing that you have to do when you want to migrate to a new tool is make the case. It's not even about showing a proof of concept, it's just can you convince people that this is worth doing? Sometimes a proof of concept helps, but that's not the key to success. The key to success is really getting a group of people who agree with you, that you're able to sell one-on-one, who can help you really make it clear to the stakeholders, you know, in your leadership that this is worth doing. 
 
-I’ve been in the industry for many years and have led several migrations where hand-rolled metrics, tracing, or logging libraries just aren’t cutting it anymore. Some common issues include performance not being sufficient, high maintenance costs, or features that everyone wants but can't be implemented. Depending on the number of services your company runs and the organization's willingness to undergo migration, these can be daunting challenges.
+**Jacob:** For me, it was pretty straightforward. We're a main OpenTelemetry contributor. The Otel metrics API and SDK wanted to go into their 1.0 stable, and they really wanted some quick feedback from someone who has a lot of traffic to test it out and see where the edges are. So in that case, it was very easy to sell the migration. In past jobs, the selling point is usually, you know, you look at maintenance cost and performance overall. I worked with a hand-rolled solution in a few jobs ago, and when it came time to do a migration, the thing that really sold people was just counting the amount of tickets and hours that we had to spend on, you know, new features and maintenance on our internal library, as well as the amount of times where, you know, we've had an incident because something related to our instrumentation is just incorrect, which you know does happen a lot with your own hand-rolled stuff. 
 
-This theme resonates with many engineers, especially SREs or DevOps folks who are passionate about making things work but struggle to get the necessary buy-in. The solution, of course, is to migrate to something new, like OpenTelemetry's metric API, trace API, or logging API, which are accepted by most major vendors out of the box. 
+**Jacob:** So that is maybe a good basis to go off of. Does anyone have any questions sort of before I go into more specifics about this section? I'm going to do like a five count, something I learned from a teacher of mine. I'm just going to—we're going to do five seconds of silence until someone raises their hand, or I'll just keep going. 
 
-### Migration Challenges
+**Speaker 1:** No cool. Oh, is there something in the chat? 
 
-When considering migration, you might face several questions:
+**Jacob:** Oh, that's just me moving it a little. Cool, no worries. Thank you. So let's talk about the migration paths. 
 
-- How do you break up the work?
-- How do you ensure all your telemetry works the same as before?
-- What are the risks of different migration models?
-- How do you convince leadership that this is worth doing?
+[00:08:00] **Jacob:** The first one is what I call the All or Nothing. This method has you entirely rip out your existing instrumentation in favor of Otel. This would be, you know, a lot of people talk about, you know, replacing the engine of a running plane or running car. A lot of people will say that this would be like, you know, just getting a new plane and have everyone hop to the new one while it's flying. 
 
-Trying to brute-force your way into a migration can lead to burnout. Hence, the first step is making a convincing case for migration. Sometimes, a proof of concept helps, but the key is getting a group of people who agree with you and can help communicate the value to stakeholders.
+**Jacob:** So it's difficult, but you know, maybe it has its benefits. One of the pros is that, you know, once you've pushed your code and you've confirmed things are working and you have a good enough CI/CD system, your work is really done, right? It just rolls out and everybody's happy. This reduces the time for split brain. Split brain is what happens when you're on two systems that may not be compatible together. You could imagine, you know, if you're on StatsD or if you're on Prometheus even. 
 
-In my case, we were a main OpenTelemetry contributor. The OpenTelemetry metrics API and SDK were looking for quick feedback from a team with high traffic, making it easy to sell the migration. In past roles, the selling point often revolved around maintenance costs and performance improvements, especially when we counted the number of tickets and hours spent on features and maintenance.
+**Jacob:** If most of your metrics come from Prometheus, they don't have periods in them. They have, you know, pretty strict requirements about their shape overall. You can't do things like up-down counters; that's not a type that they have. They used to not have a proper histogram; they now do. They now have an exponential histogram support, which is experimental, but you know, there are things that Otel has that Prometheus or StatsD just does not have and doesn't have the ability to do. 
 
-### Migration Paths
+**Jacob:** So being in a split brain where some services have it and some services don't and they're emitting different metrics in different shapes, different variables, that can get pretty unwieldy pretty fast. And so if you're not very deliberate about planning how you're going to migrate your dashboards and alerts, then you're going to be stuck with both of them for some time, which if you're on call, and if you've been on call during a migration for this type of stuff, that gets really painful. If you get paged at 3:00 a.m., you have to wake up and go, "Oh, you know, which dashboard should I check? Is this the service on Otel or is the service on StatsD?" That's really frustrating. That's the type of thing that you don't want to have an on-call engineer think about. 
 
-Let's discuss the migration paths we considered:
+[00:10:15] **Jacob:** So the other benefit of doing this All or Nothing approach is that the issues are incredibly visible. If a dashboard breaks, if an alert pages or a service crashes, it's pretty obvious, right? Hopefully, you're looking at a dashboard or, you know, the person you take the pager when you're doing this migration, so that you experience that pain. And hopefully, you also page on no data. It's very important. 
 
-1. **All or Nothing**: 
-   - This method involves completely ripping out existing instrumentation in favor of OpenTelemetry. 
-   - Pros: You reduce the time for split-brain scenarios, where some services are on one system, and others on another. It makes issues very visible since any problems will be apparent immediately.
-   - Cons: This requires thorough testing in a robust development environment. If staging and production environments differ significantly, you may face production bugs that you couldn't catch in staging.
+**Jacob:** And then service crashes—you should have an alert on that ideally. So all of these things, though, make it really clear that as soon as you do this All or Nothing thing, you know, if all of your services are rolling out within an hour with this new change and everything is looking good, that's a very good sign and that gives a lot of confidence. 
 
-2. **Slow Tail**:
-   - This method allows application developers to migrate themselves by toggling an environment variable. 
-   - Pros: Less upfront work and the ability to confirm functionality for one service at a time. It also gives you more time to develop dashboards and alerts.
-   - Cons: This can be slow, especially in larger environments. Bugs may not reveal themselves uniformly if services are not instrumented the same way.
+**Jacob:** This does, though, you know, the clauses here. This requires a lot more thorough testing in a really good development environment. If you have a lot of environment drift where your staging environment is entirely different than your production environment, this might be really challenging because this means you might have production bugs that you're just unable to catch in staging. 
 
-3. **Bridge**:
-   - OpenTelemetry provides a bridge for some migrations, allowing you to transition from one instrumentation to another without significant code changes.
-   - Pros: Minimal code changes required.
-   - Cons: You may experience performance drawbacks compared to using the new method directly.
+**Jacob:** And if you do, if the blast radius is all of your services, that can be really dangerous. Also, you know, you do have those compatibility problems I mentioned. So you have to be very deliberate about observing which dashboards and alerts break and fixing them proactively or even in advance if you know what the metrics are going to be. 
 
-### Transition to OpenTelemetry
+**Jacob:** The example I have here is definitely a common one where you could imagine a metric type changes but a metric name doesn't, which most vendors will just reject. Or the dashboard that you're looking at will look very strange. This also does mean that there's more upfront effort to migrate your services. It's going to take, you know, probably a group of people to help you monitor this, depending on how many services you have to migrate. If you're, you know, a company with maybe five to ten services, that's not too bad to do with one person. But if you're a company with hundreds of services, you're going to want a team of people to monitor this with you. 
 
-In our case, we began migrating from StatsD to OpenTelemetry metrics using the Slow Tail approach. We had several motivating factors, including wanting to utilize new metrics features that StatsD didn’t support, like asynchronous instruments and exponential histograms. 
+[00:12:15] **Jacob:** So on to the next one, we have the slow tail. This method gives your application developers the ability to migrate themselves by usually flipping an environment variable on and off for whichever method they want. The benefit here is that there's less upfront work. You can confirm that it works for one service and push it out for that service only, and you can do that in all of your environments. So if you have that, you know, if you don't have that confidence that I mentioned earlier about your staging environment versus your production environment, this would be really helpful because you could actually just push a single service without the fear of, you know, all these other services rolling out to verify that your change worked as expected. 
 
-While we started our tracing migration, we faced some performance issues due to the wrapper library we were using, which required conversion to OpenTelemetry tags. This led us to begin our tracing migration using the All or Nothing approach, as tracing had been stable for some time.
+**Jacob:** And finally, this also allows you to have more time to develop dashboards and alerts to handle those compatibility issues. The problem is that this can be very slow. If you have more than 50 services in at least two environments and it takes an hour to migrate a single service because you're trying to be extra careful, then you're looking at a multiple weeks or months-long process. 
 
-We wrote the code for the migration and pushed an image to our staging and production environments, confirming that each version looked the same before and after the migration. This was a crucial step, as it allowed us to catch integration issues early on.
+**Jacob:** If you leave a migration to app developers without a strong why, also they'll never do it, so it's usually going to fall on your team to make that happen. Bugs also may not reveal themselves if your services are not uniform. Imagine you have something like a queue worker that works off of Kafka, whose topology looks entirely different than something like, you know, a classic API server. If you're only, you know, instrumenting your API servers and then you go to instrument one of those Kafka servers, if there's something that's significantly different in how you did your instrumentation, that might take some time to figure out what's going wrong. 
 
-### Next Steps
+**Jacob:** Ideally, Otel has figured out a lot of this, but doing any of these migrations, you always need to check. You know, we just cannot and honestly should not know how you instrument your services. You don't want to have to explain your whole observability backend to us; that doesn't really make much sense. So ultimately, it's important that you do some work to check that the migration is working as you expected. 
 
-Currently, we are focusing on migrating our infrastructure metrics to use OpenTelemetry's first receivers and plan to migrate to the new logging cases soon. 
+**Jacob:** One thing that I did just think of is that you could do a combination of this slow tail and All-in-One, where you do a migration for, you know, say some good sample of your services. And then once you're pretty confident with those, you could move to just enabling for everyone at once. That's another good option. I'm trying to think about the drawbacks of that. Not sure there are any. I think that's probably the way to go unless you're really nervous about some of these compatibility problems or some of these like unknown unknowns; that might be the only time that that would be a little scary. 
 
----
+[00:15:16] **Jacob:** So the last one is the bridge. OpenTelemetry for some migrations actually provides a bridge where you can go from, you know, instrumentation A to instrumentation B without having to do any real code changes other than implementing the bridge. There are a few issues here. Well, already you can see the pros. I mean, it's pretty obvious, right? You don't have to make many code changes. 
 
-### Questions and Discussion
+**Jacob:** The problem is that you're going to have some worse performance in comparison to writing using the new method. It's going to be, you know, a fair—there's a conversion cost to anything that you're doing in your application. If another option is you could just send from, you know, instrumentation A and then convert it to instrumentation B with the Otel collector. So if you wanted to go from StatsD, the Otel collector has a StatsD receiver and an Otel exporter, so that's also fine. But both of these have the same drawback, which is that if you wanted to take advantage of some of the capabilities of the Otel SDKs, you know, then this migration—you're not really doing a migration. 
 
-Do we have any questions?
+**Jacob:** It means that you can, you know, try and migrate stuff piecemeal and like for dashboards and alerts, which is great, but it does have this drawback of, like, you're not actually doing the migration. You're still, you know, just putting off the hard work later. And so this can also be confusing to your app developers where someone says, "Well, my code says open tracing, but this trace says Otel. Why can't I, you know, use X feature?" And that can be a little confusing. I think that's like not the end of the world, though. It's, you know, as long as you're communicating well, that should be all right. 
 
-**Question from Rahul**: I'm currently experiencing challenges in shifting mindsets from our previous vendor to OpenTelemetry. Any tips on winning over various developer teams?
+**Jacob:** But yeah, so this is really, I think, using the collector is another really good path forward. Overall, though, doing the thing where you just send some traffic to the collector from one of your services, migrate your apps and dashboards, and then you have everything sent to the collector, and then you can migrate your apps to Otel with that All-in-One approach. And then your dashboards and alerts should just, you know, already be changed, and you should be all set. 
 
-**Jacob's Answer**: It's crucial to sell on features. For instance, highlight cost savings—if you’re moving from a service like DataDog to Prometheus, the cost difference can be significant. Additionally, emphasize the local development experience for metrics and the ease of using Grafana for dashboards. Building local tooling around metrics can also help developers see the benefits firsthand.
+**Jacob:** Before I move to the next portion, do I have any questions? Any thoughts? I'm going to do a five-count again.
 
-**Question from Jay**: What is the best protocol to use within OpenTelemetry for performance and security?
+[00:17:34] **Speaker 2:** Jacob, I'm actually living through this right now. One thing that I'm running into quite a bit is getting the various developer teams to shift their mindset from sort of our previous vendor that we were with into our newer one. And it's, you know, there's underlying things we're doing, like the StatsD into like Prometheus style type thing with it. And yeah, that's led to a couple of people who are like, "Oh, these things aren't apples to apples here anymore," and that's causing a bunch of stuff. Any tips and suggestions on winning the hearts and minds here?
 
-**Jacob's Answer**: We typically use gRPC for our setups, but it can depend on your company's security requirements. I recommend using the OpenTelemetry Collector where possible, as it offers numerous options for exporting data to your desired backend.
+**Jacob:** Yeah, so really, like the thing to do is sell on features when you can. So if you could say, you know, this improves our—well, the easiest one is cost, right? If you're using StatsD, you're probably coming from Datadog. You're going to say, "You know, our previous spend with Datadog was X thousands, maybe millions of dollars, and with Prometheus, it's like, you know, $100 a month or something," right? That's the easiest one. 
 
----
+**Jacob:** But the more valuable one is, you know, you sell in the ecosystem where, for me, the real benefit of Prometheus is that the local development experience for metrics is actually much simpler. You don't have to run, you know, a Datadog agent; you don't have to do anything else. You can just hit your metrics endpoint and verify that your metrics are doing what you expect them to. And that's a really good developer flow for testing that stuff. 
 
-As we wrap up, I want to thank everyone for their participation today. If you have any further questions or would like to share your OpenTelemetry use cases, feel free to reach out! 
+**Jacob:** The other thing that is—I mean, people from Datadog—I used to work for Datadog—and their dashboard product is great. But Grafana, if you're using Grafana, also has a really strong dashboards product. Showing something like, you know, maybe you use Redis in your Kubernetes cluster, you install a Redis service monitor, and then you install the off-the-shelf Grafana dashboard for it, right? Like that's a pretty great experience, and that's all done at, you know, zero cost, which is pretty incredible. 
 
-Thank you, Jacob, for sharing your insights and experiences with us. We appreciate your time and expertise. Have a great day, everyone!
+**Jacob:** You know, Prometheus metric cost is very small, in cents on the dollar. So the last thing you can do is trainings. I have a storied history with trainings. I think that they never really achieve the thing that you want, which is for more people to be excited. Really, what they do is can cause more confusion if you're not careful with like your language. I think maybe a strategy that I've always wanted to do is build some local tooling around the stuff for developers, whether it's, you know, writing maybe an end-to-end test or a little UI around their application metrics so they can do something with them locally to be like, "Oh yes, like this thing is working as expected." 
+
+**Jacob:** I mean, I think that the local dev for Prometheus is just pretty fantastic, and that's probably what I would sell on. But again, you know, it's very company-specific in many ways, right? If people are really bought into the Datadog model of things, which is, you know, high cost, very low thinking, Prometheus and Grafana is not really that. It's low cost but much more thinking, and ultimately, like you don't want your developers to have to think too much about their instrumentation. 
+
+**Jacob:** The thing that I tend to do is have a wrapper library before doing a migration so that people are used to the same signatures; it's just doing a different function under the hood. It also makes your migration easier. I didn't mention it here because most companies already have some type of wrapper because they have some needs that are specific. It's usually like a thin wrapper, but doing as much as you can to not change their workflow and make it very simple is always going to be good. 
+
+**Jacob:** The thing with Prometheus you can do is check what metrics are available and then you can auto-generate dashboards from those metrics. And you can add into your Helm charts, you know, these are the metrics I care about, and then you could just generate alerts automatically from that as well. So there's a lot of that quality of life stuff that, again, like it's easy with the Datadog UI but is automatic with, you know, infrastructure as code. 
+
+**Jacob:** So that's like another trade-off I would say because not a lot of people I don't think use Terraform at Datadog.
+
+**Speaker 2:** Thanks for that, Jacob. 
+
+**Jacob:** Yeah, no problem! Any more questions on this part? Cool.
+
+**Jacob:** Okay, so now I'll talk about what I did, what the team did for our migration from StatsD to Otel for metrics. So we began migrating using that slow tail path. The reasons were, I'd say, good motivating factors. As I mentioned earlier, the metrics API and SDK weren't declared stable at the time, which meant we would have had to deal with some signature changes. 
+
+**Jacob:** And that would have been potentially a lot of signatures. We did have a wrapper library, but still doing those types of changes can be pretty frustrating. We also wanted to use some new metrics features that StatsD didn't support. This is like asynchronous instruments. The biggest one was exponential histograms, which Otel sort of pioneered. 
+
+**Jacob:** And then the last one is that we would, you know, because we are the group that helps write these libraries, we wanted to understand the performance and quality of life features to make it as easy as possible and as, you know, as quick a decision. It's just, you know, you don't have to worry about performance; you don't have to worry about all this other stuff. How do we make this simple? 
+
+**Jacob:** So in migrating to Otel for metrics, we did find a few performance issues. The first one was, you know, because we were using that wrapper library I mentioned, our implementation was working off of OpenTracing tags, which at the time was our tracing instrumentation, which we then would need to convert into Otel tags anytime you wanted to make a metric, which if you think about the amount of times that you call, you know, metric.record, that's a lot of time. So that gets pretty expensive. 
+
+**Jacob:** And so while we waited for improved performance in the metric libraries, we just began our tracing migration because the Otel team needed time to investigate some of the stuff that we brought to them. And it also meant that we could fix, you know, the very company-specific problem of this conversion. 
+
+**Jacob:** And so then we began our tracing migration, going from OpenTracing and OpenCensus to Otel. And so we went for this one with an All or Nothing approach because Otel for tracing had been stable for some time. We weren't really concerned about compatibility. 
+
+**Jacob:** Ultimately, at the time, there weren't a lot of guides written, but the process was relatively straightforward, and the compiler is really doing most of the work for you. The structure for it, we already supported Otel traces in our product, so there's actually, like, no—in theory, there were no real fun changes either for our own dashboards and alerts that we were going off of. 
+
+**Jacob:** So what I did for this was write some—write the code for the migration and then push up, build, and push an image to our staging and production environments for a service that doesn't get much traffic but does get some. It's important that it gets some. 
+
+**Jacob:** And then it confirmed that each version in our product looked the same before and after. We have a view of sort of, you know, these red metrics per version, and it shows you the difference in those versions. And if any of those looked different, if the rate, for example, dropped off, then that's a sign that we did something totally incorrect. 
+
+**Jacob:** Doing that for one service is good, but then the reason that the, you know, the All or Nothing approach is really useful is that you get that integration test. So when I migrated all of our services to this new method, it was really clear that service-to-service trace propagation wasn't working. You know, you just did a spot check of a few different traces, and it's really—that's like such an obvious thing. 
+
+**Jacob:** So that was a pretty easy fix. I actually had to just go into the Otel community and implement something that had a TODO around it. 
+
+**Jacob:** Another issue that we had right before, you know, sort of in the last bit of this migration was that our sampler wasn't configured correctly. Otel provides a lot of new features for sampling, and I was under-sampling in one environment and then over-sampling in another environment because I misconfigured it. So I had to roll that back really quickly, fix it, and then push it out a day or two later. 
+
+**Jacob:** But overall, this whole process took maybe a month of work to migrate, I think it's like a hundred or so services in all of our environments, which is, if you've ever led a migration, that's a pretty good time. I was pretty happy with that one. 
+
+**Jacob:** It also meant that we could get back to our metrics migration because we had sort of achieved that goal with OpenTracing tags. We were able to use those—use the fact that we didn't need to do this conversion to continue our metrics migration. 
+
+**Jacob:** It also—we came back to the Otel team having shipped some real performance and quality of life improvements that really let us continue with this without the fear of performance problems. 
+
+**Jacob:** These changes also let us use this feature called metrics views, which let you create a new metric series to provide seamless compatibility with StatsD. StatsD emits their histogram—what's really what's called a Prometheus summary—but we wanted to emit exponential histograms, but that's really the only change that was happening here. 
+
+**Jacob:** All of our other metrics were able to stay about the same, so we just needed to dual write the old summary, which Otel didn't really support at the time and I think doesn't and shouldn't; it's a bad metric type. And we also wanted to dual write the exponential histogram so that we could migrate all of our dashboards and alerts from this old approach to this new approach. 
+
+**Jacob:** And then finally, you know, as I said, we put this library behind a feature flag, and then we could just flip that on and off whenever we wanted. And then we would roll it out pretty slowly over a two or three month period to all of our environments. This also let us like test the change really effectively as well. 
+
+**Jacob:** I think what's next? Let me go back. 
+
+**Speaker 3:** Do you have any questions about this migration process? Do a five count again.
+
+**Rahul:** Jacob, this is Rahul. I have one question around the Otel protocol. So I'm guessing you must have used the Otel receivers and exporters vastly during your metrics and trace migration. So what is the go-to protocol within Otel? It supports STD and gRPC, but from security and performance point of view, which is the go-to protocol for traces and metrics?
+
+**Jacob:** I'm not sure I follow. We actually just emitted Otel directly from our SDKs to our SaaS, so we didn't go through a collector for this one. We could have gone through a collector, but we didn't want the operational overhead at the time. It was enough migrations to handle it once. But that didn't really answer your question. Can you restate your question?
+
+**Rahul:** Yeah, I mean, I wanted to know what is the best protocol to use under Otel? Is it STD or gRPC in terms of metrics and traces?
+
+**Jacob:** Yeah, in terms of performance and security. I'm not the best with security recommendations. I would say we use gRPC for everything, just because it's, I don't know, our sort of de facto internal standard. HTTP is more accepted for some, like depending on your company security requirements. I'm not sure of the real differences—like to compare and contrast them. I don't think I'd be the right person to speak to those. Maybe some of the other Otel folks have more of an opinion or more information on that, though.
+
+**Rahul:** Okay, cool. Were there any learnings around managing access tokens? And did you use multiple access tokens, or does it, you know, if you're sending a lot of metrics or traces, or a single access token?
+
+**Jacob:** Yeah, we just used the same access token approach that we did. I don't know if I can speak to that just because it's, you know, internal security stuff. 
+
+**Rahul:** Yeah, no worries.
+
+**Jacob:** I'd say that, you know, the best thing you can do for security in like a cloud-native environment is use some sort of secrets provider. The Kubernetes External Secrets Operator is great. You can hook it up to something like GCP's KMS and decrypt your secrets to then load access tokens from, though you can do the same thing with AWS or Vault or any of these other providers as well. 
+
+**Jacob:** If you're particularly security-inclined, it's also important to use things like mTLS as well. Something like Istio can help you with some of that. The Otel operator actually provides some mTLS features in OpenShift. So, you know, there are a lot of security features out there to be used. Hopefully, that seeds some interesting investigation for you.
+
+**Rahul:** Yep, yep. Thanks.
+
+[00:32:50] **Jacob:** No problem. So moving on, you might be wondering what's next. Are we going to do a logs migration? Right now we're under a different migration, which is changing our infrastructure metrics to use the Otel first receivers like the CP cluster receiver, the CET receiver, and so forth. Because we really want to start using some of these things the community is writing. 
+
+**Jacob:** After that, we should be able to begin migrating to use the new logging case, which should be looking pretty good in a few—they're looking good now, but I'm not sure what the state of it is for Go just yet, given that Go just released like a new standard logging library. 
+
+**Speaker 4:** Any more questions?
+
+**Jay:** Hi, this is Jay speaking. I have one general question regarding OpenTelemetry. I'm pretty new to OpenTelemetry, and the reason why I was investigating OpenTelemetry was for its ability to be backend agnostic for generating metric data. The question is, however, I was interested in exploring pull-based metrics exporters, but so far, I don't—if I'm right or wrong—but the Prometheus exporter within the OpenTelemetry SDK is the only one that is supporting the pull-based metrics approach, is that correct?
+
+**Jacob:** So it sounds like you're going—so there are a few different types of exporters within Otel. So there's an SDK exporter, which yeah, there's a Prometheus exporter. I think there might even be a Datadog exporter. But one—what might be a better fit is to use the Otel collector and use their exporters, which are numerous, and pretty much every backend has some type of exporter. 
+
+**Jacob:** So I think I would try and say you should, if you're using Otel SDKs, you should export an Otel to an Otel collector and then export to, you know, your protocol of choice.
+
+**Jay:** But when using this Otel exporter, this would rather be a push-based mechanism, right, to send data to the Otel collector?
+
+**Jacob:** Yeah, that's correct.
+
+**Jay:** Okay, okay. You can also, if your instrumentation is in Prometheus right now, though, you can have the Otel collector scrape the Prometheus metrics and then export them as Otel or export them as StatsD or, you know, whatever you want.
+
+**Jacob:** Good, thank you!
+
+**Speaker 5:** Do you use any solution to manage or, you know, update the YAML file of the fleet of agent fleet on the go? And is there any built-in solution that you guys are using to manage the collectors?
+
+**Jacob:** Yeah, so I am a maintainer for the Otel operator and internally and externally I recommend using the Otel operator with the Otel collector CRDs. They're pretty easy to use, easy to set up, easy to manage, and we're always developing and thinking about new features as well. And so that'll be the place to get those now and in the future, and I'd continue recommending that.
+
+**Speaker 5:** Okay, thanks. 
+
+**Jacob:** Could I ask a question following on from the last question? Would you recommend using something like OpAmp in terms of managing your fleet of collectors, or would you say it's preferable to do it in an operator basis, you know, kind of the C pattern?
+
+**Jacob:** Yeah, so if you're in Kubernetes—OpAmp, by the way, is still pretty early alpha right now. Well, the protocol itself is stable, but the actual implementations are in alpha. 
+
+**Jacob:** So I'm going to answer this question with the assumption that the implementations are done, if that's all right?
+
+**Speaker 5:** Sure, yeah.
+
+**Jacob:** So if you're in Kubernetes, I would recommend using the OpAmp bridge that we're developing. The bridge is a component that can connect to your vendor and will be able to manage pools of collectors rather than just having an extension that works on—or a supervisor and an extension that works on a single collector pod. 
+
+**Jacob:** The reason for that is usually you are running a collector, and what you're running a collector in a pool, not as a monolith. And so whereas OpAmp would be—OpAmp on a using a supervisor would be very useful for, you know, a VM or just running it as a binary, doing it in Kubernetes, if you're running it as a pool, it's not a great pattern in Kubernetes to have a supervisor update a single pod's configuration to make it not uniform with the other pods in its replica set. 
+
+**Jacob:** So what that means is, you know, if you're going to run it in Kubernetes—if you're going to run a replica set of pods in Kubernetes, you want those pods to be the same configuration. And if you're only running a supervisor, if you're running a supervisor on each of those pods but you're only making the change to a single one, that's an anti-pattern and can get you into some trouble. 
+
+**Jacob:** So the bridge, however, can manage pools of collectors and is definitely what I would recommend to use. Again, with this stuff being completed, that's what I would recommend for Kubernetes.
+
+**Speaker 5:** Okay, thank you.
+
+**Jacob:** No problem.
+
+**Speaker 6:** I've got a few questions related to the work. I work at a large US bank, and I'm trying to bring in Otel and essentially have that as our main strategy to try and move away from beyond vendors specifically. The question that we're running into just now are the challenges like vanilla versus vendor. And what I mean by that is do we just pull down, if I take the collector for example, do we just pull down the collector, configure the collector the way that we want it with receivers and exporters, or with the specific strategic vendors that we work with? 
+
+**Speaker 6:** There are obviously pros and cons in doing both. It doesn't sound like, you know, from your side Jacob, obviously you're working from the vendor side, but I have spoken to other vendors who have given me an interesting range of opinions on what area or which of those to look at. It'd be quite interesting to see what your thoughts are. 
+
+**Jacob:** This is a great, really great question. It totally depends on your deployment model, I would say. So one option, especially, you know, if you're running thousands of pods and, you know, hundreds of clusters, the model that I would recommend you use is the Gateway model where, you know, let's say you have a collector per group of apps and then all of those collectors forward to a centralized pool of collectors that then forward to your vendor. 
+
+**Jacob:** This means that your—those pools for your applications are vendor neutral because all they're really doing is gathering and forwarding stuff for your application teams. And then a centralized team would manage the Gateway collectors, and then that's the place where you make the decision about, "Am I going to use my vendor-wrapped collector or am I going to use my, you know, vendor-neutral one?" 
+
+**Jacob:** The choice becomes really easy to make, you know, if there's some feature that your vendor provides that's only available in their vendor-specific collector, you could choose to use the wrapped collector there. And then in the future, if you wanted to change vendors, you still have Otel data sending to that vendor collector, and so you can just change that one out very, very easy. 
+
+**Jacob:** The reason that this is good is because you wouldn't have to go to your application teams or any of these other, you know, orgs and say, "Hey, you know, you have to reconfigure your whole setup because we're changing our underlying vendor here," whereas you, as the centralized team, could be the one to just change a single pool to make it all consistent. 
+
+**Jacob:** That's probably what I—that's like a pretty future-proofed approach. The configuration for what you're going to do, no matter what, is going to be complicated, but that one is probably going to do you best if you really want to use the vendor collector. If not, still doing the Gateway approach is a pretty good one. 
+
+**Jacob:** You can centralize things like efficient sampling rates or even like, you know, requirements for telemetry things like attribute requirements can be centralized before they can egress. It also means you can have, you know, set points of egress as well, which, you know, if you're in a pretty locked down Kubernetes cluster, as you know, is really important to have, you know, only a certain amount of applications that can egress from the cluster.
+
+**Speaker 6:** Okay, I think I definitely follow in terms of the deployment patterns and layouts and having the multiple levels of collector. I think we're thinking and going. I think for me, being in the enterprise, what we are worried about is, again, moving stuff like this to production. So if we have a theoretical issue in a, sorry, a vanilla collector, you know, again, just a theoretical example, if we've got RTO and we've got to fix issues within a one or two hours, for example, that's probably going to be the tipping point for us on the vendor versus vanilla question. 
+
+**Speaker 6:** And because we would obviously be looking for some kind of support from a vendor, and typically we would have that as most folks would have through a vendor. But then that certainly in my mind gives us another problem where instead of going from agent polyproliferation, where you are just now, it's almost like going to Otel proliferation. You know, it's almost like you're solving one problem and creating another. 
+
+**Speaker 6:** So I think, like the others on the call, we're relatively early in our journey, and we're just trying to go through the not necessarily the technical questions, but the hardening questions. What would reality look like when we're in production with, you know, very high volumes of traffic coming through?
+
+**Jacob:** I mean, that sounds like you're on the right path here overall as far as your thinking going. There definitely is that worry of collector proliferation. You can avoid that, you know, with multiple pools to gateways if you'd like. If you're going from—I mean, usually you're doing this if you're going for like a legacy protocol, something like StatsD, which doesn't like to go over the Internet because it's UDP, or something like Prometheus, where you have all these targets and you don't want to worry about managing the scrapes for them, right? 
+
+**Jacob:** Doing this at scale is going to be really environment and volume dependent. I think if your vendor provides their own collector, they should be able to give you some support for, you know, the vanilla collectors that you run. I, you know, with the people that I work with, do give support for, you know, whatever collectors their customers run. 
+
+**Jacob:** And I mean, we don't have a vendor-specific collector—like, our company just doesn't give out a vendor-specific one. But I, you know, I provide support for any collectors that customers run. So if that's the fear, I would check with your vendor to see if they also will give you that type of support. 
+
+**Jacob:** I also found that the steady state of these things is pretty—once you tune it with resourcing and autoscaling, it's pretty hands-off, I found. I actually was just working yesterday in a cluster that I touch every six months or so to do some Helm chart testing, and it's been running for six months without issue, and with like a huge varying scale of traffic because of autoscaling and sort of just because of how simple we keep—I keep those collectors. 
+
+**Jacob:** This is for both metrics and traces too, for infrastructure and application. So, I mean, it's a much smaller example than what you're talking about for sure, but the point remains where it's like once you reach a good steady state, especially with like your Bal cycle, if that's what you have, if you're autoscaling the setup correctly and if your configuration is pretty, you know, nailed down, you should be—it should be pretty hands-off, knock on wood. But that's definitely the hope.
+
+**Speaker 6:** Yeah, okay. Thanks, Jacob. Appreciate that.
+
+**Jacob:** Yeah, no problem. Thank you! 
+
+**Speaker 1:** So folks, we are coming up on time. So we've got about five more minutes in case anyone has any more burning questions for Jacob.
+
+**Speaker 1:** Alrighty, I will take that as a no, but thank you Jacob so much for joining today and sharing your migration story. I think this has resonated with a lot of folks, so we definitely appreciate you coming on and sharing this experience with everyone. 
+
+**Speaker 1:** Like I said, this recording will be made available on the Otel YouTube channel also for anyone who has missed Jacob's Otel Q&A session that we had last month. There is a video up on the Otel channel, and Reyes, who works with Ren and me on the Otel end user working group, did a wonderful write-up of the Q&A in case video isn't your jam. So definitely be sure to check that out.
+
+**Speaker 1:** Okay, so if you go to this link here, you should be able to find our various Slack channels, and we love—we encourage everyone to just ask questions, share use cases. We love hearing all that stuff. And also, if you or anyone you know has a really cool Otel use case, you're just getting started or you're a more advanced user, does not matter, we would love to hear from you. We're always looking for folks for Otel in Practice, Otel Q&A, and we also have monthly Otel end user discussions, which we run those for three different time zones. So we have them for EMEA, APAC, and Americas. So be sure to join any one of those because there's always really amazing and thoughtful discussions coming out of these.
+
+**Speaker 1:** So yeah, everyone, thank you very much, and once again, Jacob, thank you so much for taking the time to chat with us twice.
+
+**Jacob:** Yeah, thanks so much for having me. I appreciate it.
+
+**Speaker 1:** Thank you! Bye! Have a good rest of your day. Bye!
 
 ## Raw YouTube Transcript
 
