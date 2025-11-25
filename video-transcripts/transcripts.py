@@ -778,31 +778,20 @@ def find_correct_timestamp(description, all_segments, time_to_text, client, orig
     if next_chapter_seconds is not None:
         max_time = min(max_time, next_chapter_seconds - 5)  # Stay 5 seconds before next chapter
     
-    # Use actual timestamps from the transcript within the search range
-    # This preserves second-level precision instead of rounding to 10-second intervals
+    # Create text windows every 10 seconds within the search range
     windows = []
-    seen_times = set()
+    current_time = min_time
     
-    for segment_time, segment_text in all_segments:
-        if min_time <= segment_time <= max_time:
-            # Group by 5-second windows to avoid too many entries
-            window_key = (segment_time // 5) * 5
-            
-            if window_key not in seen_times:
-                seen_times.add(window_key)
-                
-                # Collect text from a small window around this timestamp
-                window_texts = []
-                for time_sec in range(segment_time - 2, segment_time + 3):
-                    if time_sec in time_to_text:
-                        window_texts.extend(time_to_text[time_sec])
-                
-                if window_texts:
-                    # Use the actual segment time, not the rounded window_key
-                    windows.append((segment_time, ' '.join(window_texts[:30])))
-    
-    # Sort windows by time
-    windows.sort(key=lambda x: x[0])
+    while current_time <= max_time:
+        window_texts = []
+        for time_sec in range(current_time, min(current_time + 10, max_time + 1)):
+            if time_sec in time_to_text:
+                window_texts.extend(time_to_text[time_sec])
+        
+        if window_texts:
+            windows.append((current_time, ' '.join(window_texts[:30])))  # Limit text per window
+        
+        current_time += 10
     
     if not windows:
         return None
@@ -816,13 +805,12 @@ def find_correct_timestamp(description, all_segments, time_to_text, client, orig
     Topic: "{description}"
     Original timestamp: {format_duration(original_seconds)}
     
-    Here is text from within ±60 seconds of that timestamp (with ACTUAL precise timestamps):
+    Here is text from within ±60 seconds of that timestamp:
     
     {windows_text}
     
     Which timestamp is the BEST match for when "{description}" begins?
-    Use the EXACT timestamp shown in brackets where the topic starts.
-    Do NOT round or approximate - use the precise timestamp from the list above.
+    The timestamp should be close to {format_duration(original_seconds)}.
     
     Respond with ONLY the timestamp in HH:MM:SS format (e.g., 00:05:17).
     If the original timestamp is already good, respond with: {format_duration(original_seconds)}
@@ -859,53 +847,6 @@ def find_correct_timestamp(description, all_segments, time_to_text, client, orig
         print(f"    Error searching for timestamp: {str(e)}")
         return None
 
-def build_timeline_from_transcript(raw_transcript, sample_interval=10):
-    """
-    Build a timeline showing what's being said at regular intervals.
-    @param raw_transcript: Raw transcript data with timing information
-    @param sample_interval: Sample interval in seconds (default: 10)
-    @return: String representation of the timeline
-    """
-    if not raw_transcript:
-        return ""
-    
-    # Build a map of timestamp to text
-    time_to_text = {}
-    max_time = 0
-    
-    for entry in raw_transcript:
-        if isinstance(entry, dict) and 'text' in entry and 'start' in entry:
-            text = entry['text'].strip()
-            if text and text not in ['[Music]', '[Applause]', '[Laughter]']:
-                start_time = int(entry['start'])
-                if start_time not in time_to_text:
-                    time_to_text[start_time] = []
-                time_to_text[start_time].append(text)
-                if 'duration' in entry:
-                    end_time = entry['start'] + entry['duration']
-                    max_time = max(max_time, end_time)
-    
-    # Sample at regular intervals
-    timeline_lines = []
-    current_time = 0
-    
-    while current_time <= max_time:
-        # Collect text from a window around this time (±5 seconds)
-        window_texts = []
-        for time_sec in range(max(0, current_time - 5), current_time + 6):
-            if time_sec in time_to_text:
-                window_texts.extend(time_to_text[time_sec])
-        
-        if window_texts:
-            # Take first 100 characters of the combined text to keep it manageable
-            combined = ' '.join(window_texts)[:150]
-            timestamp_str = format_duration(current_time)
-            timeline_lines.append(f"[{timestamp_str}] {combined}...")
-        
-        current_time += sample_interval
-    
-    return '\n'.join(timeline_lines)
-
 def create_chapters(transcript, video_id, raw_transcript=None):
     """
     Create timestamps and chapters for a YouTube video transcript.
@@ -927,42 +868,24 @@ def create_chapters(transcript, video_id, raw_transcript=None):
         duration_str = format_duration(duration_seconds)
         duration_constraint = f"\n\nIMPORTANT: This video is {duration_str} long. DO NOT generate any timestamps beyond {duration_str}. All timestamps must be less than or equal to {duration_str}."
 
-    # Build timeline from raw transcript if available
-    timeline = ""
-    if raw_transcript:
-        print(f"Building timeline from raw transcript for video {video_id}")
-        timeline = build_timeline_from_transcript(raw_transcript, sample_interval=10)
-        if timeline:
-            timeline = f"\n\n=== TIMELINE WITH ACTUAL TIMESTAMPS ===\n{timeline}\n=== END TIMELINE ===\n"
-
     chapters_prompt = f"""
-    This is a transcript of a YouTube livestream. Identify key moments in the stream and provide timestamps in the format for YouTube like this: 
-    00:00:00 Welcome and intro
-    00:01:47 Structured metadata
-    00:03:22 Metrics discussion
+    This is a transcript of a YouTube livestream. Could you please identify up to 10 key moments in the stream and give me the timestamps in the format for YouTube like this?: 
+    00:00:00 Introductions 
+    00:01:47 What is structured metadata?
+    00:03:22 Discussion about metrics
 
     CRITICAL INSTRUCTIONS:
-    - You MUST provide a MAXIMUM of 10 chapters - NO MORE than 10
     - Always start with 00:00:00
-    - Use ONLY timestamps that appear in the TIMELINE below - these are the ACTUAL timestamps from the video
-    - Pick timestamps where topic changes or new segments begin
-    - DO NOT make up timestamps - only use timestamps that appear in the timeline
-    - Look at what's being said at each timestamp in the timeline to determine good chapter points
+    - Use the ACTUAL timestamps from where topics begin in the transcript
+    - DO NOT round timestamps to neat intervals like :00 or :30
+    - Use precise timestamps like 00:05:17, 00:12:43, 00:08:09, etc.
+    - Look at the actual flow of conversation to determine when topics change
     - The chapter description MUST accurately describe what is being said RIGHT AT that timestamp
     - Do NOT describe what happens later - only describe what is happening at the exact moment of the timestamp
-    - If a guest is introduced at a specific timestamp, use that exact timestamp
+    - Read the text carefully around each timestamp to ensure your description matches what's actually being discussed
+    - If a guest is introduced at 00:05:30, don't put "Guest introduction" at 00:20:00
     - Be precise and honest about what's happening at each moment
-    
-    CHAPTER DESCRIPTION FORMAT:
-    - Use SHORT PHRASES, not full sentences
-    - Keep descriptions 2-5 words when possible
-    - Avoid articles (a, an, the) at the start
-    - Avoid question format - use noun phrases instead
-    - Make descriptions easy to search for
-    - Examples of GOOD descriptions: "OpenTelemetry basics", "Demo walkthrough", "Q&A session", "Kubernetes integration"
-    - Examples of BAD descriptions: "What is OpenTelemetry?", "A discussion about metrics", "The team talks about features"
-    
-    REMEMBER: Generate NO MORE than 10 chapters total. Select the most important moments only.{duration_constraint}{timeline}
+    - Use simple but descriptive language that makes it easier for users to understand what is being spoken about{duration_constraint}
     """
 
     print(f"Creating chapters for video {video_id}")
