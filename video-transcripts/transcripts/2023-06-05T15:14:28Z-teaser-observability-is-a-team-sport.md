@@ -10,19 +10,24 @@ URL: https://www.youtube.com/watch?v=HLJe2RLPlWY
 
 ## Summary
 
-In this video, the speaker discusses the concept of observability as a collaborative effort within teams rather than a responsibility solely held by observability specialists. The speaker emphasizes the importance of involving all engineers in the observability process, as they have a deeper understanding of their own code and products. The goal is to empower engineers with the necessary tools and guidance while encouraging them to take charge of observability tasks, such as instrumentation, alert creation, and response. The video highlights the shift from a centralized observability approach to a more inclusive team-oriented strategy.
+In this video, the speaker discusses the concept of observability as a collaborative effort within teams, emphasizing that it should not be solely the responsibility of dedicated observability teams. The speaker, who is passionate about this topic, argues that engineers should take ownership of observability in their code and products, while observability engineers should act as facilitators, providing tools and support. The main points include the importance of empowering engineers to handle observability and the need for a collective approach rather than a top-down model.
 
-# Observability as a Team Sport
+## Chapters
 
-Today, I want to discuss a topic that I am extremely passionate about: **observability as a team sport**. 
+00:00:00 Welcome and intro
+00:00:10 Observability as a team sport
+00:00:20 Role of observability teams
+00:00:30 Empowering engineers
+00:00:40 Engineers taking charge
+00:00:55 Conclusion and wrap-up
 
-In many companies, observability teams are tasked with creating guidelines, instrumenting the code, setting up alerts, and responding to incidents. However, I am completely against this approach. I believe that observability should be a shared responsibility. 
+[00:00:10] **Speaker:** Foreign topic will be observability as a team sport. It's something that I'm extremely passionate about. 
 
-**Engineers know their code and their products better than anyone else.** As observability engineers, our role should be to help and empower them by providing the necessary tools, but it should ultimately be the engineers who take charge of observability in their projects. 
+[00:00:20] I see that in many companies, observability teams are the ones that are making the guidelines, instrumenting the code, creating the alerts, and responding to them. I am completely against that. I think that observability, everyone should do their part. Engineers know their code and their product better. 
 
-That’s the essence of what I want to convey today.
+[00:00:40] Us as observability engineers are there to help them and empower them and provide the tools, but they should be the ones taking charge when it comes to this part. So that's what I'm going to be talking about.
 
 ## Raw YouTube Transcript
 
-foreign [Music] [Music] topic will be observability as a team sport it's something that I'm extremely passionate about and I see that in many companies observability teams are the ones that are making the guidelines instrumenting the code creating the alerts and responding to them and I am completely against that I think that observability everyone should do their part Engineers know their code and their product better us as a durability Engineers are there to help them and Empower them and provide the tools but they should be the one taking charge when it comes to to this part so that's what I'm going to be talking about [Music] and [Music]
+foreign topic will be observability as a team sport it's something that I'm extremely passionate about and I see that in many companies observability teams are the ones that are making the guidelines instrumenting the code creating the alerts and responding to them and I am completely against that I think that observability everyone should do their part Engineers know their code and their product better us as a durability Engineers are there to help them and Empower them and provide the tools but they should be the one taking charge when it comes to to this part so that's what I'm going to be talking about and
 

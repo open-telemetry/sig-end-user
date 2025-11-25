@@ -10,11 +10,17 @@ URL: https://www.youtube.com/watch?v=RxP76ahb29s
 
 ## Summary
 
-In this video, the speaker expresses pride in fostering a strong observability culture within their organization. They highlight their role in continuing to build and improve this culture, emphasizing its importance and value. The discussion touches on the significance of observability in enhancing operational efficiency and the benefits it brings to the team. The speaker's enthusiasm reflects a commitment to developing a collaborative and transparent environment that prioritizes data-driven decision-making.
+In this video, the speaker expresses pride in fostering a strong observability culture within their team or organization. They discuss the importance of maintaining and developing this culture, emphasizing its role in improving operational efficiency and transparency. The speaker highlights their contributions to this initiative and reflects on the positive impact that a robust observability culture has on the team's overall performance and collaboration.
 
-Thank you. I have a very good observability culture, and I'm actually really proud of that. I mean, I'm proud because I'm helping to continue and build it.
+## Chapters
+
+00:00:00 Welcome and intro
+00:00:10 Observability culture discussion
+00:00:20 Building observability culture
+
+[00:00:10] **Speaker:** Thank you. I have a very good observability culture. I'm actually really, really proud of that. I mean, I'm proud because I'm helping continue and build it.
 
 ## Raw YouTube Transcript
 
-[Music] thank you I have a very good observability culture I'm actually really really proud of that I I mean I'm I'm proud because I'm helping continue and build it [Music]
+thank you I have a very good observability culture I'm actually really really proud of that I I mean I'm I'm proud because I'm helping continue and build it
 

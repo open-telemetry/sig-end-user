@@ -10,19 +10,19 @@ URL: https://www.youtube.com/watch?v=IHeqL36AlK0
 
 ## Summary
 
-In this video, the speaker discusses the importance of enabling engineering teams to build their own observability tools, such as dashboards and alerts, rather than relying on external parties. The speaker emphasizes that if alerts are created generically without understanding the specific products or code, teams may not respond to incidents effectively or promptly. The discussion highlights the significance of team involvement in the development of monitoring tools to ensure they are tailored to their unique needs. The overall message stresses the value of internal knowledge in creating effective observability solutions.
+In this video, the speaker discusses the importance of internal teams being involved in building their own observability dashboards and alert systems. They argue that if external teams are responsible for these tasks, the alerts and dashboards will lack specificity and relevance, leading to delayed responses to incidents. The speaker emphasizes that an internal team’s familiarity with their products and code allows them to create more tailored and effective monitoring tools. Overall, the video highlights the necessity of team involvement in incident response systems to ensure timely and accurate reactions to potential issues.
 
-Foreign [Music] 
+## Chapters
 
-ERS were not involved in building their own dashboard or creating their own alerts. Without knowing what data they're sending for their observability reasons, they will not be able to respond to an incident in time. 
+00:00:00 Introduction to dashboard building
+00:00:10 Discussion on alerting systems
+00:00:20 Observability data challenges
+00:00:30 Generic alerting thresholds
+00:00:40 Importance of team involvement
 
-If I were the one making the alerts for them, it would be something extremely generic, with some thresholds that I thought would be right. However, I don’t know their products or their code. Obviously, the dashboards would be completely generic as well. 
-
-If those were developed by a person within the team itself, it would be much easier for them. 
-
-[Music]
+[00:00:10] **Speaker:** foreign ERS were not involved in the part of building their own dashboard, building their own alert, knowing what data they're sending for their observability reasons. They will not be able to respond to an incident in time. Simple as that. If I was the one making the alerting for them, it would be something extremely generic with some thresholds that I just thought would be right because I don't know their products or their code. Obviously, the dashboards would be completely generic, but if those were done by a person inside the team itself, it would be so easy for them.
 
 ## Raw YouTube Transcript
 
-foreign [Music] [Music] ERS were not involved in the part of building their own dashboard building their own alert knowing what data they're sending for their observability uh reasons they will not be able to respond to an incident in time simple as that if I was the one making the alerting for them it would be something extremely generic with some thresholds that I just thought would be right because I don't know their products or their code obviously the dashboards would be completely generic but if those were done by a person inside the team itself it would be so easy for them [Music]
+foreign ERS were not involved in the part of building their own dashboard building their own alert knowing what data they're sending for their observability uh reasons they will not be able to respond to an incident in time simple as that if I was the one making the alerting for them it would be something extremely generic with some thresholds that I just thought would be right because I don't know their products or their code obviously the dashboards would be completely generic but if those were done by a person inside the team itself it would be so easy for them
 
