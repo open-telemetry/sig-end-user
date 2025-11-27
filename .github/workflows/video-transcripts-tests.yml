@@ -1,0 +1,35 @@
+name: Video Transcripts Tests
+
+on:
+  pull_request:
+    paths:
+      - 'video-transcripts/**'
+  push:
+    branches:
+      - main
+    paths:
+      - 'video-transcripts/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@1af3b93b6815bc44a9784bd300feb67ff0d1eeb3 # v6.0.0
+
+      - name: Set up Python
+        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        working-directory: video-transcripts
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        working-directory: video-transcripts
+        run: |
+          python -m unittest test_transcripts.py -v
