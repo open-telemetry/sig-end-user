@@ -5,9 +5,16 @@
     'helpers:pinGitHubActionDigestsToSemver',
   ],
   pip_requirements: {
+    enabled: false
+  },
+  pip_setup: {
+    enabled: false
+  },
+  'pip-compile': {
+    enabled: true,
     managerFilePatterns: [
-      '/(^|/)video-transcripts/requirements\\.in$/',
-    ],
+      '/(^|/)video-transcripts/requirements\\.txt$/'
+    ]
   },
   packageRules: [
     {
@@ -27,6 +34,10 @@
       schedule: [
         'before 8am on Monday',
       ],
+    },
+    {
+      matchManagers: ['pip-compile'],
+      versioning: 'pep440'
     },
   ],
   labels: [
