@@ -9,6 +9,32 @@ keep text/markdown corresponding to the transcripts of the videos that the commu
 * `source venv/bin/activate`
 * `pip3 install -r requirements.txt`
 
+## Dependency Management
+
+This project uses `pip-tools` to manage dependencies:
+
+* **Direct dependencies** are listed in `requirements.in`
+* **All dependencies** (direct + transitive) are locked in `requirements.txt`
+
+### Updating Dependencies
+
+To add or update a direct dependency:
+
+1. Edit `requirements.in` to add/modify the dependency
+2. Install `pip-tools` if not already installed: `pip install pip-tools`
+3. Regenerate `requirements.txt`: `pip-compile requirements.in -o requirements.txt`
+4. Install updated dependencies: `pip install -r requirements.txt`
+
+**Note:** Renovate is configured to only update `requirements.in`. Do not manually edit `requirements.txt`.
+
+## Running Tests
+
+To run the unit tests:
+
+```bash
+python -m unittest test_transcripts.py -v
+```
+
 ## Configure Environment
 
 Edit `.env` file and set `API_KEY` to the correct value for YouTube

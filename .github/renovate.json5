@@ -4,6 +4,9 @@
     "config:best-practices",
     "helpers:pinGitHubActionDigestsToSemver"
   ],
+  "pip_requirements": {
+    "fileMatch": ["(^|/)video-transcripts/requirements\\.in$"]
+  },
   "packageRules": [
     {
       "groupName": "all patch versions",
