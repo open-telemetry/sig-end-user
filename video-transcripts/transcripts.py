@@ -62,11 +62,6 @@ def _fetch_playlist_video_ids(youtube, playlist_id, max_pages=100):
             
             # Reset retry count on successful request
             retry_count = 0
-                
-            # Small delay between pagination requests
-            delay = random.uniform(1, 3)  # Random delay between 1-3 seconds
-            print(f"Waiting {delay:.1f} seconds before next page...")
-            time.sleep(delay)
             
         except HttpError as e:
             if e.resp.status == 403 and 'quota' in str(e).lower():
@@ -92,32 +87,38 @@ def _fetch_video_details_batch(youtube, video_ids):
     """
     videos = []
     batch_size = 50  # YouTube API allows up to 50 IDs per request
+    max_retries = 3
     
     for i in range(0, len(video_ids), batch_size):
         batch_ids = video_ids[i:i + batch_size]
+        retry_count = 0
         
-        try:
-            request = youtube.videos().list(
-                part='snippet',
-                id=','.join(batch_ids)
-            )
-            response = request.execute()
-            
-            for item in response['items']:
-                print(f"Found video: {item['snippet']['title']}")
-                videos.append(item)
+        while retry_count < max_retries:
+            try:
+                request = youtube.videos().list(
+                    part='snippet',
+                    id=','.join(batch_ids)
+                )
+                response = request.execute()
                 
-            # Rate limiting between batches
-            time.sleep(0.2)  # 200ms delay between batches
-            
-        except HttpError as e:
-            if e.resp.status == 403 and 'quota' in str(e).lower():
-                print(f"Quota exceeded on video details batch {i//batch_size + 1}. Waiting before retry...")
-                time.sleep(60)
-                continue
-            else:
-                print(f"Error fetching video details batch {i//batch_size + 1}: {e}")
-                continue
+                for item in response['items']:
+                    print(f"Found video: {item['snippet']['title']}")
+                    videos.append(item)
+                
+                # Success - break out of retry loop and move to next batch
+                break
+                
+            except HttpError as e:
+                if e.resp.status == 403 and 'quota' in str(e).lower():
+                    retry_count += 1
+                    if retry_count >= max_retries:
+                        print(f"Max retries ({max_retries}) exceeded on video details batch {i//batch_size + 1}")
+                        break
+                    print(f"Quota exceeded on video details batch {i//batch_size + 1} (attempt {retry_count}/{max_retries}). Waiting before retry...")
+                    time.sleep(60)
+                else:
+                    print(f"Error fetching video details batch {i//batch_size + 1}: {e}")
+                    break  # Don't retry on non-quota errors
 
     return videos
 
@@ -173,11 +174,7 @@ def get_channel_videos(channel_id, start_date, end_date):
             next_page_token = response.get('nextPageToken')
             if not next_page_token:
                 break
-                
-            # Small delay between pagination requests
-            delay = random.uniform(1, 3)  # Random delay between 1-3 seconds
-            print(f"Waiting {delay:.1f} seconds before next page...")
-            time.sleep(delay)
+            
             page_count += 1
             
         except HttpError as e:
@@ -1105,12 +1102,6 @@ def main(args):
         playlist_videos = get_playlist_videos(args.playlist)
         videos_to_transcribe = videos_to_transcribe + playlist_videos
         print(f"Found {len(playlist_videos)} videos in playlist %s" % args.playlist)
-        
-        # Small delay between different API calls
-        if args.channel:
-            delay = random.uniform(2, 4)
-            print(f"Waiting {delay:.1f} seconds before fetching channel videos...")
-            time.sleep(delay)
 
     if args.channel:
         print("Fetching channel videos")
