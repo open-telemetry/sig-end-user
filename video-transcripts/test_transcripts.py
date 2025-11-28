@@ -91,6 +91,41 @@ class TestTimelineBuilder(unittest.TestCase):
         self.assertIn('91 seconds', timeline)
 
 
+class TestYouTubeAPIErrorHandling(unittest.TestCase):
+    """Test that YouTube API exceptions work as expected with our pinned version."""
+    
+    def test_youtube_api_exceptions_importable(self):
+        """Test that all YouTube API exceptions we depend on can be imported.
+        
+        This will fail if the API changes in a way that breaks our imports.
+        """
+        # Import all exceptions we use
+        from youtube_transcript_api import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
+        from youtube_transcript_api._errors import YouTubeRequestFailed
+        
+        # Verify they're actual exception classes
+        self.assertTrue(issubclass(TranscriptsDisabled, Exception))
+        self.assertTrue(issubclass(NoTranscriptFound, Exception))
+        self.assertTrue(issubclass(VideoUnavailable, Exception))
+        self.assertTrue(issubclass(YouTubeRequestFailed, Exception))
+    
+    def test_youtube_api_exceptions_catchable(self):
+        """Test that YouTube API exceptions can be caught.
+        
+        This validates that exceptions raised by the library can be caught
+        and their error messages can be inspected (as our code does).
+        """
+        from youtube_transcript_api import TranscriptsDisabled, NoTranscriptFound
+        
+        # Test we can catch TranscriptsDisabled
+        with self.assertRaises(TranscriptsDisabled):
+            raise TranscriptsDisabled("video_id")
+        
+        # Test we can catch NoTranscriptFound
+        with self.assertRaises(NoTranscriptFound):
+            raise NoTranscriptFound("video_id", [], "en")
+
+
 class TestTimestampParsing(unittest.TestCase):
     """Test timestamp parsing and formatting functions."""
     

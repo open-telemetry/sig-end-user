@@ -5,11 +5,6 @@ from googleapiclient.errors import HttpError
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api import TranscriptsDisabled, NoTranscriptFound, VideoUnavailable
 from youtube_transcript_api._errors import YouTubeRequestFailed
-try:
-    from youtube_transcript_api._errors import TooManyRequests
-except ImportError:
-    # Fallback if TooManyRequests doesn't exist in this version
-    TooManyRequests = YouTubeRequestFailed
 from dotenv import load_dotenv
 from slugify import slugify
 import json
