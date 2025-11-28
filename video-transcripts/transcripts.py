@@ -845,12 +845,13 @@ def find_correct_timestamp(description, all_segments, time_to_text, client, orig
         print(f"    Error searching for timestamp: {str(e)}")
         return None
 
-def create_chapters(transcript, video_id, raw_transcript=None):
+def create_chapters(transcript, video_id, raw_transcript=None, summary=None):
     """
     Create timestamps and chapters for a YouTube video transcript.
     @param transcript: The raw transcript of a YouTube video
     @param video_id: The YouTube video ID
     @param raw_transcript: Raw transcript data with timing information (optional)
+    @param summary: Summary of the video content (optional)
     @return: A string containing formatted timestamps and chapters
     """
     if openai_key == "":
@@ -869,7 +870,7 @@ def create_chapters(transcript, video_id, raw_transcript=None):
     # Build a timeline skeleton from raw transcript if available
     timeline_context = ""
     if raw_transcript:
-        print(f"Building timeline skeleton from raw transcript for video {video_id}")
+        print(f"Building timeline skeleton from raw transcript for video {video_id} (duration: {format_duration(duration_seconds) if duration_seconds else 'unknown'})")
         
         # Build mapping of time to text (reusing existing logic)
         time_to_texts = {}
@@ -882,18 +883,22 @@ def create_chapters(transcript, video_id, raw_transcript=None):
                         time_to_texts[start_time] = []
                     time_to_texts[start_time].append(text)
         
-        # Create timeline samples every 30 seconds
+        # Create timeline samples dynamically based on video duration
         timeline_samples = []
-        sample_interval = 30  # seconds
-        max_samples = 40  # Limit to avoid token overflow
+        video_duration = duration_seconds or 3600
+        
+        # Dynamically adjust sample interval based on video length
+        # Target ~50-60 samples total to cover the entire video while staying within token limits
+        target_samples = 55
+        sample_interval = max(15, video_duration // target_samples)  # At least 15 seconds between samples
         
         current_time = 0
         sample_count = 0
         
-        while current_time <= (duration_seconds or 3600) and sample_count < max_samples:
+        while current_time <= video_duration and sample_count < target_samples:
             # Get text from a small window around this time
             window_texts = []
-            for time_sec in range(current_time, min(current_time + 10, (duration_seconds or 3600) + 1)):
+            for time_sec in range(current_time, min(current_time + 10, video_duration + 1)):
                 if time_sec in time_to_texts:
                     window_texts.extend(time_to_texts[time_sec])
             
@@ -907,27 +912,69 @@ def create_chapters(transcript, video_id, raw_transcript=None):
             current_time += sample_interval
         
         if timeline_samples:
+            print(f"  Created {len(timeline_samples)} timeline samples (interval: ~{sample_interval}s) covering entire video")
             timeline_context = f"""
 
-TIMELINE REFERENCE - These are actual timestamps from the video showing what is being said at different times:
+TIMELINE REFERENCE - These are actual timestamps from the video showing what is being said at different times (covering the ENTIRE {format_duration(video_duration)} video):
 
 {chr(10).join(timeline_samples)}
 
-USE THESE ACTUAL TIMESTAMPS to determine when topics change. Your chapter timestamps MUST come from the times shown above or nearby times. DO NOT guess or make up timestamps."""
+USE THESE ACTUAL TIMESTAMPS to determine when topics change. Review the ENTIRE timeline above before selecting chapters. Your chapter timestamps MUST come from the times shown above or nearby times. DO NOT guess or make up timestamps."""
+    
+    # Include summary context if available
+    summary_context = ""
+    if summary:
+        summary_context = f"""
+
+VIDEO SUMMARY - Use this to understand what topics and people are actually important in this video:
+
+{summary}
+
+IMPORTANT: Create chapters ONLY for the topics, people, and discussions mentioned in the summary above. If something isn't in the summary (like casual small talk about weather), it's not important enough for a chapter."""
 
     chapters_prompt = f"""
-    This is a transcript of a YouTube livestream. Could you please identify up to 10 key moments in the stream and give me the timestamps in the format for YouTube like this?: 
+    This is a transcript of a YouTube livestream. 
+    
+    TASK: Read through the ENTIRE video (see timeline reference below) and identify the 10 MOST IMPORTANT moments to create chapters for, in this format:
     00:00:00 Introductions 
     00:01:47 What is structured metadata?
     00:03:22 Discussion about metrics
     00:05:30 Guest introduction: Diana
+    
+    IMPORTANT: Review the timeline reference showing the ENTIRE video before deciding on chapters. Distribute chapters across the full video length, not just the beginning.
+
+    WHAT MAKES A GOOD CHAPTER:
+    - Topics and people mentioned in the VIDEO SUMMARY above
+    - Guest introductions (when new people join the conversation)
+    - Major topic changes (switching from one main subject to another)
+    - Substantive discussions, demos, or explanations that align with the summary
+    - Q&A sessions or audience interactions
+    - Significant announcements or reveals
+    
+    DO NOT CREATE CHAPTERS FOR:
+    - Anything NOT mentioned in the VIDEO SUMMARY (if summary is provided)
+    - Brief small talk, pleasantries, or casual mentions (weather, travel, casual greetings)
+    - Filler conversation or off-topic tangents
+    - Single sentences or passing comments about unrelated topics
+    - Technical difficulties, pauses, or transitions
+    - Topics that last less than 30 seconds
+    
+    DECISION PROCESS:
+    1. Read through the ENTIRE timeline reference to understand the full video
+    2. Identify all significant moments that match topics in the VIDEO SUMMARY
+    3. Select the 10 MOST IMPORTANT moments distributed across the entire video
+    4. For each moment: check if the topic/person is mentioned in the VIDEO SUMMARY
+    5. If YES and it's a significant moment → include as a chapter
+    6. If NO or it's just small talk → skip it
+    
+    FOCUS ON: What would viewers actually want to jump to? What are the main topics identified in the summary? Make sure to cover the ENTIRE video, not just the beginning.
 
     CRITICAL INSTRUCTIONS:
-    - Always start with 00:00:00
+    - Always start with 00:00:00 (typically "Introductions" or "Welcome")
     - Use the ACTUAL timestamps from the timeline reference below
     - DO NOT round timestamps to neat intervals like :00 or :30
     - Use precise timestamps like 00:05:17, 00:12:43, 00:08:09, etc.
-    - Look at the actual flow of conversation to determine when topics change
+    - Look at the actual flow of conversation to determine when MAJOR topics change
     - The chapter description MUST accurately describe what is being said RIGHT AT that timestamp
     - Do NOT describe what happens later - only describe what is happening at the exact moment of the timestamp
     - Read the timeline reference carefully to see what's actually being said at each time
@@ -935,7 +982,7 @@ USE THESE ACTUAL TIMESTAMPS to determine when topics change. Your chapter timest
     - Be precise and honest about what's happening at each moment
     - KEEP DESCRIPTIONS CONCISE: Use 2-6 words maximum, not full sentences
     - Descriptions should be SHORT PHRASES like "Guest introduction", "Discussion about X", "Demo of Y feature"
-    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}{timeline_context}
+    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}{summary_context}{timeline_context}
     """
 
     print(f"Creating chapters for video {video_id}")
@@ -980,7 +1027,7 @@ def write_markdown(args, video):
 
     filename = file_for_video(args, video)
     [summary, cleaned_up] = openai_cleanup(transcript, video_id)
-    chapters = create_chapters(transcript, video_id, raw_transcript)
+    chapters = create_chapters(transcript, video_id, raw_transcript, summary)
     
     # Parse chapters and insert timestamps into cleaned transcript
     parsed_chapters = parse_chapters(chapters)
