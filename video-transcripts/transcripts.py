@@ -21,16 +21,20 @@ youtube_key = os.environ.get('API_KEY')
 # Second one is optional, but if it's missing, we'll skip the summary and cleanup.
 openai_key = os.environ.get("OPENAI_API_KEY","")
 
-def get_playlist_videos(playlist_id, max_pages=100):
-    youtube = build('youtube', 'v3', developerKey=youtube_key)
-    
+def _fetch_playlist_video_ids(youtube, playlist_id, max_pages=100):
+    """
+    Fetch all video IDs from a playlist with pagination and retry logic.
+    @param youtube: YouTube API client instance
+    @param playlist_id: YouTube playlist ID
+    @param max_pages: Maximum number of pages to fetch
+    @return: List of video IDs
+    """
     video_ids = []
     next_page_token = None
     page_count = 0
     max_retries = 3
     retry_count = 0
 
-    # Paginate through playlist items with rate limiting and safeguards
     while page_count < max_pages:
         try:
             page_count += 1
@@ -76,7 +80,16 @@ def get_playlist_videos(playlist_id, max_pages=100):
                 print(f"Error fetching playlist items: {e}")
                 raise
 
-    # Fetch video details in batches with rate limiting
+    return video_ids
+
+
+def _fetch_video_details_batch(youtube, video_ids):
+    """
+    Fetch detailed video information for a list of video IDs in batches.
+    @param youtube: YouTube API client instance
+    @param video_ids: List of YouTube video IDs
+    @return: List of video objects with detailed information
+    """
     videos = []
     batch_size = 50  # YouTube API allows up to 50 IDs per request
     
@@ -106,6 +119,24 @@ def get_playlist_videos(playlist_id, max_pages=100):
                 print(f"Error fetching video details batch {i//batch_size + 1}: {e}")
                 continue
 
+    return videos
+
+
+def get_playlist_videos(playlist_id, max_pages=100):
+    """
+    Fetch all videos from a YouTube playlist with their detailed information.
+    @param playlist_id: YouTube playlist ID
+    @param max_pages: Maximum number of pages to fetch (default 100)
+    @return: List of video objects with detailed information
+    """
+    youtube = build('youtube', 'v3', developerKey=youtube_key)
+    
+    # Step 1: Get all video IDs from the playlist
+    video_ids = _fetch_playlist_video_ids(youtube, playlist_id, max_pages)
+    
+    # Step 2: Fetch detailed information for each video
+    videos = _fetch_video_details_batch(youtube, video_ids)
+    
     return videos
 
 def get_channel_videos(channel_id, start_date, end_date):
