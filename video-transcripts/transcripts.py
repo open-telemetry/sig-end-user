@@ -228,7 +228,9 @@ def fetch_transcripts(args, videos):
         else:
             print(f"Skipping video {video_id} due to transcript issues.")
             
-        # Small delay between transcript fetches
+        # Rate limiting prevention: Small delay between transcript fetches to avoid 
+        # triggering YouTube's rate limits (429 errors). Better to wait 2-5 seconds 
+        # proactively than 60-120 seconds reactively if rate limited.
         if i < len(videos) - 1:  # Don't sleep after the last video
             delay = random.uniform(2, 5)  # Random delay between 2-5 seconds
             print(f"Waiting {delay:.1f} seconds before next video...")

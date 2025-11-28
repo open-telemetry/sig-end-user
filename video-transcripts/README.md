@@ -83,10 +83,10 @@ The generated markdown includes:
 
 ### Rate Limiting
 The script includes comprehensive rate limiting to avoid YouTube API quota issues:
-- Random delays between API requests (3-8 seconds for pagination)
-- Longer delays between video processing (10-30 seconds)
-- Initial startup delay to "cool down" the API
-- Automatic 60-second wait and retry when quota limits are hit
+- Small delays between video transcript fetches (2-5 seconds) to prevent rate limiting
+- Automatic 60-120 second wait and retry when rate limits (429 errors) are hit
+- Exponential backoff for transient errors
+- Detects and reports IP blocking vs. temporary rate limiting
 
 ### Error Handling
 - Exponential backoff with up to 3 retry attempts for transcript fetching
