@@ -524,7 +524,7 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
     lines = cleaned_transcript.split('\n')
     
     # For each chapter, find the best line to insert it at
-    line_to_timestamp = {}  # Maps line index to timestamp to insert
+    line_to_chapter = {}  # Maps line index to (timestamp_str, title) to insert
     
     for seconds, timestamp_str, title in chapters:
         # Skip 00:00:00 as it's at the beginning
@@ -567,8 +567,8 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
         best_score = 0
         
         for idx, line in enumerate(lines):
-            # Skip empty lines and lines that already have timestamps
-            if not line.strip() or line.strip().startswith('['):
+            # Skip empty lines and lines that already have chapter markers
+            if not line.strip() or line.strip().startswith('###'):
                 continue
             
             line_lower = line.lower()
@@ -585,8 +585,8 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
             
             # Prefer lines that appear after already-placed timestamps (chronological order)
             position_bonus = 0
-            if line_to_timestamp:
-                last_placed = max(line_to_timestamp.keys())
+            if line_to_chapter:
+                last_placed = max(line_to_chapter.keys())
                 if idx > last_placed:
                     position_bonus = 0.5
             
@@ -596,19 +596,21 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
                 best_score = score
                 best_line_idx = idx
         
-        # Insert timestamp at the best matching line
+        # Insert chapter marker at the best matching line
         if best_line_idx is not None and best_score > 1:  # Require at least some confidence
-            # Only insert if we don't already have a timestamp for this line
-            if best_line_idx not in line_to_timestamp:
-                line_to_timestamp[best_line_idx] = timestamp_str
+            # Only insert if we don't already have a chapter marker for this line
+            if best_line_idx not in line_to_chapter:
+                line_to_chapter[best_line_idx] = (timestamp_str, title)
     
-    # Build the result by inserting timestamps at marked lines
+    # Build the result by inserting chapter headings before marked lines
     result_lines = []
     for idx, line in enumerate(lines):
-        if idx in line_to_timestamp:
-            # Insert timestamp at the beginning of this line
-            timestamp = line_to_timestamp[idx]
-            result_lines.append(f"[{timestamp}] {line}")
+        if idx in line_to_chapter:
+            # Insert H3 heading before this line with timestamp and chapter title
+            timestamp, title = line_to_chapter[idx]
+            result_lines.append(f"### [{timestamp}] {title}")
+            result_lines.append("")  # Add blank line after heading
+            result_lines.append(line)
         else:
             result_lines.append(line)
     
@@ -873,6 +875,7 @@ def create_chapters(transcript, video_id, raw_transcript=None):
     00:00:00 Introductions 
     00:01:47 What is structured metadata?
     00:03:22 Discussion about metrics
+    00:05:30 Guest introduction: Diana
 
     CRITICAL INSTRUCTIONS:
     - Always start with 00:00:00
@@ -885,7 +888,9 @@ def create_chapters(transcript, video_id, raw_transcript=None):
     - Read the text carefully around each timestamp to ensure your description matches what's actually being discussed
     - If a guest is introduced at 00:05:30, don't put "Guest introduction" at 00:20:00
     - Be precise and honest about what's happening at each moment
-    - Use simple but descriptive language that makes it easier for users to understand what is being spoken about{duration_constraint}
+    - KEEP DESCRIPTIONS CONCISE: Use 2-6 words maximum, not full sentences
+    - Descriptions should be SHORT PHRASES like "Guest introduction", "Discussion about X", "Demo of Y feature"
+    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}
     """
 
     print(f"Creating chapters for video {video_id}")
@@ -950,7 +955,7 @@ def write_markdown(args, video):
         file.write(f"{chapters}\n\n")
         
         if cleaned_up:
-            # Don't write a heading because OpenAI was instructed to output markdown.
+            file.write("## Transcript\n\n")
             file.write(f"{cleaned_up}\n\n")
 
         # TODO: if we're happy with OpenAI output, this is extraneous and can go.
