@@ -10,15 +10,18 @@ URL: https://www.youtube.com/watch?v=RxP76ahb29s
 
 ## Summary
 
-In this video, the speaker expresses pride in fostering a strong observability culture within their team or organization. They discuss the importance of maintaining and developing this culture, emphasizing its role in improving operational efficiency and transparency. The speaker highlights their contributions to this initiative and reflects on the positive impact that a robust observability culture has on the team's overall performance and collaboration.
+In this YouTube video, the speaker expresses pride in fostering a strong observability culture within their organization. They emphasize the importance of this culture in enhancing performance and accountability. The discussion highlights key aspects of building and maintaining an effective observability framework, focusing on collaboration and continuous improvement. The speaker reflects on their role in contributing to this positive environment, underscoring the value of observability in driving success.
 
 ## Chapters
 
-00:00:00 Welcome and intro
-00:00:10 Observability culture discussion
-00:00:20 Building observability culture
+00:00:00 Introductions
+00:00:15 Pride in observability culture
 
-[00:00:10] **Speaker:** Thank you. I have a very good observability culture. I'm actually really, really proud of that. I mean, I'm proud because I'm helping continue and build it.
+## Transcript
+
+### [00:00:00] Introductions
+
+**Speaker:** Thank you. I have a very good observability culture. I'm actually really, really proud of that. I mean, I'm proud because I'm helping continue and build it.
 
 ## Raw YouTube Transcript
 

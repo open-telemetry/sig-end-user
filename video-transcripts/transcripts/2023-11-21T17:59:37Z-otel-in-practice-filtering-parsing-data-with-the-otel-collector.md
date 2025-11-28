@@ -10,298 +10,300 @@ URL: https://www.youtube.com/watch?v=y3AAerwIFfg
 
 ## Summary
 
-In this YouTube video, the speaker, along with participants, discusses advanced filtering techniques for telemetry data, specifically focusing on OpenTelemetry (OTel) collectors. The main points covered include the need for filtering to manage noisy and sensitive data without altering the codebase, the configuration of filtering attributes, and the importance of transforming data to avoid sending unnecessary information. Various scenarios are explored, such as handling personally identifiable information (PII) and excessive spans from data collection. The speaker also addresses the limitations of OTel processors, including the inability to change span relationships and the nuances of head versus tail-based sampling. Throughout the presentation, practical examples and live demonstrations illustrate how to effectively implement these filtering techniques in a collector configuration. The video concludes with a discussion on best practices for testing configuration changes and managing observability tools.
+In this YouTube video, the presenter discusses filtering techniques at the OpenTelemetry (OTel) collector level, primarily focusing on how to manage noisy and sensitive data in telemetry traces. The session features a live demonstration of filtering spans based on attributes, showcasing the importance of avoiding unnecessary data transmission without modifying the application code. Key topics include why filtering is necessary, the limitations of current filtering capabilities, and practical examples of how to implement filters in OTel configurations. The presenter interacts with viewers, answering questions and sharing insights on best practices, as well as discussing the implications of head vs. tail-based sampling. The session is led by a knowledgeable speaker who engages with the audience, ensuring clarity and understanding of the concepts presented.
 
 ## Chapters
 
-00:00:00 Welcome and intro
-00:02:01 Filtering for traces
-00:04:05 Data collection challenges
-00:05:20 Collector level filtering
-00:08:00 Filtering by attributes demo
-00:12:10 Filter processor details
-00:14:06 Regex matching in config
-00:19:00 Limitations of collector processors
-00:21:35 Testing config changes
-00:36:00 Closing remarks and Q&A
+00:00:00 Introductions
+00:01:34 Importance of filtering at OTel collector level
+00:03:30 Discussion on noisy and sensitive data
+00:05:36 Filtering spans based on attributes
+00:08:34 Live demo: Adding filters in OTel configuration
+00:12:36 Explanation of filter processor behavior
+00:19:36 Head vs. tail-based sampling
+00:24:30 Q&A on testing config changes
+00:31:30 Limitations of collector processors
+00:38:00 Closing remarks and future talks
 
-**Speaker 1:** This is filtering the noise. I think I promoted as like better filtering for logging, but I'm mainly going to demonstrate filtering for traces. The principles are the same. I promise we'll get there, folks. 
+## Transcript
 
-Let's talk about some level setting for considerations with—let me just turn off my age back here, sorry—considerations with why we would want filtering at the OPA Telemetry collector level. So just review these first principles. Everybody seeing the slideshow? Okay, it's got the little green line around. That's why I assume you're seeing this. Great. I'm gonna assume that's great. Give me a negative emoji react if you're not seeing it, but otherwise, we're good. 
+### [00:00:00] Introductions
 
-So OpenTelemetry instrumentation, like any code-level instrumentation, unless you send a lot of data rather easily, some of that data is noisy, some of it is sensitive, and some of it is good but needs tweaking. Once we've done the work to do instrumentation, especially instrumentation at the code level, when we're faced with a data collection problem, we would ideally want to fix that without requiring changes to our code base. 
+**Speaker 1:** This is filtering the noise. I think I promoted as better filtering for logging, but I'm mainly going to demonstrate filtering for traces. The principles are the same. I promise we'll get there, folks. 
 
-For most people who are working operationally, the thing is like, “No, I cannot edit the code base.” I don't know where these hooks are added. I don't want to message the product team and say, “Hey, turns out we're sending, you know, people's Social Security numbers to our observability backend. Please go do this code commit tomorrow.” That's just not the workflow that makes sense for a lot of people. 
+Let's talk about some level setting for considerations with why we would want filtering at the OPA Telemetry collector level. Just review these first principles. Is everybody seeing the slideshow? Okay, it's got the little green line around. That's why I assume you're seeing this. Great! I'm gonna assume that's great. Give me a negative emoji react if you're not seeing it, but otherwise, we're good.
 
-[00:02:01] We could talk all day and all night about how, well, you should have access to the code base; you should have a better connection. That's real DevOps, blah blah blah, great points. But let's talk about, like, you know, okay, it's one thing when, “Oh my God, we're sending a ton of people's PII into observability when we shouldn't.” What about the situation where it's like, “Hey, we're sending a little too much”? 
+OpenTelemetry instrumentation, like any code level instrumentation, unless you send a lot of data, is rather easily noisy. Some of that data is noisy, some of it is sensitive, and some of it is good but needs tweaking. Once we've done the work to do instrumentation, especially instrumentation at the code level, when we're faced with a data collection problem, we would ideally want to fix that without requiring changes to our codebase. 
 
-Hey, the traces, they, like, you know, every step of a 500-step for loop they're recording is a separate span, and they shouldn't. Is that really something where you want to bother the product people about it and ask them to, like, edit the code? You know, for sure, that's like, “It'd be really nice if we had operational tools to do that.” 
+### [00:01:34] Importance of filtering at OTel collector level
 
-So there are a—let's take a look at this code where we can sort of imagine where we might have gone a little far here. So we had our developer. We said, “Hey, would you add some custom code points?” Maybe they got excited about it. We did our little brown bag. They added a bunch of points. They added, “Hey, let's send the user ID as a value for this span. Let's send, like, how many rolls are we doing? We'll use that.” 
+For most people who are working operationally, the thing is like, no, I cannot edit the codebase, right? I don't know where these hooks are added. I don't want to message the product team and say, "Hey, turns out we're sending people's Social Security numbers to our observability backend. Please go do this code commit tomorrow." That's just not the workflow that makes sense for a lot of people. 
 
-Or, right, I think we decorate the child span with that. Yeah. And then, um, let's also send their database key up as part of what we're sending. That probably was going a little far, right? We're like, “Oh no, we're shipping this data across the internet, and maybe we don't want to send their full database key.” 
+We could talk all day and all night about how you should have access to the codebase, you should have a better connection, that's real DevOps, blah blah blah, great points. But let's talk about, you know, it's one thing when, oh my God, we're sending a ton of people's PII into observability when we shouldn't. What about the situation where it's like, hey, we're sending a little too much? 
 
-By the way, key is a somewhat overloaded term here, but let's just say, like, this is not a critical security issue, but it is like, “Hey, that's more than we really want to be sending around and showing to everybody in the backend.” 
+Hey, the traces—every step of a 500-step for loop they're recording is a separate span, and they shouldn't. Is that really something where you want to bother the product people about it and ask them to edit the code? You know, for sure, that's like, "It'd be really nice if we had operational tools to do that." 
 
-There are a ton of—this actually is a diagram I drew for something else, but it works here. There are a ton of points where we could say, “Hey, I don't want that database key as a complete string to be stored.” 
+There are a ton of points where we could say, "Hey, I don't want that database key as a complete string to be stored." So going in and editing these code points would be editing it at the service level, which might be in a whole lot of places. Very often, we have these collector-to-collector architectures. 
 
-[00:04:05] Going in and editing these code points, right, would be editing it at the service level, which might be in a whole lot of places. We might be able to—we very often have these collector-to-collector architectures. So, what we're going to be talking about today is hitting it in one of these collector levels. 
+What we're going to be talking about today is hitting it in one of these collector levels, and then the last and relatively common is doing it at the data store level. This would be like, "Hey, maybe we're sending way too many spans on a single trace." 
 
-The last and relatively common is doing it at the data store level. This would be like, “Hey, maybe we're sending way too many spans on a single trace.” Maybe that example of, like, “Hey, we're sending 50 identical spans.” 
+Maybe that example of like, "Hey, we're sending 50 identical spans." Actually, this example, I don't think I—I don't have the code here. I'm not going to hop over to my IDE for this thing, but it is like it's saying, "Hey, if you roll seven dice, it's sending a span for every single dice roll." Like, I don't know, I don't want all those sub-spans, right? That might be an example where instead of trying to filter at the collector level, a pretty normal step would be like, "Oh, let's just go and edit the data store." 
 
-Actually, this example, I don't think—I don't have the code here. I'm not going to hop over to my IDE for this thing, but it is like, it's saying, “Hey, roll. If you roll seven dice, it's sending a span for every single dice roll.” 
+And say, "Hey, maybe older than this amount, we want to compress our traces in this way." That's a perfectly reasonable way to do it, depending on whether or not you have access to do that. I know with Chronosphere, generally, you do. Certainly, if you have a self-hosted data store for this, that should be very doable if you're using like Loki or Signoz to do that. 
 
-Like, “I don't know. I don't want all those sub spans,” right? That might be an example where instead of trying to filter at the collector level, a pretty normal step would be like, “Oh, let's just go and edit the data store and say, ‘Hey, maybe older than this amount, we want to compress our traces in this way.’” 
+But we're going to talk about filtering at the collector level. Any questions about why we're doing all this, why this matters, or is a tool that we would want to have?
 
-That's a perfectly reasonable way to do it, depending on whether or not you have access to do that. I know with Chronosphere, generally, you do. Certainly, if you have a, you know, self-hosted data store for this, that should be very doable if you're using, like, Loki or Signoz to do that. 
+**Speaker 2:** Yes, why?
 
-[00:05:20] But we're going to talk about filtering at the collector level. Any questions about, like, why we're doing all this, why this matters, or is a tool that we would want to have? 
+### [00:05:36] Filtering spans based on attributes
 
-**Speaker 2:** Yes, why? 
+**Speaker 1:** Yeah, so in general, it's going to be sensitive data or it's overfit data, sort of the two main reasons. But there's also just going to be this general sort of vibe, which is, "Hey, I'm looking at this trace here, and I don't like what I see for some reason." 
 
-**Speaker 1:** Yeah, so in general, it's going to be sensitive data or it's be overfit data are sort of the two main reasons. But there's also just going to be this general sort of vibe, which is, “Hey, I'm looking at this trace here, and I don't like what I see for some reason.” 
+See, change the share here. I'm saying, "Hey, I'm looking at this trace, and this isn't helpful for a reason I will explain." That really could be anything, but you know when we work on the operational side, work on the SRE side, like here's an example where it's like, "Hey, you roll the dice three times, I don't need these little sub-spans." Once the request gets complex, it really starts to clog up the view. 
 
-So, see, change the share here. I'm saying, “Hey, I'm looking at this trace, and this isn't helpful for a reason.” I will explain, right? That really could be anything. But, you know, when we work on the operation side, work on the SRE side, like here's an example where it's like, “Hey, you roll the dice three times. I don't need these little sub spans.” 
+It's not so much about having an elegant view, that should be something that you can control on the UI side, but it's like, "Yeah, something's not looking right, and it's leading to distracting data." A perfect example is, "Hey, maybe you have a large request that is, in fact, asynchronous, but it's getting rolled into your database time." 
 
-Once the request gets complex, it really starts to clog up the view. It's not so much about, like, having an elegant view that should be something that you can control on the UI side, but it's like, “Yeah, something's not looking right, and it's leading to distracting data.” 
+### [00:03:30] Discussion on noisy and sensitive data
 
-A perfect example is, um, “Hey, maybe you have a large request that is, in fact, asynchronous, but it's getting rolled into your database time.” So it's like, “Hey, that's very deceptive, and it's causing everybody to say, ‘Hey, the database is running really slowly,’ but that's not what's going on.” 
+It's like, "Hey, that's very deceptive, and it's causing everybody to say, 'Hey, the database is running really slowly,' but that's not what's going on." So that's a pretty good time when we would say, "Hey, we don't want to go and actually edit application code or custom code calls; we want to do something at the collector level."
 
-And so that's a pretty good time when we would say, “Hey, we don't want to go and actually edit application code or custom code calls. We want to do something at the collector level.” 
+Just a reminder of what can happen inside the collector, right? We have receivers and exporters that do our transport, standard communication, can send stuff out to StatsD, can take stuff in from a million places. Then we have our processors in the middle, and we're going to talk about data scrubbing, data normalization, and a little bit about sampling. Batching, you know, it's batching—that is what it is—but those are the concepts that we care about. 
 
-So just a reminder of, like, what can happen inside the collector, right? Is like we have receivers and exporters, right, which do our transport standard communication, can send stuff out to StatsD, can take stuff in from a million places. 
+Okay, so let's talk about filtering by attributes. We have some attributes on this span that we say, "Hey, if we get these attributes, we really don't want to save this." So let's go ahead and demo that live. 
 
-Then we have our processors in the middle, and we're going to talk about data scrubbing, data normalization, and a little bit about sampling, batching. You know, it's batching; that is what it is. But that is the concepts that we care about. 
+Let's do a new share. Here's my OpenTelemetry collector configuration, and just stepping through what was necessary to add this. If a span has these attributes, I do not want to send it across. 
 
-[00:08:00] Okay, so let's talk about filtering by attributes. So we have some attributes on this span that we say, “Hey, if we get these attributes, we really don't want to save this.” So let's go ahead and demo that live. 
+In our application, right, we take a request attribute, and we add it to that span right down here. We say, "Hey, the user for this is this request attribute user ID that we received." Obviously, with a real application, we should have the user ID from a million other places, but we picked it up here. 
 
-Let's do a new share. Here, so here's my OpenTelemetry collector configuration. Just stepping through what was necessary to add this. Hey, if a span has these attributes, I do not want to send it across. 
+### [00:08:34] Live demo: Adding filters in OTel configuration
 
-In our application, right, we take a request attribute, and we add it to that span right down here. We say, “Hey, the user for this is this request attribute user ID that we received.” Obviously, with a real application, we should have the user ID from a million other places, but we picked it up here. 
+It turns out that a couple of our users are like our internal test users, right? And so in fact, that's so consistent because it's like an automated testing suite. So we know they're always going to be named this. We say, "Hey, don't record any spans for these people because maybe they're testing stuff. Maybe those spans get crazy long; they introduce a bunch of fuzzy unnecessary data to our production environment." 
 
-It turns out that a couple of our users are like our internal test users, right? So in fact, that's so consistent because it's like an automated testing suite. So we know they're always going to be named this. We say, “Hey, don't record any spans for these people because maybe they're testing stuff. Maybe those spans get crazy long; they introduce a bunch of fuzzy unnecessary data to our production environment.” 
+So we can add a processor section which starts with filter and then has whatever name we want it to have. We say, "Hey, we can call this Dev users because that's descriptive." Then critically, and I think I have a slide about this too, we also add it to the pipeline down here, which is where I usually mess up. 
 
-So we can add a processor section, which starts with filter and then has whatever name we want it to have. So this is slash; we say, “Hey, we can call this Dev users because that's descriptive.” 
+I usually go ahead and create a very careful filter in the collector config and let me give a little stake of Zoom here, and then forget to add it to this thing. This pipeline is read left to right. If you're doing things like transform filters or transform processors, which we'll talk about, you want to have this in the correct order so that your transformations will have effect when you filter. You generally want batching at the end. 
 
-Then critically, and I think I have a slide about this too, we also add it to the pipeline down here, which is where I usually mess up. I usually go ahead and create a very careful filter in the collector config and let me give like one stke of zoom here, and then forget to add it to this thing. 
+So if we save this config and go and restart our collector—come on, bud—cool, cool, cool, cool. Then we send in a couple of requests. That was from David, and if I check my config, David's like an allowed user. But if I send one from Bob, so here's the service, right? It's the same dice roller that you've seen in the OpenTelemetry examples, right? 
 
-And this pipeline is read left to right, so, you know, if you're doing things like transform filters, transform processors, which we'll talk about, you know, you want to have just this in the correct order so that your transformations will have effect when you filter. You generally want batch at the end. 
+It returns an array of dice rolls, you know. Bob still gets his data because it's not like we're, you know, this is all observability side, so the application works exactly the same. But we should see that this span is dropped. 
 
-So if we save this config and go and restart our collector—come on, bud—cool, cool, cool, cool. Then we send in a couple of requests. So that was from David, and if I check my config, David's like an allowed user. But if I send one from Bob, so here's the service, right? 
+We can hop over to our UI, and I have gone so far as to this guy is just coming in as normal. I believe he has a user attached to it. Yeah, this is David; he's allowed. This is like the Juliet child chopped onions because no, I did not wait for this to show up in my observability backend. It would be there probably by now, but just so I didn't hit refresh and have it not show up. 
 
-It's the same dice roller that you've seen in the OpenTelemetry examples, right? It returns an array of dice rolls. You know, Bob still gets his data because it's not like we're, you know, this is all observability side, so the application works exactly the same. But we should see that this span is dropped. 
+But then if we did send it in with this guy who we didn't want, it will go ahead and drop that span. Now in this case, that span did have child spans, so it still shows up as, "Hey, there was time spent here," but we did drop the span. So we know it existed, but we're dropping all data from it, which in this case is what we wanted. 
 
-We can hop over to our UI, and I have gone so far as to—so this guy is just coming in as normal, and I believe has a user attached to it. Yeah, this is David. He's allowed. 
+What we wanted was to say, "Hey, just this span is what doesn't matter. This is like we're doing span-level metrics for execution time." 
 
-And this is like the Juliette child chopped onions because, no, I did not wait for this to show up in my observability backend. It would be there probably by now, but just so I didn't hit refresh and have it not show up. 
+Then we care about dropping that single span. Okay, I think I have screenshots of that back in the presentation. We'll find out. 
 
-But then if we did send it in with a—um, with this guy who we didn't want, it will go ahead and drop that span. Now, in this case, that span did have child spans, so it still shows up as, “Hey, there was time spent here,” but we did drop the span. 
+**Speaker 2:** New share, okay. 
 
-So we know it existed, but we're dropping all data from it, which in this case is what we wanted. What we wanted was we wanted to say, “Hey, just this span is what doesn't matter.” This is like we're doing like span-level metrics for execution time, and so then we care about dropping that single span. 
+**Speaker 1:** So we want to go ahead and drop out the span. Yep, there's our nice little thing, and then our regular one rolls on just as we'd expect. 
 
-Okay, I think I have like screenshots of that back in the presentation. We'll find out—new share. Okay, so we want to go ahead and drop out the span. Yep, there's our nice little thing, and then our regular one rolls on just as we'd expect. 
+Okay, so some stuff to remember about the filter processor. First of all, once it hits an attribute that'll filter, it's not going to hit the later conditions. So if there's an error on a later condition for some reason, it's not actually going to execute. 
 
-[00:12:10] Okay, so some stuff to remember about the filter processor. First of all, once it hits an attribute that'll filter, it's not going to hit the later conditions. So if there's an error on a later condition for some reason, it's not actually going to execute. 
+Any matching condition will work, so the config that you just saw where it's like, "Hey, user equal to Bob, user equal to David, user equal to Alice," filter, right? That is going to work. It doesn't have to meet all those conditions; it just needs to meet one. 
 
-And then, you know, any matching condition will work. So, you know, the config that you just saw where it's like, “Hey, user equal to Bob, user equal to David, user equal to Alice,” filter right, that is going to work. It doesn't have to meet all those conditions; it just needs to meet one. 
+### [00:12:36] Explanation of filter processor behavior
 
-Then, if we drop out events, this is a confusion for some people, depending on the model that they're using for monitoring. The span is going to stay there. So if we say, “Hey, the type is a span event, and we want to drop every single span event,” we're still going to have that span. 
+If we drop out events, this is a confusion for some people depending on the model they're using for monitoring. The span is going to stay there, so if we say, "Hey, the type is a span event, and we want to drop every single span event," we're still going to have that span. 
 
-A metric works not the same way. If we drop data points from a metric until there are no data points, the metric itself will not be reported, which makes sense. You wouldn't generally report, right? Like, “Hey, this data point, but nil metric,” or sorry, “this metric, but nil data points, was not something you would normally report.” 
+A metric works not the same way. If we drop data points from a metric until there are no data points, the metric itself will not be reported, which makes sense. You wouldn't generally report, "Hey, this data point but nil metric," or sorry, "this metric but nil data points," was not something you would normally report. 
 
 So yeah, this is my slide to remind myself and everyone else that you want to actually add these to the pipeline. 
 
-Okay, so now let's talk about this problematic data here where this is the key that we're getting through, which we really didn't want. So in this case, obviously, we could write something that just said, “Hey, by name, drop this attribute,” but we don't want to drop the attribute because we have this guest down in here that's useful to us. 
+Okay, so now let's talk about this problematic data here where this is the key that we're getting through which we really didn't want. In this case, obviously, we could write something that just said, "Hey, by name, drop this attribute." But we don't want to drop the attribute because we have this guest down in here that's useful to us. 
 
-We want to know if it's guest, admin, whatever else, whatever other role that's useful information to us. We just want to drop the full key. For that, this got me for a minute. You can have a filter that says, “Hey, it does it by match, and we'll take do star, say accept any attribute, but then it will not accept a full regex.” 
+We want to know if it's guest admin or whatever else. Whatever other role, that's useful information to us. We just want to drop the full key. For that, this got me for a minute. 
 
-[00:14:06] Then I read this portion of the documentation, which is, “Hey, here's some alternative config which could soon be deprecated,” and that includes using regex as your match type. I was like, “Wait, can I not? Am I not supposed to be able to use regex here? Am I supposed to just use this relatively simple direct string matching?” 
+You can have a filter that says, "Hey, it does it by match," and we'll take do star, say, "Accept any attribute," but then it will not accept a full regex. I read this portion of the documentation, which is, "Hey, here's some alternative config which could soon be deprecated." That includes using regex as your match type. 
 
-So you can. My thing is, write down this link because something that I've had on my to-dos for a few weeks is to get this document a little better linked into the other documentation because a complete list of the OpenTelemetry transform language functions is like not super well linked into the filter and transform processor. 
+I was like, "Wait, can I not? Am I not supposed to be able to use regex here? Am I supposed to just use this relatively simple direct string matching?" So you can, and my thing is write down this link because something that I've had on my to-dos for a few weeks is to get this doc a little better linked into the other documentation because a complete list of the OpenTelemetry transform language functions is not super well linked into the filter and transform processor. 
 
-Don't actually write this down; I will share this. I'll drop it into the chat; you don't have to write down a whole link. But, yeah, OpenTelemetry transform language, those functions include a pattern-based replace, which we'll demonstrate in a minute here. 
+Don't actually write this down; I will share this. I'll drop it into the chat. You don't have to write down a whole link, but yeah, OpenTelemetry transform language, those functions include a pattern-based replace, which we'll demonstrate in a minute here. 
 
-So some notes on using this regex in a collector config: you want to double your escapes like this, which you can set as a style thing on regex 101 or wherever other regex test tool that you're using. 
+Some notes on using this regex in a collector config: you want to double your escapes like this, which you can set as a style thing on regex 101 or whatever other regex test tool that you're using. You can use capture groups; they do work, but it will seem like they don't because you have to use this double dollar sign thing to do it. 
 
-You can use capture groups; they do work. But it will seem like they don't because you have to use this double dollar sign thing to do it. In this case, it's like, “Hey, whatever the actual—in this case, this person wants to change Cube to K8s and U. They want to change it to KES dot, but they want the ID. They want to preserve the ID.” 
+In this case, it's like, "Hey, whatever the actual—in this case, this person wants to change Cube to K8s, and U they want to change it to KES dot, and they want the ID; they want to preserve the ID." So they're saying, "Hey, match this key, which is Q, but then some string of letters and numbers, and then go ahead and replace it with K8, but that include what you matched in the parentheses." Apologies, that's a review for you all, but regex is my home and my joy, so I always like to talk about it. 
 
-So they're saying, “Hey, match this key, which is Q, but then some string of letters and numbers, and then go ahead and replace it with K8, but that include what you matched in the parenthesis.” Apologies, that's a review for you all, but regex is my home and my joy, so I always like to talk about it. 
+So yeah, these are just things you want to remember about your syntax. 
 
-But, yeah, so you need to escape the dollar sign for this capture group with a double dollar sign, and you have to use triple dollar sign to use a single dollar sign. Sorry, this is just one of those things you have to note because the beautiful thing about regex is that it always works, except when it doesn't. 
+In this case, what we'd want is a transform processor because we want to change our value to just be underscore guest or just be some kind of escape and underscore guest. In this case, right, we say, "Okay, go and find it." 
 
-These are just things you want to remember about your syntax. In this case, what we'd want is we'd want a transform processor because we want to change our value, right, to just be underscore guest or just be some kind of escape and underscore guest. 
+I've been a little bit greedy here where I've said, "Hey, look for this thing; it's a whole bunch of numbers, more than one number for this. Don't just take anything that is a user DB key," and then go ahead and overwrite the ID with replacement ID and then your whatever group you first matched. So then you'll get something like this: replacement ID or guest. 
 
-In this case, right, we say, “Okay, go and find it.” I've been a little bit greedy here where I've said, “Hey, look for this thing. It's a whole bunch of numbers, more than one number for this.” 
+I have a version of this trace in the Signal dashboard, but take my word on it; this works. Transform processors are a really effective way you can grab some other values if you need to. You can chain them together, but the big thing is just to do like really smart collapse of cardinality and collapse of PII. Really, really nice tool to do that. 
 
-Like, “Don't just take anything that is a user DB key, and then go ahead and overwrite the ID with replacement ID and then your whatever group you first matched.” So then you'll get something like this replacement ID. 
+What can't you do with collector processors? You know, we've seen this beautifully impressive demo here of the stuff we can do. A lot—there's a lot that you cannot do with collector processors. 
 
-I have a version of this trace in the Signal dashboard, but take my word on it, this works. So transform processors are a really effective way you can grab some other values if you need to. You can chain them together, but the big thing is just to do really smart collapse of cardinality and collapse of PII. 
+So here I would say is probably the big one: you cannot change the relationships that spans have. With the processor, you cannot just say, "Hey, you go be part of this trace now," nor can you create a parent-child relationship. Like, "Oh, you actually were kicked off, and we're inside this other one, and I'm going to know that from like your naming convention, and then I'm going to stick you onto this other one." 
 
-Really, really nice tool to do that. So what can't you do with collector processors? You know, we've seen this beautifully impressive demo here of the stuff we can do. A lot. There's a lot that you cannot do with collector processors. 
+You can do filtering and transformation, and you can touch Trace ID. I haven't experimented with this extensively, but apparently, it is not possible to push something into a trace after the fact. This makes some sense because of the way that sampling and other kinds of working with traces happen. 
 
-So here I would say is probably the big one: you cannot change the relationships that spans have with the processor. You cannot just say, “Hey, you go be part of this trace now,” nor can you create a parent-child relationship like, “Oh, you actually were kicked off, and we're inside this other one, and I'm going to know that from your naming convention, and then I'm going to stick you onto this other one.” 
+There's some computer science reasons why this is not a trivial thing at all. It would not be a trivial thing at all to implement, but you want to be aware of it. I learned this for the first time. It's sort of, you know, it's hard to notice an absence sometimes. You feel like, "Oh yeah, I'm fully in control of this. I can do whatever I want." 
 
-So you can do filtering and transformation, and you can touch trace ID. I haven't experimented with this extensively, but apparently, it is not possible to push something into a trace after the fact. This makes some sense because of the way that sampling and other kinds of working with traces happen. 
+But then Hazel's great talk for this same user group clued me into like, "Hey, this is a limitation here," and I haven't tried to hack it to every degree, but it's definitely—yeah, there's no built-in call to say, "Hey, add child relationship." Not at all. 
 
-There are some computer science reasons why this is not a trivial thing at all. It would not be a trivial thing at all to implement, but you want to be aware of it. I learned this for the first time—it's sort of, you know, it's hard to notice an absence sometimes. You feel like, “Oh yeah, I'm fully in control. I can do whatever I want.” 
+You also can't drop a whole trace, so you notice that I had this example where it's like, "Hey, don't look; the span is gone, no worries." But you would sort of like to say, "Hey, I can go in and say, 'Hey, this span looks bad; let me go ahead and just lose this trace.'" 
 
-[00:19:00] But then, Hazel's great talk for this same user group clued me into like, “Hey, this is a limitation here.” I haven't tried to hack it to every degree, but it's definitely—yeah, there's no built-in call to say, “Hey, like, add child relationship.” Not at all. 
+### [00:19:36] Head vs. tail-based sampling
 
-You also can't drop a whole trace. You notice that I had this example where it's like, “Hey, don't look, the, you know, the span is gone. No worries.” But you would sort of like to say, “Hey, I can go in and say, ‘Hey, this span looks bad. Let me go ahead and just lose this trace.’” 
+And that is quite a new kettle of fish called tail-based sampling, where you're looking at all of the traces that you receive, and you're saying, "Hey, I only want these ones to come through based on some information about the trace." 
 
-That is quite a new kettle of fish called tail-based sampling, right? Where you're looking at all of the traces that you receive and you're saying, “Hey, I only want these ones to come through based on some information about the trace.” 
+This is the dichotomy between head and tail-based sampling. Head-based sampling is right before the trace even starts; you decide if you're going to run it or not, maybe based on like the tiniest amount of data, like what route it's in or whatever request information you have. But otherwise, basically, it's just probabilistic sampling. 
 
-So this is the dichotomy between head and tail-based sampling. Head-based sampling is right before the trace even starts. You decide if you're going to run it or not, maybe based on the tiniest amount of data, like what route it's in or whatever request information you have. 
+In that case, with tail-based sampling, this thing that we all want, whether or not we can have it, is you're saying, "Hey, now that I'm looking at the trace, I decide that you're interesting." You want to send it. 
 
-But otherwise, basically, it's just, you know, I want to say the word—I know it's the wrong word—iskoric has a completely different meaning, but you're doing probabilistic sampling in that case. 
+Tail-based sampling has a bunch of promise for the efficiency that it's going to add to your system. Only sending interesting traces—traces are relatively expensive to transmit, store, and process, so it's very promising but has its own caveats to make it work. 
 
-With tail-based sampling, this thing that we all want, whether or not we can have it, is you're saying, “Hey, now that I'm looking at the trace, I decide that you're interested.” You want to send you on. Tail-based sampling has a bunch of promise for the efficiency that it's going to add to your system, and only sending interesting traces—traces are relatively expensive to transmit, store, process—so it's very promising but has its own caveats to make work. 
+So this is, Mo, we did most of the presentation. I did not pause for questions a bunch of times, but do we have questions about that, about head and tail-based sampling, and why that is not supported in the simple filter transform system? 
 
-So this is most of the presentation. I did not pause for questions a bunch of times, but do we have questions about that, about head and tail-based sampling and why that is not supported in the simple filter transform system? 
+**Speaker 3:** Love it. I have to go give this same talk—not the same talk, but a version of this talk—to CGN next week, I think. Thank you so much for joining me on this journey because there's not a ton out there about these PII. I mean, the transform processor is in alpha, so I totally get it why there wouldn't be a ton out there about it. 
 
-**Speaker 3:** Love it. I have to go give this same talk—not the same talk, but a version of this talk—to CGL next week, I think. Thank you so much for joining me on this journey because there's not a ton out there about these PII, I mean, mildly. 
-
-Like, the transform processor is in alpha, so I totally get why there wouldn't be a ton out there about it, but I'm glad we're getting to talk about it now. So do feel free to make comments or drop in the chat if you have other questions. There are 29 things in the chat, and I have not been looking at the chat at all. Sorry. 
-
-[00:21:35] Most of it is our—but Paige is asking, “How do you recommend testing config changes before shipping them to prod?” Or monitoring to know if you messed up a filtering rule? 
+But yeah, I'm glad we're getting to talk about it now. So do feel free to make comments or drop in the chat if you have other questions. There are 29 things in the chat, and I have not been looking at the chat at all—sorry! Most of it is our—but Paige is asking, "How do you recommend testing config changes before shipping them to prod or monitoring to know if you messed up a filtering rule?"
 
 **Speaker 1:** Yeah, really good question. 
 
-**Speaker 3:** Sorry about that. I do think that a really good way to do kind of experimental stuff where you're saying, “Hey, I want to do a kind of a multi-level change to what we're doing. I want to do a complex transform.” 
+I'm gonna hit back a million times, sorry about that. I do think that a really good way to do kind of experimental stuff where you're saying, "Hey, I want to do a kind of a multi-level change to what we're doing. I want to do a complex transform." 
 
-The two things are, one, is to just have a test version—have some piece of your observability inside your test harness. Have your local version of a collector or somewhere else to test it. 
+The two things are, one, is to just have a test version—have some piece of your observability inside your test harness, and so have your local version of a collector or somewhere else to test it. The other is to this collector-to-collector architecture is extremely, extremely useful here. 
 
-The other is to—this collector to collector architecture is extremely, extremely useful here. So you can do like a canary deploy to say, “I'm just going to send it out to this one sub piece instead of just our master collector architecture.” 
+You can do like a canary deploy to say, "I'm just going to send it out to this one sub-piece instead of just our master collector architecture." Then the third is to do some further limitations because you can chain together an "and" here. 
 
-Then the third is to do some further limitations because you can chain together an AND here. You can use resource values, so you can say, “Hey, only do this to this service name.” That's super useful for doing this. 
+You can say, "Hey, only do this to this service name." So that's super useful for doing this. I didn't show that piece; I didn't do that here. But you can say, "Hey, I want this to have X service name and also check for this span value and then drop the span." 
 
-I didn't show that piece; I didn't do that here, but you can say, “Hey, I want this to have X service name and also check for this span value and then drop the span.” So you can start out as being more limited before it spread out to everybody else. Really good question. 
+So you can start out as being more limited before it spread out to everybody else. Really good question. 
 
-**Speaker 4:** Is a collector restart always required to pick up new config? 
+Is a collector restart always required to pick up new config? Great question from a long time ago. I would get kicked off of Twitch so fast because I'm not looking at the chat. How embarrassing! 
 
-**Speaker 1:** Great question from a long time ago. I would get kicked off of Twitch so fast because I'm not looking at chat. H—embarrassing. I used to know the answer to that, Paige, and now I do not. 
+I used to know the answer to that, Paige, and now I do not. I seem to recall that there was some issue that I ran about the feasibility of some kind of hot reloading of config, but essentially yes, you have to do a collector restart, certainly in your little test bed environment. 
 
-I seem to recall that there was some issue that I ran about the feasibility of some kind of hot reloading of config. But essentially, yes, you have to do a collector restart, certainly in your little test bed environment. 
+There's also not like—the collector has relatively limited remote abilities to pick up config. So yeah, that's something maybe one of the Honeycomb people will know something about, has fiddled with a bit, and I can check with the rest of Signoz team as well. 
 
-Yeah, there's also not like—the collector has relatively limited remote abilities to pick up config. So yeah, that's something maybe one of the Honeycomb people will know something about, has fiddled with a bit, and I can check with the rest of the Signoz team as well. 
+Okay, so we dropped this replacement ID. We did that talk about what we can and can't do. There is a tail sampling processor out there. It has its limitations, but you want to explore that separately as its own processor and its own service for dropping entire traces. 
 
-Okay, so we dropped this replacement ID. We did that talk about what we can and can't do. Yeah, there is a tail sampling processor out there. It has its limitations, but you want to explore that separately as its own processor and its own service for dropping entire traces. 
+### [00:24:30] Q&A on testing config changes
 
-**Speaker 3:** Words of caution with metric transformations, so conversion between data types isn't supported by the metric model. But you can do it with a transformer, but don't do it. But you can do it, but don't do it. 
+Okay, so words of caution with metric transformations. Conversion between data types isn't supported by the metric model, but you can do it with a transformer, but don't do it. But you can do it, but don't do it. 
 
-It's exceedingly easy to create meaningless metrics, right? To like doing things like creating averages from max values, right? Which you shouldn't do. Yeah, I would say very much like you're in the realm of, you know, creating statistical transformations just with like Excel equations at that point. 
+It's exceedingly easy to create meaningless metrics, right? Like doing things like creating averages from max values, right? Which you shouldn't do. I would say very much like you're in the realm of, you know, creating statistical transformations just with Excel equations at that point. 
 
-You are in danger, certainly, of messing up what you're doing and getting stuff that looks okay but is, in fact, extremely bad signal. What have I seen? I've seen like somebody processing and creating a new average with a single new value. So they have an average of the last 10 values, and they get a single new value, and they say, “Okay, cool. I can just add that one to the average,” which was not quite right. 
+You are in danger, certainly, of messing up what you're doing and getting stuff that looks okay but is in fact extremely bad signal. What have I seen? I've seen like somebody processing and creating a new average with a single new value. So they have an average of the last 10 values, and they get a single new value, and they say, "Okay, cool, I can just add that one to the average," which was not quite right. 
 
-So yeah, things like that are worth a concern. A bunch of the transformations between measurement types are one-directional, and so you should not use the transform to try to go back or to try to move between these lanes because you will end up with bad data that is still data that still looks like data and will chart like data. 
+So yeah, things like that are worth a concern. A bunch of the transformations between measurement types are one-directional, and so you should not use the transform to try to go back and or to try to move between these lanes because you will end up with bad data that still looks like data and will chart like data. 
 
 So that's a concern, very similar to going in and doing just queries directly into your data store to edit your data, right? You want to be exceedingly careful with that because, of course, there is always the possibility of destroying the information that you have. 
 
-**Speaker 1:** Slide two of cautions about metric transformations. So you can change the labels on metrics and traces. You can cause yourself data store problems by giving things the same names as two metrics, two time series. You give the same name, attributes, and scope. 
+Slide two of cautions about metric transformations. You can change the labels on metrics and traces, so you can cause yourself data store problems by giving things the same names as two metrics, two time series. You give the same name attributes and scope. 
 
 I tried to break Signoz, the ClickHouse data store, doing this because I was very excited to see something break, but I couldn't quite do it. But presumably, you can get to the point where you're having your dashboards not load or other queries not working because you have double results when there should be unique values in a column. 
 
-So a more common outcome of that will be orphan values, will be spans that are not part of any trace and traces that are not connected to any service. 
+The more common outcome of that will be orphan values—spans that are not part of any trace and traces that are not connected to any service. 
 
-Oh yeah, Ren, I'll put it in the CNCF collector channel. I'll ask it in the CNCF collector channel, and the first thing I'm going to do is actually search the CNCF collector channel because it's interesting. 
+**Speaker 4:** Oh yeah, Ren, I'll put it in the CNCF collector channel. I'll ask it in the CNCF collector channel. The first thing I'm going to do is actually search the CNCF collector channel because it's interesting. The question was, "Do you have to do a collector restart always to pick up new collector config?" 
 
-The question was, “Do you have to do a collector restart always to get to pick up new collector config?” I think the answer is yes, but I—yes, yeah. I thought there was an issue about it. There was a talk about exploring some support for that, but I'm certain that by default right now the answer is no. 
+I think the answer is yes, but yes, yeah. I thought there was an issue about it. There was a talk about exploring some support for that, but I'm certain that by default right now, the answer is no. 
 
-That was the end of the slideshow, folks, which really just crept right up on me. Do we want—we saw live demo stuff. Oh yeah, let's go do one last live demo thing. That's right. That's what I wanted to do. 
+That was the end of the slideshow, folks, which really just crept right up on me. Do we want—we saw live demo stuff. Oh yeah, let's go do one last live demo thing. That's right; that's what I wanted to do. New share, okay? 
 
-New share, new share, share. Okay, so, man, there was totally some—oh right. We have the situation where we are getting way too many components. 
+So man, there was totally some—oh right, we have the situation where we are getting way too many components. This thing like, roll it, it sends you back an array of rolled dice. We had a situation where when we sent a request to say like, "Hey, roll, you know, 41 dice for me," we get back this nice array very, very quickly. 
 
-This thing, like, roll it, you know, it sends you back an array of roll dice. We had a situation where when we sent a request to say like, “Hey, roll, you know, 41 dice for me,” we get back this nice array very, very quickly. 
+But the problem is that when we go and look at the traces for these guys, they just have a ton, a ton of these individual single dice rolls, which, you know, in this version, right, is not really a problem. 
 
-But the problem is that when we go and look at the traces for these guys, they just have a ton—a ton of these individual single dice rolls which, you know, in this version, right, is not really a problem. Right, you know, your trace dashboard should be able to just hide those a whole bunch of rolls. 
+You know, your trace dashboard should be able to just hide those a whole bunch of n rules, but for whatever reason, in our example, we're saying, "Hey, this is an issue. We have hundreds of these; we have thousands of these. We know they're all identical; they always take the same amount of time. We want to get these out of here." 
 
-But for whatever reason, in our example, we're saying, “Hey, this is an issue. We have hundreds of these. We have thousands of these. We know they're all identical; they always take the same amount of time. We want to get these out of here.” 
+This is an older trace that didn't have 40; we just had six, but you get the point. So what we want to do is we want to say, "Hey, I want to drop these spans, these roll one spans." But some helpful and also sabotage-focused developer has named each of the spans uniquely, so we can't just say, "Hey, go ahead and drop any span that has this name," because it includes like this is the counter on that roll. 
 
-This is an older trace that didn't have 40; we just had six, but you get the point. What we want to do is we want to say, “Hey, I want to drop these spans, these roll one spans.” 
+So that is something that we want to handle. We don't need a reject for this; we just need the match tool. So if we go back into our IDE—let me—oh, I started typing the command, but I won't actually show this. 
 
-But some helpful and also sabotage-focused developer has named each of the spans uniquely, so we can't just say, “Hey, go ahead and drop any span that has this name,” because it includes—like, this is the counter on that role. 
+If we go back into our IDE, we go back into our config, we can say, "Hey span, if you have a match on your name that is roll ones followed by anything, let's go ahead and drop that span." 
 
-So that is something that we want to handle. We don't need a regex for this; we just need the match tool. So if we go back into our IDE, let me—oh, I started typing the command, but I won't actually show this. 
-
-So if we go back into our IDE, we go back into our config, we can say, “Hey, span, if you have a match on your name that is roll ones followed by anything, let's go ahead and drop that span.” 
-
-If we save this and then we restart our collector, our app's been running this whole time. So now asking for 41 dice rolls—let's ask for 40. Who likes using a prime number? I certainly don't. 
+If we save this and then we restart our collector, our app has been running this whole time. So now asking for 41 dice rolls, let's ask for 40. Who likes using a prime number? I certainly don't. 
 
 While I politely wait for a second for these traces to hit my local collector, get to the batch moment, which is like every—I think every five minutes on my thing—and then get sent off to the backend, do we have other questions about this stuff? 
 
-**Speaker 5:** Oh, I didn't mention it, but you can—you have the same filter functions available on metrics and logs. So we demoed this all with spans, but it is totally doable with metrics and logs by the same principles. 
+Oh, I didn't mention it, but you can—you have the same filter functions available on metrics and logs. So we demoed this all with spans, but it is totally doable with metrics and logs by the same principles. 
 
-But yeah, other questions, feel free to drop them in chat or come off mute. I promise I am watching the chat now. No worries. 
+But yeah, other questions feel free to drop them in chat or come off mute. I promise I am watching the chat now—no worries. 
 
-Okay, so yeah, now let me go ahead and start sharing this. This is just our last five minutes of requests. If we look at—we were just looking at a previous one where it was like, “Hey, we have way too many of these.” 
+### [00:31:30] Limitations of collector processors
 
-Now, if we go ahead and sort this and look at our most recent traces, we should sure enough be able to see—oh, I also gave it the name that's like, “Hey, drop this name.” 
+Okay, so yeah, now let me go ahead and start sharing this. This is just our last five minutes of requests. 
 
-So we're dropping two things here, but our actual R dice is happening. It drops the routing span because, again, it has this name it doesn't like, and then it also drops the sub-like individual roll ones spans. 
+So we look at—we were just looking at a previous one where it was like, "Hey, we have way too many of these." Now if we go ahead and sort this and look at our most recent traces, we should sure enough be able to see—oh, I also gave it a name that's like, "Hey, drop this name." 
 
-Okay, folks, that's been my stuff. Man, 38 minutes, wow. Usually when I'm doing something for the first or second time, I time it out, talk it all through, I'm like 45 minutes. Then when I actually get in front of people, it's 11 minutes. Just zipping, zipping. 
+So we're dropping two things here, but our actual dice is happening. It drops the routing span because again it has this name it doesn't like, and then it also drops the sub, like individual roll one spans. 
 
-But this one, I guess there was a lot to say about this. Final stuff: the functions are all out, are all fully supported. The transform processor is still in alpha, and you're going to need your own build of the collector to make sure you include it, which, I mean, you need to do for other collector contrib stuff. 
+Okay folks, that's been my stuff. Man, 38 minutes! Wow, usually when I'm doing something for like the first or second time, I time it out, talk it all through, I'm like, "45 minutes," and then when I actually get in front of people, "11 minutes." 
 
-So that's pretty standard, but just be aware of it. You wouldn't want to base your whole DIY observability stuff on transform processors. Do some work ahead of time to get your stuff labeled right and don't be completely relying on it because it is an alpha and it's going to shift a little bit. 
+Just zipping, zipping! But this one, I guess there was a lot to say about this. 
 
-There are some standards conversations happening, but it's definitely worth doing for stuff like this, for like, “Hey, you have this filtering or transformation task, and you don't want to bother your product team.” 
+Final stuff: the functions are all fully supported. The transform processor is still in alpha, and you're going to need your own build of the collector to make sure you include it, which I mean you need to do for other collector contrib stuff. 
 
-Okay, folks, that's been my time. I don't know, Adrian, if you want to give final stuff. 
+So that's pretty standard, but just be aware of it. You wouldn't want to base your whole DIY observability stuff on transform processors. Do some work ahead of time to get your stuff labeled right, and don't be completely relying on it because it is in alpha and is going to shift a little bit. 
 
-**Speaker 6:** While you're filtering out these spans not to be shipped to Signoz, can you route them to something like S3? 
+There are some standards conversations happening, but it's definitely worth doing for stuff like this, for like, "Hey, you have this filtering or transformation task, and you don't want to bother your product team." 
 
-**Speaker 1:** Oh, that's an interesting question. So not with this set of tooling. You cannot use like a filter processor to say, “Now go to a different exporter lane.” But you certainly can do that with, you know, with your import tools, right? 
+Okay folks, that's been my time. I don't know, Adrian, if you want to give final stuff. 
 
-So with your components where you're taking in data, you can obviously say on your receivers, “Oops, don't do that.” You can say on your receivers, “Hey, I want to pick up these values and send them to this other endpoint,” yeah, and then go into a separate pipeline. 
+**Speaker 5:** Oh, while you're filtering out these spans not to be shipped to Signoz, can you route them to something like S3? 
 
-I don't—yeah, filter is like drop; filter is like drop or remove data. It's not route this data to another endpoint. Great question. Pretty sure you can do that routing by span name, but also, should you do that? Should do— that's a good question. 
+**Speaker 1:** Oh, that's an interesting question. Not with this set of tooling, you cannot use like a filter processor to say, "Now go to a different exporter lane." But you certainly can do that with your import tools, right? 
 
-That's a really good—I should write something about that. But that's really good. I'm going to look at a future blog post about that. That's a really good question. 
+So with your components where you're taking in data, you can obviously say on your receivers, "Oops, don't do that." You can say on your receivers, "Hey, I want to pick up these values and send them to this other endpoint." 
 
-**Speaker 7:** Any other questions for Na? 
+Then go into a separate pipeline. I don't—yeah, filter is like drop; filter is like drop or remove data. It's not route this data to another endpoint. Great question! 
 
-[00:36:00] **Speaker 1:** Ren says in chat, “Yeah, there are a lot of tools out there that help with managing your pipeline, including like especially, you know, we got three, I think, observability team people here who can talk a lot about how, like, there are times when I think all of us want to be like, ‘Hey, we're your one-stop shop to look at your data.’” 
+Pretty sure you can do that routing by span name, but also, also should you do that? Should do that? That's a good question. 
 
-But there's going to be reasons that you're sending it to multiple places. Examples, of course, be like sending stuff to CloudWatch but also sending it to a New Relic dashboard, sending stuff to S3 as like, “Hey, this is—we're going to cold storage this, but we want to have it.” 
+That's a really good—I should write something about that. But that's really good. I'm gonna, I’m gonna look at a future blog post about that. That's a really good question. 
 
-Obviously, classically logs, right? Sending them to multiple places, to one place where the retention is 10 days and another place where the retention is 10 years. So, yeah, that's going to make a ton of sense. 
+**Speaker 6:** Any other questions for Na? 
 
-There's something written about that, Ren. Maybe I'll hit you up for like a—we'll do like a partner post or something on it because it's an interesting question and not one where there's a ton written about it. 
+**Speaker 7:** Ren says in chat, "Yeah, there are a lot of tools out there that help with managing your pipeline, especially, you know, we got three, I think, observability team people here who can talk a lot about how like there are times when I think all of us want to be like, 'Hey, we're your one-stop shop to look at your data,' but there are going to be reasons that you're sending it to multiple places." 
 
-**Speaker 6:** Sure, yeah, that sounds good. 
+Examples, of course, be like sending stuff to CloudWatch but also sending it to a New Relic dashboard, sending stuff to S3 as like, "Hey, this is—we're going to cold storage this, but we want to have it." 
 
-**Speaker 1:** Paige is like, “In the last webinar I did, they asked us how many observability tools they had, and a significant portion of the groups had five plus.” 
+Obviously, classically logs, right? Sending them to multiple places to one place where the retention is 10 days and another place where the retention is 10 years. So yeah, that's going to make a ton of sense. 
 
-I think if we were being honest, everyone's going to say at least two, right? Every—well, no, at least three. They say, “Hey, I have an observability tool, which is the thing called observability that says observability on its SEO filing. Then I have some kind of logging tool, and then I have a debugging tool that I use, right? I have my ClickOps tool that I use to go in and look at what the heck's going on.” 
+So yeah, there's something written about that, Ren. Maybe I'll hit you up for like a—we'll do like a partner post or something on it because it's an interesting question and not one where there's a ton written about it. 
 
-And so that's at least three, right? If not, then, okay, well now what's—what do you use as like a pinger or other synthetic metrics, right? That can—can so, yeah, now we're at five, right, with just what I would say. 
+**Speaker 8:** Sure, yeah, that sounds good. 
 
-Oh, like you list all five, you're like, “Yeah, that's normal. That's normal. I need all this.” It's like me looking in my purse. I'm like, “Uh, I need to get some stuff out of here.” They're like, “No, I need all of this. I need two batteries for my phone.” 
+**Speaker 1:** Paige is like, "In the last webinar I did, they asked us how many observability tools they had." A significant portion of the groups had five plus. I think if we were being honest, everyone's gonna say at least two, right? 
 
-Okay, rid of these. Oh man, great chat. Thank you so much. And again, big shout out to R. You missed it right at the start when I was like really thanking you for doing the last-minute promo. 
+Well, no, at least three. They say, "Hey, I have an observability tool, which is the thing called observability that says observability on its SEO filing." Then I have some kind of logging too, and then I have a debugging tool that I use, right? 
 
-I will be giving a similar but not identical version of this talk because we can all admit there were parts that dragged. I'll be giving a similar version of this talk at CGL next week, and then also we'll be doing it at another conference whose name escapes me in January. 
+I have my ClickOps tool that I use to go in and look at what the heck's going on. And so that's at least three, right? If not, then okay, well now what's—what do you use as like a pinger or other synthetic metrics, right? That can—so yeah, now we're at five, right? 
 
-We'll be doing Cod Smash, which is in January or something. I'm going to be giving the same talk, and also be at KubeCon. If you want to come say hi at KubeCon, come say hi. Also, thank you, thank you so much Na for joining us today. 
+With just what I would say like, oh, like you list all five, you're like, "Yeah, that's normal. That's normal. I need all this." 
 
-**Speaker 2:** And thank you everyone who was able to make it. This was actually a really good turnout for OTel in practice, so thank you for taking the time. 
+It's like me looking in my purse. I'm like, "Uh, I need to get some stuff out of here." They're like, "No, I need all of this. I need two batteries for my phone." 
 
-Also, for if you know anyone who wanted to attend but couldn't make it, let them know that we will be posting a recording of this on the OpenTelemetry YouTube channel. The handle is OTel Das Official. If you don't, haven't subscribed yet, we've got a bunch of previous videos from OTel in practice, OTel Q&A, and even some of it are in user discussion groups, so definitely check it out. 
+Okay, rid of these. Oh man, great chat! Thank you so much! And again, big shout out to R. You missed it right at the start when I was really thanking you for doing the last-minute promo. 
 
-Please check out the Hazel Weekly one from six weeks ago now. It was really, really key stuff. So that's really worth—if you want a reason to go check it out, that's a really good one. 
+I will be giving a similar but not identical version of this talk because we can all admit there were parts that dragged. I'll be giving a similar version of this talk at CGN next week, and then also we'll be doing it at another conference whose name escapes me in January. 
 
-It's next level. It's very, very good content. And we've got an OTel Q&A coming up on November the 16th with Jennifer Moore, where she talks about her experiences with OTel implementation at one of her previous companies. 
+We'll be giving the same talk and also be at KubeCon, and if you want to come say hi at KubeCon, come say hi and also thank you, thank you so much, Na, for joining us today. 
 
-So that will be also a really great session to look forward to. It'll be in this time slot, same time slot. 
+Thank you to everyone who was able to make it. This was actually a really good turnout for OpenTelemetry in practice, so thank you for taking the time. 
+
+### [00:38:00] Closing remarks and future talks
+
+Also, if you know anyone who wanted to attend but couldn't make it, let them know that we will be posting a recording of this on the OpenTelemetry YouTube channel. The handle is otel.official. 
+
+If you haven't subscribed yet, we've got a bunch of previous videos from OpenTelemetry in practice, OpenTelemetry Q&A, and even some of it are in user discussion groups. 
+
+So definitely check it out. Please check out the Hazel weekly one from six weeks ago now. It was really key stuff, so that's really worth—so if you want a reason to go check it out, that's a really good one. 
+
+Yeah, it's next level. It's very, very good content. We've got an OpenTelemetry Q&A coming up on November the 16th with Jennifer Moore, where she talks about her experiences with OpenTelemetry implementation at one of her previous companies. 
+
+So that will be also a really great session to look forward to. It'll be in this same time slot. 
 
 Does anyone else have anything else they want to share? 
 
-**Speaker 5:** Ren? 
+**Speaker 9:** Nope, just a huge thank you to Na! 
 
-**Speaker 6:** Nope, just a huge thank you to Na. 
-
-**Speaker 1:** Yeah, this was awesome.
+**Speaker 1:** Yeah, this was awesome!
 
 ## Raw YouTube Transcript
 

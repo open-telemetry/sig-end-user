@@ -10,300 +10,232 @@ URL: https://www.youtube.com/watch?v=9iaGG-YZw5I
 
 ## Summary
 
-In this YouTube video, a discussion is held about OpenTelemetry and its implementation at Farfetch, featuring Iris, a platform engineer at the company. Iris shares her journey from a software engineer to her current role in observability, emphasizing the importance of OpenTelemetry in managing complex architectures with around 3,000 engineers. The conversation highlights the tools used for observability, including Grafana, Prometheus, and Tempo, as well as the challenges faced during the implementation of OpenTelemetry, particularly in integrating tracing and metrics. Iris notes the positive culture around observability at Farfetch, where the team has embraced OpenTelemetry without significant resistance, and expresses pride in contributing to the OpenTelemetry community. The video also touches on the significance of collaboration among engineering teams and the continuous evolution of observability practices at Farfetch. Overall, the discussion serves as an insightful look into the practical applications and benefits of OpenTelemetry in a large organization.
+In this YouTube video, Iris from Farfetch leads a Q&A session featuring Edith, a platform engineer on the observability team at Farfetch, who shares her passion for OpenTelemetry and the company's journey in implementing observability practices. Edith discusses her background, the complex architecture at Farfetch involving various platforms, and how OpenTelemetry has been embraced within the organization to improve service monitoring. The conversation covers the tools and technologies being utilized, such as Prometheus, Grafana, and Tempo, in conjunction with OpenTelemetry for metrics, traces, and logs. Edith highlights the cultural acceptance of observability within Farfetch, the challenges faced during implementation, and the importance of collaboration among engineering teams. She also emphasizes the role of documentation and community support in their OpenTelemetry journey. Overall, the session provides insights into the practical applications of OpenTelemetry and the collaborative spirit surrounding observability efforts at Farfetch.
 
 ## Chapters
 
-00:00:00 Welcome and intro
-00:01:00 Iris introduction
-00:02:10 Edis background and journey
-00:04:30 OpenTelemetry architecture discussion
-00:06:00 CI/CD pipeline overview
-00:07:10 Observability tooling at Farfetch
-00:08:10 OpenTelemetry journey at Farfetch
-00:10:00 Team enabling observability practices
-00:12:30 OpenTelemetry implementation process
-00:14:40 OpenTelemetry collector usage
+00:00:00 Introductions
+00:01:58 Iris's background and role
+00:05:24 Discussion on Farfetch architecture
+00:09:54 Importance of observability
+00:12:36 OpenTelemetry journey at Farfetch
+00:19:48 Observability tooling overview
+00:27:20 Challenges in implementing OpenTelemetry
+00:31:30 Discussion on traces and metrics
+00:38:42 Contributions to OpenTelemetry
+00:46:48 Future plans for OpenTelemetry at Farfetch
 
-**Iris:** Thank you. I guess we can get started. It's a cozy group today, which is cool. I like cozy groups. It means we get to have a more intimate conversation. But like I said, there will be ways of consuming this information as well because what Edis has to say is awesome. She's very passionate about OpenTelemetry, so I'm very excited to have her join us. Edith works at Farfetch. 
+## Transcript
 
-Do you want to do like a brief little intro for everybody?
+### [00:00:00] Introductions
 
-[00:01:00] **Edis:** For sure. Hello everyone, again. My name is Edis. I work as a platform engineer. Yeah, I know this title changes every time, so in my LinkedIn it could be something different. You know how it is. I'm a platform engineer, part of the observability team currently in Farfetch. I belong to the central team that provides tools for all the engineering teams across Farfetch to monitor their services, including traces, metrics, logs, and alerting. Again, I'm very excited to be here. 
+**Iris:** Thank you. I guess we can get started. It's a cozy group today, which is cool. I like cozy groups. It means we get to have a more intimate conversation. But like I said, there will be ways of consuming this information as well because what Edis has to say is awesome. She's very passionate about open Telemetry, so I'm very excited to have her join us. Edith works at Farfetch. Do you want to do like a brief little intro for everybody?
 
-So we're just gonna do this like just a regular Q&A. And because we have such a small audience, also if we have time at the end, y'all are more than welcome to ask questions. You know, the purpose of this is to understand what Edis is doing at Farfetch around OpenTelemetry observability to help the rest of the community share use cases across the community so that we can all learn from each other, right? 
+**Edis:** For sure! Hello everyone. Again, my name is Edis. I work as a platform engineer. Yeah, I know this title changes every time, so in my LinkedIn it could be something different; you know how it is. I'm a platform engineer, part of the observability team currently at Farfetch. I belong to the central team that provides tools for all the engineering teams across Farfetch to monitor their services, including traces, metrics, logs, and alerting. Again, I'm very excited to be here. 
 
-That is that. So first things first, how did you come about to your current role at Farfetch?
+We're just gonna do this like a regular Q&A. And because we have such a small audience, if we have time at the end, you all are more than welcome to ask questions. The purpose of this is to understand what Edis is doing at Farfetch around open Telemetry observability to help the rest of the community share use cases across the community so that we can all learn from each other, right? 
 
-**Edis:** So observability has been a part of a build-up for me. When I started my career, I actually started as a software engineer, a back-end developer, and because it was a type of company that offered service to different clients, I became a DevOps engineer. I was like, okay, I was put there. So I started working very small scale with monitoring, mostly in AWS and Azure with CloudWatch, a little bit with insights. And then it started becoming more of a passion for me, the more I learned about it. 
+### [00:01:58] Iris's background and role
 
-Then I changed the position that I was in, and I started working in a more, let's say, well-equipped observability platform. And that's when I was like, okay, I really, really like this. I heard about OpenTelemetry for the first time and had my chance to touch it a little bit. Prometheus, Grafana, so I saw there was a lot of potential there. 
+So, first things first, how did you come about your current role at Farfetch? 
 
-And then where I currently am, of course, my previous experience really helped to come now. It's been one year and a little bit of learning and continuously evolving in observability. So now I think I've become pretty good at it. I started from zero. Yay, that's the best! 
+**Edis:** Observability has been a part of my build-up. When I started my career, I actually started as a software engineer, a back-end developer. Because it was a type of company that offered services to different clients, I became a DevOps engineer. I was like, okay, I was put there. So, I started working on a very small scale with monitoring, mostly in AWS and Azure, with CloudWatch and a little bit with Insights. It started becoming more of a passion for me the more I learned about it. Then I changed the position that I was in and I started working in a more, let's say, well-equipped observability platform. That's when I was like, okay, I really, really like this. 
 
-But how did you hear about OpenTelemetry specifically? Is it like one of those things where someone mentioned it to you, you saw it on the interweb somewhere? What's your story?
+I heard about open Telemetry for the first time and had my chance to touch it a little bit, along with Prometheus and Grafana. I saw there was a lot of potential there. My previous experience really helped me come now, and it's been one year and a little bit of learning and continuously evolving in observability. Now, I think I've become pretty good at it. I started from zero. Yay! 
 
-**Edis:** I think it was LinkedIn somewhere. I know that I was working—we were working with no traces at the time. I know, a blasphemy. But we were looking into tracing solutions and somewhere like that I saw OpenTelemetry. So I was like, okay, I'm gonna give this a try and made a small POC for my manager. It never went more than that to the POC. It was almost more than one year ago. But that's how I heard about it. I really liked it. I had it at the back of my mind. 
+**Iris:** That's the best! How did you hear about open Telemetry specifically? Was it one of those things where someone mentioned it to you, or you saw it on the interweb somewhere? What's your story?
 
-So now that there was an opportunity here in Farfetch, OpenTelemetry came up again. I was like, okay, I like that. I'm gonna go for it. 
+**Edis:** I think it was LinkedIn somewhere. I know that while we were working with no traces at the time, I know, a blasphemy, but we were looking into tracing solutions. Somewhere like that, I saw open Telemetry. I was like, okay, I'm gonna give this a try and made a small POC for my manager. It never went more than that to the POC; it was almost more than one year ago, but that's how I heard about it. I really liked it and had it at the back of my mind. So, now that there was an opportunity here at Farfetch, open Telemetry came up again, and I was like, okay, I like that. I'm gonna go for it.
 
-So at Farfetch, what can you tell us a little bit about the architecture of the system that you're working with and why observability and OpenTelemetry are so important to that? 
+At Farfetch, can you tell us a little bit about the architecture of the system that you're working with and why observability and open Telemetry are so important to that? 
 
-[00:04:30] **Edis:** So I guess we'll start with like, let's give us a sense of what the architecture is. We are around 3,000 engineers currently in Farfetch, only in tech. We have an extremely complex architecture because we have different types of different sides of the business. So we have cloud-native, we have Kubernetes, and we have virtual machines, Ubuntu Linux, the three types of different cloud providers. 
+**Edis:** Sure! We are around 3,000 engineers currently at Farfetch, only in tech, and we have an extremely complex architecture because we have different types and different sides of the business. We have cloud-native, we have Kubernetes, and we have virtual machines—Ubuntu, Linux—the three types of different cloud providers. Every team, of course, we have uniformity and we have guidelines that need to be followed, but it's a lot of years in the process. Some things are still like in the past; every team decides to do things how they think is best. 
 
-Every team, of course, we have uniformity and we have guidelines that need to be followed, but it's a lot of years in the process and some things are still like in the past. Every team decides to do things the way they think is best. So it is a lot of information coming from everywhere, and it's not uniform. 
+### [00:05:24] Discussion on Farfetch architecture
 
-For example, we were relying heavily on Prometheus to collect metrics, but some of our applications, some of our engineers, Prometheus was just not a good idea. So we were like, okay, what could be better? Here's OpenTelemetry. The same for the traces. And of course, this will help us not only collect these telemetry signals from places where we couldn't before and from services that were not possible, but also it's helping us put everything in a uniform way, which is amazing. 
+It is a lot of information coming from everywhere, and it's not uniform. For example, we were relying heavily on Prometheus to collect metrics, but some of our applications, some of our engineers thought Prometheus was just not a good idea. So, we were like, okay, what could be better? Here's open Telemetry. The same for the traces. Of course, this will help us not only collect these Telemetry signals from places where we couldn't before and from services that were not possible, but also it's helping us put everything in a uniform way, which is amazing.
 
-[00:06:00] Very cool. And now what about your deployment process? What do you mean by building in the organization? What's your CI/CD pipeline like? Is it something that you're involved in to any extent or not really involved?
+**Iris:** Very cool! What about your deployment process? What do you mean by building in the organization? What's your CI/CD pipeline like? Is it something that you're involved in to any extent or not really involved?
 
-**Edis:** More in the sense that I use it a lot, and I'm in close communication. But yeah, we currently use Jenkins in Farfetch, and we have a separate team taking care of that, which tells again how complex everything is. We have teams and everything is segregated in my position, which is strictly observability—basically everything with observability, all the tools, deployments, maintenance, and releasing new features on top of what we have.
+**Edis:** Not really involved, more in the sense that I use it a lot and I'm in class communication. But yeah, we currently use Jenkins at Farfetch, and we have a separate team taking care of that, which again tells how complex everything is. We have teams and everything is segregated. My position is strictly observability, basically everything with the durability— all the tools, deployments, maintenance, and releasing new features on top of what we have. 
 
-Okay, cool. So what observability tooling are you using? And you know, if you're using an observability vendor that you'd rather not divulge, that's totally okay. But just give us a sense of maybe your OpenTelemetry stack, how it's set up, that kind of thing.
+**Iris:** Okay, cool! What observability tooling are you using? If you're using an observability vendor that you'd rather not divulge, that's totally okay. But just give us a sense of maybe your open Telemetry stack and how it's set up.
 
-[00:02:10] **Edis:** Yeah, currently we're mostly open source and some things that have been created in-house by us, but mostly open source. We use Grafana for dashboards, we use Tempo as a data source, which is also part of Grafana, mostly for as a tracing back-end. That was something new. Sorry for the baby cats in the background. 
+**Edis:** Yeah, currently we're mostly open source with some tools that have been created in-house by us, but mostly open source. We use Grafana for dashboards, we use Tempo as a data source, which is also part of Grafana, mostly as a tracing back-end. That was something new. Sorry for the baby cats in the background! We use Prometheus and Thanos for metrics, and now we have added open Telemetry there as well. We used to have Jaeger, and we still do to a certain degree because we still haven't completely moved to open Telemetry when it comes to the frameworks that some of the teams are using. They are working hand in hand with Jaeger, and that's pretty much it. That's all that I can think of right now, but these are the main ones.
 
-We use Prometheus and Thanos for metrics, and now we have added OpenTelemetry there as well. We used to have Jaeger, and we still do to a certain degree because we still haven't completely moved up on OpenTelemetry when it comes to the frameworks that some of the teams are using. So they're working hand in hand, Jaeger, and that's pretty much it. That's all that I can think of right now, but these are the main ones.
+**Iris:** Cool! What about your organization's open Telemetry journey? We hear it's always a mixed bag, right? Some organizations are like giddy-up, more open Telemetry observability, and others are like... What was it like at Farfetch?
 
-[00:08:10] Cool. And what about in terms of your organization's OpenTelemetry journey? We hear it's always a mixed bag, right? Some organizations are like, giddy up, more OpenTelemetry observability, and others are like, what was it like at Farfetch?
+**Edis:** Well, I'm very proud to say actually that we have a very good observability culture at Farfetch. It was actually one of the ideas that was welcomed immediately. Okay, open Telemetry, let's do it, let's go for it! It took us a bit more time to make some space on our yearly plan for it, but the moment that it was mentioned, everyone was okay, let's jump to it. We only see positives there. We couldn't see any negatives other than the time spent, which is a necessity. It was very well accepted. I was surprised. I'm very happy, obviously.
 
-**Edis:** Well, I'm very proud to say actually that we have a very good observability culture in Farfetch. It was actually one of the ideas that was welcomed immediately. Okay, OpenTelemetry, let's do it, let's go for it. It took us a bit more time to make some space on our yearly plan for it, but the moment that it was mentioned, everyone was like, okay, let's jump to it. We only see positives there. We couldn't see any negatives other than the time spent, which is a necessity. And yeah, it was very well accepted. I was surprised. I'm very happy, obviously.
+**Iris:** That's amazing! It sounds like it came from the top then?
 
-That's amazing! Yeah, so it sounds like it came from the top then.
+**Edis:** Yeah, exactly. Of course, I don't want to mention names, but some of our senior leaders are very involved in the community, and they're always seeing new technologies and saying, "Hey, what do you think about this? Do you like it?" Of course, me, I'm extremely ambitious and I'm always on the internet, on LinkedIn, seeing new things to implement. It's a great combination there.
 
-**Edis:** Yeah, exactly. Of course, I don't want to mention names, but some of our senior leaders are very involved in the community, and they're always seeing new technologies and saying, "Hey, what do you think about this? Do you like it?" And of course, me, I'm extremely ambitious, and I'm always on the internet on LinkedIn seeing for new things to implement. It's a great combination there.
+**Iris:** Awesome! Now, in terms of your team starting to enable observability practices and open Telemetry, what did you and your team have to go through in order to make that happen?
 
-Oh, awesome! Now in terms of your team starting to enable observability practices and OpenTelemetry, what did you and your team have to go through in order to make that happen?
+### [00:09:54] Importance of observability
 
-**Edis:** Well, the moment that I joined the team, at a point in time, I think the biggest struggle had already passed because observability became a very new thing three years ago in Farfetch. I think the people that struggled the most were the engineers that worked in the team back then. Of course, it was a new thing. Observability, why do we need it? Why is it so important? 
+**Edis:** Well, at the moment that I joined the team, I think the biggest struggle had already passed because observability became a very new thing three years ago at Farfetch. I think the people that struggled the most were the engineers that worked in the team back then. Of course, it was a new thing: observability. Why do we need it? Why is it so important? 
 
-[00:10:00] But I think at the point that I actually joined, everyone had already embraced how important observability is for everyone. Of course, that's an overestimation, but most of the engineers had already embraced it. So for us saying that, hey, we are implementing this amazing new thing, OpenTelemetry, that everyone had heard about, it was very popular right now and it was embraced immediately. And of course, knowing the benefits that they were getting from it—more metrics, more traces, more uniform way of collecting everything—it was a blast immediately.
+But I think at the point that I actually joined, everyone had already embraced how important observability is for everyone. Of course, that's an overestimation, but most of the engineers had already embraced it. So, for us saying, "Hey, we are implementing this amazing new thing, open Telemetry," that everyone had heard about—it was very popular right now—it was embraced immediately. Knowing the benefits they were getting for it—more metrics, more traces, more uniform ways of collecting everything—it was a blast immediately.
 
-And how did your team skill up in terms of being able to start implementing OpenTelemetry? Because it sounds like some people were kind of familiar with it. Maybe, I'm assuming it might have been newer to other folks. You said actually when the directive came that your team was gonna start implementing observability principles, OpenTelemetry, that was something that you know there was like work involved. So what was the kind of work that was involved in order to enable that for your team?
+**Iris:** How did your team skill up in terms of being able to implement open Telemetry? Because it sounds like some people were kind of familiar with it; maybe it was newer to other folks. You said, actually, when the directive came that your team was gonna start implementing observability principles with open Telemetry, there was work involved. What was the kind of work that was involved in enabling that for your team?
 
-**Edis:** Well, I think the biggest challenge—what we thought at the time was a challenge—was how to release this in patches and in parts so we could... we didn't do any damage or that the engineering teams that use observability every day didn't feel the change for the bad, of course. We would like them to see the improvement. 
+**Edis:** Well, I think the biggest challenge—what we thought at the time was a challenge—was how to release this in patches and in parts so we could do no damage and that the engineering teams that use observability every day didn't feel the change for the bad, of course. We would like them to see the improvement. 
 
-So we thought that that was going to be a challenge. Of course, we were going to move from one technology to the other. But actually, we always have someone who is a driver for the project, and in this case, in my team, it was me. So I did a thorough investigation, and every time I was reading something, I was like, wow, okay, this is cool. Wow, okay, this is amazing because everything managed to fit together very well for us. 
+We thought that was going to be a challenge. Of course, we were going to move from one technology to another. But actually, we always have someone who is a driver for the project, and in this case, in my team, it was me. I did a thorough investigation, and every time I was reading something, I was like, "Wow, okay, this is cool! Wow, okay, this is amazing!" Because everything managed to fit together very well for us. 
 
-Of course, the fact that we use open source really helps, with OpenTelemetry having compatibility with Prometheus, with Jaeger, and with everything that we were working with, it became easier over time to just put everything out there.
+Of course, the fact that we use open source really helps with open Telemetry. It has compatibility with Prometheus, with Jaeger, with everything that we were working with. It became easier over time to just put everything out there. 
 
-So it sounds like you were the primary driver for getting people leveled up on OpenTelemetry.
+**Iris:** It sounds like you were the primary driver for getting people leveled up on open Telemetry.
 
-[00:12:30] **Edis:** Yeah, I'm proud of that. Together with the ones who were the biggest pushers and supporters of OpenTelemetry, and now we're in production. So I think we were pretty successful.
+**Edis:** Yeah, I'm proud of that! Together with the ones who were the biggest pushers and supporters of open Telemetry, and now we're in production. I think we were pretty successful.
 
-That is super cool! I don't know that we hear too many stories of organizations using OpenTelemetry in production, so I think that's really awesome. And how long did it take you guys to get to the point where you've got OpenTelemetry in production?
+### [00:12:36] OpenTelemetry journey at Farfetch
 
-**Edis:** So let me see. We planned to start implementing OpenTelemetry around January, and we started the first investigation gathering information. I think by mid-March, we were already ready in production. But again, we are still not there, not 100%. We're still relying on a lot of things with Prometheus and Jaeger. We're just using OpenTelemetry to transport. We still need to do instrumentation with OpenTelemetry. Some parts of our engineering teams are still not using it, but currently, OpenTelemetry is our main transport of our telemetry signals, basically.
+**Iris:** That is super cool! I don't know that we hear too many stories of organizations using open Telemetry in production, so I think that's really awesome. How long did it take you guys to get to the point where you've got open Telemetry in production?
 
-Are you relying heavily on the OpenTelemetry collector then to do that for you?
+**Edis:** Let me see. We planned to start implementing open Telemetry around January, and we started the first investigation, gathering information. I think by mid-March, we were already ready in production. But again, we are still not 100% there. We're still relying on a lot of things with Prometheus and Jaeger. We're just using open Telemetry to transport. We still need to do instrumentation with open Telemetry. Some parts of our engineering teams are still not using it, but currently, open Telemetry is our main transport for our technology signals, basically.
 
-**Edis:** Yeah, especially with traces. Traces were one of the neglected parts of the observability stack, you know. It's typical because traces are a bit, let's say, more modern and it takes more time to implement and to actually understand how good they are. Now traces are becoming the eat of observability. So it really helped us. OpenTelemetry really helped us get the best of the tracing in Farfetch. 
+**Iris:** Are you relying heavily on the open Telemetry collector then to do that for you?
 
-We were actually doing some numbers today with our architect, and we were moving around 1,000 spans per second in the past, and now we have 40,000 that flawlessly without even needing to lift a finger. And we're not there yet. We still have a lot to do there.
+**Edis:** Yeah, especially with traces. Traces were one of the neglected parts of the observability stack. It's typical because traces are a bit more modern and it takes more time to implement and to actually understand how good they are. Now traces are becoming the heart of observability, so it really helped us. Open Telemetry really helped us get the best of tracing at Farfetch. We were actually doing some numbers today with our architect, and we were moving around 1,000 spans per second in the past, and now we have 40,000 that flawlessly without even needing to lift a finger. We're not there yet; we still have a lot to do there.
 
-And so how are you collecting your traces right now? Is it like manual instrumentation, auto instrumentation, a combination of both? Where are y'all at with that?
+**Iris:** How are you collecting your traces right now? Is it like manual instrumentation, auto instrumentation, a combination of both? Where are you all at with that?
 
-[00:14:40] **Edis:** It's a combination of both. So we're currently doing... We have another team working with us that helps provide the instrumentation of the frameworks because we have a huge variety of languages. So we still have the OpenTracing framework that teams are still using. We also have some teams using manual instrumentation, and we're also implementing the OpenTelemetry operator with auto instrumentation, mostly for .NET and Java currently, but looking forward for Go because we have a lot of applications running in Go. 
+**Edis:** It's a combination of both. We currently have another team working with us that helps provide the instrumentation of the frameworks because we have a huge variety of languages. We still have the open tracing framework that teams are still using. We also have some teams using manual instrumentation. We're also implementing the open Telemetry operator with auto instrumentation, mostly for .NET and Java currently, but looking forward for Go because we have a lot of applications running in Go. Our main goal is that very soon we want to have all applications using open Telemetry instrumentation, but it's going to be a process, as slow and as fast depending on the team's pace.
 
-So our main goal is that very soon we want to have all applications using OpenTelemetry instrumentation, but it's going to be a process, as slow and as fast depending on the team's pace. 
+**Iris:** For the teams who are using Go—which to my understanding there is no auto instrumentation—is there any kind of support that your team provides around that in terms of helping these teams instrument?
 
-So for the teams who are using Go, which to my understanding there is no auto instrumentation, is there any kind of support that your team provides around that in terms of helping these teams instrument?
+**Edis:** Yeah, of course! One of the main teams that this is Go, especially because of the open source, is my team. We provide documentation, we provide guidelines, and there is a lot of very good documentation in the open Telemetry as well about manual instrumentation. So basically, we have sessions with engineers—not to train them because I think they can do it better than we can because it's their code—but just to show them the best practices and to introduce them to that and to tell them that our tools are here for you, and they take it from there. It's a team sport, let's say.
 
-**Edis:** Yeah, of course. One of the main teams that this is for Go, especially because of the open source, it's my team. But yeah, of course, we provide documentation, we provide guidelines, and there is a lot of very good documentation in the OpenTelemetry as well about manual instrumentation. So basically, we have sessions with engineers—not to train them because I think they can do it better than we can because it's their code—but just to show them the best practices and to introduce them to that and to tell them that, hey, our tools are here for you, and they take it from there. It's a team sport, let's say.
+**Iris:** Awesome! I love that because I think what you said is really important: that you're not instrumenting their code for them because it's their code, but that you provide the guidance and guidelines on the instrumentation, which I think is super important. Also, I want to call out, Ubuntu just shared a link in the chat that indicates that there is auto instrumentation for Go, so yay! 
 
-Awesome! I love that. Because yeah, I think what you said is really important that you're not instrumenting their code for them because it's their code, but that you provide the guidance on the instrumentation, which I think is super important. 
+**Edis:** Something to look at!
 
-Also, I want to call out, Ubuntu just shared a link in the chat that indicates that there is auto instrumentation for Go. So yay! Something to look at.
+**Iris:** Yeah, it's a more recent thing, and it's still a work in progress, but I came across this last week only. Since you mentioned Go, I was like, okay, go take a look if there's something interesting. 
 
-**Edis:** Yeah, it's a more recent thing, and it's still a work in progress, but I came across this last week only. Since you mentioned Go, I was like, okay, go take a look if there's something interesting. 
+**Edis:** No, I've been following it as well actually because it's my stack, and the things that I usually want to go. I'm like, every day, is there news? Is there news? It's become like a passion now! 
 
-I've been following it as well, actually, because it's my stack and the things that I'm—it's very close to me that I usually want to use Go. So I'm like, every day, is there news? Is there news?
+**Iris:** Very cool! I want to ask about the auto instrumentation because, you know, keeping on that thread, I think you mentioned you're leveraging auto instrumentation for Java through the open Telemetry operator. Can you share a little bit about your experience around using the open Telemetry operator? I came across it like maybe a couple months ago, and for me, I was like, this thing is amazing! 
 
-**Iris:** That's very cool! Now I want to ask on the auto instrumentation because, you know, keeping on that thread, I think you mentioned you're leveraging auto instrumentation for Java through the OpenTelemetry operator. Can you share a little bit of your experience around using the OpenTelemetry operator? 
+**Edis:** Yeah, it's cool to hear someone who's actually using it. Is that in production right now for you?
 
-I came across it like maybe a couple of months ago, and for me, I was like, this thing is amazing! So yeah, like, it's cool to hear someone who's actually using it. Is that in production right now for you?
+**Edis:** Yes, it is partly in production, but it's very isolated. It's not available for everyone. The operator is amazing. We loved it when we just discovered it; we were like amazed. The thing is that it is a bit getting used to. We had some challenges when we started—well, we still do—but especially in the beginning because the operator and the instrumentation object and the collector, well, it was my bad obviously. 
 
-**Edis:** Yes, it is partly in production, but it's very isolated. It's not available for everyone. And yeah, the operator is amazing. We loved it when we just discovered it. We were like amazed. 
+We were having some certificate issues and trying to rotate certificates, and I was trying to delete something, and they just deleted and created. It was like a big mess! I would just leave my computer and come back because of how coupled the operator and the collector and its orientation are. But yeah, now we've gotten the hang of it, and it is amazing. 
 
-The thing is that it is a bit getting used to. We had some challenges when we started—well, we still do—but especially in the beginning because the operator and the instrumentation object and the collector, well, it was my bad, obviously. We were having some certificate issues and trying to rotate certificates. I was trying to delete something, and I just deleted and created—it was like a big mess. I would just like leave my computer and come back because of how coupled the operator and the collector and its orientation is. 
+One other challenge that I didn't think of—that's the beauty of it—we were having a discussion with another engineer, and I was complaining that Prometheus cannot target the operator. The collector and the operator, for some reason, and we cannot create alerts from it. He told me, "Well, have you tried using open Telemetry to send everything to Prometheus?" I'm like, hmm! It's the beauty of it; it's compatible! 
 
-But yeah, now we've gotten the hang of it, and it is amazing. One other challenge that I didn't think of—that's the beauty of it—we were having a discussion with another engineer, and I was complaining that Prometheus cannot target the operator, the collector, for some reason, and we cannot create alerts from it. 
+I guess there's challenges every day. One day it's time!
 
-He told me, "Well, have you tried using OpenTelemetry and then sending everything to Prometheus?" And I'm like, hmm. It's the beauty of it. You know, it's compatible. 
+### [00:19:48] Observability tooling overview
 
-Yeah, I guess there's challenges every day. One day it's time.
+**Iris:** That's very cool! Speaking of, you mentioned you're ingesting traces. I know the log signal is a newer player in the land of open Telemetry. Have you and your team or anyone at Farfetch started playing around with open Telemetry logging as well?
 
-That's very cool! And speaking of like, you mentioned you're ingesting traces. I know the log signal is like a newer player in the land of OpenTelemetry. Have you and your team or anyone at Farfetch started playing around with OpenTelemetry logging as well?
+### [00:46:48] Future plans for OpenTelemetry at Farfetch
 
-**Edis:** Very, very little. Mostly consuming from a Kafka topic and see how that goes. It's pretty good, but we know that this is not there yet, and it's not stable. So we don't expect it to go into production or to have it part of the day-to-day because currently we have a huge volume of logs going through Farfetch, more than places, so a lot more. 
+**Edis:** Very little, mostly consuming from a Kafka topic and seeing how that goes. It's pretty good, but we know that this is not there yet, and it's not stable. So we don't expect it to go into production or to have it part of the day-to-day because currently we have a huge volume of logs going through Farfetch—more than places. So yeah, it's not worth risking, but we're definitely experimenting, and we expect in one year from now open Telemetry will be the only receiver that we're going to use for everything.
 
-So yeah, it's not worth risking, but we're definitely experimenting. We expect in one year from now OpenTelemetry will be the only receiver that we're going to use for everything.
+**Iris:** Cool! For the little experiment that you've done in using open Telemetry logs, have you taken advantage of the log-to-trace correlation, or is that just the logs in isolation? How's that been going?
 
-Oh cool! For the little experiment that you've done in using OpenTelemetry logs, have you taken advantage of the log-to-trace correlation, or is that just the logs in isolation? How's that been going?
+**Edis:** Actually, no, that's a very good suggestion because I've been focusing mostly just on getting things across and mostly the processing and the obfuscation of the data. That's something that we would like to use open Telemetry for, which is amazing. But no, that's something that it's definitely worth for me to investigate into next.
 
-**Edis:** Actually, no. That's a very good suggestion because I've been focusing mostly just getting things across and mostly the processing of the obfuscation of the data because that's something that we would like to use OpenTelemetry, which is amazing for. But no, that's something that it's definitely worth for me to investigate into the next.
+**Iris:** Awesome! What about the metric signal? How are you ingesting the metrics? Is Prometheus passing the metrics over to you? Are you using the Prometheus receiver? I know from personal experience when I started playing around with the Prometheus receiver, it was barely a thing. It was so unstable; there was a disclaimer. I'm just wondering how you're using the Prometheus receiver and if so, what's been your experience around that?
 
-Awesome! What about the metric signal? How are you ingesting the metrics? Is Prometheus passing the metrics over to you, and are you using the Prometheus receiver? I know like from personal experience when I started playing around with the Prometheus receiver, it was like barely a thing. It was like so unstable. There was a disclaimer. I'm just wondering how you use the Prometheus receiver and if so, what's been your experience around that?
+### [00:38:42] Contributions to OpenTelemetry
 
-**Edis:** Yes, actually, we use the Prometheus receiver. So throughout the instrumentation, just to get this out of the way, we do get some OTLP metrics as well, but the majority of our metrics is Prometheus. So the Prometheus receiver works very good for us because we already had an observability system in place, and we use Console for target control. So it was extremely easy for us to use the receiver, and it can handle a huge amount of data. 
+**Edis:** Yes, actually, we use the Prometheus receiver. So throughout the instrumentation, just to get this out of the way, we do get some OTLP metrics as well, but the majority of our metrics is from Prometheus. The Prometheus receiver works very well for us because we already had an observability system in place, and we use Console for target control. So it was extremely easy for us to use the receiver, and it can handle a huge amount of data. The scrape configs are the same as in Prometheus, so technically nothing changes. You're just using another tool to scrape all these metrics. It is very straightforward for us, and currently, we're using both open Telemetry for some scenarios and Prometheus. But again, in the future, the goal is to use only open Telemetry. It's just that it's a process.
 
-The scrape configs are the same as in Prometheus, so technically nothing changes. You're just using another tool to scrape all these metrics. It is very straightforward for us, and currently, we're using both OpenTelemetry for some scenarios and Prometheus. But again, in the future, the goal is to use only OpenTelemetry; it's just that it's a process.
+**Iris:** Do you think then the Prometheus receiver will be the way to ingest all of your metrics, and so you'll be able to scrap Prometheus altogether as your end goal?
 
-Do you think then the Prometheus receiver will be the way to ingest all of your metrics and so you'll be able to scrape Prometheus altogether as your end goal?
+**Edis:** I would say so, but it would be maybe the majority because we have a lot of our services running on virtual machines as well, and we have Prometheus exporters there. It's best that those, let's say, stand remain in touch, and it's going to be more difficult to adapt them. But when it comes to our Kubernetes, I think we're going to go more with open Telemetry because everything is Prometheus, but we have the Kubernetes SD configs for the Prometheus receiver, which is amazing. We also have the target control target allocator through the operator, which I have been testing, and I really liked it. So I think we're going to go completely, especially on Kubernetes and in the cloud, with open Telemetry.
 
-**Edis:** I would say so, but it would be maybe the majority because we have a lot of our services running on virtual machines as well, and we have Prometheus exporters there. So it's best that those, let's say, remain in touch, and it's going to be more difficult to adapt them. But when it comes to our Kubernetes, I think we're going to go more with OpenTelemetry because everything is Prometheus, but we have the Kubernetes SD configs for the Prometheus receiver, which is amazing. 
+**Iris:** Going back to Kubernetes, how many clusters are you typically involved with that you're observing?
 
-We also have the target control target allocator through the operator, which I have been testing, and I really liked it. I think we're going to go completely, especially on Kubernetes and in the cloud. 
+**Edis:** I would say maybe a hundred in total for different data centers. Yes, and thousands of virtual machines. We have a huge stack, so your team is responsible then for ensuring that if there's an issue with the operator, you and your team are managing the open Telemetry operator across all these Kubernetes clusters?
 
-Cool! And going back to Kubernetes, how many clusters are you typically involved that you're observing?
+**Edis:** Exactly! That's why we're also trained in Kubernetes—all of us that are part of the team—because it's a very important part of our job to actually maintain everything.
 
-**Edis:** I would say maybe a hundred in total for different data centers. Yes, and thousands of virtual machines. We have a huge stack. 
-
-So your team is responsible then for ensuring that if there's an issue with the operator, you and your team are managing the OpenTelemetry operator across all these Kubernetes clusters?
-
-**Edis:** Exactly. That's why we're also trained in Kubernetes, all of us that are part of the team, because it's a very important part of our job to actually maintain everything.
-
-**Iris:** Oh nice! Nice! Okay, so you wear multiple hats. So you maintain the clusters as well, is what it sounds like?
-
-**Edis:** Or I don't know.
-
-Okay, cool! And I seem to recall—I want to say like version 1.26 of Kubernetes—they enabled some OpenTelemetry capabilities as an experimental feature. Is that something that you've ever dabbled with or heard of? Just curious.
+**Iris:** Nice! I seem to recall, I want to say like version 1.26 of Kubernetes enabled some open Telemetry capabilities as an experimental feature. Is that something that you've ever dabbled with or heard of? Just curious.
 
 **Edis:** Not yet, actually. No, I haven't come across it, but something that I can note and test. There's always a lot to learn.
 
-**Iris:** Yeah, I'll see if I can find a link around that. I feel like it was a very niche thing that was not often talked about, but I'd love to hear if anyone's played around with that.
+**Iris:** I'll see if I can find a link around that. I feel like it was a very niche thing that was not often talked about, but I'd love to hear if anyone's played around with that. Now, one of the things that I always love to hear is how teams are structuring their collectors. Do you have one collector, multiple collectors? If so, how are you deploying them? 
 
-Now, for me, one of the things that I always love to hear is how teams are structuring their collectors. Do you have one collector, multiple collectors? If so, how are you deploying them? 
+**Edis:** We currently have an agent and central collector type of organization. Well, as I mentioned, we have especially a huge number of Kubernetes clusters, so having just one point of interest is going to be overwhelming. We are deploying... Well, currently, we have one open Telemetry agent in each of the clusters, and we are starting to substitute it with open Telemetry operator, which has the collector and auto instrumentation. So that's the end goal; that's where we're getting it. Everything is sent to a central collector where we do the obfuscation of data and the sampling and everything. All that is sent—currently we're using Tempo, but in the future, we might use a vendor. Basically, there's going to be a central collector collecting all that per data center.
 
-**Edis:** So different configurations. Yeah, we currently have an agent and a central collector type of organization. Well, as I mentioned, we have especially when it comes to Kubernetes clusters, we have a huge number of them. So having just one point of interest is going to be overwhelming. 
+**Iris:** So you basically have each Kubernetes cluster has its own collector, and then they feed into your central collector. Where does your central collector reside? Does it reside on a VM, or does it reside on another Kubernetes cluster?
 
-So we are deploying—well, currently we have one OpenTelemetry agent in each of the clusters, and we are starting to substitute it with OpenTelemetry operator, which has the collector and auto instrumentation. So that's the end goal. That's where we're getting it. So everything is sent to a central collector where we do the observability of data, the sampling, and everything, and all that is sent. Currently, we're using Tempo, but in the future, we might use a vendor. 
+**Edis:** It's a Kubernetes cluster. We call it the central collector because most of the stock on that cluster is dedicated to us. We have a lot of data, so we have a lot of requirements, so memory-wise, most of the applications running in this cluster are for observability and very few for the platform. 
 
-Basically, there's going to be a central collector collecting all that per data center.
+### [00:27:20] Challenges in implementing OpenTelemetry
 
-Okay, so you basically like each Kubernetes cluster has its own collector, and then they feed into your central collector. Where does your central collector reside? Does it reside on a VM? Does it reside on another Kubernetes cluster?
+**Iris:** Cool! How do you ensure that if everything's being sent to that central collector, that becomes like a single point of failure? What’s your backup plan?
 
-**Edis:** It's a Kubernetes cluster, and it's... yeah, we call it the central collector because most of the stock on that cluster is dedicated to us. We have a lot of data, so we have a lot of requirements for memory. So most of the applications running in this cluster are for observability and very few for the platform. 
+**Edis:** Well, we have fallback clusters with fallback collectors. If this one fails, it goes to the other one immediately. We have also implemented—well, it's not currently running—but we also have implemented the fact that the open Telemetry collectors can send to as many exporters as possible. So we are currently using a fallback cluster to send, for example, if one fails, send to the other one, and we can immediately enable it without an issue. It's like a background. 
 
-So yeah, that's where everything is.
+We have equipped our collectors with auto-scaling a lot; it's based on our metrics. We will make sure that our collectors have a lot of memory and CPU liberty so their queues will be big as well. If there is a small downtime, everything will be saved into the queue and then sent to the central collector.
 
-Okay, cool! And then how do you ensure, you know, if everything's being sent to that central collector, that becomes a single point of failure. So how do you ensure that, you know, if that goes down, what's your backup plan?
+**Iris:** Awesome! Speaking of the central collector, what were some of the challenges you experienced initially when you started implementing the collector? I would imagine, you said that you want to make sure you have enough memory allocated. I'm assuming that might have been perhaps an initial challenge. Are there any others, or can you talk more about that?
 
-**Edis:** Well, we have fallback clusters with fallback collectors. So if this one fails, it goes to the other one immediately. We have also implemented—well, it's not currently running, but we also have implemented the—you know that the OpenTelemetry collectors can send to as many exporters as possible? So we are currently using a fallback cluster to send, for example, if one fails, send to the other one, and we can immediately enable it without an issue. 
+**Edis:** Yeah, I think knowing the collector and how it works was a new technology introduced to us. We were very fortunate at Farfetch because we rely heavily on auto-scaling. The first thing that we did was to enable auto-scaling. But yeah, we had to do some tests to see how it was working with a small amount of data because again, it was completely new, and it took us a while to know the memory and CPU requirements. 
 
-It's like a background. Yeah, and we have equipped our collectors with very—we well, we use auto-scaling a lot. It's based on our metrics, so we will make sure that our collectors have a lot of memory and CPU liberty so their queues will be big as well. If there is a small downtime, everything will be saved into the queue and then sent to the central collector.
+At the same time, we were not wasting a huge amount of money just to have this available, but at the same time, we need to have this available because it is so crucial. So yeah, definitely the resources—memory and CPU—are very important. Everything else I would say, the Helm charts in the community are so good. We just needed to use them, enable it, and of course modify everything—the configuration, basically the exporters and receivers—and that's it. But yeah, it was pretty straightforward when it comes to that. 
 
-Awesome! And on that central collector—well, speaking like continuing on the collector thread—what were some of the challenges that you experienced initially when you started implementing the collector? Because I would imagine, you know, you said that you want to make sure you have enough memory allocated. I'm assuming that might have been perhaps an initial challenge. Are there any others, or can you talk more about that?
+**Iris:** In terms of configuration, are you using any processors to do any data masking or to add attributes or remove attributes? Do you have custom processors? What's your processor story like on the collector?
 
-**Edis:** Well, yeah, I think knowing the collector and how it works is a new technology introduced to us was the biggest challenge. We're very fortunate in Farfetch because we rely heavily on auto-scaling. So the first thing that we did was to enable auto-scaling. But yeah, we had to do some tests to see how it was working with a small amount of data because again, it was completely new, and it took us a while to know the memory and CPU requirements. 
+**Edis:** Well, we're currently experimenting with processors. I think we only have the batch processor or whatever it is enabled by default on the charts, but we are playing a lot with the data masking processors. Especially for the logging part, in tracing and in metrics, we do not have any data that could be sensitive, but for logging, that's something that we are relying on heavily, and that's what we're testing the most. But currently, we haven't implemented anything special for the Telemetry data that we're currently passing.
 
-So at the same time, we're not wasting a huge amount of money just to have this available, but at the same time, we need to have this available because it is so crucial. So yeah, definitely the resources, memory, and CPU are very important. Everything else, I would say the Helm charts in the community are so good. We just needed to use them, enable it, and of course modify everything, the configuration basically, the exporters and receivers, and that's it. But yeah, it was pretty straightforward when it comes to that.
+**Iris:** I was curious because you mentioned you're using traces, you're using metrics, and playing around with logs. Within traces, are you aware of any teams using span events, for example?
 
-Okay, and in terms of configuration, are you using any processors to do any data masking or to add attributes, remove attributes? Do you have custom processors? What's your processor story like on the collector?
+### [00:31:30] Discussion on traces and metrics
 
-**Edis:** Well, we're currently experimenting with processors. I think we only have the batch processor or whatever it is enabled by default on the charts. But we are playing a lot with the data masking processors because especially for the logging part in tracing and in metrics, we do not have any data that could be sensitive, but for logging, that's something that we are relying on heavily, and that's what we're testing the most. 
+**Edis:** No, not yet. That's something that we are really, really planning to introduce currently. Because of the limitations that we had with our previous tracing system, we had a very low sampling; it was 0.1 percent. The interest in the teams was not big; they didn't really care much about tracing. It was very rare finding an engineer that relied on tracing. So now that we implemented Tempo with open Telemetry, we are gradually increasing the sampling size and allowing more information to come through. I think we are getting better at it, but still not there. That's part of our package of making traces first-class citizens.
 
-But currently, we haven't implemented anything special for the telemetry data that we're currently passing.
+**Iris:** That's what I love to hear! I don't think this is the thing yet now, but my understanding in talking to a few of the open Telemetry folks is that the idea is that the logs are going to replace the span events because span events are basically logs embedded in your traces anyway, but with the idea that you continue having that correlation. But I believe my understanding is also you get access to the fact that the logs specification is a lot richer than the span events specification, so you get to take advantage of having more information potentially at your disposal. So that's kind of a thing that I'm looking forward to personally.
 
-Cool, cool! And I was curious because, you know, you mentioned like you're using traces, you're using metrics, playing around with logs. Within traces, are you aware of any teams using span events, for example?
+I noticed that Sebastian just posted a link in the chat regarding the traces for Kubernetes clusters in version 1.27. For anyone who is not sure, I believe that is the one I was referring to.
 
-**Edis:** No, not yet. And that's something that we are really, really planning to introduce currently because of the limitations that we had with our previous tracing system. We had a very low sampling; it was 0.1 percent. The interest in the teams was not big. They didn't really care much about tracing. It was very rare to find an engineer that relied on tracing. 
+**Edis:** Yeah, I believe that is the one! That's super cool! I do seem to remember that for enabling it, you have to go deep into the bowels of Kubernetes configuration to be able to enable that feature. So, I think if you were using a cloud provider, do so at your own risk kind of thing. I think it was a lot easier to use locally on your machine, but anyway, still a cool feature nonetheless. I definitely think it's something that is worth exploring as it matures.
 
-So now that we implemented Tempo and OpenTelemetry, we are gradually increasing the sampling size and allowing more information to come through. I think we are getting better at it, but still not there. That's part of our package of making traces first-class citizens.
+Going back to our discussion, I had a question regarding whether you encountered any folks who were resistant to this whole open Telemetry thing, like on development teams or even within your own team. What was the vibe around that? If so, what did you do to help alleviate their stress?
 
-That's what I love to hear! And I don't think this is the thing yet now, but my understanding in talking to a few of the OpenTelemetry folks is that the idea is that the logs are going to replace the span events because, I mean, span events are basically like logs embedded in your traces anyway. But with the idea that, obviously, you continue having that correlation, but I believe my understanding is also you get access to the fact that the logs specification is a lot richer than the span events specification, so you get to take advantage of having more information potentially at your disposal. 
+**Edis:** To be honest, not really. It's curious actually. I haven't really met anyone that opposes it. I've met plenty of people that simply do not care for it—like they're like, "Okay, we have it, it's okay, we do not have it." In this situation, it’s mostly, for example, someone asks for something related to observability and traces, and I'm like, "Hey, look at this cool thing that we did with open Telemetry. Now it is available for you," and they're like, "Okay." I just keep sending things that I consider are so cool, and it's good for them to use, and that's pretty much it. I know that they're going to use it because it's a good thing. I've never had someone that was against it, or like, "No, we don't need it."
 
-So that's kind of a thing that I'm looking forward to personally. I noticed that Sebastian just posted a link in the chat regarding the traces for Kubernetes cluster in version 1.27. So for anyone, I'm not sure if that was the one that you were speaking of. I was just trying to find a reference.
+**Iris:** That's interesting! Awesome! I think we need more companies like yours where people are like, "Yeah, if it's open Telemetry." 
 
-**Edis:** Yeah, yeah, I believe that is the one. I believe that is the one.
+**Edis:** Yeah, we have a very good observability culture! I'm actually really proud of that. I'm proud because I'm helping to continue building it, but the previous team where I worked helped with that too!
 
-Yeah, that's super cool! I do seem to remember that for enabling it, you have to go into deep, deep in the bowels of Kubernetes configuration to be able to enable that feature. So I think if you were using a cloud provider, do so at your own risk kind of thing. I think it was a lot easier to use if you're doing Kubernetes locally on your machine. But anyway, still a cool feature nonetheless.
+**Iris:** That's awesome. I think that's where we really see success in open Telemetry—having a group of people who are amazingly enthusiastic about it and just believe in it and want to make sure that it happens. 
 
-But I definitely think it's something that is worth exploring as it matures. Just going back to our discussion, I had a question also with regards to have you encountered any folks who were resistant to this whole OpenTelemetry thing? Like on development teams or even within your own team? What was the vibe around that? And if so, what did you do to help alleviate their stress?
+Do you have any parting thoughts?
 
-**Edis:** To be honest, not really. It's curious, actually. I haven't really met anyone that opposes it. Yeah, I've met plenty of people that simply do not care for it. Like they're like, okay, we have it, it's okay, we do not have it. 
+**Edis:** I was going to say something as well. We're not fully there, but we're passing a crazy amount of data after those collectors, and they're tough! Trust me, they're tough! It's worth it. It might be difficult to convince your peers to start implementing it, but it's worth it. They are durable collectors; you can pass thousands and millions of data per second per minute. If you do a good job with auto-scaling, you're going to manage how much memory and CPU they are using while doing that kind of load. 
 
-In this situation, it's mostly, for example, someone asks for something related to observability and traces, and I'm like, hey, look at this cool thing that we did with OpenTelemetry. Now it is available for you, and they're like, okay. I just keep sending things that I consider that are so cool and it's good for them to use, and that's pretty much it. I know that they're going to use it because it's a but never had someone that was against it or like, no, we don't need it.
+**Iris:** Thank you! 
 
-It's interesting!
+**Sebastian:** One question from your earlier conversation about using open Telemetry metrics and open Telemetry tracing: are you guys using correlation in any way in terms of the metric data, trace data, or log data at all? Or is that still something you are exploring?
 
-**Iris:** Awesome! I think we need more companies like yours where people are like, yeah, if it's a lemon tree. 
+**Edis:** Something that we're still exploring. Our first traces-metrics correlation that we're doing, we're investigating through open Telemetry, but it was easier for us to implement it through Tempo. They have a metrics generator, and that's what we were doing—generating some metrics from traces. But we're planning to move that to open Telemetry because it's best. It was just easier for us that way.
 
-**Edis:** Yeah, we have a very good observability culture. I'm actually really, really proud of that. I mean, I'm proud because I'm helping continue and build it, but the previous team where that worked for that could also...
+**Sebastian:** Thank you! 
 
-**Iris:** That's awesome! Yeah, and I think like that's where we really see success in OpenTelemetry is always having like a group of people who are like amazingly enthusiastic about it and are just like out there and believe in it and want to make sure that it happens.
+**Iris:** Do you have any other questions or comments for Edis?
 
-So, you know, and I know like Shubanchu, who's also on the call, like he's done a lot of evangelism around OpenTelemetry in his organization, which is super awesome. So, you know, hats off to y'all who do that in your organizations because I think it's gonna keep helping make OpenTelemetry awesome.
+**Audience Member:** Well, if you like what you heard today, Edis will be back for our open Telemetry in practice session on June the 8th, and it's gonna be, I believe, at the same time. So keep an eye out for an invite then. 
 
-Now, is your organization at the point now where you've started to like make contributions to OpenTelemetry, or is that still something where you're like not there yet?
+**Iris:** Why don't you tell folks what you'll be presenting about?
 
-**Edis:** Yes, actually we made the contribution recently to the operator because of the certification. I think the certification was relying on search manager and not with custom certificates, and that didn't work for us. So there was a feature request and then a request to fix that, and that's why we are working so heavily now with operators so we can use our own certificates basically until search manager is available for us as well.
+**Edis:** My topic will be observability as a team sport. It's something that I'm extremely passionate about, and I see that in many companies, observability teams are the ones that are making the guidelines, instrumenting the code, creating the alerts, and responding to them. I am completely against that. I think that observability—everyone should do their part. Engineers know their code and their product better. Us as observability engineers are there to help them and empower them and provide the tools, but they should be the ones taking charge of this part. That's what I'm going to be talking about.
 
-That is so cool! How did it feel like making the contribution?
+**Iris:** Awesome! I cannot wait to hear this talk! That'll be on June 8th at one o'clock Eastern, which is ten o'clock Pacific and plus six in Central European Time. I think it's going to be awesome, so I hope you all can join and tell your friends. We would love to have more people here to hear what Edis has to say because I think it's awesome. 
 
-**Edis:** It was great! Well, actually, it was a joint effort. Our architect was the main figure, let's say, after this. But yeah, it feels great, and the community is super welcoming, and like it was approved so fast because when he submitted the feature request, we were thinking that it was going to take like months or like, okay, yeah, we will have to wait. And then a week later he's like, hey, guess what? It's more! Let's go forward and test it. It's amazing!
+I think you're a great champion of open Telemetry, so keep on keeping on! This was great! Thanks so much for joining us here today. If you have a friend who or if you yourself are interested in participating in one of these Q&As or even open Telemetry in practice, please reach out to either Therese or Rin or me on the open Telemetry end users Slack. We are more than happy to hear your stories and help folks share them with the world. We will be providing a blog post summary of today's Q&A for all to see. 
 
-That is so cool! I'm always like a huge fan of that, you know, like don't wait around for the feature request, just do it yourself. So it's really cool that you and your team were able to achieve that. I think that's like, you know, I think it's a great accomplishment because like putting yourself out there for open source is like you have to be vulnerable, and you have to be okay with people saying, like, well, that's not really correct. 
+Thank you so much, everyone!
 
-It's scary, right? So yay, congrats! That's super amazing! I hope the team continues to make OpenTelemetry contributions. One thing I wanted to pivot to is, you know, like I am so happy that you have awesome things to say about OpenTelemetry. Is there anything that you think you and your team have encountered where OpenTelemetry could improve? Because that's, you know, that feedback is also super important so that we can continue to improve as a whole.
-
-**Edis:** Well, to be honest, I've had a super positive experience with it. Working with it at every step of the way has been super easy, and there's been a lot of support from the community. The only thing that I would say maybe is that it is a bit lacking in documentation in some parts. For example, when I was implementing the Prometheus receiver first, it was very confusing to use. I was using the console, the console SD config, and it was a mess. I couldn't find information anywhere on how to implement it or some good documentation. 
-
-Of course, I'm planning to contribute to that, but that's all that I would have to say. It takes a bit longer to figure it out, or you have to dig very, very deep to find some documentation for certain features, exporters, or receivers. But other than that, it's been an amazing experience.
-
-Cool, cool! Awesome! Yeah, I have to agree with you; sometimes it is a bit of an archaeological dig. So anything that can be done to help bring that up to the surface is most welcome. We definitely look forward to a contribution to the docs. 
-
-Also, for anyone on here who's played around with OpenTelemetry, you can always submit a pull request to the OpenTelemetry.io repo if you want to write a blog post about anything OpenTelemetry-related. Because I know the comms folks are always looking for contributions. 
-
-And so also if you're looking for a first contribution on OpenTelemetry, that is a great place to start. 
-
-Now, you know, let's turn the tables around to our lovely audience here today. Does anybody have any questions for Edis?
-
-**Audience Member:** No burning questions? We all good?
-
-**Iris:** I haven't even wanted to say thank you for doing this. I appreciate it.
-
-**Audience Member:** Yeah, I will second that to both of you. I think you covered a lot, Adriana and Edis. You gave pretty good insight into her company. It's amazing to see how little objections there are to change, not just observability, but change in general. So it's nice to see. Almost wish like, can I have some of it? 
-
-I've been grinding for the last year basically talking observability and OpenTelemetry non-stop, and I finally made some inroads, I think. But yeah, it's nice to see that there are easier companies or easier paths. Not everybody has struggles the same. It's good to know.
-
-**Edis:** Yeah, that's so true! I think my experience in the past has also been like it's the uphill battle to OpenTelemetry. So it is so refreshing to hear like such a lovely positive story that there is light at the end of the tunnel. There are people who get it.
-
-**Audience Member:** There isn't it, but now it's becoming—I think it is the second most contributed project and one of the most well-known. So more people are getting a smell of it, so it's getting more and more accepted, I'd say, than it was one year ago.
-
-**Edis:** Yeah, so true! Like when I started dabbling around in OpenTelemetry, the traces specification wasn't even finalized. I was pushing the organization I was at the time to be like OpenTelemetry is going to be the big thing, y'all! And they're like, uh-huh. So it was an uphill battle. I feel like now at least like a lot of the specs are finalized, so it makes for a very compelling narrative, and you get more and more user stories of people actually using this in production, even if it's like, you know, kind of like where Farfetch is at—where you're not fully productionalized, but you've got some stuff running in production. 
-
-And I think that's a compelling story to tell as well, right? Which is like get it out there, start using it! 
-
-I think that's a really great message to share with folks. Do you have any parting thoughts?
-
-**Edis:** I was gonna say something as well. We're, yeah, it's not fully there, but we're passing a crazy amount of data after those collectors, and they're tough. Trust me, they're tough. It's worth it. It might be difficult to convince your peers to start implementing it, but it's worth it. They are durable collectors! You can pass thousands and millions of data per second, per minute. 
-
-Yeah, if you do a good job with auto-scaling, Eden's gonna manage how much memory and CPU are they using while doing that kind of load. Do you know offhand?
-
-**Edis:** When we were tracing around 30,000 spans per second, I think we were like at around eight gigabytes of memory, and I don't know how many instances of the collector we were running, but maybe like four. But around eight gigabytes.
-
-Cool, thank you!
-
-**Iris:** Any other questions or comments for Edis?
-
-Well, if you like what you heard today, you just will be back for our OpenTelemetry in practice session on June the 8th, and it's gonna be, I believe, at the same time. So keep an eye out for an invite then. 
-
-Edis, why don't you tell folks what you'll be presenting about?
-
-**Edis:** Well, my topic will be observability as a team sport. It's something that I'm extremely passionate about, and I see that in many companies, observability teams are the ones that are making the guidelines, instrumenting the code, creating the alerts, and responding to them. I am completely against that. I think that observability, everyone should do their part. Engineers know their code and their product better. We, as observability engineers, are there to help them and empower them and provide the tools, but they should be the ones taking charge when it comes to this part. So that's what I'm going to be talking about.
-
-**Iris:** Awesome! I cannot wait to hear this talk! So that'll be on June 8th at one o'clock Eastern, which is 10 o'clock Pacific and plus six in Central European Time. I think it's going to be awesome, so I hope you all can join and tell your friends. We would love to have more people here to hear what Edis has to say because I think it's awesome. 
-
-I think you're a great champion of OpenTelemetry, so keep on keeping on! This was great! Thanks so much for joining us here today. 
-
-And, you know, if you have a friend who—or if you yourself are interested in participating in one of these Q&As or even OpenTelemetry in practice, please reach out to either Therese or Rin or me on the OpenTelemetry end-users Slack. We are more than happy to hear your stories and help folks share them with the world. 
-
-We will be providing a blog post summary of today's Q&A for all to see. Thank you so much, everyone!
-
-**Edis:** Thank you so much, Adriana!
-
-**Iris:** Thank you, everyone!
+**Edis:** Thank you so much, Adriana! Thank you, everyone!
 
 ## Raw YouTube Transcript
 

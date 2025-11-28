@@ -10,208 +10,210 @@ URL: https://www.youtube.com/watch?v=ztrknOWIUh8
 
 ## Summary
 
-In this YouTube Q&A session, Jennifer Moore shares her experiences with observability practices at her previous employer, Screencastify, where she served as the DevOps lead. The discussion delves into the company's application stack, consisting of TypeScript and Google Cloud services, and highlights the initial lack of effective observability tools. Jennifer explains her motivation to enhance the system's observability, which involved transitioning to OpenTelemetry for better tracing and diagnostics. She discusses the challenges faced, such as previous attempts at instrumentation and the complexities of integrating various observability tools. Despite initial neutrality from management regarding observability, the value became clear during critical incidents, leading to greater acceptance of the new practices. The conversation emphasizes the importance of observability in troubleshooting and operational efficiency, while also exploring the ongoing evolution of OpenTelemetry and its integration challenges. Jennifer's insights provide encouragement for teams looking to improve their observability strategies in a practical and impactful manner.
+In this YouTube Q&A session, Jennifer Moore, a former DevOps lead at Screencastify, shares her experiences related to implementing observability using OpenTelemetry at the company. The discussion, led by the host, revolves around the company's transition from a screen recording application to a more complex video hosting and editing service, highlighting the technology stack involved, including TypeScript and Google Cloud. Jennifer discusses the initial lack of effective observability practices, her motivation to improve understanding of system behavior, and the challenges she faced, including the need to replace a proprietary SDK with OpenTelemetry. She emphasizes the importance of involving her team in the process to build collective knowledge and shares insights on management's gradual recognition of the value of observability during incidents. The conversation addresses the broader implications of observability, the learning curve associated with OpenTelemetry, and the need for a consistent interface for telemetry signals across different types. Jennifer's story serves as a compelling case for the importance of observability in software development.
 
 ## Chapters
 
-00:00:00 Welcome and intro
-00:00:20 Guest introduction: Jennifer Moore
-00:01:21 Background on Screencastify
-00:04:00 Role as DevOps lead
-00:05:00 Observability needs at the company
-00:06:30 Initial observability challenges
-00:08:00 Implementing OpenTelemetry
-00:10:00 Team involvement in observability
-00:11:01 Management's perspective on observability
-00:14:00 Transition to OpenTelemetry collector
+00:00:00 Introductions
+00:01:26 Background on Screencastify
+00:05:01 Discussion on observability needs
+00:07:10 Motivation for improved observability
+00:09:19 Initial setup of OpenTelemetry
+00:12:11 Team involvement in observability
+00:13:30 Implementation of OpenTelemetry collector
+00:19:21 Challenges with proprietary SDK
+00:24:02 Management's recognition of observability value
+00:36:23 Feedback on OpenTelemetry project
 
-**Host:** Welcome everyone to Otel Q&A. We are super excited to have Jennifer Moore with us today. Welcome, Jennifer. 
+## Transcript
 
-**Jennifer:** Hi, thanks.
+### [00:00:00] Introductions
 
-[00:00:20] **Host:** Okay, so I guess first things first. I asked Jennifer to come on because I had talked to her previously about some experiences that she had at a prior company around Otel, and I thought it was a really, really interesting and compelling story. So, I guess we'll start with, why don't you give us some background? I know this is not at your current employer; it's at a previous employer. Why don't you give us some background of, you know, for starters, like what their application stack was like, and then go from there.
+**Host:** Welcome everyone to the Otel Q&A. We are super excited to have Jennifer Moore with us today. Welcome, Jennifer.
 
-[00:01:21] **Jennifer:** Sure. This was a whole job ago, and all of this was happening like a year ago, so some of the details will have gotten fuzzy for me by this point, but that's cool. So the company is called Screencastify. They make a screen recording application. The kind of early days of a version two would have a video hosting and editing service, whereas before it had been just kind of a screen recorder, and it was saved to whatever storage you happened to have handy. And that was the whole thing. 
+**Jennifer:** Hi, thanks. 
 
-This stack was lots of TypeScript, and all running in GCP and containers. The main back end was a TypeScript, I think Next.js, I forget, some TypeScript backend server, running in Google Cloud Run, this sort of serverless containers product that they have. Everything is serverless, or many things are serverless, will be relevant. The back end handled all of the routine, you know, we're hosting a web service kind of stuff like account management and billing, etc., and also some on-demand video encoding. 
+**Host:** Okay, so I guess first things first. I asked Jennifer to come on because I had talked to her previously about some experiences that she had at a prior company around Otel, and I thought it was a really, really interesting and compelling story. So I guess we'll start with, why don't you give us some background? I know this is not at your current employer; it's at a previous employer. Why don't you give us some background of, you know, for starters, what their application stack was like, and then go from there?
 
-Then there was what we called the task system, I think, or job system, something like that, which ran in Kubernetes. It was a bunch of Kubernetes microservices that would respond to videos being uploaded and edited and things to do video transcoding and processing work on that stuff. That all was powered by a BullMQ message queue, job queue, whatever, and yeah, I don't know, otherwise ran fairly self-contained.
+### [00:01:26] Background on Screencastify
 
-**Host:** All right. And what was your role then at this company?
+**Jennifer:** Sure. This was a whole job ago, and all of this was happening like a year ago, so some of the details will have gotten fuzzy for me by this point, but that's cool. The company is called Screencastify. They make a screen recording application. The kind of early days of a version two would be a video hosting and editing service, whereas before, it had been just kind of a screen recorder and it was saved to whatever storage you happened to have handy. That was the whole thing. 
 
-[00:04:00] **Jennifer:** I joined as the kind of DevOps lead. A lot of what I did there was to kind of drive DevOps practices and then also do the chop wood, carry water parts of DevOps. So, a lot of working on the CI/CD pipelines, a lot of work on observability, internal tooling, and developer experience and things. You know, everything that wasn't primarily focused on building a feature in the application was probably something that came across my keyboard at some point.
+This stack was lots of TypeScript, all running in GCP and containers. The main backend was a TypeScript, I think Next.js, I forget some TypeScript, backend server running in Google Cloud Run, this sort of serverless containers product that they have. Everything being serverless will be relevant. The backend handled all of the routine, you know, hosting a web service kind of stuff like account management and billing, etc. There was also what we called the task system or job system, something like that, which ran in Kubernetes. It was a bunch of Kubernetes microservices that would respond to videos being uploaded and edited to do video transcoding and processing work. That all was powered by a BullMQ message queue. 
 
-[00:05:00] **Host:** Cool. That's a lot of hats to wear then. Awesome. Okay, so now you mentioned observability, and we are here. So tell us to what extent, like when did you realize or actually let's take a step back. Did the company see a need, a big enough need for observability? Like had they seen that already when you had joined?
+Yeah, and I don't know, otherwise, it ran fairly self-contained.
 
-**Jennifer:** Yes, somewhat. I think they had encountered the concept and they had made a start at trying to do some observability things. There were definitely some people who recognized that it was a good idea, and like nobody was fighting them about it. But I think they didn't really know what they should expect out of it. They had kind of done some scattered starts at it and instrumented some things, but like you know some things in isolation and it wasn't in a very useful way. 
+**Host:** All right, and what was your role then at this company?
 
-When I got there, they had tracing, but it was very disconnected and not really the things that people were interested in. A lot of anything that anybody actually needed to get out of it before I took that on came from logs.
+**Jennifer:** I joined as the kind of DevOps lead. A lot of what I did there was to drive DevOps practices and then also do the chop wood, carry water parts of DevOps. A lot of working on the CI/CD pipelines, a lot of work on observability, internal tooling, and developer experience. Everything that wasn't primarily focused on building a feature in the application was probably something that came across my keyboard at some point.
 
-[00:06:30] **Host:** Okay. So then you entered into the picture. What was at that point when you started implementing or making the systems more observable? What was sort of your motivation for that?
+### [00:05:01] Discussion on observability needs
 
-**Jennifer:** So my motivation throughout for making this system more observable was that I wanted to better understand what it was doing. One of the hats I was wearing was Sr. and I needed to support these things, and that's basically impossible to do if you don't know what it is or what it's doing, and certainly not how it's behaving. 
+**Host:** Cool. That's a lot of hats to wear then. Awesome. Okay, so now you mentioned observability, and we are here. Tell us to what extent, like when did you realize, or actually let's take a step back. Did the company see a big enough need for observability? Had they seen that already when you had joined?
 
-After a little while, I grew very uncomfortable not having that understanding of the system and decided to just start removing the false start instrumentations that were already there and start instrumenting things more consistently.
+### [00:12:11] Team involvement in observability
+
+**Jennifer:** Yes, somewhat. I think that they had encountered the concept, and they had made a start at trying to do some observability things. There were definitely some people who recognized that it was a good idea, and nobody was fighting them about it. But I think they didn't really know what they should expect out of it. They had done some scattered starts at it and instrumented some things, but like, you know, some things in isolation and it wasn't in a very useful way. When I got there, they had tracing, but very disconnected and not really the things that people were interested in. A lot of anything that anybody actually needed to get out of it before I took that on came from logs.
+
+**Host:** Okay, so then you entered into the picture. What was the point when you started implementing or making the systems more observable? What was sort of your motivation for that?
+
+### [00:07:10] Motivation for improved observability
+
+**Jennifer:** My motivation throughout for making this system more observable was that I wanted to better understand what it was doing. One of the hats I was wearing was senior, and I needed to support these things. That's basically impossible to do if you don't know what it is or what it's doing, and certainly not how it's behaving. After a little while, I grew very uncomfortable not having that understanding of the system and decided to just start removing the false start instrumentations that were already there and start instrumenting things more consistently.
 
 **Host:** So you actually went into the application code and started instrumenting things?
 
-[00:08:00] **Jennifer:** Somewhat. So mostly what I did was remove the auto-instrument that were already there. There were, I don't know, DataDog's proprietary ones, and I'm sure they would work if they worked, but they didn't actually auto-instrument several of the libraries we were using, and so it wasn't helpful for us. I replaced those with OpenTelemetry auto-instrumentations, which did have auto-instrument for all of the things we wanted, and suddenly my flame graphs filled out and I could see what was going on from start to finish, more or less, and that was exactly what I'd been looking for—magic.
+**Jennifer:** Somewhat. Mostly what I did was remove the auto-instrument that were already there, from, like, I don't know, Datadog's proprietary ones. I'm sure they would work if they worked, but they didn't actually auto-instrument several of the libraries we were using, and so it wasn't helpful for us. I replaced those with OpenTelemetry auto-instrumentations, which did have auto-instrument for all of the things we wanted. Suddenly, my flame graphs filled out, and I could see what was going on from start to finish more or less, and that was exactly what I've been looking for—magic.
 
-**Host:** And how was your learning curve in terms of OpenTelemetry? Is it something that you were familiar with initially or is that something that you had to teach yourself?
+**Host:** And how was your learning curve in terms of OpenTelemetry? Is it something that you were familiar with initially, or is that something that you had to teach yourself?
 
-**Jennifer:** So, yeah, I mean I was familiar with it conceptually initially. Back when I was on Twitter, I spent a lot of time talking to observability and resilience folks on Twitter. The goals and the concepts and everything were all very familiar to me by that point, but then the actual mechanics of how do you turn on and start using OpenTelemetry was not something I'd done before.
+**Jennifer:** Yeah, I mean, I was familiar with it conceptually initially. Back when I was on Twitter, I spent a lot of time talking to observability and resilience folks on Twitter. The goals and the concepts were all very familiar to me by that point, but the actual mechanics of how do you turn on and start using OpenTelemetry was not something I had done before. 
+
+### [00:09:19] Initial setup of OpenTelemetry
 
 **Host:** Did that end up being like a single-handed effort on your part? Did you have anyone from your team assisting?
 
-**Jennifer:** Yeah, like I didn't really want to be the only person who knew what it was doing or how it was working. I did do the initial setup myself, but then I made a point to kind of stop there and distribute follow-up work from that to the rest of the DevOps team, at least, so that there would be other people who knew what was going on and knew what they were looking at whenever things needed attention.
+**Jennifer:** Yeah, I really did not want to be the only person who knew what it was doing or how it was working. I did do the initial setup myself, but then I made a point to kind of stop there and distribute follow-up work from that to the rest of the DevOps team, at least so that there would be other people who knew what was going on and knew what they were looking at whenever things needed attention.
 
 **Host:** And how was that received within your team?
 
-[00:10:00] **Jennifer:** I mean, I think that went really well. Distributed tracing has some inherent complexity to that domain, and so there’s some sort of learning and ramp-up to get comfortable with the concepts there. Everybody had to go through that, but I think after having gone through that, everybody was very pleased to have done it and very happy to have it.
+**Jennifer:** I mean, I think that went really well. Distributed tracing has some inherent complexity to that domain, so there's some sort of learning and ramp-up to get comfortable with the concepts there. Everybody had to go through that, but I think after having gone through that, everybody was very pleased to have done it and very happy to have it.
 
-**Host:** That's really great. So did you say then that you were starting to see favorable results? You mentioned that you yourself started seeing some favorable results, like seeing the things on the flame graphs. How would you say the rest of your team took it, and even a step further, how did management take that? Did they see that as a benefit?
+**Host:** That's really great. In terms of, would you say then that you were starting to see favorable results? You mentioned that you started seeing some favorable results like seeing the things on the flame graphs. How would you say the rest of your team took it, and even a step further, how did management take that? Did they see that as a benefit?
 
-**Jennifer:** I think, you know, at first management was kind of neutral, like neutral to positive about it. They recognized it was a good thing to do, but I don't think they really saw how much value it had at first. 
+**Jennifer:** I think at first management was kind of neutral, like neutral to positive about it. They recognized that it was a good thing to do, but I don't think they really saw how much value it had at first. But then we get to some stories with some incidents in them, and I think the value of it becomes a lot more obvious to them at that point.
 
-But then we get to some stories with some incidents in them, and I think the value of it becomes a lot more obvious to them at that point.
+**Host:** Just circling back a little bit, you mentioned you did a lot of stuff around the auto-instrumentation side of things. Do you think this incentivized the developers of the actual application to go and do some additional work and add some manual tracing, for example?
 
-**Host:** Awesome. Circling back a little bit, you did a lot of stuff around the auto-instrumentation side of things. Do you think this incentivized the developer of the actual application to go and do some additional work and add some manual tracing, for example?
+**Jennifer:** Yes. There were definitely some engineers who were very on board with the idea of having tracing and wanted to go all in on that. Then there were others who were pretty neutral about it. No one was fighting against it. A lot of it was, you know, sure, that seems fine; you can do that, and a handful of boosters. 
 
-**Jennifer:** Yes. There were definitely some engineers who were very on board with the idea of having tracing and wanted to go all in on that. Then there were others who were pretty neutral about it. No one was fighting against it. A lot of it was, you know, like sure, that seems fine, you can do that. 
-
-A handful of boosters. But were they okay with going in and instrumenting themselves as well to kind of enhance what the auto-instrumentation was giving?
+**Host:** Were they okay with going in and instrumenting themselves as well to enhance what the auto-instrumentation was giving?
 
 **Jennifer:** Yes, I think so. It's a little bit hard to say because honestly, some things blew up organizationally, and so I didn't have as much opportunity for that to actually happen as I would have liked. But people were very eager to have done it.
 
-**Host:** Right. At least they got to reap the rewards of what you had set up, right?
+**Host:** Right, so at least they got to reap the rewards of what you had set up.
 
-**Jennifer:** Yeah, which is always good. Now in terms of your setup, did you end up implementing an Otel collector?
+**Jennifer:** Yes, which is always good. 
 
-[00:14:00] **Jennifer:** They did, yes. That was something that I had wanted to do. The company was sort of already on DataDog and kind of invested in the DataDog tooling ecosystem. Moving away from that proprietary stack and towards the OpenTelemetry libraries and collector was a process. But it's one that I tried to start, and it continued after I left. My understanding is that everything is OpenTelemetry there now, and I think they've even moved away from DataDog to another vendor.
+### [00:13:30] Implementation of OpenTelemetry collector
 
-**Host:** Oh wow, that's really cool to be able to move to a fully vendor-neutral sort of setup. It's super awesome, and I think especially like you had set the wheels in motion around that, and that it continued even after you left.
+**Host:** Now in terms of your setup, did you end up implementing an Otel collector?
 
-**Jennifer:** Yes. Now how's that continued? The knowledge that you gained at your previous workplace, is it something that you've been able to apply where you're at right now?
+**Jennifer:** They did. That was something that I had wanted to do, but the company was sort of already on Datadog and kind of invested in the Datadog tooling ecosystem. Moving away from that proprietary stack and towards the OpenTelemetry libraries and collector was a process, but it's one that I tried to start and it continued after I left. My understanding is that everything is OpenTelemetry there now, and I think they've even moved away from Datadog to another vendor.
 
-**Jennifer:** Yes and no. Right now, I am at Influx Data. At Influx, all of the engineering attention has been directed towards getting the 3.0 version of the database into 3.0, which is a thing that we have done now, and that's going pretty well. That frees up some people to think about other things again. Where that intersects with observability and OpenTelemetry has been more about getting the database itself to be better suited to work as a backend for collecting spans and telemetry data rather than instrumenting our own things for traces. 
+**Host:** Oh wow, that's really cool to be able to move to a fully vendor-neutral sort of setup. I think especially you had set the wheels in motion around that, and that it continued even after you left. Now how's that continued? The knowledge that you gained at your previous workplace, is it something that you've been able to apply where you're at right now?
 
-We do have a lot of things that are very well instrumented and very detailed instrumentation, and a lot of that is very manual. That's done with more of a performance objective of understanding performance more than behavior or investigating errors or things like that. 
+**Jennifer:** Yes and no. Right now, I am at Influx Data. Our engineering attention has been directed towards getting the 3.0 version of the database out, which we have done now and that's going pretty well. That frees up some people to think about other things again. Where that intersects with observability and OpenTelemetry has been more about getting the database itself to be better suited to work as a backend for collecting spans and telemetry data rather than instrumenting our own things for traces. 
 
-Which is to say there's very deep small spans as opposed to wide spans, which I think are a little bit easier to work with if you're trying to ask something weird is going on and you have no idea what.
+We do have a lot of things that are very well instrumented, and very detailed instrumentation, and a lot of that is very manual. That's done with more of a performance objective of understanding performance rather than behavior or investigating errors or things like that. 
 
-**Host:** Yeah, so you have a slightly different goal compared to the last place but still using OpenTelemetry to achieve that goal.
+**Host:** So you have a slightly different goal compared to your previous place but still using OpenTelemetry to achieve that goal?
 
-**Jennifer:** Yeah, cool.
+**Jennifer:** Yeah.
 
-**Host:** What would you say were the most challenging aspects, given all your experience around OpenTelemetry? What were the most challenging aspects in terms of implementing OpenTelemetry in your previous organization?
+**Host:** What would you say were the most challenging aspects in terms of implementing OpenTelemetry, specifically in your previous organization?
 
-**Jennifer:** Yeah, so like I think the most challenging was that there had already been a start with a vendor proprietary SDK. That confused a lot of things. I had tried to leave that in place while I instrumented with OpenTelemetry, but then these two libraries just started reporting on each other, and it made the whole traces more confusing than they had been without it. 
+**Jennifer:** I think the most challenging was that there had already been a start with a vendor proprietary SDK. That confused a lot of things. I had tried to leave that in place while I instrumented with OpenTelemetry, but these two libraries just started reporting on each other, and it made the whole traces more confusing than they had been without it. Removing that proprietary SDK and just having one mechanism for instrumentation was something that I wish I had done right away in retrospect. 
 
-Removing that proprietary SDK and just having the one mechanism for instrumentation in any given process was something that I wish I had done right away in retrospect. I think the other thing was in areas where there did not already exist auto-instrumentations. Like IBQ earlier, which didn't have one until I wrote it because I really needed it. 
-
-I can say that's a challenge but also a benefit because nobody else had one either, and with OpenTelemetry, it was a viable thing that I could go and write my own auto-instrumentation package and be able to get that for myself with libraries that otherwise just didn't have it.
+I think the other challenge was in areas where there did not already exist auto-instrumentations. For example, BigQuery didn't have one until I wrote it because I really needed it. I can say that's a challenge but also a benefit because nobody else had one either. With OpenTelemetry, it was a viable thing that I could go and write my own auto-instrumentation package and be able to get that for myself with libraries that otherwise just didn't have it.
 
 **Host:** How was that experience of writing the auto-instrumentation yourself? Was it a huge learning curve?
 
-**Jennifer:** Yeah, that was a pretty substantial learning curve. It was a good thing that I started early because then we got into some incidents and I really needed it, and I was able to get it functional in a relatively short time span from there so that I could start using it and actually see what was going on.
+### [00:19:21] Challenges with proprietary SDK
 
-**Host:** That's so cool. You mentioned that your fellow DevOps engineers were leveled up in the ways of Otel. Is that something that you helped them out with? How is it that they gained the skills and leveled up so that they could also have that knowledge of OpenTelemetry that you had?
+**Jennifer:** Yeah, that was a pretty substantial learning curve. It was a good thing that I started early because then we got into some incidents, and I really needed it. I was able to get it functional in a relatively short time span from there so that I could start using it and actually see what was going on.
 
-**Jennifer:** I think the majority of that was just hands-on doing it. Again, after I had set up basically one auto-instrumentation and gotten that configured, I stopped there and made a point to have other people take that further. I wanted them to have that experience. 
+**Host:** You mentioned that your fellow DevOps engineers were leveled up in the ways of OpenTelemetry. Is that something that you helped them out with? How is it that they gained the skills and leveled up so they could also have that knowledge of OpenTelemetry that you had?
 
-More broadly, we did also have a very strong learning culture, which was one of my favorite things about that company. We had a sort of technical book club, and we read the Observability Driven Development book for that book club. I think that was also very useful in terms of getting a lot of people familiar with the concepts and clarifying expectations about what this gets you from an office perspective and from an engineering perspective.
+**Jennifer:** I think the majority of that was just hands-on doing it. After I had set up basically one auto-instrumentation and gotten that configured, I stopped there and made a point to have other people take that further because I wanted them to have that experience. More broadly, we did also have a very strong learning culture, which was one of my favorite things about that company. We had a sort of technical book club, and we read the Observability Driven Development book for that book club. I think that was also very useful in terms of getting a lot of people familiar with the concepts and clarifying expectations about what this gets you from an office perspective and from an engineering perspective.
 
-**Host:** And hopefully got them stoked too about it, right?
+**Host:** And hopefully got them stoked about it too, right?
 
 **Jennifer:** Yeah, I mean, the people who were inclined to be interested definitely came away from that more interested.
 
-**Host:** It's really cool that this is a very operational-driven Otel undertaking. I guess it kind of makes sense because when things break, it's always going to be more on the operational side of things, and it's not necessarily the developers who are going to be the ones who are going to say why is this breaking, right? Because by then, it's like, I hate to say it, but less their concern, even though it is very much their concern. But unfortunately, I think our culture is still kind of shifting towards the not-my-problem because it's in production.
+**Host:** It's really cool that this is a very operationally driven Otel undertaking. I guess it kind of makes sense because when things break, it's always going to be more on the operational side of things, and it's not necessarily the developers that are going to be the ones who are going to be, "Oh, why is this breaking?" Because by then, it's, I hate to say it, but less their concern, even though it is very much their concern. Unfortunately, I think our culture is still kind of shifting towards the "not my problem" because it's in production.
 
-**Jennifer:** It is a little bit farther away from them, and I have some sympathy for that. I spent a lot of time doing app dev, but also only some sympathy because the whole time I was doing app dev, I was very frustrated by my inability to have any contact with production. That was also one of the things that I was trying to drive there, like beyond observability and OpenTelemetry, was to actually fulfill some of the promise of DevOps and have that not be such a bright line between the two.
+**Jennifer:** It is a little bit farther away from them. I have some sympathy for that. I spent a lot of time doing app dev. But also only some sympathy because the whole time I was doing app dev, I was very frustrated by my inability to have any contact with production. That was also one of the things that I was trying to drive there, beyond observability and OpenTelemetry, was to actually fulfill some of the promise of DevOps and have that not be such a bright line between the two.
 
 **Host:** Do you think you got closer to achieving that goal?
 
-**Jennifer:** I think so, yeah. One of the ways I did that was to really emphasize how the tools are used. Whenever it came up, like in doing incident retros, I made a point to ask people what they looked at that made them think that was the concern, and how did you execute those queries? Let's actually open up the tool and go through the UI and see how that's performed.
+**Jennifer:** I think so. One of the ways I did that was to really emphasize how the tools are used whenever it came up. In doing incident retros, I made a point to ask people, "What did you look at that made you think that was the concern?" and "How did you execute those queries? Let's actually open up the tool and go through the UI and see how that's performed."
 
-[00:11:01] **Host:** I want to go back to our chat earlier about management's perspective on using observability. I believe you mentioned that it was kind of neutral until they realized this is useful. One of the things that I always find can be challenging in an organization is bringing something new to management, and you almost need that permission from them before executing. Is that something where you asked for permission, or did you end up asking for forgiveness at that stage?
+### [00:24:02] Management's recognition of observability value
 
-**Jennifer:** Yeah, like neither, honestly. The way this worked out, they had already, before I joined, whatever conversations they had about getting better observability, and somebody signed off on doing something. They started some instrumentation, so that was clearly a thing that was okay. 
+**Host:** I want to go back to our chat earlier about management's perspective on using observability. I believe you mentioned that it was kind of neutral until they realized this is useful. One of the things that I always find can be challenging in an organization is bringing something new to management and needing that permission from them. Is that something where you asked for permission, or did you end up asking for forgiveness at that stage?
 
-I didn't need to pitch them on having it, and as a matter of fixing it, that was more of a question for my fellow engineers. Somebody put this in, and somebody probably understands it, and I need to, but it's not satisfying the goals that we had for it. I need to do something about that, but management wasn't going to say no to that.
+**Jennifer:** Neither, honestly. The way this worked out, they had already had whatever conversations about getting better observability, and somebody signed off on doing something. They started some instrumentation, so that was clearly a thing that was okay. I didn't need to pitch them on having it. As a matter of fixing it, that was more of a question for my fellow engineers. Somebody put this in, and somebody probably understands it, and I need to, but it's not satisfying the goals that we had for it. I needed to do something about that, but management wasn't going to say no to that.
 
-**Host:** Right, because you already had some sort of an observability culture. In terms of investing further in it, we launched a big part of this launch, and a big part of the reason for going to the 2.0 version of the product was to enable some account and billing features that just weren't possible with the way those data schemas existed. 
+**Host:** Right, because you already had some sort of an observability culture. 
 
-They existed in Firebase, and they were moving to Postgres to have real schemas. That had some predictable problems, and the migration kind of stalled out, and that was real bad. Things just stopped working for hours at a time because the migration was kind of killing the Postgres server without ever completing, but we didn't know that. 
+**Jennifer:** Yes, and in terms of investing further in it, we ran into an incident. A big part of this launch was to enable account and billing features that just weren't possible with the way those data schemas existed. They existed in Firebase, and they were moving to Postgres to have real schemas. That had some predictable problems, and the migration kind of stalled out. Things just stopped working for hours at a time because the migration was kind of killing the Postgres server without ever completing. After some initial investigation, instrumenting all the things to figure out what was even going on was the next thing. It wasn't something that I needed permission to do at that point because production was down for hours at a time repeatedly, so it needed to be fixed. 
 
-After some initial investigation, instrumenting all the things to figure out what is even going on was the next thing, and it wasn't something that I needed permission to do at that point because production is down, and it's going down for hours at a time repeatedly, so it needs to be fixed. 
+**Host:** When the building's on fire, you don't need permission to install sprinklers anymore.
 
-When the building's on fire, you don't need permission to install sprinklers anymore.
+**Jennifer:** Yes, absolutely.
 
-**Host:** Absolutely. I guess at that point, even though you were using a different tool set for observability and you made the decision to use OpenTelemetry instead, that became less about putting in the tool that works for us.
+**Host:** So I guess at that point, even though you were using a different tool set for observability, you made the decision to use OpenTelemetry instead because things were not working.
 
-**Jennifer:** Yes, and we had already started that by the time we got to that incident, and so that was very fortunate because we were getting a better experience with OpenTelemetry. There were some parts of the system that we could fairly well understand what they were doing, but the rest of it had not been instrumented, and that had to be done quickly.
+**Jennifer:** Yes, and we had already started that by the time we got to that incident. That was very fortunate because we were getting a better experience with OpenTelemetry. There were some parts of the system that we could fairly well understand on what they were doing, but the rest of it had not been instrumented, and that had to be done quickly.
 
-**Host:** That's your incentive when things are burning—OpenTelemetry to the rescue. Before I turn it over to the rest of the folks on this call, do you have any feedback for the OpenTelemetry project as a whole, good or bad, in terms of your experience? 
+**Host:** That's your incentive—when things are burning, OpenTelemetry to the rescue. 
 
-**Jennifer:** Yeah, I'm not sure that I don't know. I think that, and this was a year and a half ago that I was doing it, the early getting set up onboarding learning curve is pretty steep. I don't know exactly how to improve that, and I'm sure I'm not the first person to have said this either. 
+**Jennifer:** Exactly.
 
-If that can be improved, that would be great. Also, I think that metrics and logging got to stable since I was doing this, and it would have been really nice to have had that at the time, I think, because it would be very convenient to have a consistent sort of interface and SDK for all of those telemetry signals. 
+**Host:** Before I turn it over to the rest of the folks on this call, do you have any feedback for the OpenTelemetry project as a whole, good or bad, in terms of your experience? One of the things we do as a group here is collect feedback from users to help make the OpenTelemetry experience better.
 
-Then being able to send them to a collector and then have the collector send them to wherever they're going and not making those things application concerns would be great. I haven't had the chance to actually do that to see if it works or not.
+**Jennifer:** I'm not sure. I think that the early getting set up, onboarding, learning curve is pretty steep. I don't know exactly how to improve that, and I'm sure I'm not the first person to have said this either. If that can be improved, that would be great. Also, I think that metrics and logging got to stable since I was doing this, and it would have been really nice to have had that at the time because it would be very convenient to have a consistent interface and SDK for all of those telemetry signals. Being able to send them to a collector and then have the collector send them to wherever they're going, and not making those things application concerns would be great.
 
-**Host:** Cool, thank you. Does anyone else on this call have any questions for Jennifer?
+**Host:** Thank you. Does anyone else on this call have any questions for Jennifer?
 
-**Participant:** I was just curious on the last piece you just said about having a consistent interface in the SDK for the telemetry signals and not making them application concerns. I was just curious if you could elaborate a little bit more on that piece.
+**Participant:** I was just curious about the last piece you just said about having a consistent interface in the SDK for the telemetry signals and not making them application concerns. Could you elaborate a little bit more on that piece?
 
-**Jennifer:** Yeah, so you have OpenTelemetry for your traces, and then you have some sort of logging solution for your logs, and hopefully you're doing structured logs. Again, some solution for metrics, assuming you're doing metrics—probably Prometheus or whatever. But to get those logs and those metrics to go somewhere, you wind up having to configure some vendor's logging library so that you can ship your logs to your logging backend, or you log everything to the terminal or to a file or whatever, and have some sort of infrastructure magic pick it up and send it somewhere.
+**Jennifer:** Sure. You have OpenTelemetry for your traces, and then you're going to have some sort of logging solution for your logs. Hopefully, you're doing structured logs and some solution for metrics, probably Prometheus or whatever. To get those logs and metrics to go somewhere, you wind up having to configure some vendor's logging library to ship your logs to your logging backend or log everything to the terminal or a file or whatever and have some sort of infrastructure magic pick it up and send it somewhere. With Prometheus, you have to create your scraping endpoint and let Prometheus scrape it, so you have to have Prometheus configured and able to reach you, etc. 
 
-With spans, you configure your exporter and you're done. Your exporter just sends them to the collector, and the collector address or whatever can come from config after you're instrumented. You don't have to maintain much there. At the time, I would have really liked to be able to send my logs and my metrics to the collector in the same way that I was doing with spans rather than having three solutions for three different kinds of telemetry.
+Whereas with spans, you configure your exporter, and you're done. Your exporter just sends them to the collector, and that can—like the collector address or whatever—can come from config after you're instrumented. You don't have to maintain much there. At the time, I would have really liked to be able to send my logs and metrics to the collector in the same way that I was doing with spans rather than having three solutions for three different kinds of telemetry.
 
-**Participant:** Gotcha. I would see we're getting closer to that, right? 
+**Participant:** I see. We're getting closer to that, right?
 
-**Participant:** I personally don't know. I'm asking.
+**Jennifer:** I think we're getting closer to it. 
 
-**Participant:** I think we're getting closer to it. I think metrics have definitely matured a lot in the last year, and I know a lot of observability backends are now ingesting metrics as well, so in addition to traces, which is nice. 
+**Host:** I personally don't know; I'm asking.
 
-Then I think we're starting to see that with logs as well. Logs, I know, are a different beast because there’s no logging SDK. There’s a logs bridge SDK, so the idea is to use one of the common logging libraries that is supported by OpenTelemetry, and there's a bridge SDK for it, and then it'll convert that format to OTP so it can be ingested by whatever backend. 
+**Jennifer:** I think we're getting closer to it. Metrics have definitely matured a lot in the last year, and I know a lot of observability backends are now ingesting metrics as well, which is nice. We're starting to see that with logs too. Logs are a different beast because there's no logging SDK; there's a logs bridge SDK. The idea is to use one of the common logging libraries that is supported by OpenTelemetry, and there's a bridge SDK for it that will convert that format to OpenTelemetry so it can be ingested by whatever backend, which is kind of nice. I guess they didn't want to reinvent the wheel with logs because there are so many different things out there.
 
-So, which is kind of nice. I guess they didn't want to reinvent the wheel with logs because there's so many different things out there.
+**Jennifer:** Yes, which I have full sympathy for that strategy. The momentum on the way people do logs is enormous; that's not changing.
 
-**Jennifer:** Yeah, the momentum on the way people do logs is enormous. It's not like that's not changing. But how they get collected and organized, you know...
+**Host:** I think the game changer is being able to correlate the logs to the traces so that you have that fuller picture, which I'm super excited about because a lot of us grew up on logs. Traces will help tell the full story, and when you have that correlation, then you can get magic.
 
-**Host:** Yeah, I think the game changer is being able to correlate the logs to the traces so that you have that fuller picture, which I'm super excited about because I understand a lot of us grew up on logs, but I think the traces will help tell the full story. So when you have that correlation, then you can get magic.
-
-**Jennifer:** I think logs correlated with traces is the best, most ideal outcome. I know that traces have events and can do point-in-time things, but logs are just better at that, and being able to see point-in-time events correlated to where they happened within a span and within a trace is exactly what I want.
+**Jennifer:** I think logs correlated with traces is the best most ideal outcome. I know that traces have events and can do point-in-time things, but logs are just better at that. Being able to see point-in-time events correlated to where they happened within a span and within a trace is exactly what I want.
 
 **Host:** Anyone else have any other comments or questions for Jennifer? Shall we break early then?
 
-**Host:** Cool. Awesome. Well, thank you, Jennifer, for sharing your story with us. I really love the story because I think it's the things that are broken that need observability. 
+### [00:36:23] Feedback on OpenTelemetry project
 
-I think it's such a compelling case for anybody who's on the fence on whether or not it's a worthwhile investment. It's awesome that your company already kind of had its foot in the door for that, and that you were able to take it further to where it actually needed to be so that it was useful to you and your team for troubleshooting. 
+**Host:** Cool. Awesome. Well, thank you, Jennifer, for sharing your story with us. I really love the story because I think it's the things that are broken that need observability. I think it's such a compelling case for anybody who's on the fence about whether or not it's a worthwhile investment. It's awesome that your company already kind of had its foot in the door for that, and that you were able to take it further to where it actually needed to be so that it was useful to you and your team for troubleshooting. I think it's a great story. I hope others will draw inspiration from that as well as a compelling reason as to why observability with OpenTelemetry is a good combination. 
 
-I think it's a great story. I hope others will draw inspiration from that as well as a compelling reason as to why observability with OpenTelemetry is a good combination. 
+Do we have, I think we've got some upcoming events?
 
-Do we have... I think we've got some upcoming events?
-
-**Host:** Yeah, on December the 7th, we have another Q&A with someone from HashiCorp who has attempted many times to instrument Nomad. I think that'll be a really interesting story as well. 
-
-So anyone who is following along, stay tuned for that Q&A. Hopefully, we'll get to see you live, but if not, we will see you on YouTube.
+**Host:** Yes, on December the 7th, we have another Q&A with someone from HashiCorp who has attempted many times to instrument Nomad. I think that'll be a really interesting story as well. Anyone who is following along, stay tuned for that Q&A. Hopefully, we'll get to see you live, but if not, we will see you on YouTube.
 
 **Jennifer:** Sounds good. It was great to meet you all.
 
-**Host:** Yeah, thanks so much, Jennifer, and we'll let you know once the video is posted.
+**Host:** Thanks so much, Jennifer, and we'll let you know once the video is posted.
 
 **Participant:** Yeah, I was going to say thank you, Jennifer, for your story. That's really, really inspiring because I feel like so many people want to adopt it, but then getting that buy-in from your leadership is always the problem. I mean, technically, it's not making their money until you show that this is causing problems, and then we really need to do this.
 
-**Jennifer:** Yeah, I don't know why it's such a fight so much of the time. Problems are going to happen, and what this gets you is being able to point at where the problem is happening. I don't know why people don't want to be able to do that.
+**Jennifer:** I don't know why it's such a fight so much of the time, because problems are going to happen. What this gets you is being able to point at where the problem is happening, and I don't know why people don't want to be able to do that.
 
-**Participant:** It's so logical. In my experience, it only works either in teams that are excited about progressive engineering practices or that are feeling so much pain from vendor lock-in that they're ready to set everything on fire.
+**Participant:** In my experience, it only works either in teams that are excited about progressive engineering practices or that are feeling so much pain from vendor lock-in that they're ready to set everything on fire.
 
-**Jennifer:** Yes, so true. Basically, it means you need a really nasty incident or really bad vendor lock-in as your compelling reason.
+**Jennifer:** Yes, so true. So basically means you need a really nasty incident or really bad vendor lock-in as your compelling reason.
 
-**Participant:** Well, if you get that incident, don't let it go to waste.
+**Host:** Well, if you get that incident, don't let it go to waste.
 
-**Host:** Yeah, totally. Right, quote of the day. Awesome. Well, thank you, everyone.
+**Jennifer:** Totally.
+
+**Host:** Right, quote of the day. Awesome. Well, thank you, everyone.
 
 ## Raw YouTube Transcript
 

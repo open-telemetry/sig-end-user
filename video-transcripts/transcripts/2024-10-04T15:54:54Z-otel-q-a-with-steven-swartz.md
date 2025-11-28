@@ -10,293 +10,274 @@ URL: https://www.youtube.com/watch?v=3c9Bnldt128
 
 ## Summary
 
-In this YouTube Q&A session, Steven Schwarz, a Form Engineering expert from a payment processing company, discusses his experiences with observability, particularly focusing on OpenTelemetry (OTel). He shares insights into his team's migration from a proprietary telemetry solution to OTel, highlighting the challenges and advantages of using OTel's architecture, including Kubernetes and the OpenTelemetry operator. Steven explains their use of sidecar collectors, auto-instrumentation, and the management of resources, as well as the importance of sampling strategies and the integration of metrics monitoring. The discussion touches on the learning curve for teams transitioning to OTel, the significance of proper documentation, and the need for community support in navigating complex setups. The session concludes with audience questions addressing various technical aspects of using OTel, showcasing the engagement and interest in observability practices.
+In this YouTube video, a Q&A session features Stephen Schwarz, a Form Engineer at a payment processing company, discussing his experiences with observability infrastructure and the use of OpenTelemetry. He elaborates on his team's migration from a proprietary observability vendor to OpenTelemetry, highlighting the benefits of cost control and improved support. Stephen shares insights into their architecture, which includes Kubernetes clusters and the OpenTelemetry operator for auto-instrumentation, and discusses challenges related to scaling, resource allocation, and tail sampling. The conversation also touches on the use of Prometheus for metrics, the importance of community contributions, and the educational aspect of manual versus auto-instrumentation within his organization. The session concludes with Stephen expressing interest in further community engagement and the ongoing need for better documentation and example configurations.
 
 ## Chapters
 
-00:00:00 Welcome and introduction
-00:01:00 Guest introduction: Stephen Schwarz
-00:02:40 Architecture and deployment overview
-00:03:50 OpenTelemetry operator usage
-00:06:01 Migration from proprietary solution
-00:08:10 Challenges in scaling collectors
-00:09:36 Load balancing collectors
-00:12:40 Experience with OpenTelemetry operator
-00:14:50 Building custom collector distribution
-00:17:00 Manual vs. auto instrumentation
-00:20:00 Audience Q&A session
+00:00:00 Introductions
+00:01:36 Stephen's background and role
+00:02:24 Discussion on architecture
+00:05:28 OpenTelemetry operator usage
+00:07:20 Migration from proprietary vendor
+00:10:24 Challenges in scaling collectors
+00:12:58 Tail sampling discussion
+00:20:00 Manual vs auto instrumentation
+00:32:00 Feedback for OpenTelemetry maintainers
+00:42:52 Q&A session with audience questions
 
-**Speaker 1:** Well, thank you everyone for joining. We have quite a good audience for the OTEL Q&A. We have Steven Schwarz today with us. 
+## Transcript
 
-Just a quick note on the format, which Dan actually posted in the chat. I'll be asking Steph some questions, and then afterwards, time permitting, you'll have the opportunity to post some questions for Steven as well in the link that Dan provided. 
+### [00:00:00] Introductions
 
-All right, so first things first, Steven, do you want to introduce yourself? 
+**Speaker 1:** Well, thank you everyone for joining. We have quite a good audience for the OTEL Q&A. We have Steven Schwarz today with us. Now, just a quick note on the format, which Dan actually posted in the chat. Awesome! So, I'll be asking Steph some questions, and then afterwards, time permitting, you'll have the opportunity to post some questions for Steven as well in the link that Dan provided. 
 
-[00:01:00] **Steven:** Yeah, sure. My title at work is Form Engineering, and I work for a company that does Payment Processing. So you know, when you're working with payments, you're working with your money; you need to be kind of exact with your observability. 
+All right, so first things first, Stephen, do you want to introduce yourself? 
 
-What my team does is we manage all of the observability infrastructure. We've got about a hundred technical folks that we're managing it for, and we try to be sort of like the experts in observability and share some of the best practices and help them solve their problems. 
+**Stephen:** Yeah, sure. So, my title at work is Form Engineering, and I work for a company that does Payment Processing. So, you know, when you're working with payments, you're working with your money, you need to be kind of exact with your observability. What my team does is we manage all of the observability infrastructure. We've got about a hundred technical folks that we're managing it for, and we try to be sort of like the experts in observability and share some of the best practices and help them solve their problems. 
 
-I recently joined this team about almost a year ago, and the project that I started on was actually migrating from another observability vendor, where we were using proprietary instrumentation, and we adopted OpenTelemetry and moved to a new observability vendor. 
+### [00:01:36] Stephen's background and role
 
-So hopefully, some of those learnings are useful to other folks going through that process. Also worth calling out is that I really enjoyed contributing to the OpenTelemetry Collector contrib repo. I had to do that to unblock myself with a few bugs that we faced, but it was also just a really good way to understand what the collectors are doing under the hood. I was completely new to Go, but the code is really approachable. So yeah, I'd recommend taking a look if you haven't. It made my job a lot easier for sure.
+I recently joined this team about almost a year ago, and the project that I started on was actually migrating from another observability vendor where we were using proprietary instrumentation, and we adopted OpenTelemetry and moved to a new observability vendor. So, hopefully, some of those learnings are useful to other folks going through that process. Also worth calling out is that I really enjoyed contributing to the OpenTelemetry collector contrib repo. I had to do that to unblock myself with a few bugs that we faced, but it was also just a really good way to understand what the collectors are doing under the hood. I was completely new to Go, but the code is really approachable. So yeah, I would recommend taking a look if you haven't. It made my job a lot easier for sure. 
 
-[00:02:40] **Speaker 1:** That's great! Thanks for the intro. Now, can you tell us a little bit about the architectures that you use in your organization? Like what programming languages are used and the deployment landscape, that kind of thing? 
+### [00:02:24] Discussion on architecture
 
-**Steven:** Yeah, so I have that architecture diagram I shared with you. Would it be a good time to share that? 
+**Speaker 1:** That's great! Thanks for the intro. Now, can you tell us a little bit about the architectures that you use in your organization? Like what programming languages are used and the deployment landscape, that kind of thing? 
+
+**Stephen:** Yeah, so I have that architecture diagram I shared with you. Would it be a good time to share that? 
 
 **Speaker 1:** Yeah, go for it. 
 
-**Steven:** Okay, all right. So I believe my screen is visible. Everyone can see a diagram? 
+**Stephen:** Okay, all right. So, I believe my screen is visible. Everyone can see a diagram? 
 
 **Speaker 1:** Yep, I can see it. Hopefully, everyone else can as well. 
 
-**Steven:** Well, okay. So going kind of left to right, we can dive into specific parts that seem interesting. 
+**Stephen:** Well, okay. So, going kind of left to right, we can dive into specific parts that seem interesting. So we are running on Kubernetes. We have multiple production clusters, and within each of those clusters, we are using the OpenTelemetry operator. That gives us a way to inject common configuration of the SDK into our teams' applications and into their containers. It also lets us automatically turn on auto instrumentation, so we get consistent spans collected from all of the apps. 
 
-So we are running on Kubernetes. We have multiple production clusters, and within each of those clusters, we are using the OpenTelemetry operator. That gives us a way to inject common configuration of the SDK into our teams' applications, into their containers. It also lets us automatically turn on auto instrumentation, so we get consistent spans collected from all the apps. 
+Another sort of unique part is we are using the OpenTelemetry collector as a sidecar, meaning that alongside each instance of the application, we have a mini collector running, and the app can send all their telemetry over localhost to that sidecar. We are currently sending metrics and spans. Logs, it's a bit of a long story, but we aren't currently using logs through OpenTelemetry. 
 
-[00:03:50] Another unique part is we are using OpenTelemetry. We're running OpenTelemetry as a sidecar, meaning that alongside each instance of the application, we have a mini collector running, and the app can send all their telemetry over localhost to that sidecar. 
+For metrics, we use OpenTelemetry as sort of like a hop. We also use Prometheus to scrape the sidecar before it pushes to Grafana. Another interesting challenge was getting tail sampling to work because we have spans coming from multiple Kubernetes clusters, and we only want to keep some of them. But we don't want to make the decision about which traces we keep until we have all the spans. Maybe we wait to see if there's an error. So, we have a separate cluster that all the spans go to in order to make that decision. We load balance just to help scale that; we have these collectors in that common cluster. They just load balance by Trace ID, so we don't have a ton of spans piling up on one collector. That's sort of like a high-level overview of our setup. 
 
-So we are currently sending metrics and spans. Logs, it's a bit of a long story, but we aren't currently using logs through OpenTelemetry. For metrics, we use OpenTelemetry, but as sort of like a hop. We also use Prometheus to scrape the sidecar before it pushes to Grafana. 
+### [00:05:28] OpenTelemetry operator usage
 
-Another interesting challenge was getting tail sampling to work because we have spans coming from multiple Kubernetes clusters, and we only want to keep some of them. But we don't want to make the decision about which traces we keep until we have all the spans—maybe we wait to see if there's an error. 
+**Speaker 1:** That's awesome! It's really cool to see this kind of setup out in real life because I do feel like that's kind of a burning question with a lot of our practitioners: how do you set up your collectors? It's very nice to see. And cool that you're using the OpenTelemetry operator. I think you're one of the few people that I've spoken with recently who has been using the operator. What aspects of the operator are you currently using? Do you leverage the auto instrumentation? 
 
-So we have a separate cluster that all the spans go to, to make that decision. We load balance just to help scale that. We have these collectors in that common cluster; they just load balance by Trace ID, so we don't have a ton of spans piling up on one collector. Yeah, that's sort of like a high-level overview of our setup.
+**Stephen:** Yeah, so the main ones we're using are just injecting the common SDK configuration. That saves us a ton of time. We don't have to get teams to make code changes; we can just manage that centrally and kind of push it out to all the teams. Same with the auto instrumentation; they just add a line to their configuration of their pod, and then they get the instrumentation. The other ones you mentioned we aren't using, but we are using the sidecar, which is the OpenTelemetry operator inject. 
 
-**Speaker 1:** That's awesome! It's really cool to see this kind of setup out in real life because I think that's, I do feel like that's kind of a burning question with a lot of our practitioners: how do you set up your collectors? So it's very nice to see. 
+**Speaker 1:** Cool, cool. I have to put a plug for the operator. Auto instrumentation is actually so cool. You literally don't have to write code; you just put an annotation in the manifest. 
 
-And cool that you're using the OpenTelemetry operator. I think you're one of the few people that I've spoken with. Not to say people don't use the operator, but you're definitely one of the few people I've spoken with recently who has been using the operator. 
+**Stephen:** Yeah, you know, the least effort you can make for teams, the better. Even getting them to add the annotation can sometimes take time. So, I think it made the migration go much faster, being able to minimize the amount of work they have to do. 
 
-What aspects of the operator are you currently using? Do you leverage the auto instrumentation? Do you leverage the OpAmp capabilities? What's the other one? Do you use the Collector deployment capabilities? Do you use all three or a combination? 
+### [00:07:20] Migration from proprietary vendor
 
-**Steven:** So the main ones we're using are just injecting the common SDK configuration. That saves us a ton of time. We don't have to get teams to make code changes; we can just manage that centrally and push it out to all the teams. 
+**Speaker 1:** Absolutely. Now, I wanted to ask because you mentioned that you had migrated from a previous vendor using their own proprietary telemetry solution. What made you decide to do that migration? 
 
-Same with the auto instrumentation. They just add a line to their configuration of their pod, and then they get the instrumentation. The other ones you mentioned we aren't using, but we are using the sidecar, which is the OpenTelemetry operator inject. 
+**Stephen:** Yeah, so cost was a big one. It was hard to control with the previous vendor, and I guess support wasn't good. So those are, I think, the main drivers. A lot of stakeholders were unhappy with it, and we wanted a bit more. The collector gives us a lot of control over cost that this other vendor doesn't. 
 
-**Speaker 1:** Cool, cool. I have to put a plug for the operator. Auto instrumentation is actually so cool. You literally don't have to write code; you just put an annotation in the manifest. And the instrumentation CR, of course, that you have to figure, but it's pretty cool, I have to say. 
+**Speaker 1:** Right, that makes a lot of sense. Now, another thing that I wanted to ask in terms of scaling your collectors: have you experienced any challenges in scaling your collectors? Because you mentioned that you have a sidecar deployment pattern. How many different sidecars are you running at a particular point in time? Is it a lot that you're managing? 
 
-**Steven:** Yeah, you know, the least effort you can make for teams, the better. Even getting them to add the annotation can sometimes take time, so I think it made the migration go much faster by being able to minimize the amount of work they have to do.
+**Stephen:** Yeah, so for the sidecars, we run one for each pod or instance of the application, so that kind of almost scales on its own, which is quite nice. So that works. The tricky part with the sidecar is configuring how many resources to allocate, like how much memory to ask from Kubernetes. Just because every application is slightly different in their volume, and there's not really a way currently for a specific application to say that they want a specific amount of memory. We need to configure that in our centralized configuration, so it creates a lot of coordination overhead if we want to tune that right. But we've only had to tune it for one application so far, one of our monoliths. So, that has actually been quite easy to scale, the sidecar. 
 
-[00:06:01] **Speaker 1:** Absolutely. Now, I wanted to ask because you mentioned that you had migrated from a previous vendor using their own proprietary telemetry solution. What made you decide to do that migration? 
+**Speaker 1:** Okay, that's great! Now, what about your load-balanced collectors? Did you encounter any challenges in setting that up? 
 
-**Steven:** Yeah, so cost was a big one. It was hard to control with the previous vendor. I guess support wasn't good, so those are the main drivers. A lot of stakeholders were unhappy with it, and we wanted a bit more. The Collector gives us a lot of control over cost that this other vendor doesn't.
+**Stephen:** Yeah, well, I mean, at the beginning, there was a regression that caused a memory leak in one of the components we’re using, the span metrics one. That was a problem; that was actually one of the things that I fixed as an open source contribution. I guess our setup is quite memory intensive because we have to cache our metrics in memory for Prometheus to scrape them. So yeah, it's really been a matter of keeping memory at a reasonable level. 
 
-[00:08:10] **Speaker 1:** Right, right. Yeah, that makes a lot of sense. Now, another thing that I wanted to ask in terms of scaling your collectors: have you experienced any challenges in scaling your collectors? Because you mentioned that you have a sidecar deployment pattern. How many different sidecars are you running at a particular point in time? Is it a lot that you're managing? 
+### [00:10:24] Challenges in scaling collectors
 
-**Steven:** Yeah, so for the sidecars, we run one for each pod or instance of the application, so that kind of almost scales on its own, which is quite nice. That works. 
+Right now, we use the Kubernetes horizontal pod autoscaler that watches the memory of each of the instances of the collector and makes scaling decisions based on that. It works pretty well. It took some tinkering. One thing I've noticed—and maybe other folks have a good solution for this—is when our vendor Grafana has an outage, we find the telemetry starts to pile up while waiting for the service to be restored, and we see this big spike in CPU and memory. It's quite hard to manage that. I think if the outage were to go for quite a while, probably the memory usage would just start to kill the collectors or be very high. 
 
-The tricky part with the sidecar is configuring how many resources to allocate, like how much memory to ask from Kubernetes, just because every application is slightly different in their volume. There currently isn't a way for a specific application to say that they want a specific amount of memory. We need to configure that in our centralized configuration, so it creates a lot of coordination overhead if we want to tune that. 
+**Speaker 1:** Right, right. Now, another question that I had for you, just going back to the OpenTelemetry operator: what made you decide to use the operator in the first place? Is it something that you were made aware of, or did you hear about it from folks in the community? 
 
-But we've only had to tune it for one application so far—one of our monoliths. So that has actually been quite easy to scale, the sidecar. 
+**Stephen:** I heard about it actually from a colleague. It was their recommendation, but it fit with the kind of platform ethos of trying to get out of the way of the developers and have a way to do things without the developers having to get involved. 
 
-[00:09:36] **Speaker 1:** Okay, that's great! Now, what about your load-balanced collectors? Did you encounter any challenges in setting that up? 
+**Speaker 1:** Right, fair enough. That is one thing I like about the operator. Now, what was your experience in running it? Was it something that you felt was straightforward? 
 
-**Steven:** Yeah, well, I mean at the beginning, there was a regression that caused a memory leak in one of the components we're using—the span metrics one. So that was a problem. That was actually one of the things that I fixed as an open-source contribution. 
+**Stephen:** I'd say generally, compared to the collector itself, it was very smooth. I'm not sure why that is, but yeah, it worked quite well. The maintainers were very responsive in the Slack channels when we did have minor issues. 
 
-I guess our setup is quite memory-intensive because we have to cache our metrics in memory for Prometheus to scrape them. So yeah, it's really been a matter of keeping memory at a reasonable level. Right now, we use the Kubernetes horizontal pod autoscaler that watches the memory of each of the instances of the collector and makes scaling decisions based on that. 
+### [00:12:58] Tail sampling discussion
 
-It works pretty well; it took some tinkering. One thing I've noticed, and maybe other people have a good solution for this, is when our vendor has an outage, I find the telemetry starts to pile up, waiting for service to be restored, and we see this big spike in CPU and memory. So it's quite hard to... I guess if the outage were to go for quite a while, probably the memory usage would just start to kill the collectors or be very high. So that's a bit of a problem.
+**Speaker 1:** Awesome! That's good to hear. I've always had a really good experience with the OpenTelemetry operator maintainers, so that's nice to hear as well. Great! 
 
-**Speaker 1:** Right, right. Now, another question that I had for you, just going back to the OTEL operator: what made you decide to use the operator in the first place? Is it something that you had been made aware of, or did you hear about it from folks in the community? 
+Now, the other thing that I wanted to ask is, are you building your own collector distribution? 
 
-**Steven:** I heard about it actually from a colleague. It was their recommendation, but it fit with the kind of platform ethos of trying to get out of the way of the developers and have a way to do things without the developers having to get involved. 
+**Stephen:** Yeah, we are. That was because when we faced some of those bugs, we couldn't wait until it was pushed to the main distribution, so we forked it just to fix it earlier. Once that happened, we started to make other changes, so it's a bit hard to get off the fork now, but it's something we do want to do. 
 
-**Speaker 1:** Right, right. Yeah, fair enough. That is one thing I like about the operator. Now, what was your experience in running it? Was it something that you felt was straightforward? 
+**Speaker 1:** Now, does that involve using the OTEL collector builder tool when you're deploying your collectors? 
 
-Because one of the things that we really value about these sessions is not only learning how you're using these things in real life but also learning your user experience with using components of OpenTelemetry. Was it something you felt was documented well enough? Did you have to do a little bit of digging, poke around, ask some questions in the operator Slack? 
+**Stephen:** Yeah, it does. I looked at basically the Dockerfile, how they build the container, and just kind of copied the commands from there. 
 
-[00:12:40] **Steven:** I'd say generally, compared to the collector itself, it was very smooth. I'm not sure why that is, but yeah, it worked quite well. The maintainers were very responsive in the Slack channels when we did have minor issues. 
+**Speaker 1:** Oh, okay, okay. Have you used the actual tool where you specify the components, like which receivers, processors, etc., that you want to include? Have you tried using that tool? 
 
-**Speaker 1:** Awesome! That's good to hear. I've always had a really good experience with the OTEL operator maintainers, so that's nice to hear as well. 
+**Stephen:** Yeah, yes, that's what we're using to build it. We copied the list of components. 
 
-Great! Now, the other thing that I wanted to ask is, when you're using your collectors, are you building your own collector distribution? 
+**Speaker 1:** Oh, okay, okay, got it. Sorry, I misunderstood you. Awesome! You mentioned you did your own customizations, and that kind of forced you to contribute back to the collector. How was the experience of contributing back to the collector overall? 
 
-**Steven:** Yeah, we are. That was because when we faced some of those bugs, we couldn't wait until it was pushed to the main distribution, so we forked it just to fix it earlier. Once that happened, we started to make other changes, so it's a bit hard to get off the fork now, but it's something we do want to do. 
+**Stephen:** It was a good experience. People were helpful during the code review. It took a little while to get the code merged; you’d have a separate person for approving it, and then it would sit unmerged for a few weeks, and then you get all these merge conflicts because the versions would be upgraded. I had to go back and update the Go mod files a bunch of times, so that was I think maybe there’s room to merge it a bit faster once someone approves it, but I don’t know the rationale behind that. 
 
-**Speaker 1:** Now, does that involve using the OTEL Collector Builder tool when you're deploying your collectors? 
+**Speaker 1:** Fair enough, fair enough. And the other thing I wanted to ask: you mentioned that you use auto instrumentation. Have you done any manual instrumentation as well? 
 
-**Steven:** Yeah, it does. I looked at the Dockerfile, how they build the container, and just kind of copied the commands from there. 
+**Stephen:** Yeah, we had to show teams because we had manual instrumentation using that proprietary format, so we had to show teams how to convert it over to the OTEL format and also educate them on how to use OTEL manual instrumentation. 
 
-**Speaker 1:** Oh, okay, okay. Have you used the actual tool where you specify the components, like which receivers, which processors, etc., that you want to include? Have you tried using that tool? 
+**Speaker 1:** How did that go? Did you find that teams were receptive to that? 
 
-**Steven:** Yeah, that's what we're using to build it. We copied the list of components. 
-
-[00:14:50] **Speaker 1:** Oh, okay, okay. Got it, got it. Sorry, I misunderstood you. Awesome! You mentioned you did your own customizations, and that kind of forced you to contribute back to the collector. How was the experience of contributing back to the collector overall? 
-
-**Steven:** It was a good experience. People were helpful during the code review. It took a little while to get the code merged. I noticed you'd have a separate person for approving it, and then it would sit unmerged for a few weeks, and then you get all these merge conflicts because the versions would be upgraded. So I had to go back and update the Go mod files a bunch of times. 
-
-That was a bit of a challenge. I think there's room to merge it a bit faster once someone approves it, but I don't know the rationale behind that. 
-
-[00:17:00] **Speaker 1:** Fair enough, fair enough. The other thing I wanted to ask, you mentioned that you use auto instrumentation. Have you done any manual instrumentation as well? 
-
-**Steven:** Yeah, we had to show teams because we had manual instrumentation using that proprietary format. We had to show teams how to convert it over to the OTEL format and also educate them on how to use OTEL manual instrumentation. 
-
-**Speaker 1:** And how did that go? Did you find that teams were receptive to that? 
-
-**Steven:** I think they're slowly doing it. I think tracing isn't maybe as obvious, so I probably just need more examples of why it's useful to give them the motivation to add more metadata to their spans, for example. 
+**Stephen:** It's still, I think they're slowly doing it. I think tracing isn't maybe as obvious, so I think probably I just need more examples of why it's useful to give them the motivation to add more metadata to their spans, for example. 
 
 **Speaker 1:** Right, right. Now, does your team ever get asked to instrument stuff for other teams? 
 
-**Steven:** Not specifically for their applications. 
+**Stephen:** Not specifically for their applications. 
 
-**Speaker 1:** Yeah, I'm very glad to hear that. One of my observability pet peeves! Well, that's good to hear. 
+**Speaker 1:** I'm very glad to hear that. One of my observability pet peeves! 
 
-Now, in terms of the instrumentation, it looks from your diagram that it's primarily a Java app, is that correct? 
+**Stephen:** Well, that's good to hear! 
 
-**Steven:** Yeah, mostly Java. We do have some Go as well. 
+**Speaker 1:** And it looks like, in terms of instrumentation, from your diagram, it looks primarily like a Java app, is that correct? 
 
-**Speaker 1:** Okay. Now, how did you find it in terms of the learning curve for instrumenting stuff in OpenTelemetry? Since you're in a position to teach folks how to instrument their code with OpenTelemetry, was it a big learning curve for your team as far as understanding how the manual instrumentation works for both Java and Go? Did you notice anything that was maybe easier in one language compared to the other, or where you had to go back to the SIGs to ask for clarification? 
+**Stephen:** Yeah, mostly Java. We do have some Go as well. 
 
-**Steven:** So Java, they've done a really good job with it. I think the language just makes it easier. Because we use Micrometer, which is a Java library for emitting metrics, they didn't actually have to change anything to get the metrics to work. 
+**Speaker 1:** Okay. Now, how did you find it in terms of the learning curve for instrumenting stuff in OpenTelemetry? How did you find it since you are in a position to teach folks how to instrument their code with OpenTelemetry? 
 
-The span API is pretty intuitive as well. For Go, I mean, it's not my personal strength, but I found it's a bit more manual. It was definitely harder to use than the Java one. I'm curious if anyone's used the auto instrumentation; I haven't had a chance to play around with that, but it would be nice if we could get that working. 
+**Stephen:** I think it was a big learning curve for our team as far as understanding how the manual instrumentation works for both Java and Go. The Java SDK has done a really good job with it; I think the language just makes it easier. 
+
+**Speaker 1:** Right. 
+
+**Stephen:** We use that Micrometer, which is a Java library for emitting metrics, so they didn't actually have to change anything to get the metrics to work. 
+
+**Speaker 1:** Oh, okay, got it. 
+
+**Stephen:** The span API is pretty intuitive as well. For Go, I mean, it's not my personal strength, but I found it's a bit more manual. It was definitely harder to use than the Java one. 
+
+**Speaker 1:** Right. I'm curious if anyone's used the auto instrumentation. I haven't had a chance to play around with that, but that would be nice if we could get that working. 
 
 **Speaker 1:** For folks who are listening, does anyone have experience with that that would like to share? Feel free to raise your hand if you do have any experience. 
 
-No takers? Alright. 
+**Speaker 1:** No takers? All right. 
 
-[00:20:00] Okay, I guess I'm just about done asking the questions. The only other thing I was going to ask is do you have any general feedback that you wanted to provide to the OpenTelemetry maintainers around your OpenTelemetry experience, as far as using components? You mentioned the contribution experience; you said it was a little bit challenging with approving the PRs. Anything else that you wanted to add to that? 
+### [00:20:00] Manual vs auto instrumentation
 
-**Steven:** I think it felt like we were kind of figuring out a lot of stuff for ourselves. It took us quite a few iterations to get to this point. It might be hard to have a recipe for every combination of vendor and backend, and all that, so that could be part of the problem. 
+**Speaker 1:** Okay, I guess I'm just about done asking the questions. The only other thing is that I was going to ask is if you have any general feedback that you wanted to provide to the OpenTelemetry maintainers around your OpenTelemetry experience, as far as using components like ease of use. You mentioned the contribution experience; you said it was a little challenging with approving the PRs. Anything else that you wanted to add to that? 
 
-I guess more example configuration would be helpful. For example, the load balancing—originally, we actually had another set of collectors that all they did was load balancing, but we realized we can actually load balance this deployment of collectors to itself, and that just is way easier to maintain. 
+**Stephen:** I think it felt like we were figuring a lot of stuff out for ourselves. It took us quite a few iterations to get to this point. It might be hard to have a test for every combination of vendor and backend and all that, so that could be part of the problem. I guess like more example configurations would be helpful, for example, the load balancing. Originally, we had another set of collectors that all they did was load balancing, but we realized we can actually load balance this deployment of collectors. 
 
-Yeah, and I guess more example configuration for common problems, like the tail sampling that we're doing here. 
+**Speaker 1:** Right, right. 
 
-**Speaker 1:** That's really good feedback. I have heard from other folks as well that we have the OpenTelemetry demo, which is a great showcase. I think it's really focused on application instrumentation, which is awesome, but I think there is definitely a desire from the community for more collector-specific use cases, and specifically stuff that's a little bit more complex than what you would necessarily see in the demo. 
+**Stephen:** That just is way easier to maintain. I guess more example configurations for common problems like tail sampling that we're doing here would be helpful. 
 
-**Steven:** For sure. Another one is monitoring your collectors. I found I had to dig through the codebase to find what metrics are exposed and what they are doing. I feel like there are probably some common alerts or things that for most setups would be useful. 
+**Speaker 1:** That's a really good piece of feedback. I have heard from other folks as well that we have the OpenTelemetry demo, which is a great showcase focused on application instrumentation, but there is definitely a desire from the community for more collector-specific use cases, especially for things that are a little more complex than what you would necessarily see in the demo. 
 
-Maybe someone already has this, but like, you know, some documentation like, "Hey, these are useful things to monitor." The dashboard for Grafana they have was pretty useful, but I think on the alert side, I didn’t find anything there. 
+**Stephen:** For sure. Another one is monitoring your collectors. I found I had to kind of dig through the codebase to find what metrics are exposed, like what are they doing. I feel like there are probably some common alerts or things that would be useful for most setups. Maybe someone already has this, but hey, these are useful things to monitor. The dashboard for Grafana they have was pretty useful, but I think on the alert side, I didn't find anything there. 
 
-**Speaker 1:** Right, right. Cool! Well, thank you for the feedback on that. Now, I guess we can do one of two things. We've got the Lean Coffee board where folks can post questions for Steven. I'm actually going to check the board. 
+**Speaker 1:** Right, cool. Thank you for the feedback on that. Now, I guess we could do one of two things. We've got the lean coffee board where folks can post questions for Steven, so I'm actually going to check the board. 
 
-Oh, we have some questions. Yeah, let's go through that, and then if we have some time afterwards, then Steven, you can ask some questions to our viewers as well. 
+**Speaker 1:** Oh, we have some questions! Yeah, let's go through that, and then if we have some time afterwards, then Steven, you can ask some questions to our viewers as well. 
 
-Dan, do you want to take it on from here on the questions from the board? 
+**Speaker 1:** Dan, do you want to take it on from here on the questions from the board? 
 
 **Dan:** Sure thing! We've got many questions from the audience, which is great. Also, feel free to go and vote for the ones that you think are the most interesting. 
 
-I have marked one of them as answered already because we talked about the collector builder and how you build your own dist for the collector on your sidecar. 
+I have marked one of them as answered already because we talked about the collector builder and how you build your own distribution for the collector on your sidecar. Starting from the one that we talked about tail-based sampling: do you only use tail-based sampling, or do you also use head-based? Any tips or thoughts on mixing these approaches? 
 
-Starting from the one that we talked about tail sampling, a little bit about how you use the tail sampling, but I wanted to ask this question here: do you only use tail-based sampling, or do you also use head-based, and any tips or thoughts on mixing these approaches? 
+**Stephen:** Yeah, so we only use tail sampling. I guess it's more work to get it set up, but when you have the full trace to make your sampling decision, I find that you can make the best decision. That's why we just lean on tail sampling completely. I guess with head-based sampling, there's always a risk you're going to miss something important because it's completely probabilistic. 
 
-**Steven:** Yeah, so we only use tail sampling. I guess it's more work to get it set up, but when you have the full trace to make your sampling decision, I find that you can make the best decision. That's why we lean on tail sampling completely. I guess with head-based sampling, there's always a risk you're going to miss something important, right? Because it's completely probabilistic. 
+**Dan:** Right, good point! Moving on to the next one: how do you handle container sizing on the collector sidecars? You mentioned this already, that you had to customize or tune one of the collector sizes. Do you have one size that fits all, or anything you would like to improve in that setup or resource allocation? 
 
-**Dan:** Good point! Moving on to the next one: how do you handle container sizing on the collector sidecars? You mentioned this already, that you had to customize or tune one of the collector sizes. Do you have one size that fits all, or anything you would like to improve in that setup, or resource allocation? 
+**Stephen:** I think what would be nice is if pods could add an annotation saying this is the resources I need. Instead, what we have to do is a bit hacky. For each sidecar, it's like a separate Kubernetes resource or configuration file. We have a for loop that goes through and creates those configurations for different resource combinations. So, it's something we have to coordinate like, "Hey, you have to update the sidecar configuration that your pod wants to use for this OTEL sidecar, 500 megabytes, one CPU." It's a bit of extra coordination work there. 
 
-**Steven:** I think what would be nice is if pods could add an annotation saying this is the resources I need. Instead, we have to do something kind of hacky. For each sidecar, it's a separate Kubernetes resource or configuration file. 
+**Dan:** Cool! The next one is related to serverless. Do you use serverless, and do you have any tips or go-tos for instrumenting serverless workloads with OpenTelemetry? 
 
-So what we do is we have a for loop that goes through and creates those configurations for different resource combinations. It's something we have to coordinate, like, "Hey, you have to update the sidecar configuration that your pod wants to use to this OTEL sidecar, 500 megabytes, one CPU." It's a bit of extra coordination work there. 
+**Stephen:** We don't use serverless, so I don't have any advice there. 
 
-**Dan:** Cool! The next one is related to serverless. Do you use serverless, and any tips or go-to's to look out for in instrumenting serverless workloads with OpenTelemetry? 
+**Dan:** That's fine! I wanted to ask that in case you had some experience with that. Also, you mentioned that you use FluentD for logs reading from standard out. Are you considering moving to the OTEL log file receiver? 
 
-**Steven:** We don't use serverless, so I don't have any advice there. 
+**Stephen:** Yeah, it's something I'd like to explore. We sort of had a bit of an issue when we first tried using logs. I'm curious if anyone has found a good solution for this. What we wanted to do is store our logs on disk so if there's an outage, we don't lose them. We ran into a bug with the durable storage extension in the collector, and that kind of spooked us. We already had FluentD running, so that's why we kind of just pivoted to that. But I don't know, that was a while ago, and maybe people have had good success with getting that durability for their logs. 
 
-**Dan:** That's fine! I wanted to ask that in case you had some experience with that. Also, you mentioned you use FluentD for logs reading from standard out. Are you considering moving to the OTEL log file receiver? 
+**Dan:** Just to add on this, with FluentD, are you decorating your logs with some of the semantic conventions or trace ID, span ID, that you can then correlate with your traces? 
 
-**Steven:** Yeah, it's something I'd like to explore. We sort of had a bit of an issue when we first tried using logs. I'm curious if anyone has found a good solution for this. What we wanted to do is store our logs on disk so if there's an outage, we don't lose them. We ran into a bug with the durable storage extension in the collector, and that kind of spooked us. We already had FluentD running, so that's why we kind of just pivoted to that. But I don't know; that was a while ago. Maybe people have had good success with getting that durability for their logs. 
-
-**Dan:** Just to add on this, with FluentD, are you decorating your logs with some of the semantic conventions or trace ID, span ID, so you can then correlate with your traces? 
-
-**Steven:** Yeah, so we definitely have the trace IDs and the span IDs, and we're actually adopting a specification for the event—they call it log events. It's sort of a structured format for logs in the OpenTelemetry specification, so we're trying that out as well. 
+**Stephen:** Yeah, we definitely have the trace IDs and the span IDs, and we're actually adopting a specification for the event—they call it log events—so it's sort of a structured format for logs in the OpenTelemetry specification. So, we're trying that out as well. 
 
 **Dan:** Cool! Do you use OTEL to monitor OTEL collectors? 
 
-**Steven:** Yeah, it's like a big—it's always called monitoring your monitoring. We use Prometheus to get the metrics from the collectors and FluentD to collect the logs from the collectors, and that’s worked pretty well. 
+**Stephen:** Yeah, it's like a big monitoring your monitoring, but we use Prometheus to get the metrics from the collectors and FluentD to collect the logs from the collectors, and that's worked pretty well. 
 
-**Dan:** Okay, moving on to a bit more of your team. Sounds like you folks have a dedicated platform team that manages the OTEL collectors in your organization. Do you have any thoughts on the opposite of this, where you have no collector gateway or no collector endpoint, basically 100% of your telemetry data is then sent to your observability provider? 
+**Dan:** Okay, moving on to a bit more about your teams. It sounds like you folks have a dedicated platform team that manages the OTEL collectors in your organization. Do you have any thoughts on the opposite of this, where you have no collector gateway or no collector endpoint, basically 100% of your telemetry data is then sent to your observability provider? 
 
-**Steven:** I guess in our case, we decided to use the collectors so that we could do sampling to control costs of our traces. We also try to have some durability; if the vendor goes down, we can move that retry logic off to the collector. 
+**Stephen:** Yeah, I guess in our case, we decided to use the collectors so that we could do sampling to control costs of our traces and also to try and have some durability. If the vendor goes down, we can kind of move that retry logic off to the collector. I'm curious if anyone is doing that in production. It would definitely simplify things, but I guess there's some trade-offs as well. 
 
-I'm curious if anyone has done that in production. It would definitely simplify things, but I guess there are some tradeoffs as well. 
+**Dan:** Right, there's a trade-off as well of authentication to a provider and having everything centralized. 
 
-**Dan:** Right, there are tradeoffs as well of authentication to a provider. It does sell in one place as well, some of the benefits, pros and cons I guess. 
+**Stephen:** Right. 
 
-The next one is related to auto instrumentation and the OTEL operator. You inject those instrumentation packages, and we also talked about the fact that you are also using manual instrumentation. I guess the question is, how do you find if your teams found that auto instrumentation is sufficient, or is there a lot of custom instrumentation that's needed? 
+**Dan:** The next one is related to auto instrumentation and how you inject those instrumentation packages. We also talked about the fact that you are using custom manual instrumentation. I guess the question is: how do you find if your teams found that auto instrumentation is sufficient, or is there a lot of custom instrumentation that's needed? 
 
-**Steven:** One thing I haven't talked about that has been great for us is the span metrics component. We generate metrics—frequency, latency, error counts—for every single span. 
+**Stephen:** One thing I haven't talked about that has been great for us is the span metrics component. We generate metrics for frequency, latency, error counts for every single span. Because we're using the auto instrumentation, every application emits the spans in the same format, so basically out of the box, without adding any instrumentation, we get some metrics, like APM or RED metrics for all your API calls and database queries. We have metrics on that automatically, so that goes quite a long way, and we can build common dashboards and common alerts that all these apps just get out of the box because of that standardization. 
 
-Because we're using the auto instrumentation, every application emits the spans in the same format. Out of the box, without adding any instrumentation, we get some what folks call APM or RED metrics—like all your API calls, all your database queries. We have metrics on that automatically. 
+**Dan:** That's really cool! So, if teams want to add metadata, they can, but you would definitely recommend span metrics if that's an option for people. 
 
-That goes quite a long way, and we can build common dashboards and common alerts. All these apps just get out of the box because of that standardization, so it's a really good starting point. If teams want to add metadata, they can. I would definitely recommend span metrics if that's an option for people. 
+**Stephen:** Yeah, I would definitely recommend span metrics. 
 
-**Dan:** I'm going to add a bit to this one as well. Do you find that if you're moving from a world where you had to instrument everything, and now there is a lot of auto instrumentation out there, do you find that engineers normally tend to not know about that auto instrumentation, and they do it themselves? How do you manage that sort of education piece, saying that you may not need to instrument things? Has that been a challenge within your organization, or has everyone just...?
+**Dan:** I'm going to add a bit to this one as well: do you find that if you're moving from a world where you had to instrument everything, and now there is a lot of auto instrumentation out there, do you find that engineers normally tend to not know about that auto instrumentation and they do it themselves? How do you manage that learning or education piece, saying that you may not need to instrument things? Has it been a challenge within your organization? 
 
-**Steven:** I'd say it is. We have some redundant, like for example our API metrics—Spring Boot and Java automatically emit some metrics, so a lot of applications were getting some redundant data. So yeah, that has been a problem, but I guess it just comes down to education. 
+### [00:32:00] Feedback for OpenTelemetry maintainers
 
-Then having a way of tracking the cardinality, when we've seen, "Oh, you're sending a ton of API metrics, and we already captured the span metrics," we can reach out to that team and say, "Oh, you can probably disable this. You don't really need this. We don't even pay for it."
+**Stephen:** I would say it is. We have some redundant metrics; for example, our API metrics like Spring Boot and Java automatically emit some metrics, so a lot of applications were getting some redundant data. So, yeah, that has been a problem, but I guess it just comes down to education and then having a way of tracking the cardinality. When we've seen that, like, "Oh, you're sending a ton of API metrics," and we already have captured the span metrics, we can reach out to that team and say, "Oh, you can probably disable this; you don't really need this." 
 
-**Dan:** Cool! Regarding sampling, I'm assuming this is related to sampling policies. Can you advise on whether that’s the collector where you manage the policies for all traces, or can teams dial that config up and down themselves? 
+**Dan:** Cool! Regarding sampling, I'm assuming this is related to sampling policies. Can you advise on whether the collector is where you manage the policies for all traces, or can teams dial that config up and down themselves? 
 
-**Steven:** Ours is pretty simple. We sample errors; we keep traces that are longer than something like five seconds. We do have an escape hatch if they add an attribute to their span to force sampling. So far, no one has caused any problems with that, but it might in the future. Teams may overuse it, but that works so far. 
+**Stephen:** Ours is pretty simple. We sample errors; we keep traces if they are longer than something like five seconds. We do have an escape hatch if they add an attribute to their span to force sampling. So far, no one has caused any problems. It might in the future, you know, teams overuse it, but that works so far. 
 
-**Dan:** Related to some of that SDK config that you currently inject through environment variables, do you currently use any type of other config that may not be supported through environment variables, like metric views, for example? Do you have a way to apply defaults across the board for that type of config? 
+**Dan:** Related to some of that SDK config that you currently inject through environment variables, do you currently use any type of config that may not be supported through environment variables, like metric views, for example? Do you have a way to apply defaults across the board for that type of config? 
 
-**Steven:** We haven't had to do that too much, and when we have, we do have—our company is lucky in that we have a tool that can use to generate applications from scratch. There’s a way to sort of regenerate it. 
+**Stephen:** We haven't had to do that too much, and when we have, we do have—our company's lucky in that we have a tool that we can use to generate applications from scratch. There's a way to sort of regenerate, but it doesn't work too well. Most teams have a pretty similar format to their application, so when we do need to make a change that we can't do with the operator, it's usually just boilerplate copy-paste. We can show them a merge request, and they can copy it in, but it does take a couple of months for every team to adopt that. 
 
-The regeneration doesn't work too well, but we know that most teams have a pretty similar format to their application, so when we do need to make a change that we can't do with the operator, it's usually just boilerplate copy-paste. We can show them a merge request, and they can copy it in. But it does take a couple of months for every team to adopt that. 
+**Dan:** Cool! I guess one related to supply chain security with the OTEL SDKs: how do you handle supply chain security so that OTEL SDKs are safe to include them in application code? Do you build them from source yourself and then run your own security tests? 
 
-**Dan:** Cool! Okay, I guess one related to supply chain security with the OTEL SDKs. How do you handle supply chain security so that the OTEL SDKs are safe to include them in application code, or do you build them from source yourself and then run your own security tests? 
+**Stephen:** For different reasons, I kind of created a wrapper dependency that wraps all the OTEL library versions that we use, and we know they work together. Just because we found some versions were kind of incompatible. From the app teams' perspective, they depend on one dependency, and then they get all the OTEL dependencies as transitive dependencies. I suppose if we need to upgrade it very quickly, I guess it would just be one thing that they need to update. Although that creates dependency conflicts just because at least how Maven works in Java, so I don't know if that's actually the best thing to do; it might be more of a headache than it's worth. 
 
-**Steven:** Are you thinking this would be, you know, if there's a CVE in one of the SDK versions, how would we sort of manage patching that for everyone or downstream or upstream dependencies from OTEL packages? 
+**Dan:** Thank you! Okay, moving on to the next one: related to the OTEL operator and automatic instrumentation, is that your preferred solution, or can the OTEL operator be used in parallel with SDKs, for example, the .NET case? Do you provide some balance of scalability and configurability? Is there a recommendation here? 
 
-Yeah, for different reasons, I kind of created a wrapper dependency that wraps all the OTEL library versions we use and we know they work together just because we found some versions were kind of incompatible. 
+**Stephen:** I mean, so far, you can't override the environment variables that are injected into the application automatically by the platform team. So far, it hasn't been too much of a problem; teams haven't really wanted to deviate too much from the configuration that we've given them. But I'd be curious longer term if that does cause problems. 
 
-From the app team's perspective, they depend on one dependency, and then they get all the OTEL dependencies as transitive dependencies. If we need to upgrade it very quickly, I guess it would just be one thing they need to update. 
+**Dan:** Thank you! This is an interesting one: are your devs using the LGTM Docker container from Grafana to develop OTEL implementation and then do local troubleshooting? 
 
-Although that works in theory, it has also caused dependency conflicts just because of how Maven works in Java, so I don't know if that's actually the best thing to do—it might be more of a headache than it's worth. 
+**Stephen:** Not yet. Right now, they can only really test by deploying it to our clusters, so we do need a better solution there. 
 
-**Dan:** Thank you! Okay, moving on to the next one. Related to the OTEL operator and automatic instrumentation: is that your preferred solution, or can the OTEL operator be used in parallel with SDKs, for example, in the case of .NET? Do you provide some balance of scalability and configurability? Is there a recommendation here? 
+**Dan:** I personally love there are more and more solutions coming up that are open source that allow you to see that telemetry on your own computer. 
 
-**Steven:** My immediate concern is that the manual instrumentation inside the application could make it difficult to configure and manage at scale. So far, we do—you can't override the environment variables that are injected into the application automatically by the platform team. 
+**Stephen:** Yeah, a lot of really cool solutions out there at the moment. 
 
-So far, I guess it hasn't been too much of a problem. Teams haven't really wanted to deviate too much from the configuration we've given them, but I’d be curious long term if that does cause problems. 
+**Dan:** If you had a magic wand, what's the thing that you would love to add, remove, or change in OTEL and why? 
 
-**Dan:** Thank you! This one is interesting: are your devs using the LGTM Docker container from Grafana to develop OTEL implementation and then do local troubleshooting? 
-
-**Steven:** Not yet. Right now, they can only really test it by deploying it to our clusters, so we do need a better solution there so they can test locally. 
-
-**Dan:** I personally love that there are more and more solutions coming up that are open-source that allow you to see that telemetry in your own computer for testing. So yeah, a lot of really cool solutions out there at the moment. 
-
-If you had a magic wand, what's the thing that you would love to add, remove, or change in OTEL and why? 
-
-**Steven:** That is a logic question! I think this is maybe short-sighted, but if we could get rid of Prometheus in our architecture, the reason we can't right now is because we rely on Prometheus to aggregate our data together for cost savings. 
-
-For span metrics, we generate like 50 histogram buckets for every span, so it gets really expensive. If each pod has its own set of 50 buckets, our cost scales with the number of pods. But we use Prometheus to aggregate all the counts from all the pods, and that cuts our cost significantly. 
-
-I don't think the collector can do that today, so yeah, that would make our architecture simpler. 
+**Stephen:** That's a logic question! I think this is maybe short-sighted, but if we could get rid of Prometheus in our architecture—the reasons we can't right now is because we rely on Prometheus to aggregate our data together for cost savings. Source span metrics—we generate like 50 buckets, histogram buckets for every span, so it gets really expensive. If each pod has its own set of 50 buckets, our costs scale with the number of pods. We use Prometheus to aggregate all the counts from all the pods, and that cuts our cost significantly. I don't think the collector can do that today, so that would just make our architecture simpler. 
 
 **Dan:** Makes sense! Are you using multiple OTEL backends to process some of the things internally compared to your vendor, or is everything going to the vendor? 
 
-**Steven:** We have one vendor if that was the question that we're pushing to. 
+**Stephen:** We have one vendor, if that was the question, that we're pushing to. 
 
-**Dan:** So I guess you're not pushing anything internally to anywhere else; just everything goes to... 
+**Dan:** I guess you're not pushing anything internally to anywhere else; everything goes to the vendor. 
 
-**Steven:** Oh right, yeah, we don't. 
+**Stephen:** Right, yeah. 
 
-**Dan:** Okay! I think we've got time for one last one, and that is: given that the collector can quickly become a bottleneck due to back pressure, do you see any disadvantages to having the SDK export that data directly to the backend, except for the cost? 
+**Dan:** I think we've got time for one last one, and that is: given that the collector can quickly become a bottleneck due to back pressure, do you see any disadvantages to having the SDK export that data directly to the backend except for the cost? 
 
-**Steven:** Yeah, I think that was similar to the other question about why not just push directly to your vendor from your pod. It does make it easier to kind of scale; you don't have to worry. Well, yeah, that's a good question. I guess you're shifting the back pressure then to your app. 
+**Stephen:** Yeah, I think that was similar to the other question about why not just push directly to your vendor from your pod. It does make it easier to scale. You don't have to worry—well, yeah, that's a good question. I guess you're shifting the back pressure then to your app. 
 
-It might be easier to handle if it's a smaller amount of data, but yeah, that one I'm not too sure about. 
+**Dan:** Right! 
 
-**Dan:** That would be interesting to discuss. It might be easier to handle but also more impactful for the application. I guess there are pros and cons there as well, right? 
+**Stephen:** It might be easier to handle if it's a smaller amount of data, but I don't know. I'm not too sure about that. 
 
-So if you have all your telemetry shipped from your pod as soon as possible, there are benefits for that as well in terms of impacts. 
+**Dan:** Yeah, that would be interesting to discuss! 
 
-**Steven:** Yeah, exactly! 
+**Stephen:** Yeah, maybe easier to handle but also more impactful for the application, so I guess there are pros and cons there as well. 
 
-**Dan:** Okay, I think that's all we have time for. Thank you very much, Steven, for joining us. We had quite a lot of questions we went through from the audience. Thanks for everyone that joined and asked questions as well. It's super nice to see engagement in a session Q&A. 
+**Dan:** Right, if you have all your telemetry shipped from your pod as soon as possible, there are benefits for that as well, in terms of impacts. 
 
-Do you want to say a few words to say goodbye? 
+**Stephen:** Right. 
 
-**Steven:** Yeah, thanks, Dan, and thanks for doing the questions. It's really nice to see the engagement from folks in the Q&A. I think this is a topic that really interests people, so we love it when you engage. Also, if anyone out there would like to participate in OTEL Q&A or OTEL in practice, we are always looking for folks to share their use cases with us. 
+**Dan:** I think that's everything. Thank you very much, Stephen, for joining us. That was quite a lot of questions we went through from the audience. Thanks to everyone that joined and asked questions as well. Super nice to see the engagement in this Q&A session. Do you want to say a few words to say goodbye? 
 
-You can DM either Dan Reyes or me, or if you want, you can also message us in the user channel in the CNCF Slack. We would be happy to hear your use cases and have conversations. Also, as I mentioned, the recording for this will be up on YouTube, so anyone that you know that wishes they had attended but could not, let them know. 
+### [00:42:52] Q&A session with audience questions
 
-We usually post on the OTEL socials and also in the channel once the video is up. Thank you, Steven, for joining us and answering all the various questions. We really appreciate your time. 
+**Stephen:** Yeah, thanks, Dan, and thanks for doing the questions. It's really nice to see the engagement from folks in the Q&A. I think this is a topic that really interests people, so we love it when you engage. Also, if anyone out there would like to participate in OTEL Q&A or OTEL in practice, we are always looking for folks to share their use cases with us. You can either DM either Dan or me, or you can also just message us in the user channel in the CNCF Slack. We would be happy to hear your use cases and have conversations. Also, as I mentioned, the recording for this will be up on YouTube, so anyone that you know that wishes they had attended but could not attend, let them know. We usually post on the OTEL socials and also in the channel once the video is up. Thank you, Steven, for joining us and answering all the various questions. We really appreciate your time! 
 
-**Steven:** Yeah, that was a lot of fun! Thank you for hosting this.
+**Steven:** Yeah, that was a lot of fun. Thank you for hosting this!
 
 ## Raw YouTube Transcript
 

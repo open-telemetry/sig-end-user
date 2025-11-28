@@ -10,335 +10,390 @@ URL: https://www.youtube.com/watch?v=LjD454EPMgQ
 
 ## Summary
 
-In this live segment from KubeCon North America 2024, host Rees is joined by special guests Hazel and Ted, who are prominent figures in the OpenTelemetry community. They discuss Hazel's journey into observability, the significance of OpenTelemetry, and the challenges of integrating observability into platform engineering. Hazel emphasizes the importance of teaching others about observability tools and her commitment to empowering users, while Ted shares insights on the OpenTelemetry project's governance and community dynamics. They highlight the project's goals of unifying tracing, metrics, and logs to create a coherent view of systems, as well as the need for collaboration across various tech and business sectors to enhance observability practices. The conversation underscores the project's evolution, future aspirations, and the ongoing need for community engagement and feedback.
+In this live session from KubeCon North America 2024, hosts Rees and Adriana Vela engage with Hazel, a prominent figure in the OpenTelemetry community, discussing her journey into observability and her insights on the evolution of OpenTelemetry. Hazel shares her frustrations with existing tools that drove her towards OpenTelemetry, emphasizing the importance of effective observability in platform engineering and SRE. She introduces the concept of "Observability 3.0," which aims to integrate non-technical perspectives into observability practices, fostering a holistic understanding across business functions. The conversation also touches on the challenges of community engagement and the complexities of maintaining a vendor-neutral environment in open-source projects like OpenTelemetry. Ted Young, a co-founder of OpenTelemetry, later joins to discuss the project's ongoing evolution, including the integration of various data signals and future developments aimed at enhancing user experience and data analysis capabilities. The dialogue highlights the collaborative spirit of the OpenTelemetry community and the importance of user feedback in shaping the project's direction.
 
 ## Chapters
 
-00:00:00 Welcome and intro
-00:01:20 Guest introductions
-00:02:30 Hazel's observability journey
-00:04:50 OpenTelemetry discussion
-00:06:00 Platform engineering insights
-00:08:20 Observability challenges
-00:10:00 OpenTelemetry project overview
-00:12:10 Observability 3.0 concept
-00:22:00 NLY Foundation background
-00:29:10 Transition to next guest
-00:30:00 Ted Young introduction
-00:31:16 OpenTelemetry governance and community
-00:36:30 Community trust and collaboration
-00:40:00 Project structure and incentives
-00:44:35 Updates from project
-00:55:00 Future of OpenTelemetry
-00:58:00 Closing remarks and survey reminder
+00:00:00 Introductions
+00:02:06 Guest introduction: Hazel
+00:05:30 Discussion about observability journey
+00:10:12 Importance of observability in platform engineering
+00:19:07 Introduction of Observability 3.0
+00:23:06 Discussion about the nly foundation
+00:37:48 Guest introduction: Ted Young
+00:40:57 Discussion about OpenTelemetry governance
+00:45:09 Updates on OpenTelemetry project
+00:57:45 Call to action for audience engagement
 
-**Reys:** Well, he hasn't done the countdown, so YouTube... Oh, is this on the channel? Why should I just shut up, right? So, I launch the counter of 10 minutes. That's too much, probably drop it. No, we still have this. Oh, it's OpenTelemetry official. Oh, he's checking the OpenTelemetry channel to make sure that it’s queuing up on their live. Okay, cool, perfect. Are you ready, M?
+## Transcript
 
-**M:** Yeah, and I will in... 
+### [00:00:00] Introductions
 
-[00:01:20] **Reys:** Hello, live from Salt Lake City, I'm Reys, and I'm here with some special guests. We are live at KubeCon North America 2024, and we're here to talk with a couple of really cool people in the OpenTelemetry community about how they got involved and kind of learn a little bit more about them. Let's go!
+**Reys:** Well, he hasn't done the countdown so YouTube... Oh, is this on the channel? Why should I just shut up, right? So I launch the counter of 10 minutes. That's too much, probably drop it. No, we still have this. Oh, it's OpenTelemetry, official OpenTelemetry! 
 
-**Adriana:** All right, good morning, good morning, good morning! I'm really glad to be here. So, for those of you who don't know, I am Adriana Vela, and I work with Reys on the OpenTelemetry and User SIG. We're excited to be talking to our awesome OpenTelemetry guests today.
+Oh, he's checking the OpenTelemetry channel to make sure that it's queuing up on their live. Okay, cool, perfect. Are you ready?
 
-**Reys:** So, Hazel, how did you get involved in OpenTelemetry? What is your story? How did you get involved in observability?
+**Adriana:** Yeah, and I will. Hello, live from Salt Lake City! I'm Reys and I'm here with some special guests. We are live at KubeCon North America 2024, and we're here to talk with a couple of really cool people in the OpenTelemetry community just about how they got involved and kind of learn a little bit more about them. Let's go!
 
-[00:02:30] **Hazel:** So, I think I got involved with observability in a very similar way that a lot of people do, which is to say I didn't. What happened was I got really, really frustrated at things happening, and I needed to figure out how to actually ask better questions about my systems and figure out what was going on and dig into them. The tools that I had weren't very good, and so I dug around looking for better tools, better ways to do things, and more importantly, better ways to teach other people what we're doing and how it works, because one of my superpowers is being able to take the entire system and hold it into my head and be able to sort of intuitively think about it. Like, when I was in an operating systems class in college, the point of the class was to kind of almost force you to learn how to debug. But I never did, and I still don't know how to debug, because I just looked at the code and mentally traced the code in my head and debugged panic flaws in the sheer by just like staring at it. But I can't teach that to people, and I can't show them how to think about that. So I've always said I want to figure this out with just, you know, print F debugging or whatever I want to do, but how do I actually take the vibes and turn them into a tool and an explanation and a technique and a way to teach people that you have this? You already know the answers. You know how to find things. You're already like 80 or 90% in the way there. It's not this magical new toolkit; it's this asking questions that are meaningful to you, getting those answers that are useful, and then doing something useful with that, like learning. After effectively on that, and you don't do that, you already know how to do that, and just taking that and looking for really, really nice things ended up getting me into that observability space where I met a lot of people that were also trying to do that.
+### [00:02:06] Guest introduction: Hazel
 
-**Reys:** And how did you get into OpenTelemetry itself?
+**Hazel:** All right, good morning, good morning, good morning! I'm really glad to be here. So for those of you who don't know, I am Hazel, and I have thoughts, lots of thoughts. They never stop thinking, and I am super glad to be here and talk with you all and hopefully make you laugh so hard you cry a little bit. Thank you!
 
-[00:04:50] **Hazel:** So, OpenTelemetry... For me, it was actually I looked at the shape of all the different vendor-specific things or the different instrumentation of like logging or metrics, or we didn't really have traces when I first started. It was actually really frustrating because I really, really hate doing things that are undifferentiated in a different way. I would much, much rather do a bit of work to figure out how can I slice it down? How can I think about this concept of optionality and putting everything together? Because one of the best things about Linux is it turns out you don't need to write a kernel in order to get something working; you can use one. One of the best things about Kubernetes is sure, you write, you know, your own custom flavor on top, but it's the thin veneer over this core. So for observability, I started looking for that core, the essence of it that you could build that thin veneer, that layer on top, and I found that in OpenTelemetry.
+**Adriana:** And I'm Adriana Vela, and I work with Reys on the OpenTelemetry and user SIG, so we're excited to be talking to our awesome OpenTelemetry guests today. So, Hazel, how did you get involved in OpenTelemetry? Like, what is your story? How did you get involved? We could start at the beginning.
 
-**Reys:** That's amazing! So how long have you been using the project or contributing to the project?
+**Hazel:** How did you get involved in observability? So I think I got involved with observability in a very similar way that a lot of people do, which is to say I didn't. And what happened was I got really, really frustrated at things happening, and I needed to figure out how to actually ask better questions about my systems and figure out what was going on and dig into them. The tools that I had weren't very good, and so I dug around looking for better tools, better ways to do things, and more importantly, better ways to teach other people what we're doing and how it works. 
 
-[00:06:00] **Hazel:** So I've been using the project actually primarily, usually not directly, because I'm low enough on that platform side. What I'm almost always looking to do is enable people, and so I have looked at the OpenTelemetry collector a lot, being able to say how can I empower people? How can I enable them? How can I take them from these different places where maybe they're using one vendor here and one vendor on another team and one vendor on another team or a third-party integration or the OpenTelemetry code? So as far as being able to enable people and think about that, I started, I want to say, really digging deep in building those platforms for other people around in 2019.
+Because one of my superpowers is being able to take the entire system and hold it in my head and be able to sort of intuitively think about it. Like when I was in an operating systems class in college, the point of the class was to kind of almost force you to learn how to debug. But I never did, and I still don't know how to debug. I just looked at the code and mentally traced the code in my head and debugged panic gloss in the debugger by just staring at it. But I can't teach that to people, and I can't show them how to think about that. So I've always said then, "Okay, I can figure this out with just, you know, print F debugging or whatever I want to do." 
 
-**Reys:** Okay, wow! So basically from the beginning, really?
+But how do I actually take the vibes and turn them into a tool and an explanation and a technique and a way to teach people that you have this? You already know the answers; you know how to find things. You're already like 80 or 90% in the way there. It's not this magical new toolkit; it's this asking questions that are meaningful to you, getting those answers that are useful, and then doing something useful with that—like learning. And then after you effectively do that, you already know how to do that. And just taking that and looking for really nice things ended up getting me into that observability space where I met a lot of people that were also trying to do that.
 
-**Hazel:** Yeah, yeah, that's great! Awesome! Which is so weird because like 2019 was not that long ago; it's like two weeks ago.
+**Adriana:** And how did you get into OpenTelemetry itself?
 
-**Reys:** I know, right? It does feel like it, absolutely. Yeah, I was going to say, you're also heavily involved in the platform engineering space, and I feel like observability is one of those things. Like, we often talk about it as a separate thing, but really, like, you can't have effective platform engineering without observability. You can't have effective SRE without observability. And I know you have many thoughts.
+### [00:05:30] Discussion about observability journey
 
-[00:08:20] **Hazel:** Yeah, so it's actually something that irks me a little bit a lot of the time because I get why this happens. You have a massively wide platform, and you have a massively wide tool chain, and people keep adding more and more context into something, and the context goes deep, and it goes wide, and it goes up, and it goes in all the different places, and you can't possibly hold it all in your head unless, you know, you're weird like me and you can hold way too many things in your head. But you do end up in this situation where, yeah, OpenTelemetry, you can dive so deep into it; it can become your whole thing; it can become like the only thing you really think about. When you see a lot of companies with the platform teams, they start off with an IT team that's really just rebranded Ops. Then they take the rebranded Ops team, they split it into two or three teams, and then one of those teams ends up being in charge of, you know, the Kubernetes part, and that gets labeled the platform team for some reason. Then the platform team gets turned into two or three different teams, and then you keep going on, and you know someone gets stuck with the observability thing, and it ends up being really complex because there's a lot of moving parts. So I see how things get split out and sort of fragmented, you know, much in the same way as the CNCF landscape is so massive. Everything has its own kind of corner; nobody really talks to each other. But I wish people would do that because they often end up re-implementing the same thing over and over. 
+**Hazel:** So OpenTelemetry... For me, it was actually I looked at the shape of all the different vendor-specific things or the different instrumentation of, like, logging or metric. We didn't really have traces when I first started, and it was actually really frustrating because I really, really hate doing things that are undifferentiated in a different way. I would much, much rather do a bit of work to figure out, like, how can I streamline down? How can I think about this concept of optionality and putting everything together? Because one of the best things about Linux is it turns out you don't need to write a kernel in order to get something working; you can use one. 
 
-**Reys:** Right, exactly.
+And one of the best things about Kubernetes is, sure, you write, you know, your own custom flavor on top, but it's the thin veneer over this core. And so for observability, I started looking for that core, the essence of it, that you could build that thin veneer, that layer on top, and I found that in OpenTelemetry.
 
-[00:10:00] **Hazel:** So like in the profiling side of things, we have this Open Profiling aspect, and they're looking at a lot of the OpenTelemetry stuff, and they're reinventing a lot of the same discussions that they need to have. A lot of saying, do you need standards? Do you need naming? Do you need plugins? How does the collector work? And I'm like we solved that five years ago! Like, look at the pre-existing stuff, tweak it a bit, and then you think about it. Or you have the event streaming architecture people where you have like database streaming, you have lake house people, and you have business analytics and business intelligence and all these different data science types of things. It turns out that if you are trying to take a metric load of data and derive useful actionable insights from it and then share that with people who are doing data science, that's kind of what we decided to call it, you know, 20 years ago. Then we forgot about that, and we reinvented OpenTelemetry instead of making a data pipeline. And then we reinvented profiling instead of making a data pipeline, and now we're kind of looking at all these things, and then we're going, "Oh, we should do this thing," and then the, you know, the Power BI or the business analytics people in the corner are just crying a little bit because they've been doing this since the '80s. 
+**Adriana:** That's amazing! So how long have you been using the project or contributing to the project?
 
-**Reys:** Right.
+**Hazel:** So I've been using the project actually indirectly. I'm low enough on that platform side. What I'm almost always looking to do is enable people. And so I have looked at the OpenTelemetry collector a lot, being able to say, "How can I empower people? How can I enable them? How can I take them from these different places of maybe they're using one vendor here and one vendor on another team and one vendor on another team or a third-party integration or the OpenTelemetry code?" So as far as being able to enable people and think about that, I started, I want to say, really, really digging deep in building those platforms for other people around in 2019. 
 
-**Hazel:** And then way over here in the financial side, did you know this is one of my favorite things actually? So KDB is a financial analytic state database, and it is a column database. If you look at high-frequency trading or, you know, data analytics people that specialize in the financial world, they actually predate the usage of all of these, like, oh no, queries that rely on indices. You can just grab the data, and they've been doing that for 40 years. They had to, and nobody else ever really thought to look it up. It's fun to see all the communities reinvent things over and over, bring their own flavor and context into it, and then hopefully we can, with platform engineering, start stirring all the people together, talking to them, and getting them to actually look outside the little window and go, "Oh, we solved the same problem!" Well, that's cool. How can I learn from how you approached it, and how can you learn from how I approached it, and can we build kind of a more common thing that's really awesome?
+**Adriana:** Okay, wow! So basically from the beginning, really?
 
-**Reys:** Given that there's so many interesting points that you just brought up and like the way your brain works and how you can look at something and kind of intuitively understand what's happening, what pieces of the open projects are intriguing you?
+**Hazel:** Yeah, yeah, that's great! Awesome. 
 
-**Hazel:** So one of the things that's really intriguing to me about the OpenTelemetry project is you have this dichotomy of OpenTelemetry as the end-user kind of part where you have this SDK and this API and there's how you use it, and you have this mental model. Then you have the operational side of how you collect the data, how you store it, how you enrich it, how you sample, and how you do all these things, and they're all deeply disconnected. They really don't need to be, but the reason they're often deeply disconnected is because they're all non-intentionally or maliciously horrifically lying to each other. So the mental model, for example, that you have with traces is, oh, there's like this little box and it's this start of it and the end of it, and in the box, I put all my information stuff, and I draw some information on the outside of it. Then in the information stuff, I have another box, then I have another box, then I have another box. I have so many boxes! When you actually use the SDK, when you actually send things, that's a complete lie. You're not doing a box; you are reinventing the concept of distributed transactions really badly and without transactional semantics because you're just firing stuff off like a stream of events. But you don't have like this read-ahead lock or any of the other stuff that the database people invented in the '60s. So there's that kind of lie of it. Then when you get into the operational side, increasingly, it turns out sending everything is expensive, you know, B, really, really time-consuming, C, actually a waste of effort and time and resources, and you shouldn't do that. So you need to take that, enrich it, correlate other data, look at better things, figure out associations, sample it, and sort of figure out and finesse how you understand the data in this very operational context, which we often bundle that into the OpenTelemetry collector. But we never ever talk about the OpenTelemetry collector as like a required thing or even, you know, a thing, and then so it hampers a lot of the potential of the SDK make, because for example, you can't update a span because a span is treated as an append-only immutable log. Except it's a box, but no, it's a dependently immutable log; it's a stream of events. But at the same time, it turns out if you break this at any point because not all are reliable, you completely destroy the entire concept of what you're doing and embreeze all your ingestion pipelines and embreeze your UI of everything building everything, and it's super annoying. 
+**Adriana:** Which is so weird because like 2019 was not that long ago. It's like two weeks ago!
 
-**Reys:** Right.
+**Hazel:** I know, right? It does feel like it!
 
-**Hazel:** So I would love for people to think about what it's like if we made the concept of a collector or this concept of enriching, rewriting the tree, flattening the tree, doing all these weird sorts of correlation concepts or flattening or changing the shape of stuff to make it more malleable for you. What if that was a more integral part of how we designed the SDK? And if we designed the SDK with more use cases in mind, how do we do so in a way that gives people a simple mental model but doesn't lie to them about what they can expect out in the platform? So like there are client SDKs, for example, that don't send the data at all ever until they have received on the client the ending span, which means that if your span is 10 seconds long and on second 9 and 2, the client process gets shut down and does not have time to send that span, you lose all of that data. But if you send it all to the collector immediately, you have so much traffic you can't really afford to do that. But if you were able to send like a snapshot thing of a read-ahead log of this isn't done yet, but I'm going to window it like databases do in the '70s, then okay, you can work with it. You can work with it, and then you can patch it up. Some vendors have actually started to work cleverly around OpenTelemetry and work cleverly around the specification in the middle part to allow that capability in places where they need it, like mobile clients, and then patch it up and make it, you know, OpenTelemetry compliant by the time you send it to your backend. So if we open up the Pandora's box a little bit of, okay, maybe this is kind of necessary, maybe we need to think about this in a weird way of we have to have all the things talk to each other, and we need to make it more possible to do these things that make the mental model a bit more coherent, when can we do that?
+**Adriana:** I was going to say you're also heavily involved in the platform engineering space, and I feel like observability is one of those things. We often talk about it as a separate thing, but really, you can't have effective platform engineering without observability. You can't have effective SRE without observability. And I know you have many thoughts.
 
-**Reys:** That's a lot! You got thoughts! 
+**Hazel:** Yeah, so it's actually something that irks me a little bit a lot of the time because I get why this happens. You have a massively wide platform and you have a massively wide toolchain, and people keep adding more and more context into something, and the context goes deep and it goes wide and it goes up and it goes in all the different places. You can't possibly hold it all in your head unless you know you're weird like me and can hold way too many things in your head. 
 
-**Hazel:** Um, I wanted to just switch gears a little bit because before we started the stream, we were talking about, you know, you have many thoughts on many things, and one of them was Observability 3.0. Now we've heard Observability 2.0 has kind of come into our vernacular lately, and you were talking now about Observability 3.0. So can you tell us what you mean by that?
+But you do end up in this situation where, yeah, OpenTelemetry, you can dive so deep into it. It can become your whole thing. It can become like the only thing you really think about. And when you see a lot of companies with the platform teams, they start off with an SRE team that's really just a rebranded Ops team. Then they take the rebranded Ops team, they split into, you know, two, three teams, and then one of those teams ends up being in charge of, you know, the Kubernetes part, and that, you know, gets labeled the platform team for some reason. 
 
-**Hazel:** So, what I mean by that is a really, really fun thing where it gets into the heart of what I like about observability, which is essentially the same thing that everybody ignores, and I would like them to not ignore that. And so if I brand it a little bit with like a cute little sticker, maybe people will care. So Observability 1.0 and 2.0 is sort of a reframing of the natural progression that has happened in observability and the vendors and the capabilities and the needs of the platform and what we need to do in order to ask the right questions. Before, it was sort of this is observability, and this is observability, and then we're like, well, no, it is all observability. It's all about asking questions. It's more what's the fidelity of the questions? What type of questions can you ask? How much information is there? How rich is it? What are the properties of asking those types of questions? So if we think of Observability 2.0 as sort of being the ultimate insight in the tech context of a company or a program or a platform, can we ask essentially a question? That's kind of the ultimate goal of observability 2.0 to me. 
+And then the platform team gets turned into two, three different teams. And then you keep going on, and you know someone gets stuck with the observability thing, and it ends up being really complex because there are a lot of moving parts. So I see how things get split out and sort of fragmented, you know, much in the same way as the CNCF landscape is so massive; everything has its own kind of corner, and nobody really talks to each other. 
 
-So for me, Observability 3.0 is defined by the idea that you need to take non-tech people and non-tech problems and the larger context of the business and embed it into your ability to reason about your system. You need to take the system and embed that into the rest of the company so the company can reason about that. So Observability 3.0 has a stark difference in that it's not about tooling; it's not about capabilities. It's not about all the sort of the technical side; it's very much now we need to take the tech and we need to take the people and the processes and this, you know, massive budget that the IT industry gets and stop spending it without accountability and stop spending it as this massive black hole where money goes in, magic stuff comes out, and nobody can explain why. So can your business analysts, can your marketing people, can your salespeople, can your product people, can your everybody else, your customer success team, can they all sit there and understand how to better serve the customer and how to better interoperate with the technology people without the technology people having screen feeding to them? Can you give them the capability to do a better job, and can you take what they know and take all this cool stuff that they do and put it into context that lets platform engineers and product engineers and backend and all these people do a really, really good thing of being able to present technological options and be able to actually interoperate with what the company needs, as opposed to what the company has asked for, you know, in a guessing manner? To me, Observability 3.0, to kind of sum it up, is the business context comes in tech, the tech context goes into the business, and they become one harmonious concept.
+But I wish people would do that because they often end up re-implementing the same thing over and over. So like in the profiling side of things we have this Open Profiling aspect, and they're looking at a lot of the OpenTelemetry stuff, and they're reinventing a lot of the same discussions that they need to have. A lot of the saying, "Do you need standards? Do you need name events? Do you need plugins? How does the collector work?" And I'm like, "We solved that five years ago! Look at the pre-existing stuff, tweak it a bit, and then you think about it." 
 
-**Reys:** That's amazing, and I'm sure this is going to spark a lot of conversations! I'm really excited to see other people's thoughts and kind of hopefully, you know, see your vision. 
+### [00:10:12] Importance of observability in platform engineering
 
-**Adriana:** I also wanted to chat with you; you know, OpenTelemetry is an open-source project. Obviously, we at KubeCon, and you work at the NLY Foundation, and I would love for the audience to learn more about kind of the story behind the foundation because, yeah, you shared it earlier, and I would love for you to share that.
+Or you have the event streaming architecture people where you have, like, database streaming, you have lake house people, and you have business analytics and business intelligence and all these different data science types of things and data science-related stuff. And it turns out that if you are trying to take a metric buttload of data and derive useful actionable insights from it and then share that with people who are doing data science, that's kind of what we decided to call it, you know, 20 years ago. 
 
-[00:12:10] **Hazel:** The NLY Foundation was started by Chris Noda, and it was one of those last things that she did before she passed away. The NLY Foundation actually kind of started as an idea that germinated from Hacker, the Mastodon instance that we all built together, made into this massive thing, and then did a huge migration. We live-streamed it, and everybody learned from it; it was awesome. The reason in Hacker that we chose the technology that we did is because you had a bunch of brains; you had a bunch of people that are kind of the world’s support to doing a lot of things, but we didn't want to rely on that because we wanted to experiment with the idea of what does it mean for a community to deeply own their own community, their own concept, their own architecture, their everything? This was right around the time when the community, especially the tech community, was first, you know, grappling with the idea of we built this little thing, and now it's kind of being taken away, and we don't have control over our own, you know, engagement platform, our own sort of communication. How do we never lose it again? Then it turns out that as the massive migration initially happened, we almost closed registrations on Hacker, not due to operational concerns, but due to a massive legal liability. The course of how federation works on Mastodon ends up being a very, very abusable vector for putting illegal content somewhere because that content has to get syndicated onto your server. If you run a Mastodon instance, you are liable for anything that touches your computer, but you don't really necessarily control what that is, and so that is a very difficult concept. Nova kind of ran into this with her legal background and her legal brain. She was like, "Oh, absolutely no, no, no, no, no, no, no." She ended up immediately finding lawyers, sitting down, and building like an LLC. We wrapped Hacker around NLY and very quietly spread this kind of information to a lot of other larger instances of, "You need to now care about this; you need to immediately start caring about this because you are at risk of a huge vector." There's a huge surge of potential heat coming, but it made us realize as we sat down and we kind of solved this problem, when you go from a fun toy project and you take this toy project, and it becomes a community, there's this invisible cliff of I have like my vision, I have my dream, my people, and now there's everything. I can't half-ass my licensing anymore; I can't half-ass my contributor CLA agreement. How do I get people from large companies or from regulated industries to be able to contribute? It turns out you can't just make their repository open source; you have to actually make it so that their paperwork is okay with it. 
+And then we forgot about that, and we reinvented OpenTelemetry instead of making a data pipeline. And then we reinvented profiling instead of making a data pipeline. And now we're kind of looking at all these things and then we're going, "Oh, we should do this thing!" And then the, you know, Power BI or the business analytics people in the corner are just crying a little bit because they've been doing this since the '80s. 
 
-**Reys:** Right.
+And then way over here in the financial side, did you know this is one of my favorite things? Actually, so KDB is a financial analytic state machine database, and it is a column database. So if you look at high-frequency trading or, you know, data analytics, people that specialize in the financial world, they actually predate the usage of all of these, like, oh no queries that rely on indices. You can just grab the data, and they've been doing that for 40 years. 
 
-**Hazel:** And then how about international people? How about people with disabilities? How about people with different needs? How about people with different backgrounds? Okay, you know, we haven't even begun to solve the how you fund open source. How do you find open source? No, nobody knows the answer; nobody's even gone close. People are trying, like Eva Black, as she says, doing a fantastic job trying to create this sort of top-down way and path and avenue for the ability for companies to pay open source and for governments to pay and for all these things to happen. It's going to take time, but as a community, we need to bottom-up sort of figure out how do we pass this cliff? It's a massive cliff, and nobody really knows it's coming, and you don't have time to prepare for it because you don't get to choose when you become adopted and beloved by the community. Nobody sits down and says, "We're a community now." You just look around one day, and you go, "These are all my friends, and I love them, and this is great!" and then, oh no! It turns out that's only step two because it turns out that you can't really call the CNCF community anymore; it's an ecosystem. That's kind of that third massive cliff that very few people talk about, where you have this one project and this community, and that's cool. The community maybe grows other things when it reaches this stage of becoming a generation and incubation hub of innovation and experimentation, and it starts generating a fractal of different communities that all come together in this ecosystem of this massive idea exchange of community knowledge sharing and community growth when it becomes this messy, inarticulate sort of ill-defined but beautifully growing organic thing that takes on its own life. That's an ecosystem, and we don't even really know how to build those. We definitely don't know how to fund them; we definitely don't even know the differences between all the legal and the compliance. How do you facilitate that? How do you get there? So we looked at this problem, Nova and I, and a bunch of other people, and we thought someone needs to start thinking about this. It's going to take a while; it’s going to take several years, maybe even a decade or two, to really deeply help the world understand how to pass those cliffs and turn them into this growing ramp of taking ideas and sharing with the world in a way that generates further ideas in a way that becomes this ever-growing thing. The NLY Foundation, which was originally sort of kind of starting as like a legal cover and legal ability to do this, always was intended to be a vehicle that helps you understand that problem and helps figure out how do we make this beautiful growth and knowledge sharing possible.
+So you had to, and nobody else ever really thought to look it up. And so it's fun to see all the communities reinvent things over and over, bring their own flavor and context into it, and then hopefully we can, with platform engineering, start stirring all the people together, talking to them, and getting them to actually look outside their little window and go, "Oh, we solved the same problem! Well, that's cool. How can I learn from how you approached it, and how can you learn from how I approached it, and can we build kind of a more common thing that's like really awesome?"
 
-**Reys:** That's so great! I think are we coming up on time?
+Given that there's so many interesting points that you just brought up and like the way your brain works and how you can look at something and intuitively understand what's happening, what pieces of the open projects are intriguing you?
 
-[00:29:10] **Adriana:** So we are coming up on time. We are going to have our next guest on. Thank you so much, Hazel. It was lovely to talk with her, and we will share socials, like how you can get in touch with her at the end, and as well as like how you can get involved in the future Humans of OpenTelemetry segment as well. I'm really excited to see what kind of interactions come up from these conversations that we just had. And yeah, whatever questions, comments, thoughts you have, definitely please let us know. We would love to hear them and help connect you with Hazel so we can learn even more and move forward on kind of her vision. Also, secretly jealous of her mental superpowers. I'm going to have to see if I can pick up any tips, but now we have our next guest on, and I'm so excited! Hopefully, you can see his cat pants because they're amazing. 
+**Hazel:** So one of the things that's really intriguing to me about the OpenTelemetry project is that you have this dichotomy of OpenTelemetry as the end-user kind of part where you have this SDK and this API and there's how you use it, and you have this mental model. And then you have the operational side of how you collect the data, how you store it, how you enrich it, how you sample, and how you do all these things. And they're all deeply disconnected, and they really don't need to be. 
 
-**Ted:** Hello!
+But the reason they're often deeply disconnected is because they're all, non-intentionally or maliciously, horrifically lying to each other. So the mental model, for example, that you have with traces is, oh, there's like this little box and it's the start of it and the end of it, and in the box, I put all my information stuff and I draw some information on the outside of it. And then in the information stuff, I had another box, then I have another box, and I have another box. I have so many boxes!
 
-**Reys:** Hey! Hello, how's it going?
+And when you actually use the SDK, when you actually send things, that's a complete lie. You're not doing a box; you are reinventing the concept of distributed transactions really badly and without transactional semantics because you're just firing stuff off like a stream of events. But you don't have, like, this read-ahead lock or any of the other stuff that the database people invented in the '60s. And so there's that kind of lie of it. 
 
-**Ted:** Going great! How are you all doing today?
+And then when you get into the operational side, increasingly it turns out sending everything is expensive, really time-consuming, and actually a waste of effort and time and resources, and you shouldn't do that. So you need to take that, enrich it, correlate other data, look at better things, figure out associations, sample it, and sort of figure out and finesse how you understand the data in this very operational context, which we often bundle that into the OpenTelemetry collector. 
 
-**Reys:** Not bad! It's KubeCon! Awesome times! It's like a big friend reunion! Day two of the main KubeCon events, which, you know, everyone is on fumes at this point.
+But we never ever talk about the OpenTelemetry collector as like a required thing or even, you know, a thing, and then it hampers a lot of the potential of the SDK because, for example, you can't update a span because a span is treated as an append-only immutable log, except it's a box. But no, it's a dependently immutable log; it's a stream of events. But at the same time, it turns out if you break this at any point because of how unreliable you are, you completely mess up the entire concept of what you're doing and you mess up all your ingestion pipelines, and it's super annoying. 
 
-**Ted:** Yeah, we had a busy start because we had Observability Day, which just started with Rejects, and then, yep, Observability Day and KubeCon Day one yesterday.
+So I would love for people to think about what it's like if we made the concept of a collector or this concept of enriching, rewriting the tree, flattening the tree, doing all these weird sorts of correlation concepts, or flattening or changing the shape of stuff to make it more malleable for you. What if that was a more integral part of how we designed the SDK? And if we design the SDK with more use cases in mind, how do we do so in a way that gives people a simple mental model but doesn't lie to them about what they can expect out in the platform? 
 
-**Reys:** I know! It just feels like we've been here forever, so we're so excited to have you! Can you tell us a little bit about your role in OpenTelemetry? I'm sure a lot of our viewers who are more familiar with the project are already aware of who you are, but we'd love an introduction.
+So like there are client SDKs, for example, that don't send the data at all ever until they have received on the client the ending span, which means that if your span is 10 seconds long and on second 9 and 2, the client process gets shut down and does not have time to send that span, you lose all of that data. But if you send it all to the collector immediately, you have so much traffic you can't really afford to do that. But if you were able to send like a snapshot thing of a write-ahead log of "this isn't done yet, but I'm going to window it" like databases do in the '70s, then okay, you can work with it! You can work with it, and then you can patch it up. 
 
-[00:31:16] **Ted:** Yeah, sure! My name’s Ted Young, and I'm one of the co-founders of the project, coming from the OpenTracing side of the family. For people who don't know, OpenTelemetry is actually a merging of two prior projects: OpenTracing and OpenCensus. OpenCensus was mostly Google people and some Microsoft people, and OpenTracing was everybody else. Then we merged to form OpenTelemetry, and I continue to work on the project as a member of the governance committee, mostly just focusing on the various spec SIGs, implementation SIGs that need an extra helping hand when it comes to finding consensus and figuring out what design is actually going to work. 
+And some vendors have actually started to work cleverly around OpenTelemetry and work cleverly around the specification in the middle part to allow that capability in places where they need it, like mobile clients, and then patch it up and make it, you know, OpenTelemetry compliant by the time you send it to your backend. So if we open up the Pandora's box a little bit of, okay, maybe this is kind of necessary, maybe we need to think about this in a weird way of we have to have all the things talk to each other, and we need to make it more possible to do these things that make the mental model a bit more coherent, when can we do that? That's a lot! 
 
-**Reys:** Right.
+**Adriana:** You've got thoughts! I wanted to just switch gears a little bit because before we started the stream, we were talking about, you know, you have many thoughts on many things, and one of them was observability 3.0. Now we've heard observability 2.0 has kind of come into our vernacular lately, and you were talking now about observability 3.0. So can you tell us what you mean by that?
 
-**Ted:** There are some areas in OpenTelemetry where it's technically challenging enough that ironically it's easy to come to a design, or at any rate, it's easy to determine which design is the correct one, right? Because it's so technically challenging that the requirements are very rigorous. But then there's other parts of OpenTelemetry where it's like a little more squishy, where there's like one way that would be a really, really good way, and then there's some other ways that would like sort of work, right? You can't say they definitely would not work, but they're not like great. But when you have that situation, it's so, so, so much harder to find consensus, right? Because people will lock in to a particular idea, and then if it's possible to find some way to make it work, because they're engineers, they will continue to promote, but "But there's this way it could work!" and trying to like find consensus there. 
+**Hazel:** So what I mean by that is a really, really fun thing where it gets into the heart of what I like about observability, which is essentially the same thing that everybody ignores, and I would like them to not ignore that. And so if I brand it a little bit with like a cute little sticker, maybe people will care. 
 
-**Reys:** Right.
+So observability 1.0 and 2.0 is sort of a reframing of the natural progression that has happened in observability and the vendors and the capabilities and the needs of the platform and what we need to do in order to ask the right questions. Before it was sort of, "This is observability, and this is observability." And then we're like, "Well, no, it is all observability." It's all about asking questions. It's more, "What's the fidelity of the questions? What type of questions can you ask? How much information is there? How rich is it? What are the properties of asking those types of questions?" 
 
-**Ted:** Yeah, of being like, "Yes, okay, that would work, but this would work better," and getting everyone to be like, "Well, even though you prefer that one, would you agree that you're not going to convince everyone at this point to go that way?" Like, "Yes!" And like, "Would you be able to get everything done with this other one?" Like, "Yes!" And like, "Okay, well then would you be willing to come on board with this and help us move this forward because we all actually need it to get done?" So that's like a bit of just more like community organizing that requires maybe kind of like an engineering design background.
+### [00:19:07] Introduction of Observability 3.0
 
-**Reys:** Yeah, and I feel like that's where I provide the most value these days to the project.
+And so if we think of observability 2.0 as sort of being the ultimate insight in the tech context of a company or a program or a platform, can we ask essentially in question that's kind of the ultimate goal of observability 2.0 to me? So for me, observability 3.0 is defined by the idea that you need to take non-tech people and non-tech problems and the larger context of the business and embed it into your ability to reason about your system. And you need to take the system and embed that into the rest of the company so the company can reason about that. 
 
-**Ted:** That's so awesome! Cool! I feel like there's also, you have to like have some good diplomatic skills as well.
+So observability 3.0 has a stark difference in that it's not about tooling. It's not about capabilities. It's not about all the sort of the technical side. It's very much now we need to take the tech and we need to take the people and the processes and this, you know, massive budget that the IT industry gets and stop spending it without accountability and stop spending it as this massive black hole where money goes in, magic stuff comes out, and nobody can explain why. 
 
-**Reys:** Right.
+So can your business analysts, can your marketing people, can your sales people, can your product people, can your everybody else, your customer success team, can they all sit there and understand how to better serve the customer and how to better interoperate with the technology people without the technology people having to screen feed to them? Can you give them the capability to do a better job? And can you take what they know and take all this cool stuff that they do and put it into context that lets platform engineers and product engineers and backend engineers and all these people do a really, really good thing of being able to present technological options and be able to actually interoperate with what the company needs? 
 
-**Ted:** Building trust in the community is important, just absolutely having people know that you don't have an agenda.
+It has a potential, not just what the company has asked for, you know, in a guessing manner. To me, observability 3.0, they kind of sum it up as the business context comes in tech, the tech context goes into the business, and they become one harmonious concept.
 
-**Reys:** Yeah, yeah. Right. And that you really are just there to listen to everyone and help everyone really clarify the requirements and help everyone really determine what the best design solution would be for those requirements.
+**Adriana:** That's amazing! And I'm sure this is going to spark a lot of conversations, and I'm really excited to see, you know, other people's thoughts and kind of hopefully see your vision. I also wanted to chat with you. You know, OpenTelemetry is an open-source project, obviously. We’re at KubeCon, and you work at the OpenTelemetry Foundation. I would love to, you know, have the audience learn more about kind of the story behind the foundation, because, yeah, you shared it earlier, and I would love for you to share that.
 
-**Ted:** Yeah, yeah, yeah. And you know, on a similar vein, it always brings me back to like the whole thing with OpenTelemetry being such a lovely community and that it really takes the whole thing of being vendor-neutral very seriously. I mean, we're all at three different places, and we all get along. Like, we're all competitors, but like not really, because we're all moving towards the same goal. I was wondering if you could comment on like what has to go on to really continue to foster that sense of community and not in us versus them.
+**Hazel:** The OpenTelemetry Foundation was started by Chris Nova, and it was one of those last things that she did before she passed away. The OpenTelemetry Foundation actually kind of started as an idea that germinated from Hacker, the Mastodon instance that we all built together, made into this massive thing, and then did a huge migration. It was live! We live-streamed it, and everybody learned from it; it was awesome. 
 
-**Ted:** Yeah, that is great! So I really think there's two parts. The simple part is that like humans, generally speaking, are good people. And also, even though we might all work at different companies now, the reality is for the most part, there are just like many tech domains. There's like an observability scene, right? There's like the engineering and product people or whatever who's just like, that's their bag, and they're good at it, and they just tend to kind of like circle through the different orgs and companies that happen to be paying people to work on that stuff in that time. So I think that's the thing that makes it easier, right? Like it's not like we're from different planets that are in some intergalactic war, and we have like nothing in common or something. We've got all this stuff to overcome. It's just like we all know each other. 
+### [00:23:06] Discussion about the nly foundation
 
-**Reys:** Right.
+And the reason in Hacker that we chose the technology that we did is because you had a bunch of brains, you had a bunch of people that are kind of the world’s support to doing a lot of things, but we didn't want to rely on that because we wanted to experiment with the idea of, "What does it mean for a community to deeply own their own community, their own concept, their own architecture, their everything?" And this was right around the time when the community, especially the tech community, was first, you know, grappling with the idea of, "We built this little thing, and now it's kind of being taken away, and we don't have control over our own engagement platform, our own sort of communication. How do we never lose it again?"
 
-**Ted:** And when you're around long enough, it's like everyone cycles two or three jobs, so you stop really looking at people as like representatives of a particular company.
+And then it turns out that as the massive migration initially happened, we almost closed registrations on Hacker not due to operational concerns, but due to a massive legal liability. And the course of how federation works on Mastodon ends up being a very, very abusable vector for putting illegal content somewhere because that content has to get syndicated onto your server. And so if you run a Mastodon instance, you are liable for anything that touches your computer, but you don't really necessarily control what that is. And so that is a very difficult concept. 
 
-**Reys:** It's so true!
+And so Nova kind of ran into this, and with her legal background and her legal brain, she was like, "Oh, absolutely no, no, no, no, no, no." And then so she ended up immediately finding lawyers, sitting down, and building an LLC. And we wrapped Hacker around an LLC and very quietly spread this kind of information to a lot of other larger instances of, "You need to now care about it; you need to immediately start caring about this because you are at risk of a huge vector. There's a huge surge of potential heat coming." 
 
-**Ted:** Yeah. I think one of the things too, just from like my, you know, very short experience, is even when they are moving companies, people want to stay involved in the project. They're actively seeking out roles where they can continue contributing to the project in their role, so I think that speaks volumes.
+But it made us realize, as we sat down and we kind of solved this problem, when you go from a fun toy project and you take this toy project and it becomes a community, there's this invisible cliff of, "I have my vision, I have my dream, my people, and now there's everything." Like, I can't half-ass my licensing anymore, I can't half-ass my contributor CLA agreement. How do I get people from large SE companies or from regulated industries to be able to contribute? It turns out you can't just make their repository open source; you have to actually make it so that their paperwork on there is okay with it. 
 
-**Ted:** The fact that you can look at our maintainers and community members and there's like quite a long lifespan at this point. I actually haven't run the math, but I would not be shocked if like the average age of a maintainer in OpenTelemetry was measured in years at this point. Like, on average, it's like two or three years. I wouldn't be shocked if it's that high. Like people really do stick around.
+And then how about international people? How about people with disabilities? How about people with, you know, different needs? How about people with different... that happens, okay? You know, we haven't even begun to solve the how you for open source, how do you find open source? Nobody knows the answer! Nobody's even gone close! People are trying, like Eva Black, as she says, doing a fantastic job trying to create this sort of top-down way and path and avenue for the ability for companies to pay open source and for governments to pay and for all these things to happen. 
 
-**Reys:** It's so true!
+It's going to take time, but as a community, we need to bottom-up sort of figure out how do we pass this cliff? And it's a massive cliff, and nobody really knows it's coming. You don't have time to prepare for it because you don't get to choose when you become adopted and beloved by community. Nobody sits down and says, "We're community now." You just look around one day and you go, "These are all my friends, and I love them, and this is great!" And then, oh no! 
 
-[00:36:30] **Ted:** And the second part of that is structuring the project because companies, there are very few like companies, but there are a lot of bad incentives. So when we started the project, coming from other open-source projects where I had borne witness and had to deal with all the fallout of these bad incentives or muddy incentives causing various companies to like test the waters and like get into stuff with each other. So when we started this project, we had a goal based off of our experiences of like how do we actually structure this project in a way that makes it obvious that these bad incentives are not present? Where people can look at that and be like, "Oh yeah, that won't work, so we're not going to bother to try to see if we can just buy the whole TC, right, and take over the project." 
+And then it turns out that's only step two because it turns out that you can't really call the CNCF community anymore—it’s an ecosystem. And that's kind of the third massive cliff that very, very few people talk about where you have this one project and this community, and that's cool, and the community maybe grows other things when it reaches this state of becoming a generation and incubation hub of innovation and experimentation, and it starts generating a fractal of different communities that all come together in this ecosystem of this massive idea exchange of community knowledge sharing and community growth when it becomes this messy, inarticulate sort of ill-defined but beautifully growing organic thing that takes on its own life—that's an ecosystem. 
 
-**Reys:** Right.
+And we don't even really know how to build those. We definitely don't know how to fund them. We definitely don't even know the differences between all the legal and the compliance. How do you facilitate that? How do you get there? And so we looked at this problem, Nova and I, and a bunch of other people, and we said, "Someone needs to start thinking about this." It's going to take a while; it's going to take several years, maybe even a decade or two to really deeply help the world understand how to pass those cliffs and turn them into this growing ramp of taking ideas and sharing with the world in a way that generates further ideas in a way that becomes this ever-growing thing. 
 
-**Ted:** By like, "What if just everyone who works on who's in a leadership position works for Splunk or something?" Right? Like you can't do that because once you get more than two people on the TC who work at one company, and you want a third person, well one of those first two people has to drop out or remove companies or something.
+The OpenTelemetry Foundation, which was originally sort of kind of starting as like a legal cover and legal ability to do this, always was intended to be a vehicle that helps you understand that problem and helps figure out how do we make this beautiful growth and knowledge sharing possible.
 
-**Reys:** Right.
+**Adriana:** That's so great! I think, are we coming up on time?
 
-**Ted:** Yeah, and then when it comes to the actual shape of the project, prior projects, even these big industry things like Kubernetes and whatever, they tend to have this veneer of utopia like, "Oh, we're all just getting together for this altruistic reason of making container scheduling work!" And it is like as an individual, it's somewhat altruistic in that like I'm really interested in it. I would love to like push this domain forward. I want a real distributed operating system. I don't even want Kubernetes; I want the next thing, but sorry, Kubernetes! 
+**Reys:** We are coming up on time. We are going to have our next guest on. Thank you so much, Hazel! It was lovely to talk with her, and we will share socials—like how you can get in touch with her at the end, and as well as like how you can get involved in the future Humans of OpenTelemetry segment as well. And I'm really excited to see what kind of interactions come up from these conversations that we just had. 
 
-**Reys:** Right.
+And yeah, whatever questions, comments, thoughts you have, definitely please let us know. We would love to hear them and help connect you with Hazel so we can learn even more and move forward to kind of her vision. And also, secretly jealous of her mental superpowers! I'm going to have to see if I can pick up any tips! 
 
-**Ted:** But I also want the next OpenTelemetry; I want to keep pushing this stuff.
+But now we have our next guest on, and I'm so excited! Hopefully, you can see his cat pants because they're amazing. Ted, hello!
 
-**Reys:** Exactly!
+**Ted:** Hey, hello! How's it going?
 
-**Ted:** So I'm motivated, but like these are like billion-dollar projects almost, right? The amount of engineering effort that goes into Kubernetes... If you calculate the salaries that I'm sure that's at this point, that's probably a billion dollars. Maybe that's crazy; maybe it's like a hundred million. 
+**Adriana:** Going great! How are you all doing today?
 
-**Reys:** It's a chunk of change.
+**Ted:** Not bad! It's KubeCon—awesome times! It's like a big friend reunion!
+
+**Reys:** Day two of the main KubeCon events, which, you know, everyone is on fumes at this point!
+
+**Adriana:** Yeah, we had a busy start because we had Observability Day, which just restarted with Rejected, and then Observability today and KubeCon Day one yesterday. 
+
+**Ted:** I know! It just feels like we've been here forever!
+
+**Adriana:** So we're so excited to have you. Can you tell us a little bit about your role in OpenTelemetry? I'm sure a lot of our viewers who are more familiar with the project are already aware of who you are, but would love an introduction.
+
+**Ted:** Yeah, sure! My name's Ted Young, I'm one of the co-founders of the project, and I’m coming from the OpenTracing side of the family. People don't know OpenTelemetry is actually a merging of two prior projects: OpenTracing and OpenCensus. OpenCensus was mostly Google people and some Microsoft people, and OpenTracing was everybody else. 
+
+Then we merged to form OpenTelemetry, and I continue to work on the project as a member of the governance committee, mostly just focusing on the various spec SIGs, implementation SIGs that need an extra helping hand when it comes to finding consensus, figuring out what design is actually going to work. 
+
+There are some areas in OpenTelemetry where it's technically challenging enough that ironically it's easy to come to a design or, at any rate, it's easy to determine which design is the correct one, right? Because it's so technically challenging that the requirements are very rigorous. But then there are like other parts of OpenTelemetry where it's like a little more squishy, where there's like one way that would be a really, really good way and then there's some other ways that would sort of work, right? You can't say they definitely would not work.
+
+**Adriana:** Yeah, right!
+
+**Ted:** But they're not like great. But when you have that situation, it's so, so, so much harder to find consensus, right? Because people will lock into a particular idea, and then if it's possible to find some way to make it work—because they're engineers—they will continue to promote, "But there's this way it could work!" 
+
+And trying to find consensus there is about being like, "Yes, okay, that would work, but this would work better." And getting everyone to be like, "Well, even though you prefer that one, would you agree that you're not going to convince everyone at this point to go that way?" Like, "Yes!" And like, "And would you be able to get everything done with this other one?" Like, "Yes!" And like, "Okay, well then would you be willing to come on board with this and help us move this forward?" Because we all actually like need it to get done. 
+
+So that's a bit of just more like community organizing that requires maybe kind of an engineering design background. 
+
+**Adriana:** Yeah, and I feel like that's where I provide the most value these days to the project.
+
+**Ted:** That's so awesome!
+
+**Adriana:** Cool! And I feel like there's also—you have to have some good diplomatic skills as well, right?
+
+**Ted:** Yeah! Building trust in the community is important, just absolutely. Having people know that you don't have an agenda, right? And that you really are just there to, like, listen to everyone and help everyone really clarify the requirements and help everyone really determine what the best design solution would be for those requirements.
+
+**Reys:** And on a similar vein, it always brings me back to like the whole thing with OpenTelemetry being such a lovely community, and that it really takes the whole thing of being vendor-neutral very seriously. I mean, we're all at three different places, and we all get along. Like, we're all competitors, but like not really because we're all moving towards the same goal. 
+
+And I was wondering if you could comment on like what has to go on to really continue to foster that sense of community and not an us versus them?
+
+**Ted:** Yeah, that is great! So I really think there's two parts. The simple part is that like humans, generally speaking, are good people. And also, even though we might all work at different companies now, the reality is for the most part, there's just like many tech domains. There's like an observability scene, right? There's like the engineering and product people, whatever, that's just like that's their bag and they're good at it, and they just tend to kind of like circle through the different orgs and companies that happen to be paying people to work on that stuff in that time. 
+
+So I think that's the thing that makes it easier, right? It's not like we're from different planets that are in some intergalactic war and we have like nothing in common or something. We've got all this stuff to overcome; it's just like we all know each other! 
+
+And when you're around long enough, it's like everyone cycles two or three jobs, so you stop really looking at people as like representatives of a particular company.
+
+**Adriana:** It's so true!
+
+**Ted:** Yeah! I think one of the things too, just from my, you know, very short experience, is even when they are moving companies, people want to stay involved in the project. Like, they're actively seeking out roles where they can continue contributing to the project in their role, so I think that speaks volumes, honestly.
+
+**Ted:** The fact that you can look at our maintainers and community members, and there's quite a long lifespan at this point. I actually haven't run the math, but I would not be shocked if like the average age of a maintainer in OpenTelemetry was measured in years at this point. Like, on average, it's like two or three years. I wouldn't be shocked if it's that high. People really do stick around!
+
+**Adriana:** It's so true!
+
+**Ted:** And the second part of that is structuring the project because companies—there are very few like companies, but there are a lot of bad incentives. So when we started the project, coming from other open-source projects where I had borne witness and had to deal with all the fallout of these bad incentives or muddy incentives causing various companies to like test the waters and like get into stuff with each other. 
+
+So when we started this project, we had a goal based off of our experiences of like how do we actually structure this project in a way that makes it obvious that these bad incentives are not present? Where people can look at that and be like, "Oh yeah, that won't work, so we're not going to bother to try to see if we can just buy the whole TC, right, and take over the project by like, what if just everyone who works on—who's in a leadership position works for Splunk or something, right? Like, you can't do that because once you get more than two people on the TC who work at one company, and you want a third person, well, one of those first two people has to drop out or move companies or something."
+
+### [00:37:48] Guest introduction: Ted Young
+
+And then when it comes to the actual shape of the project, prior projects—even these big industry things like Kubernetes and whatever—they tend to have this like veneer of utopia, like, "Oh, we're all just getting together for this altruistic reason of making container scheduling work." And it is like, as an individual, it's somewhat altruistic in that like I'm really interested in it. I would love to like push this domain forwards. 
+
+I want a real distributed operating system; I don't even want Kubernetes! I want the next thing! 
+
+**Adriana:** Exactly! 
+
+**Ted:** But sorry, Kubernetes! But I also want the next OpenTelemetry, you know? I want to keep pushing this stuff.
+
+**Adriana:** Exactly!
+
+**Ted:** So I'm motivated, but like these are like billion-dollar projects, almost, right? The amount of engineering effort that goes into Kubernetes, if you calculate the salaries, that I'm sure that's at this point probably a billion dollars. Maybe that's crazy; maybe it's like a hundred million. 
+
+**Adriana:** Yeah, I mean, it's a chunk of change!
 
 **Ted:** It's a chunk of change! A lot of money when you think about developer salaries and how many people work on these projects. OpenTelemetry, on average, like monthly average number of contributors is like a couple hundred engineers, I think.
 
-**Reys:** Wow!
+**Adriana:** Wow!
 
-**Ted:** On average, it's a couple hundred engineers pushing some kind of PR or something at any given moment on OpenTelemetry. It's a lot of people; there’s a lot of money. The only reason people are getting paid to do that is because there are some incentives. 
+**Ted:** On average, it's a couple hundred engineers pushing some kind of PR or something at any given moment on OpenTelemetry. It's a lot of people, a lot of money! And the only reason people are getting paid to do that is because there is some incentive. 
 
-**Reys:** Yeah.
+**Adriana:** Yeah, which is so nice to have that because otherwise, like, we're so busy already. The fact that you have like all these vendors who are backing OpenTelemetry, I think speaks volumes for it because I don't think we'd be where we are without that.
 
-[00:40:00] **Ted:** And the problem Kubernetes had when it first started and other projects that I worked on is there was all this interest and all this willingness to pay people to work on bootstrapping Kubernetes, but why? That question was actually nebulous for maybe some vendors or cloud providers. It was clear how they were going to make money and thus why they should be paying people to work on this, but for a lot of companies, a lot of groups getting started, especially the startups, it was not clear how they were going to make money off of Kubernetes. 
+**Ted:** But a problem Kubernetes had when it first started and other projects that I worked on is there was all this interest and all this willingness to pay people to work on bootstrapping Kubernetes, but why? That question was actually nebulous for maybe some vendors or cloud providers. It was clear how they were going to make money and thus why they should be paying people to work on this. 
 
-**Reys:** Right.
+But for a lot of companies, a lot of groups getting started, especially the startups, it was not clear how they were going to make money off of Kubernetes. So it was like step one, spend all this money to bootstrap this thing; step two, figure out how to exploit it! 
 
-**Ted:** So it was like step one: spend all this money to bootstrap this thing; step two: figure out how to exploit it. And just leaving that door open, right? Just the fact that it wasn't really clearly defined how Kubernetes was to be organized, how everyone was expected to make money, what part of this is going to be some shared open stack versus what part are we going to like sell things or whatever? That was all just like a big question mark in the early days and should all the code live in a Kubernetes GitHub? Or should various startups and companies be allowed to have complete ownership of some component that lives within Kubernetes and thus it lives within that company's repo? 
+And just leaving that door open, right? Just the fact that it wasn't really clearly defined how Kubernetes was should be organized, how everyone's expected to make money, what part of this is going to be some shared open stack versus what part are we going to sell things or whatever? That was all just like a big question mark in the early days. 
 
-**Reys:** Right.
+And should all the code live in a Kubernetes GitHub, or should various startups and companies be allowed to have complete ownership of some component that lives within Kubernetes, and thus it lives within that company's repo? 
 
-**Ted:** All things like this led to just like a lot of problematic stuff, right? Like what if one company kind of owns a component of OpenTelemetry? They're going to build a lot of like startup brand around that component naturally, right? That would be the natural play, would be to talk that component up and how it's kind of yours. 
+All things like this led to just like a lot of problematic stuff! 
 
-**Reys:** Right.
+**Adriana:** Right!
 
-**Ted:** And then OpenTelemetry, a project, was like, "That was a cool component, but now we're going in a different direction, so we should deprecate that one and get a new thing." Well, that would be like the kiss of death to a startup. 
+### [00:40:57] Discussion about OpenTelemetry governance
 
-**Reys:** For sure.
+**Ted:** Right? Like what if one company kind of owns a component of OpenTelemetry? They're going to build a lot of like startup brand around that component, naturally, right? That would be the natural play, would be to talk that component up and how it's kind of yours! 
 
-**Ted:** So you can start to see how like just leaving the door open starts to like create a situation where things like people's incentives can start to get at loggerheads. 
+And then OpenTelemetry, a project, was like, "That was a cool component, but now we're going in a different direction, so we should deprecate that one and get a new thing." 
 
-**Reys:** Right.
+Well, that would be like the kiss of death to a startup! 
 
-**Ted:** And working on containerization stuff that led to these situations where you'd be in spec meetings, right? People are making some technical proposals, and everyone else is like, "I can't tell if this is a good idea or not. This might be a good idea, or this might be the beginning of some sneaky play to like insert some nasty thing so that this company can pull some crap on the community later." 
+So you can start to see how just leaving the door open starts to create a situation where things like people's incentives can start to get at loggerheads.
 
-**Reys:** Right.
+**Adriana:** Yeah, yeah!
 
-**Ted:** And why are they doing that? They're evil? No, but because they need to make money off of all this money that they're spending. So when we started OpenTelemetry, we felt it needed to be very, very, very clear how people were going to make money and how this project was going to provide value for end users, for vendors, for cloud providers, for all the people involved that need to be crystal clear. Because otherwise, we were going to end up in that situation. 
+**Ted:** And working on containerization stuff that led to these situations where you'd be in spec meetings, right? People are making some technical proposals, and everyone else is like, "I can't tell if this is a good idea or not. This might be a good idea, or this might be the beginning of some sneaky play to insert some nasty thing so that this company can pull some crap on the community later." 
 
-**Reys:** Right.
+And why are they doing that? They're evil? No, but because they need to make money off of all this money that they're spending. 
 
-**Ted:** But because we learned our lessons, we did make it crystal clear. 
+So when we started OpenTelemetry, we felt it needed to be very, very, very clear how people were going to make money and how this project was going to provide value for end users, for vendors, for cloud providers, for all the people who are going to be involved that need to be crystal clear. 
 
-**Reys:** Good!
+Because otherwise, we were going to end up in that situation. But because we learned our lessons, we did make it crystal clear!
 
-**Ted:** Yeah, right! All the code lives in OpenTelemetry. Do you want to donate something to OpenTelemetry? That's fabulous! You need to move it into OpenTelemetry; you need to change the copyright and everything to be the OpenTelemetry authors. You need to completely relinquish any individual ownership of this; it's now collectively owned by OpenTelemetry and is now part of the CNCF. It's no longer part of your startup. 
+**Adriana:** Yeah!
 
-**Reys:** Right.
+**Ted:** Right? All the code lives in OpenTelemetry. Do you want to donate something to OpenTelemetry? That's fabulous! You need to move it into OpenTelemetry. You need to change the copyright and everything to be the OpenTelemetry authors. You need to completely relinquish any individual ownership of this; it's now collectively owned by OpenTelemetry and is now part of the CNCF; it's no longer part of your startup. 
 
-**Ted:** And also, like, what's the boundary of the project? OpenTelemetry, we're going to standardize the data being emitted by all of these systems, but storing and analyzing that data, that's never going to be part of OpenTelemetry because you wouldn't want to standardize that part. That's like green field; that's the part where we're trying to figure out the futures. Like, what can we do with this information? And we want everyone to compete on that, and that's also where everyone's going to make money and making that very, very clear really did a lot in the early days as far as bringing in the second and third wave of contributing companies. 
+And also, like what's the boundary of the project? OpenTelemetry, we're going to standardize the data being emitted by all of these systems. But storing and analyzing that data, that's never going to be part of OpenTelemetry because you wouldn't want to standardize that part. You want to—that's like green field, that's the part where we're trying to figure out the futures. Like, what can we do with this information? And we want everyone to compete on that, and that's also where everyone's going to make money.
 
-**Reys:** Right.
+**Adriana:** Yeah, exactly! 
 
-**Ted:** Like you have this first wave of people who are like, "We're just making this major bet because it's super clear this would be good for us." Then this second wave of companies that are like, "Well, okay, if those guys are all in, that kind of changes the calculus for me; I guess we should get involved." 
+**Ted:** And making that very, very clear really did a lot in the early days as far as bringing in the second and third wave of contributing companies, right? Like, you have this first wave of people who are like, "We're just making this major bet because it's super clear this would be good for us." And then this second wave of companies that are like, "Well, okay, if those guys are all in, that kind of changes the calculus for me. I guess we should get involved." 
 
-**Reys:** Right.
+And then once those groups get involved, there's like a third group, it's like, "Well, now that all of those people are involved, I guess that changes it for us." And the fact that it was super clear what you would get out of this if you put something into it made that happen faster.
 
-**Ted:** And then once those groups get involved, there's like a third group that's like, "Well, now that all of those people are involved, I guess that changes it for us." And the fact that it was super clear what you would get out of this if you put something into it made that happen faster.
+**Adriana:** So you mentioned OpenTelemetry is the merging of OpenCensus and OpenTracing, and you know, obviously you guys did the project update yesterday. We heard a lot of new cool stuff coming down the pipeline. Was this part of your vision at the beginning of the foundation of OpenTelemetry, or is this kind of—
 
-**Reys:** So you mentioned, you know, OpenTelemetry is the merging of like OpenTracing and OpenCensus, thank you. I was like OpenTraces! Okay, day three is okay, sorry. 
+**Ted:** You mean like where the project is today?
 
-**Ted:** No worries!
+**Adriana:** Yeah!
 
-[00:44:35] **Reys:** And you know, obviously, you guys did the project update yesterday; we heard a lot of new cool stuff coming on the pipeline. Was this part of your vision like at the beginning of the foundation of OpenTelemetry?
+### [00:45:09] Updates on OpenTelemetry project
 
-**Ted:** Or is this kind of... you mean like where the project is today?
+**Ted:** Yeah, I mean, we've really, like, our original mandate— we're at kind of this interesting spot in OpenTelemetry where we had this original mandate, which was to unify tracing, metrics, and logs. Those are the primary signals that we have available. But the problem in the past was these were siloed systems, and what you're trying to do is get a completely connected, coherent view of the system, right? 
 
-**Reys:** Yeah!
+And those were the three major signals that we wanted to tackle first, so that was like our original pitch. We're going to merge these three signals into one graph of data that can then be walked by a computer system, and we can dump all of this analysis off onto the computers instead of doing it in our brains when it comes to finding correlations across all of this information. 
 
-**Ted:** Yeah! I mean, we've really like our original mandate. We're at kind of this interesting spot in OpenTelemetry where we had this original mandate, which was to unify tracing, metrics, and logs. Those are the primary signals that we have available. But the problem in the past was these were siloed systems, and what you're trying to do is get a completely connected coherent view of the system. 
+And that was a great pitch! It's been part of actually transforming this whole industry, right? As the data completely changes, the products, of course, have to completely change. And if you're going from a bunch of siloed systems to like a unified platform, you can see how that's just going to create a complete sea change within the industry. 
 
-**Reys:** Right.
+Because, well, if that's the future, then what's going to happen? Well, all these companies are going to consolidate, right? One company that was doing logging or whatever is going to acquire some companies that did the other signals, and then they're going to try to merge all of that into a platform. Or if they're a new company, they're right out of the gate; they're going to be like, "Are we a platform?" Or how do we fit into this new platform world where all the data is going into one spot? 
 
-[00:30:00] **Ted:** And those were the three major signals that we wanted to tackle first. So that was like our original pitch: we're going to merge these three signals into one graph of data that can then be walked by a computer system, and we can dump all of this analysis off onto the computers instead of doing it in our brains when it comes to finding correlations across all of this information. That was a great pitch; it's been part of actually transforming this whole industry, right? As the data completely changes, the products, of course, have to completely change. If you're going from a bunch of siloed systems to like a unified platform, you can see how that's just going to create a complete sea change within the industry because, well, if that's the future, then what's going to happen? Well, all these companies are going to consolidate. Right? One company that was doing logging or whatever is going to acquire some companies that did the other signals, and then they're going to try to merge all of that into a platform. Or if they're a new company, they're right out of the gate, they're going to be like, "Are we a platform? Or how do we fit into this new platform world where all the data is going into one spot?" 
+So that's like a complete industry shift that probably would have happened anyways without OpenTelemetry, but OpenTelemetry is like this massive accelerant. 
 
-**Reys:** Right.
+**Adriana:** So you incentivize basically the unification of the signals—not just supporting the three signals, but actually intertwining them so that you can really get the most out of observability, really!
 
-**Ted:** So that's like a complete industry shift that probably would have happened anyways without OpenTelemetry, but OpenTelemetry is like this massive accelerant. So you incentivize basically the unification of the signals—not just supporting the three signals but actually intertwining them so that you can really get the most out of observability, really.
+**Ted:** Right, yeah! And I call the old version of it the three browser tabs of observability because calling it three pillars gives it too much credit. Like, there was some intentional structure there; that was never an intentional design! It’s like a terrible design! What should we do? We should silo all of the data and use our brains to try to figure out what connects to what. Like, that's obviously dumb! 
 
-**Reys:** Right!
+So obviously, we didn't design that; it just kind of accrued over time. And going from that to what I call the braid of data. So it is all this data, but it is being braided and connected in various ways. And you can think of the value that comes out of a braid, right? You can think of like the individual strands in a rope, and then you can think about a rope and how much more you can do with a rope than just pieces of straw. 
 
-**Ted:** Yeah, and I call, you know, the old version of it, I call the three browser tabs of observability because calling it three pillars gives it too much credit. Like, there was some intentional structure there; there was that was like never an intentional design; it's like a terrible design. What should we do? We should silo all of the data and use our brains to try to figure out how what connects to what. Like that's obviously dumb. So obviously, we didn't design that; it just kind of accrued over time. 
+It's just so much stronger!
 
-**Reys:** Right.
-
-**Ted:** And going from that to what I call the braid of data. So it is all this data, but it is being braided and connected in various ways. 
-
-**Reys:** Right.
-
-**Ted:** And you can think of the value that comes out of a braid, right? You can think of like the individual strands in a rope, and then you can think about a rope and how much more you can do with a rope than just pieces of straw.
-
-**Reys:** Yeah.
-
-**Ted:** It's just so much stronger, right?
-
-**Reys:** Exactly!
+**Adriana:** Right, exactly! 
 
 **Ted:** And can you give folks just a high-level overview of what some of the updates that came out of the project update yesterday?
 
-**Ted:** Yeah! I would say the super high level—and we didn't really cover this in the update, but—getting back to this industry sea change, right? Being at this moment where we're finally stabilizing tracing, logs, and metrics, right? We had the kind of last piece of that. There's a little bit of work that needs to be done related to resources, so if people don't know, resources are in a way like the fourth signal, right? Like when we, there's the data, there's the system, and there's like the structure of the system. The traces are kind of like the energy, right? That's the transactions; that's the stuff moving through the system. But then there's the actual stuff that it's moving through, and those are the resources—the Kubernetes clusters, the virtual machines, the application binaries, all of that stuff. When we started the project, there was this idea that came from OpenCensus that these resources were immutable compared to the lifespan of a service. When a service started, it was associated with some resources, and those resources did not change. 
+**Ted:** Yeah, I would say the super high level—and we didn't really cover this in the update but exclusive!—but getting back to this industry sea change, right, being at this moment where we're finally stabilizing tracing, logs, and metrics, right? 
 
-**Reys:** Right.
+We had the kind of last piece of that. There's a little bit of work that needs to be done related to resources. So if people don't know, resources are in a way like the fourth signal, right? When we—there's the data, there's the infrastructure of the system, and there's like the structure of the system. And so the traces are kind of like the energy, right? That's the transactions, that's the stuff moving through the system, but then there's the actual like stuff that it's moving through, and those are the resources—the Kubernetes clusters, the virtual machines, the application binaries—all of that stuff.
 
-**Ted:** And this kind of made sense, yeah, because generally speaking, the resources you care about with server-side computing, they don't change. Now they do sometimes, but this is just like edge-casy enough that at Google, they kind of were just like, "Eh, we're just going to ignore that." 
+And when we started the project, there was this idea that came from OpenCensus that these resources were immutable compared to the lifespan of a service. When a service started, it was associated with some resources, and those resources did not change. And this kind of made sense, yeah, because generally speaking, the resources you care about with server-side computing, they don't change. 
 
-**Reys:** Right.
+Now they do sometimes, but this is just like edge-casey enough that at Google, they kind of were just like, "Just going to ignore that." Like, "You can freeze a virtual machine, move it into a different data center, and then like turn it back on, right? And now all of its resources changed. It's running, it's the same computer program, and now it's running somewhere completely different." But in practice, we don't do that, right? 
 
-**Ted:** Like, you can freeze a virtual machine, move it into a different data center, and then like turn it back on, right? And now all of its resources changed! It's running; it's the same computer program, and now it's running somewhere completely different! But in practice, we don't do that, right? So maybe you could just ignore this requirement, and this was very convenient because you have this obnoxious thing with resources where you want to figure all of them out before you start sending data. You don't want to start sending partially indexed data, which is what would happen if you started emitting telemetry before you figured out your Kubernetes pod ID or whatever. But figuring out some of these resources can take time. 
+So maybe you could just ignore this requirement, and this was very convenient because you have this obnoxious thing with resources where you want to figure all of them out before you start sending data. You don't want to start sending partially indexed data, which is what would happen if you started emitting telemetry before you figured out your Kubernetes pod ID or whatever. 
 
-**Reys:** Right.
+But figuring out some of these resources can take time. Yeah, you have to go query some API and like wait for the answer, and you don't want to delay the booting up of your app necessarily, right? 
 
-**Ted:** You have to go query some API and like wait for the answer, and you don't want to delay the booting up of your app necessarily, so do you move forward? Or is this gating? It turns out there's a lot of pernicious problems around actually gathering all of these resources and associating them. And the biggest problem is devs, because it's annoying at startup to be like, "Well, whatever. We'll do the dumb thing of, we'll just tack these resources on as they come back from their various APIs." 
+So what if one of these calls is failing? Right? Do you move forwards or is this gating? Turns out there's a lot of pernicious problems around actually gathering all of these resources and associating them. And the biggest problem is devs because it's annoying at startup to be like, "Well, whatever, we’ll do the dumb thing of we’ll just tack these resources on as they come back from their various APIs." 
 
-**Reys:** Right.
+And then you end up with this situation where you have some partial data at the beginning. How do you prevent devs from making this mistake? Well, what if you made the resource API immutable where you could only set it once? Then they would try to do this, right? They would try to come back with some late-binding resource, and then the API would be like, "Oh, I can't." 
 
-**Ted:** And then you end up with this situation where you have some partial data at the beginning. How do you prevent devs from making this mistake? Well, what if you made the resource API immutable, where you could only set it once? Then they would try to do this, right? They would try to come back with some late binding resource, and then the API would be like, "Oh, I can't! Oh, this is annoying! I guess I'm forced to do it the right way!" So it's not that resources are immutable by some intrinsic nature of what resources are; resources are mutable because that was a convenient way to force the Google devs to not make this like stupid mistake. 
+Oh, this is annoying! I guess I'm forced to do it the right way. 
 
-**Reys:** Right.
+**Adriana:** So it's not that resources are immutable by some intrinsic nature of what resources are; resources are mutable because that was a convenient way to force the Google devs to not make this stupid mistake! 
 
-**Ted:** And to force them to do the extra effort figuring out how to resolve all of these resources at the beginning. So to protect them from themselves to a certain extent, this is my claim. 
+**Ted:** Oh! And to protect them from themselves, to a certain extent!
 
-**Reys:** Right. 
+**Adriana:** This is my claim! 
 
-**Ted:** So, but then you get to clients, right? And all of this was fine. This was just like fine; all swans are black. And then you get to client development, which we've been a little slow to get to in part because almost all the engineers came from kind of a server-side background. It was just a little bit late before the client-side people started showing up, but when they did, client-side computing is very different, right? When the application starts and stops is actually like pretty arbitrary. Like it's pretty arbitrary when you hit quit on your web browser or whatever; it doesn't really signify anything. When program boots or ends, but it goes through all these different states, right? Like it might be foregrounded or backgrounded, right? It might be on Wi-Fi or a cellular network, right? It might get put to sleep and then wake up in Hong Kong, you know? 
+**Ted:** But then you get to clients, right? And all of this was fine; this was just like fine. All swans are black. And then you get to client development, which we've been a little slow to get to, in part because almost all the engineers came from kind of a server-side background. 
 
-**Reys:** Right.
+It was just a little bit late before the client-side people started showing up. But when they did, client-side computing is very different, right? When the application starts and stops is actually like pretty arbitrary. It's pretty arbitrary when you hit quit on your web browser or whatever; it doesn't really signify anything. 
 
-**Ted:** And so all of these resources are changing over the lifespan of this application. Oops! Oops, indeed! Damn it! So that's kind of where we're at with the project, where we finished our original mandate, but there's like a couple of squiggles around resources that are kind of like the last thing where it's like, "All right, we have to do this really annoying work." This is going to be really annoying for me personally because this is the exact kind of thing where it's like we need to fix this to make it work for the clients, but we already told people it was immutable, so can we like take that back and say like some of these are immutable and some of these are not? Like, would that screw anybody up or not? Like, this is going to be very tricky. 
+When the program boots or ends, but it goes through all these different states, right? Like it might be foregrounded or backgrounded; it might be on Wi-Fi or a cellular network, right? It might get put to sleep and then wake up in Hong Kong, you know? 
 
-**Reys:** Right.
+And so all of these resources are changing over the lifespan of this application. Oops! Oops, indeed! Damn it! 
 
-**Ted:** And then we're going to have to come up with a solution, and there's going to be a bunch of community people be like, "But we said it was immutable!" And then we're like, "But clients need to be like, 'But I don't care because I'm a Go developer!'" You know? 
+So that's kind of where we're at with the project, where we finished our original mandate, but there's like a couple of squiggles around resources that are kind of like the last thing where it's like, "All right, we have to do this really annoying work." 
 
-**Reys:** Right.
+This is going to be really annoying for me personally because this is the exact kind of thing where it's like we need to fix this to make it work for the clients, but we already told people it was immutable. So can we like take that back and say, "Like some of these are immutable and some of these are not?" 
 
-**Ted:** Like, yeah, so this is what I do, okay? Is try to bring everyone together so we can move forward. But if we can get past that, now we are in the green field of the future where we are looking at all of the data that we haven't captured yet, and we want to figure out how to start bringing that data in. How do we bring profiling in? How do we bring source code commits, versioning, all of that in? Yeah, config files! That's the future!
+Like, would that screw anybody up or not? Like, this is going to be very tricky! And then we're going to have to come up with a solution, and there's going to be a bunch of community people being like, "But we said it was immutable!" And then we're like, "But clients need to be!" 
 
-**Reys:** That's exciting!
+Like, "But I don't care because I'm a Go developer!" You know? 
 
-**Ted:** Yeah! So we're, you know, at the five-year, five, six-year mark of the foundation. What do you think it's going to look like in another five years? 
+So this is what I do! 
 
-**Ted:** In another five years? Pretty much the same, but with more stuff tacked onto it. Sorry, I'm going to be very boring with that answer because I think we move slow, and I don't believe in 2.0's. No, it is just 1.0 forever. 
+Okay? Is try to bring everyone together so we can move forward. But if we can get past that, yeah, now we are in the green field of the future, where we are looking at all of the data that we haven't captured yet, and we want to figure out how to start bringing that data in. 
 
-**Reys:** Right.
+How do we bring profiling in? How do we bring source code commits, versioning, all of that in? Yeah, config files—that's the future!
 
-[00:55:00] **Ted:** And so I just think it'll be, but there will be like a sea change that happens once you get enough of this data actually connected. There are certain it unlocks certain things, so I don't think you're going to see OpenTelemetry radically change in the way it looks, but five years out from now is enough time for the analysis tools to start to catch up with where the data is. So where I think you're going to see some amazing things is some amazing new analysis tools that are actually looking at all kinds of data that we can't look at today and are condensing that into like a helpful co-pilot for an operator trying to figure out their system. 
+**Adriana:** That's exciting!
 
-**Reys:** That's exciting! 
+**Ted:** Yeah! So we're, you know, at the five-year, five to six-year mark of the foundation. What do you think it's going to look like in another five years?
 
-**Ted:** Right on! And before we log off and get back into the real world, I have to learn about your pants. What is the story with these cat pants? Because they're fabulous!
+**Ted:** In another five years? Pretty much the same, but with more stuff tacked onto it. Sorry, I'm going to be very boring with that answer because I think we move slow, and I don't believe in 2.0s! No, it's just 1.0 forever! 
 
-**Ted:** They have cats on them! You know these cats?
+And so I just think it'll be—but there will be like a sea change that happens once you get enough of this data actually connected. There are certain—it unlocks certain things. 
 
-**Reys:** Do I know them? Are they your cats?
+So I don't think you're going to see OpenTelemetry radically change in the way it looks, but five years out from now is enough time for the analysis tools to start to catch up with where the data is. So where I think you're going to see some amazing things is some amazing new analysis tools that are actually looking at all kinds of data that we can't look at today and are condensing that into like a helpful co-pilot for an operator trying to figure out their system!
 
-**Ted:** They are not my cats! I wish! I wish I had personally fabricated these pants, but I did not. The internet provided these pants! But I did know that these pants existed before I looked at them. I was like, "I want pants that have kittens and space on them!" And I knew the internet would give this to me. I had complete faith, and it took about 30 seconds.
+**Adriana:** That’s exciting!
 
-**Reys:** Wow! The internet came through!
+**Ted:** Right on! And before we, you know, log off and get back into the real world, I have to learn about your pants! What is the story with these cat pants? Because they're fabulous!
 
-**Ted:** It came through! Yeah! You know, they can make me get out of bed; they can't make me get out of my pajamas. That's kind of my attitude.
+**Ted:** They have cats on them! You know, these cats? Do I know them? Are they your cats?
 
-**Reys:** I love it! All right! What else would you like to share before we head back into the actual event that we're all here for? 
+**Adriana:** They are not my cats! I wish I had personally fabricated these pants, but I did not. The internet provided these pants! But I did know that these pants existed before I looked at them. I was like, "I want pants that have kittens and space on them!" And I knew the internet would give this to me. I had complete faith, and it took about 30 seconds!
 
-**Ted:** You know, I would just encourage anyone watching to, if you're an end user, please get involved in the developer experience SIG and give us feedback on your experience as an end user, in particular around installing the SDK and using the instrumentation APIs because we want to clean all that up now that things are stabilizing. So yeah, please get involved if that's what you're interested in. 
+**Adriana:** Wow! The internet came through! 
 
-**Adriana:** And speaking of end users, Reys and myself work in the end user SIG. We do monthly events like OpenTelemetry in practice. We do end user interviews to learn more about your adoption and implementation process, you know, and get some feedback that we can share back with the SIGs. We'll have a QR code at the end that you can scan to get in touch with us on the OpenTelemetry SIG user channel on CNCF Slack. 
+**Ted:** It came through! Yeah, you know, they can make me get out of bed; they can't make me get out of my pajamas—that's kind of my attitude!
 
-**Ted:** And don't forget the survey that's open until the end of the week!
+**Adriana:** I love it! All right! Yeah, what else would you like to share before we head back into the actual event that we're all here for?
 
-**Adriana:** Oh, the docs survey! The docs survey! It ends Friday! Yes! If you've used OpenTelemetry in any way, shape, or form, and you have something to say about it, whether good or bad or just comments or questions, definitely please take the survey! We will link that in the show notes, I believe we can do that. 
+**Ted:** You know, I would just encourage anyone watching, if you're an end user, please get involved in the developer experience SIG and give us feedback on your experience as an end user, in particular around installing the SDK and using the instrumentation APIs because we want to clean all that up now that things are stabilizing. 
 
-**Ted:** That is the thing we can do!
+So yeah, please get involved if that's what you're interested in. Speaking of end users, Adriana and myself work in the end user SIG. We do monthly events like OpenTelemetry in practice. We do end user interviews to learn more about your adoption implementation process, you know, and get some feedback that we can share back with the SIGs, and we'll have a QR code at the end that you can scan to get in touch with us on the OpenTelemetry SIG user channel on CNCF Slack. 
 
-[00:58:00] **Adriana:** Yeah, and we should also, if you go to the OpenTelemetry socials on I think every social platform, we're on BlueSky, X, LinkedIn, and Mastodon, there should be some tweets also with links to the survey.
+And don't forget the survey that's open until the end of the week!
 
-**Ted:** Yes, and we are available on Slack at any time, and yeah, reach out to us; we'd love to hear from you. 
+**Adriana:** Oh, the docs survey! The docs survey ends Friday! Yes! If you've used OpenTelemetry in any way, shape, or form, and you have something to say about it, whether good or bad or just comments or questions, definitely please take the survey! 
 
-**Reys:** And I think we're good!
+We will link that in the show notes, I believe. We can do that! That is a thing we can do!
+
+### [00:57:45] Call to action for audience engagement
+
+**Ted:** Yeah! And we should also, if you go to the OpenTelemetry socials on, I think every social platform—we're on Bluesky, X, LinkedIn, and Mastodon—there should be some tweets also with links to the survey! 
+
+**Adriana:** Yes! And we are available on CNCF Slack at any time. Reach out to us; we’d love to hear from you! And I think we're good!
 
 ## Raw YouTube Transcript
 

@@ -10,224 +10,456 @@ URL: https://www.youtube.com/watch?v=6SmO4yKjmCs
 
 ## Summary
 
-In this YouTube video, Dan hosts a panel discussion about effectively writing conference proposals (CFPs) and preparing for speaking engagements, particularly within the context of open telemetry and observability. Panelists include Adriana Vela, Henrik Rexed, Josh, and Ree, who share their insights on choosing topics, overcoming imposter syndrome, and enhancing presentation skills. Key points include the importance of submitting unique and relevant topics, the value of end-user stories in presentations, and strategies for engaging audiences. The panelists also discuss the common experience of rejection when submitting CFPs, emphasizing the need to manage expectations and learn from feedback. They highlight their own conference experiences, including the challenges of live demos and the significance of networking at events. The video encourages viewers to participate in the open telemetry community and share their knowledge through speaking opportunities.
+In this YouTube video, Dan hosts a panel discussion featuring experts in the technology conference arena, including Adriana Vela, Henrik Rexed, Josh, and Ree, who share insights about submitting proposals for speaking at conferences, known as CFPs (Call for Proposals). The panelists discuss various topics such as selecting the right conferences, crafting unique and engaging submission titles, and overcoming imposter syndrome when applying to speak. They emphasize the importance of sharing personal user experiences, especially in the observability and open telemetry fields, and provide tips for preparing for talks, including rehearsal techniques and the value of feedback. Throughout the conversation, they highlight the normalcy of rejection in the conference speaking circuit and encourage aspiring speakers to persist and refine their proposals. The panelists also share memorable anecdotes from their speaking experiences, including technical difficulties and the importance of connecting with audiences. Overall, the video serves as a resource for those looking to enhance their conference speaking skills and navigate the CFP process effectively.
 
 ## Chapters
 
-00:00:00 Welcome and introduction
-00:02:20 Meet the panelists
-00:04:30 What is a CFP?
-00:06:50 Finding conferences to speak at
-00:09:17 Motivation for speaking
-00:12:51 Overcoming imposter syndrome
-00:15:12 Importance of unique topics
-00:18:10 End user stories value
-00:22:40 Choosing topics for CFP
-00:29:36 Hot topics in observability
+00:00:00 Introductions
+00:01:16 What is a CFP?
+00:05:30 Finding conferences to speak at
+00:09:40 Reasons to speak at conferences
+00:12:44 Overcoming imposter syndrome
+00:17:24 Importance of user stories
+00:22:04 Choosing unique topics
+00:30:56 Hot topics in observability
+00:39:38 Preparing for your talk
+00:44:28 Handling rejection and feedback
 
-**Dan:** Hello everybody, good morning, good afternoon, good evening. I'm Dan, and as part of the Open Telemetry and End User SIG, today I have the absolute pleasure of hosting this panel on end users. We normally focus on Open Telemetry — I mean, it's in the name. We host end users telling us how they're adopting observability best practices across the industry. If you want to know more, you can follow the QR code on the screen and you'll find how to get in touch.
+## Transcript
 
-However, this time we're going to be getting some tips and tricks from true veterans in the tech conference arena. We'll be talking about how to write good CFPs, what topics to choose, how to prepare for a talk, or even why going through the whole process of applying to speak at a conference is well worth it. So if you have recently applied to speak at KubeCon or Observability Day in London or another conference, it doesn't matter if you made it or not; I think these experts will have some advice that you can take home and use in your future talks.
+**Dan:** Hello everybody, good morning, good afternoon, good evening. I'm Dan, and as part of the OpenTelemetry end user SIG today, I have the absolute pleasure of hosting this panel. We normally focus on OpenTelemetry, I mean, it's in the name. We host end users telling us how they're adopting observability best practices across the industry. If you want to know more, you can follow the QR code on the screen and you'll find how to get in touch. 
 
-[00:02:20] We want this to be an interactive panel, so if you're watching live on YouTube or LinkedIn and you have any questions related to the topics that we're discussing, please drop them in the chat, and I will try to incorporate them into the discussion as best I can. Okay, so it's time to meet our panelists. If you're watching live on YouTube or LinkedIn, I would love to know where you're watching from, so drop a comment in the chat and tell us where you're watching from. Myself, I'm in Edinburgh, Scotland, where it is currently 5:02 PM. 
+### [00:01:16] What is a CFP?
 
-Let's meet our first panelist, Adriana. Hello! Can you tell us where you're connecting from and a little bit about yourself?
+However, this time we're going to be getting some tips and tricks from true veterans in the tech conference arena. We'll be talking about how to write good CFPs, what topics to choose, how to prepare for a talk, or even why going through the whole process of applying to speak at a conference is well worth it. So if you have recently applied, maybe to speak at KubeCon or Observability Day in London or another conference, it doesn't matter if you made it or not. I think these experts will have some advice that you can take home and use in your future talks. 
 
-**Adriana:** Hey Dan, nice to see you! My name is Adriana Vela. I am connecting from Toronto, Canada. It is noon here, and I work alongside Dan as one of the maintainers of the Open Telemetry End User SIG. Thank you very much!
+We want this to be an interactive panel, so if you're watching live on YouTube or LinkedIn and you have any questions related to the topics that we're discussing, please drop them in the chat, and I will try to incorporate them into the discussion as best I can. 
 
-**Henrik:** Hello, Henrik here. Hey, pleasure to be here. My name is Henrik Rexed, as it looks like it's written at the bottom of my video. I'm based in the south of France, the beautiful sunny south of France, even if it's still 10-15 degrees at the moment Celsius. It's 6:03 PM local time in France. Otherwise, I'm trying to be involved in a lot of observability topics, so Tag Observ, and I try to give a hand as well in the End User SIG. Thank you very much.
+Okay, so it's time to meet our panelists. If you're watching live on YouTube or LinkedIn, I would love to know where you're watching from, so drop a comment in the chat and tell us where you're watching from. Myself, I'm in Edinburgh, Scotland, where it is currently 5:02 PM. 
 
-**Josh:** Hello, yes, thanks for having me! I'm Josh. I've been a developer advocate and product manager in all kinds of things around Open Telemetry, and I'm connecting from Brussels, where I'm here for FUM, starting on Saturday. Looking forward to that! I like the European representation here.
+Let's meet our first panelist, Adriana. Um, hello! Can you tell us where you're connecting from and a little bit about yourself?
 
-**Ree:** Hi everyone, I'm so excited to be here! I am joining from Vancouver, Washington, not to be confused with Vancouver, BC. It's like 10 minutes north of Portland. I work in developer relations at New Relic, and I also work with these lovely folks in the Open Telemetry community, primarily as part of the End User SIG. 
+**Adriana:** Hey Dan, nice to see you! My name is Adriana Vela. I am connecting from Toronto, Canada. It is noon here, and I work alongside Dan as one of the maintainers of the OpenTelemetry end user SIG. Thank you very much.
 
-[00:04:30] **Dan:** Thanks to everyone for being here! So let's start with the first question from me, which is going to be directed to Adriana. What is a CFP in the first place? Can you tell us more about it?
+**Henrik:** Hello, Henrik here! Hey, pleasure to be here. My name is Henrik Rexed, as it looks like it's written at the bottom of my video. I'm based in the south of France—the beautiful sunny south of France—even if it's still 10-15 degrees at the moment Celsius. It’s 6:03 PM local time in France. Otherwise, I’m trying to be involved in a lot of observability topics, so I'm involved in observability and I also try to give a hand in the end user SIG as well. Thank you very much.
 
-**Adriana:** Okay, CFP, if I got this right, stands for Call for Proposals or Call for Papers, depending on the context. It's basically a request for a proposal for a talk in the context of conferences, where you basically have an idea for a talk, and you give the details for said talk. Depending on what conference you're applying to, the details will vary from conference to conference. For example, if anyone's ever applied to SREcon, it is a song and a dance to apply to SREcon because I feel like they really want you to hash out all of the details of your proposal ahead of time compared to, say, KubeCon, where you can be a little bit more high-level. So yeah, that is CFP in a nutshell. I don't know if anyone else wants to chime in.
+**Josh:** Hello, yes! Thanks for having me. I'm Josh. I've been a developer advocate and product manager in all kinds of things around OpenTelemetry, and I'm connecting from Brussels where I’m here for FUM, starting on Saturday. Looking forward to that. I like the European representation here.
 
-**Henrik:** For me, a CFP is the opportunity to be in a conference to meet people and to network, because at the end, in my role, to be able to reach out to that conference is a great excuse to talk. For me, a CFP is like, "Oh, maybe I will have some miles with my air because I'm an Air France member if I'm accepted." That would be great!
+**Ree:** Hi everyone! I'm so excited to be here! I am joining from Vancouver, Washington—not to be confused with Vancouver, BC—right? It's like 10 minutes north of Portland. I work in developer relations at New Relic, and I also work with these lovely folks in the OpenTelemetry community, primarily as part of the end user SIG. 
 
-**Dan:** Okay, so we'll move to the next one. If you're new to conferences, you're probably thinking, "Okay, so how do I find conferences to talk at?" Josh, can you tell us a bit more about how you go about finding what conferences you want to apply to speak at?
+**Dan:** Thanks to everyone for being here! Right, so let's start with the first topic—the first question from me, which is going to be directed to Adriana. What is a CFP in the first place? Can you tell us more about it, starting with the tough questions?
 
-**Josh:** Absolutely! A really good way is to use the aggregator sites that a lot of the conferences will post their CFPS on. I think the two big ones would be Session Eyes and Paper Call. And then what's the third one? Anyone can help me out with the name of that third one? 
+**Adriana:** Okay, a CFP, if I got this right, stands for Call for Proposals or Call for Papers, depending on the context. It’s basically a request for a proposal for a talk in the context of conferences, where you basically have an idea for a talk and you give the details for said talk. Depending on what conference you're applying to, the details will vary from conference to conference. 
 
-**Adriana:** Pre-Talks!
+### [00:05:30] Finding conferences to speak at
 
-[00:06:50] **Josh:** Pre-Talks is the third one! You can kind of check out those or Skedge, right? Those are not necessarily going to be specific to the area that you want to speak at. Of course, for the CNCF, you can look at all the CNCF events; that's going to be relevant for open topics. There are also a lot of aggregators. I think we can maybe add some of those to this resources list after this is done. There are some GitHub repos and some Airtable databases that are maintained fairly well that just sort of keep an up-to-date list of all of the ongoing CFPS sorted by their due dates.
+For example, if anyone's ever applied to SREcon, it is a song and a dance to apply to SREcon because I feel like they really want you to hash out all of the details of your proposal ahead of time compared to, say, KubeCon, where you can be a little bit more high level. So yeah, that is CFP in a nutshell. I don't know if anyone else wants to chime in.
 
-**Dan:** And then from those, do you normally choose by the topic of the conference? 
+**Henrik:** For me, a CFP is the opportunity to be in a conference, to meet people, to network. Because at the end, in my role, to be able to reach out to that conference is a great excuse to talk. For me, a CFP is like, "Oh, maybe I will have some miles with my air because I'm an Air France member if I'm accepted." That would be great.
 
-**Josh:** Sometimes it's... I think the topic helps narrow down the initial list, and then from there... Oh, maybe Henrik has something to say on this.
+**Dan:** Okay, so we'll move to the next one. I think, you know, if you're new to conferences, you're probably thinking, "Okay, so how do I find conferences to talk at?" Josh, can you tell us a bit more about how you go about finding what conferences you want to apply to speak at?
+
+**Josh:** Absolutely! A really good way is to use the aggregator sites that a lot of the conferences will post their CFPs on. I think the two big ones would be SessionEyes and PaperCall. And then, what's the third one? Anyone can help me out with the name of that third one? Oh, Pre-Talks! Pre-Talks is the third one. 
+
+So yeah, you can check out those or Skedge. Those are not necessarily going to be specific to the area that you want to speak at. Of course, for the CNCF, you can look at all the CNCF events; that's going to be relevant for open topics. There are also a lot of aggregators. I think we can maybe add some of those to this resources list after this is done. 
+
+But yeah, there are some GitHub repos and some Airtable databases that are maintained fairly well that just sort of keep an up-to-date list of all of the ongoing CFPs sorted by their due dates.
+
+**Dan:** Nice! And then from those, do you normally choose by the topic of the conference, or do you just— I mean, I rather like have everyone talk about OpenTelemetry all the time everywhere in every conference. Is that something that you do normally, or how do you choose?
+
+**Josh:** Sometimes, I think the topic helps narrow down the initial list, and then from there—oh, maybe Henrik has something to say on this.
 
 **Henrik:** No, no, I'm changing the display. 
 
-**Josh:** I forget what I was saying about that. Oh yeah! The topic narrows down the list, but especially if your topic is as broad as DevOps or even observability, that's not going to narrow it down that much. There are still a lot of conferences, so then you have to pick: where am I okay to travel? Do I like to travel far, like Henrik and rack up those miles, or do I want to maybe get my start somewhere that I can drive to and I don't have to get a hotel? Right? And how big will the conference be? I think there's a really big difference between speaking at a single-track conference as a first-time speaker versus speaking at a multi-track conference. I think we'll maybe get into that in some of the other questions, but yeah, I think just the topic alone is not enough to narrow it down.
+**Josh:** I forget what I was saying about that. Oh yeah, so the topic, I think, narrows down the list. But especially if your topic is as broad as DevOps or even observability, that's not going to narrow it down that much. There are still a lot of conferences. So then you have to pick, like, "Where am I okay to travel? Do I like to travel far like Henrik and rack up those miles, or do I want to maybe get my start somewhere that I can drive to and I don't have to get a hotel?" 
 
-**Dan:** Nice! That's cool. All right, so we found the conference and we've got some resources there that people can check out to find where to speak. I guess, you know, a question for Ree: what makes you want to speak? Why do you apply to speak at conferences?
+And how big will the conference be? I think there's a really big difference between speaking at a single track conference as a first-time speaker versus speaking at a multi-track conference. I think we'll maybe get into that in some of the other questions, but yeah, I think just the topic alone is not enough to narrow it down.
 
-[00:09:17] **Ree:** One thing that I kind of found out early on was, because my job is so busy, it sometimes can be hard to find time to learn something new or, you know, something maybe more niche. So if I can submit a topic and it gets accepted on something that I want to learn more about, then that automatically gives me the time and bandwidth to work on that topic and learn about it. So that's one reason. And now that I've been doing it a while, just the benefits from the physical interactions of being able to be in the same space as people who want to learn about these things and having conversations about it — I'm able to learn more. There are a lot of other people that also want to learn the same thing that I wanted to learn, and so it just becomes like this really cool collective, I guess. You get to meet a lot of cool people that way too, and not just for professional networking, but also some have become personal friends. It's just really great; it's a great community exposure.
+**Dan:** Nice, that's cool. Alright, so we've found the conference and we've got some resources there that people can go and check out to find where to speak. I guess a question for Ree: what makes you want to speak? Why do you apply to speak at conferences?
 
-**Adriana:** I was going to say, sometimes, you know, for me personally, speaking is almost like a challenge. I love speaking in front of audiences, but I also find it a little bit terrifying. This kind of forces me to get past that discomfort. Another thing I wanted to point out, especially for those of us who are in an underrepresented group in tech, I think the more of us in underrepresented groups that go out and do talks, the more we can show those folks in underrepresented groups that we exist, and we can empower them to go out and speak as well. I think that's so, so important.
+**Ree:** One thing that I kind of found out early on was because my job is so busy, it can sometimes be hard to find time to learn something new or something maybe more niche. So if I can submit a topic and it gets accepted on something that I want to learn more about, then that automatically gives me the time and bandwidth to work on that topic and learn about it. 
 
-**Henrik:** Just to add as well, I think all of us, we all work in technical environments, and sometimes we think that what we are working on is quite normal and nothing special, but there's always something to learn. So if you like the community and you want to share your work, you want to share your experience, you share your journey from being a complete beginner to being a complete expert, and the advice that you can share, I think it's the best opportunity. Sharing a talk is a lot of sharing knowledge and education with the community. I think it's an amazing opportunity for all.
+### [00:09:40] Reasons to speak at conferences
 
-**Josh:** Yeah, and as well, like for someone that's not a dev advocate, for example, you know, what motivates you?
+That's one reason, and now that I've been doing it a while, just the benefits from the physical interactions of being able to be in the same space as people who want to learn about these things and having conversations about it. One, I'm able to learn more, and then also there are a lot of other people that also want to learn the same thing that I wanted to learn. It just becomes like this really cool collective, I guess, and you get to meet a lot of cool people that way too. 
 
-**Henrik:** Well, I'm a dev, so I get the same excuse as Ree, right? If I get a talk accepted, that's brownie points for my boss, and it justifies my existence a little bit. But for people who don't have that motivation, there's another thing that devs actually do that’s really, really important, right? Which is bring feedback back from the community. So that's another thing. If you're an engineer on an engineering team, it can get a little bit insular in our bubbles. Going and talking at a conference is a chance to kick the tires on some ideas with some people that are new to you and gather that feedback from the community as well.
+And you know, not just for professional networking, but also some have become personal friends. It’s just really great—a great community exposure.
 
-**Dan:** I think that's it as well. Sometimes you forget that what you're doing might be something that is ahead of the curve, and you want to give back. That's great. 
+**Adriana:** I was going to say, sometimes, you know, for me personally, speaking is almost like a challenge. I love speaking in front of audiences, but I also find it a little bit terrifying, so this kind of forces me to get past that discomfort. 
 
-[00:12:51] Moving on, they say that, you know, now basically I'm convinced that I want to talk, but sometimes, you know, I think a lot of us suffer from imposter syndrome, and you think that you're not good enough to talk about a certain topic. So I'll go back to you, Adriana. How do you get past that imposter syndrome and that sense of, "I don't know enough to talk about a topic?"
+But another thing that I wanted to point out on why to speak, especially for those of us who are in underrepresented groups in tech, I think the more of us in underrepresented groups that go out and do talks, the more we can show those folks in underrepresented groups that we exist and we can empower them to go out and speak as well. I think that's so, so important.
 
-**Adriana:** I feel like you just have to force yourself past it — just force yourself to do it anyway. Because you know what, if you don't do it, someone else is going to do it. So why not you, right? A lot of times, I think this is advice that someone gave me early on when I started applying for talks, which is like you don't have to be the expert. I think Ree touched on this too: you don't necessarily have to be the expert; you can use this as an opportunity to force yourself to learn something about a topic. Or the other thing is, like, I have to be the expert to be able to speak intelligently about it, but there's something to be said for having kind of a newbie's point of view as well. We're so much more relatable that way when we talk about our experiences as newbies because there are so many people who are new to things. To show people that you're human and you're not some perfect being up on this pedestal, I think it makes it super relatable and more fun for people to learn.
+**Henrik:** Just to add as well, I think all of us, we all work in technical environments, and sometimes we think that what we are working on is quite normal and nothing special, but there's always some things to learn. If you like the community and you want to share your work, you want to share your experience, you share your journey from being a complete beginner to a complete expert, and the advice that you can share, I think it's the best opportunity because sharing a talk is a lot of sharing knowledge and education to the community. I think it's an amazing opportunity for all.
 
-**Henrik:** I think it's important to note that I have not gotten to the point where I don't have a little bit of impostor syndrome or stage fright. It just never goes away completely; I think I'm with you.
+**Josh:** And as well, like for someone that's not like a DevRel, for example, you know, what motivates you?
 
-**Adriana:** You really do just have to push through it because it's always there. But I think it's the talk, like you mentioned before; it's the opportunity to learn and to be more of an expert on that side. But even if you're not the maintainer or the main contributor of the project or whatever topic you decided to present, I think if you have a way of presenting that is super interesting, brings a lot of entertainment, and people will probably listen more to you. If you are someone who is very boring on stage, you don't need to be the full expert; it's just sharing a passion in a very funny way or in your way, in fact, and that brings value for the audience.
+**Henrik:** Well, no, so I am a time devil, so I get the same excuse as Ree, right? Like if I get a talk accepted, that's brownie points for my boss, and it justifies my existence a little bit. But for people who don’t have that motivation, right, there's another thing that DevRels actually do that's really, really important, right, which is bring feedback back from the community. 
 
-[00:15:12] **Josh:** That's such a good point! I've seen talks where you put subject matter experts who are really, really knowledgeable about the subject, but they weren't necessarily presenting it in the most absorbable way. I've seen people who were newer to the subject do really creative things that, for me, I was able to say, "Oh my gosh, yes, this makes complete sense!" I think that is a really good point. You can bring your own perspective into things, and the way you share your knowledge will resonate with somebody in the audience.
+So that's another thing if you're an engineer on an engineering team—like it can get a little bit insular in our bubbles—and so going and talking at a conference is a chance to like kind of kick the tires on some ideas with some people that are new to you and gather that feedback from the community as well.
 
-**Ree:** I will also say that this is why Ree and I have cats on our slides!
+**Dan:** I think that's it as well. Sometimes you forget that what you're doing might be something that is ahead of the curve, and you want to give back. 
 
-**Adriana:** You mean that you bought cats just for conferences, or you had cats in the beginning?
+### [00:12:44] Overcoming imposter syndrome
 
-**Ree:** Oh, so like Ree's cat Taco is like the most photogenic cat ever, and so we just feature her on a bunch of our slides whenever we do talks together. She's a pretty short hair; she's ridiculous. Real animal!
+That's great! Okay, moving on, let's say that you know basically I'm convinced that I want to talk, but sometimes I think a lot of us suffer from imposter syndrome and you think that you're not good enough to talk about a certain topic. So I'll go back to you, Adriana. How do you get past that imposter syndrome and that sense of like, "I don't know enough to talk about a topic"?
 
-**Dan:** I think we talked about end users and how, you know, in Open Telemetry and observability, for example, you may think as an end user, or you know, people will want to know about the latest thing that maintainers have been working on in Open Telemetry or the latest thing that this particular vendor is delivering. But I think there's a lot of value from users telling their stories as well. Do you agree with that, Henrik, for example? I think you talked about that previously.
+**Adriana:** I feel like you just have to force yourself past it—like just force yourself to do it anyway. Because you know what? If you don't do it, someone else is going to do it, so why not you, right? 
 
-**Henrik:** Yeah, I think having vendors presenting will always bring their angle, and I think having a user share their story offers a different angle and journey or an experience that is always super interesting. It's like a book where you have an adventure, and you just follow the adventure. I think it brings a lot of value to the audience. Sometimes, even more value to have someone like me, like a dev, going on stage because I won't necessarily have this experience and this journey. I will bring the same topic from a different angle, so I think a user has a real experience story. I think it's one of the best ones from my perspective.
+And I think a lot of times—I think this is advice that someone gave me early on when I started applying for talks, which is like you don't have to be the expert. I think Ree touched on this too—you don't necessarily have to be the expert; you can use this as an opportunity to force yourself to learn something about a topic. 
 
-[00:18:10] **Josh:** Absolutely! We recently organized the Open Source Analytics Conference at my company, where we participated in organizing it. At the beginning of the process, right, choosing the talks, we specifically separated out all the end-user talks because we didn't have enough of them, and we wanted to make sure that they were well represented in the schedule. We definitely gave preferential treatment to those. The reason for that is for everything that Henrik said, right? Other people want to get these stories that they can follow along with and relate to that don't have that vendor spin necessarily.
+The other thing is, like, "Ah, I have to be the expert to be able to speak intelligently about it," but there's something to be said for having kind of a newbie's point of view as well, because we are so much more relatable that way when we talk about our experiences as newbies. 
 
-**Dan:** I think we got that basically from one of our audience, saying that end users just give a different weight to what they're saying because they are using it in production; they're using it in their systems. 
+There are so many people who are like, you know, new to things, and to show people that you're human and you're not like some perfect being that's up on this pedestal, I think it makes it super relatable and more fun too for people to learn.
 
-Okay, I think we can move on to another topic, which is the topic topic! So we've got, you know, we've got an idea that we want to speak at a conference, and then how do you actually decide what topics to go through? I guess, you know, what topics to put in that CFP? I will ask that to Ree.
+**Henrik:** Adriana, maybe I don't know about you, but I have not gotten to the point where I don't have a little bit of imposter syndrome or stage fright, right? Like it just never goes away completely.
 
-**Ree:** This is an interesting question because when I first submitted my very first CFP to KubeCon in 2022, I think Open Telemetry was still pretty new as a topic at KubeCon at that time. For the first couple of years, I was having pretty good success getting my topics selected. I've found that in the last year, it's been getting harder, one because there are more people talking about it, but also there are more and more things being covered. I think it's been interesting to figure out now it's time to get really kind of niche. I mean, there's still a place for intro-level talks, but I'm kind of in that space where I'm trying to figure out what are interesting aspects and topics related to Open Telemetry and observability in general to submit for.
+**Adriana:** I think I'm with you. 
 
-**Adriana:** I did, yeah! I was going to say on that same vein because, yeah, like Ree said, it's getting harder and harder especially in the observability space. It's interesting too because I think some of the folks on this panel have reviewed CFPS as well for KubeCon. I've done a number of CFP reviews for KubeCon, and it's interesting to see what topics come up over and over and over. I will tell you AI comes up a lot. It's almost to the point where you're like, "Oh my God, not another freaking AI CFP for the love of God!" They're not unique because here's the deal: there's nothing wrong with submitting a CFP on AI, but make sure it's unique at this point because a lot of the stuff that's out there is different permutations of the same thing. It's really about what's your unique take on it. Also, we were talking about end-user stories; I think those are still extremely useful and relevant, but again, after a while, you start seeing a lot of the same end-user stories. So again, when you're submitting an end-user story, what is special? What makes you a snowflake when you're telling your end-user story?
+**Henrik:** Yeah, you really do just have to push through it because it's always there. But I think it's the talk, like you mentioned before; it's the opportunity to learn and to be more expert on that side. But even if you're not the maintainer or the main contributor of the project or whatever topics you decided to present, I think if you have a way of presenting that is super interesting and brings a lot of entertainment, people will probably listen more to you than to someone who is very boring on stage. 
 
-The other thing I would say is some folks try to submit project updates as part of a CFP for KubeCon or whatever, and it's like, dude, a project update does not automatically get you accepted! Save that for the relevant venue, because I think there's special project update sessions, for example. Those are a couple of my pet peeves. I don't know if anyone else wants to chime in.
+You don't need to be the full expert; it's just sharing a passion in a very funny way or in your way, in fact, and that brings value for the audience.
 
-**Josh:** I agree with that, right? Like, how do you be trendy without being too trendy? 
+**Adriana:** That’s such a good point! I've seen talks where, you know, subject matter experts who were really, really knowledgeable about the subject but they weren't necessarily presenting it in the most absorbable way. 
 
-[00:22:40] **Adriana:** I see in the chat there's a thing about people not understanding the basics of OpenTelemetry. When you were speaking about trying to find your niche, do other people call it OTel or is it just me?
+And I've seen people who were newer to the subject, you know, do really creative things that—for me, I was able to be like, “Oh my gosh, yes, this makes complete sense.” So I think that is a really good point. You can bring your own perspective into things, and the way you share your knowledge will, I guarantee you, resonate with somebody in the audience.
 
-**Josh:** I love it! OTel!
+**Ree:** Yeah, absolutely! I will also say that this is why Ree and I have cats on our slides. 
 
-**Adriana:** Yes! 
+**Josh:** You mean that you bought cats just for conferences? 
 
-**Josh:** Anyways, maybe at KubeCon, right? That's true, you need to have something unique and novel to bring to a KubeCon conference. But outside of our bubble, right? Open Telemetry is still a very niche topic. I've had my introduction to Open Telemetry, right? The smaller regional conferences are clamoring for those introductory topics.
+**Ree:** Oh, so like Ree's cat Taco is like the most photogenic cat ever, and so we just like feature her on a bunch of our slides whenever we do talks together. She's a pretty short hair, she's ridiculous!
 
-**Ree:** Introductory talks on these niche topics that are our niche, right? 
+**Dan:** I think we talked about—go ahead.
 
-**Josh:** Yeah, and in my case, I usually try to avoid those introduction talks because I think many people will do the same, so it's just a matter of being different or bringing a different angle. When the people review your talk, then you get an interesting angle that brings value to the community, in my perspective.
+**Adriana:** No, go ahead! 
 
-**Dan:** I do talks that are very expensive in terms of preparation because I love benchmarking. I think I like to have those studies where you show numbers, you show things. It's like an experience, and then you show that to the stage because I think it brings another value because sometimes you don't show that in the normal track. Having that difference, you probably have more chance to be selected.
+**Dan:** I was just going to add, if the conference organizers chose your talk, like, right? Don't be afraid to submit, and then if you get chosen, you got chosen! They want you to talk about it more than anyone else.
 
-**Dan:** I guess, you know, related to this, I think the introductory topics and the more in-depth topics sometimes, you know, when you're applying to speak at a conference, you don't know what level of detail you want to go through either in the CFP or in the talk itself. Is it good to—how do you know your audience, and how do you know what level of depth you want to apply? Ree, how do you normally go about it?
+**Henrik:** That is so true! I think we talked a bit about end users and, you know, I think in OpenTelemetry and observability, for example, you may think as an end user, or you know, people will want to know about the latest thing that maintainers have been working on in OpenTelemetry or the latest thing that this particular vendor is delivering. 
 
-**Ree:** I still find that tough sometimes. Sometimes I'll start with like, "Okay, I kind of want to be more high-level about this topic," but in order for someone to come to this topic, they might need, you know, XYZ knowledge. So even though it's more high-level on that specific thing, it might be considered like an intermediate, if that makes sense. It really depends. I'll also try to consider how much, you know, am I talking about something newer, you know, that was more newly developed, so there's less info about it, or is it something that's been around for a while? I don't have a really good answer; I still find it tough honestly. I try to stick to either beginner or intermediate level in general because of the topics that I typically choose to do.
+But I think there's a lot of value from users telling their stories as well. Do you agree with that, Henrik, for example? I think you talked about that previously.
 
-**Josh:** The thing also is, it's a personal judgment as well. Sometimes you say, "Oh, I think it's beginner," or "I think it's..." I have no idea; it's complicated. 
+### [00:17:24] Importance of user stories
 
-**Ree:** What may seem basic to you might be very advanced to others or the opposite, right?
+**Henrik:** I think having vendors presenting will always bring their angle, and I think having a user sharing their story has a different angle and a journey or an experience that is always super interesting. It's like a book where you have an adventure, and you just follow the adventure. 
 
-**Dan:** Okay, Henrik, I'm going to go back to you because I know that you're everywhere in Open Telemetry as well. I know that there are a lot of hot topics in Open Telemetry. What are the hot topics that you recommend people be writing about right now? I know that it doesn't have to be Open Telemetry; I know that we all love OTel, but what are the sort of hot topics that you would recommend thinking about writing about or talking about?
+So I think it brings lots of value to the audience. Sometimes even more value to have someone like me, like a DevRel, going on stage because I will not have necessarily this experience and this journey. I will bring the same topic from a different angle. 
 
-**Henrik:** What I would suggest is that, by the way, AI is not valid; it is! In general, you have to look at previous conferences and what has been presented and covered so far. If you start to say, "I want to do Open Telemetry on instrumentation," there's plenty of them out there; there's plenty of video out there, and then there's no hot topic in general. Usually, I try to bring the problem statement. For example, how do I sample properly? How do I optimize? Because there is a big concern about observability being expensive, so how can I control that cost? Going through those directions, I think also there is another trend that I think is really important that people need to be educated a bit more on: sustainability. How can we make it green, make it better? Talking about AI is not going to be green because you're going to consume more resources. So maybe having another approach where you say, "We need to be good citizens of the world and save energy," I think that's a pretty good one. Also, I think there are new projects coming in. For example, today, as we speak, Open Telemetry profiling — there are a few talks out there in KubeCon, and it's going to be more and more popular. So there's a big chance that profiling will bring new problems and challenges, so covering them could also be interesting. Try to follow what happens in the industry and think about, "If I start digging this, I may have problems, so how can I resolve them and maybe share that solution or this approach with a larger group in the community?"
+So I think a user has a real experience story; I think it's the best one from my perspective.
 
-**Adriana:** I just add, Henrik, you're really good at this, right? You mentioned sampling, and I saw that video in my feed, and I was like, "Oh, that's a great topic! I'm going to check that out later when I have time." 
+**Josh:** Absolutely! So we recently organized the Open Source Analytics Conference at my company, and we participated in organizing it. At the beginning of the process, right, choosing the talks, we specifically separated out all the end-user talks because we didn't have enough of them. We wanted to make sure that they were well represented in the schedule. 
 
-**Dan:** I think we have some hot topics here. Any other takes on what some of the hot topics are?
+So we definitely gave preferential treatment to those, and the reason for that is everything that Henrik said, right? Like other people want to get these stories that they can follow along with and relate to, that don't have that vendor spin necessarily.
 
-**Ree:** I would like to add something. You know, I think piggybacking on what Henrik was saying on the topics of sustainability, there are some really cool CNCF projects out there on tech sustainability, and I feel like this is a super hot topic for the year just because we're seeing a lot of stuff around wacky environmental things happening, right? Like an increase in forest fires, bizarre temperature swings. We're inherently in an industry that is contributing to the problem. Writing talks about how we can use technology to lessen the problem, I think, can be really compelling and very timely. There's a hot topic for y'all for anyone considering it.
+**Dan:** I think we got that basically from one of our audience saying that, yeah, end users just give a different weight to what they're saying, right? Because they are using it in production; they're using it in their systems. 
 
-I would also mention, we talk a lot about KubeCons, and I think Josh made a point earlier about there being a lot of conferences where things like Open Telemetry are still kind of not super well known. Especially like a lot of these open-source conferences, like Scale, for example, I think just added an observability track this year. FUM I think would probably be another great one. State of Open Con would be another great one where we probably don't have enough talks on observability. Getting into those sort of more niche conferences, I think, would be a good place to start, especially if you're looking to do a talk on observability. 
+So yeah, definitely! Okay, I think we can move on to another topic, which is the topic selection. So we've got an idea that we want to speak at a conference, and then how do you actually decide what topics to go through? I guess, you know, what topics to put in that CFP? And I will ask that to Ree.
+
+**Ree:** This is an interesting question because when I first submitted my very first CFP to KubeCon in—was it for KubeCon EU 2022? I think OpenTelemetry was still pretty new as a topic at KubeCon at that time. 
+
+For like the first couple years, I was having pretty good success getting my topics selected, and I've found, you know, in the last year, it's been getting harder. One, because there are more people talking about it, but also because there are more and more things being covered. 
+
+So I think it's been interesting to kind of figure out like, "Oh, now it's time to get really niche." I mean, there's still a place for intro-level talks, but I'm kind of in that space where I'm trying to figure out, you know, what are interesting aspects and topics related to OpenTelemetry and observability in general to submit for. 
+
+**Adriana:** I did, yeah! I was going to say on that same vein because, yeah, like Ree said, it's getting harder and harder, especially in the observability space. 
+
+And then it's interesting too because I think some of the folks on this panel have reviewed CFPs as well for KubeCon. I've done a number of CFP reviews for KubeCon, and it's interesting to see what topics come up over and over and over. I will tell y'all, AI comes up a lot! And it's almost to the point where you're like, "Oh my God, not another freaking AI CFP, for the love of God!" 
+
+And they're not unique because, like, here's the deal, right? There's nothing wrong with submitting a CFP on AI, but make sure it's freaking unique at this point because a lot of the stuff that's out there is like different permutations of the same thing. 
+
+And so it's really about like, "What's your unique take on it?" And also, like, you know, we were talking about end-user stories. I think those are still extremely useful and relevant, but again, after a while, you start seeing a lot of the same end-user stories. 
+
+### [00:22:04] Choosing unique topics
+
+So again, when you're submitting an end-user story, what is special? What makes you a snowflake when telling your end-user story? The other thing I would say is like some folks try to submit project updates as part of, like, you know, a CFP for KubeCon or whatever, and it's like, "Dude, a project update does not automatically get you accepted." 
+
+Like, save that for the relevant venue because I think there are special project update sessions, for example. So those are like a couple of my pet peeves. I don't know if anyone else wants to chime in.
+
+**Josh:** I agree with that, right? Like, how do you be trendy without being too trendy? I see in the chat there's a thing about how people don't understand the basics of OpenTelemetry. 
+
+And Ree, when you were speaking about trying to find your niche, do other people call it "Ollie" or is it just me?
+
+**Adriana:** I love it! Ollie, yes!
+
+**Josh:** Anyways, maybe at KubeCon, right? That's true, like you've got to have something unique and novel to bring to a KubeCon conference. 
+
+But outside of like our—again, getting outside of our bubble, right? OpenTelemetry is still a very niche topic, and I've had my introduction to OpenTelemetry, right? Like the smaller regional conferences are clamoring for those introductory topics, introductory talks on these niche topics that are niche, right? 
+
+**Henrik:** In my case, I usually try to avoid those introduction talks because I think many people will do the same. So it's just a matter of being different or bringing a different angle. 
+
+Then when the people will review your talk, they will probably find it interesting. That will bring value to the community, in my perspective. I do talks that are very extensive in terms of preparation because I love benchmarks. 
+
+I think I like to have those studies where you show numbers, you show things—it's like an experience. Then you show that to the stage because I think it brings another value because sometimes you don't show that in a normal track. 
+
+And I think by having that difference, you probably have more chance to be selected.
+
+**Dan:** Nice! I guess, you know, related to this, I think the introductory topics and the more in-depth topics sometimes, you know, when you're applying to speak at a conference, you don't know what level of detail you want to go through either in the CFP or in the talk itself. 
+
+Is it good to—how do you know your audience, and how do you know what level of depth you want to apply? Ree, how do you normally go about it?
+
+**Ree:** I still find that tough sometimes. Sometimes I'll start with, like, "Okay, I kind of want to be more high level about this topic," but in order for someone to have to come to this topic, they might need, you know, XYZ knowledge. 
+
+So even though it's more high level on that specific thing, it might be considered like an intermediate, if that makes sense. So it really depends, and I'll also try to consider, like, how much—am I talking about something newer that was like more newly developed, so there's less info about it? Or is it something that's been around for a while? 
+
+I don't have a really good answer; I still find it tough, honestly. I try to stick to either beginner or intermediate level in general because of the topics that I typically choose to do.
+
+**Josh:** And the thing also is it's a personal judgment as well. Sometimes you say, "Oh, I think it's beginner," or "I think it's—I have no idea; it's complicated." 
+
+What may seem basic to you might be very advanced to others or the opposite, right?
+
+**Dan:** Yeah, yeah, exactly! Do you have any other tips there, Josh, to try to gauge the audience?
+
+**Josh:** I have a quick anecdote. So yeah, it’s hard to get it right. I gave one talk that was an introductory talk, but I was trying to make it a little more advanced. I thought, "Oh, this seems like a fairly technical audience. I'd been having conversations with people at lunch. Everybody here is going to know what eBPF is," so I didn’t mention it. 
+
+And then the next speaker after me says, "Raise your hand if you know what eBPF is," and me and the one person I was talking to raised our hands. 
+
+**Henrik:** Oh, well, awesome!
+
+**Josh:** So yeah, it's hard to get it right; it’s hard.
+
+**Dan:** Okay, Henrik, I'm going to go back to you because I know that you're everywhere in OpenTelemetry as well. I know that there are a lot of hot topics in OpenTelemetry, but what are the hot topics that you recommend people be writing about right now? 
+
+I know that it doesn't have to be OpenTelemetry; I know that we all love OpenTelemetry, but what are the sort of hot topics that you would recommend thinking about writing about or talking about?
+
+**Henrik:** I think what I would suggest is that—by the way, AI is not valid; it is. I think in general, you have to look at previous conferences and what has been presented and covered so far. 
+
+If you start to say, "I want to do OpenTelemetry on instrumentation," there are plenty of those out there, plenty of videos out there, and then there's no hot topic in general. 
+
+So usually, I try to bring the problem statement. For example, how do I sample properly? How do I optimize? Because there is a big concern about observability being expensive, so how can I control that cost? 
+
+Going through on that direction, I think also there is another trend that I think is really important that people need to be educated a bit more about: it's sustainability. 
+
+How can we make it green and better? Talking about AI is not going to be green because you're going to consume more resources. So maybe having another approach where you say, "Oh, we need to be good citizens of the world and save energy," I think that's a pretty good one. 
+
+And also, I think there are new projects that come in. For example, today, as we speak, OpenTelemetry profiling—there are a few talks out there in KubeCon, and it's going to be more and more popular. 
+
+So there's a big chance that profiling will bring new problems and new challenges, so covering them could also be interesting. Try to follow what happens in the industry and think about, "Oh, if I start digging this, I may have problems, so how can I resolve them and maybe share that solution or this approach to a larger group or to the community?"
+
+**Ree:** I’d just add, Henrik, you're really good at this, right? Like you mentioned sampling, and I saw that video right in my feed, and I was like, "Oh, that's a great topic. I'm going to check that out later when I have time."
+
+So yeah, if Henrik's talking about it, he can only be one place at once, right? So maybe that's an interesting thing for you to put your own spin on somewhere else.
+
+**Dan:** Yeah, I think so. Absolutely! Any other takes on, you know, what are some of the hot topics?
+
+**Ree:** I would like to add something. So, you know, I think piggybacking on what Henrik was saying on the topics of sustainability, there's some really cool CNCF projects out there on tech sustainability. 
+
+And I feel like this is a super hot topic for the year just because we're seeing a lot of stuff around just wacky environmental things happening—right? Like increases in forest fires, bizarre temperature swings. 
+
+And we're inherently in an industry that is contributing to the problem, so writing talks about how we can use technology to lessen the problem, I think, can be really compelling and very timely. 
+
+So there's a hot topic for y'all for anyone considering it. I would also mention, you know, we talk a lot about KubeCon, and I think Josh made a point earlier about like there's a lot of conferences where like things like OpenTelemetry are still like kind of, you know, not super well-known. 
+
+### [00:30:56] Hot topics in observability
+
+So especially like a lot of these open-source conferences, like SCALE for example, I think just added an observability track this year. FUM, I think, would probably be another great one. 
+
+State of Open Con, another great one where we probably—there's probably not enough talks on observability, so getting into those sort of more niche conferences, I think would be a good place to start, especially if you're looking to do a talk on observability.
 
 **Dan:** Oh yeah, all things open as well. 
 
-**Ree:** Yes!
+Well, Ree mentioned in our—yeah, so right, I'm going to take one question from the audience. Thank you so much for your questions! And again, you know, if you've got any questions on what we're talking about, drop them in the chat on YouTube or LinkedIn. 
 
-**Dan:** Right, I'm going to take one question from the audience. Thank you so much for your questions. Again, if you've got any questions on what we're talking about, drop them in the chat on YouTube or LinkedIn. The question is: should we go for a catchy title, a clickbaity title, when you write your CFP, or should you do something more perhaps descriptive and accurate? Josh, what do you think about that?
+And the question is, should we go for a catchy title, a clickbaity title when you write your CFP, or should you do something more perhaps descriptive and accurate? 
 
-**Josh:** I almost always do a clickbaity title, or at least I did. That was always sort of my way. But I've only been doing this for a couple of years, and someone who's been doing it for longer than me told me, "Actually, it's a pendulum, right? It swings." What the conference organizers are looking for is going to swing back and forth almost like a cultural zeitgeist. There are times when they want it to be super, super specific, and we're not in one of those times right now. Maybe we're swinging in that direction, but for me right now, it does feel very much like the clickbaity titles are in, and maybe we'll all get tired of them because of the AI topic, and we'll be like, "No, you need to tell me exactly what's in your talk so that I know that it's not a surprise AI talk." That'll be where we're at a year from now. 
+Josh, what do you think about that? Do you normally go for something like that?
 
-I think if you can come up with a catchy title that also gives the audience an idea of what to expect or what your topic is about, that is a great way to go. I also do really like just clear, straightforward titles as well. I think they both have their place, and the content for sure is going to matter more, I say. Because you could have a great catchy title, and then the abstract is kind of, you know, maybe doesn't fully flesh out the idea. The content is still king, but yeah, the title is important as well.
+**Josh:** I almost always do a clickbaity title, or at least I did. That was always sort of my way. But I've only been doing this for a couple of years, and someone who's been doing it for longer than me told me it's a pendulum, right? It swings. 
 
-**Henrik:** When I prepare my talks, I usually try to bring the technical aspects and then try to find a funny angle or an analogy to a movie, to video games, to do whatever. Then in the title, I try to bring that fun angle because at the end, I think that could be more attractive. When you have the schedule and you see a title that sounds more fun, then maybe more people will join your session for some reasons.
+What the conference organizers are looking for is going to swing back and forth almost like a cultural zeitgeist. There are times where they want it to be super, super specific, and we're not in one of those times right now. 
 
-**Adriana:** I think the title is as important as the abstract, from my perspective.
+Maybe we're swinging in that direction, but for me right now, it does feel very much like the clickbaity titles are in, and maybe we'll all get tired of them because of the AI topic, and we'll be like, "No, you need to tell me exactly what's in your talk so that I know that it's not a surprise AI talk," and that'll be where we're at a year from now. 
 
-**Josh:** I think, going back to what you just said, it's important to note that some titles sound like they were generated by ChatGPT. 
+Who knows? 
 
-**Ree:** Yes!
+**Adriana:** I think if you can come up with a catchy title that also will give the audience an idea of what to expect or like what your topic is about, that is a great way to go. I also do really like just clear, straightforward titles as well. 
 
-**Josh:** And B, make sure that your titles aren't so pop culture where it ends up alienating potentially the CFP reviewers. Like, I don't know if someone is making a Game of Thrones reference in a talk title. I'll be like, "I have no idea what you're talking about," and I'm kind of super put off by it. 
+So I think they both have their place. And you know, the content for sure is going to matter more. I say because you could have a great catchy title and then the abstract is kind of, you know, maybe doesn't fully flush out the idea. 
 
-**Dan:** So I would just caution, it's a fine line to tread.
+So I think the content is still king, but yeah, the title is important as well. 
 
-**Dan:** And I guess that's part of—there are a couple of questions from YouTube which are related to that, basically to knowing your audience, right? Who's going to be reading your title, your CFP? So how do you know that? How do you know how to approach the audience in a way that they would understand or engage with? I'll ask that to Henrik.
+**Henrik:** I think when I'm preparing my talks, usually I try to bring the technical aspects and then try to find a funny angle or an analogy to a movie or video games or whatever. 
 
-**Henrik:** It's a very, very good question. I usually go to KubeCons and to Open Source-friendly conferences, so I know that the people that will be in that conference have at least a technical background. I know that my talk would not be perceived as too technical. But yeah, if you go to a conference that is more salesy, then yes, you may have to adjust and say, "Okay, what are the type of personas that will be in this conference? Do I have the normal audience that I'm talking to in general, or should I reduce the complexity of my talk so that people can follow the idea behind this talk?"
+And then in the title, I try to bring that fun angle because at the end, I think that could be more attractive. Because at the end, when you have the schedule and you see a title that sounds more fun, then maybe more people will join your session for some reason. 
 
-**Dan:** Cool. Right, I'm going to move on to another topic, which is the post-acceptance. So you got accepted — hooray! So what happens now? How do you train? How do you rehearse? What can you give people to get ready for the day? I know that was a very wide question, so I'm going to start with Ree. How do you prepare for it?
+So I think the title is as important as the abstract from my perspective.
 
-**Ree:** Well, so when I got my first talk, funny story: my very first CFP that I submitted ever was also my first one that was ever accepted, which was huge and terrifying. My manager at the time actually hired a—well, she got me a few lessons, virtual lessons, with a public speaking coach, and I found that that was super helpful. It was just three virtual sessions, and I came away with techniques that I still use. But I also know people who are great speakers who haven't gone through that professional training. I say it's at least worth it if you can, if you have the resources to. I recommend it, but if not, there are also YouTube videos you can watch. Of course, rehearse as much as you can so that you feel comfortable and it feels natural when you're presenting.
+**Ree:** I think the title is important, especially for the audience, right? 
 
-**Josh:** Any other tips or tricks to basically get to the training rehearsing stage?
+**Dan:** Yeah, and I think as well—go ahead, go ahead!
 
-**Henrik:** I usually don't. I do just the rehearsal, not a full-fledged rehearsal. I'm just checking that my talk is basically respecting the duration because sometimes I put a lot of content in, and then I realize, "Oh, maybe too much here." So I need to time myself, and then you know when you will be on stage, there's a big chance that you will take probably more time. So I had a few minutes to be always on time. I think that's the best thing. But what I usually do, I'm trying to put a lot of graphics, make it nicer. I put a lot of effort into making a smoother experience for the audience, so that's something that I prepare a lot in the background.
+**Ree:** Oh, I was going to say I do generally agree with you on that. The only thing I would caution again is, A, make sure your titles don't sound like they were generated by ChatGPT; and B, make sure that your titles aren't so pop culture where it ends up alienating potentially the CFP reviewers. 
 
-**Dan:** I'm going to take now a question from the audience. I think I'm going to choose—I'm going to pick Josh to answer this question. If a conference offers multiple formats, for example, lightning talks or a deep dive, should I spam the organizers with multiple responses, or is there a better way?
+Like, I don't know, if someone's making a Game of Thrones reference in a talk title, I'll be like, "I have no idea what you're talking about," and I'm kind of super put off by it. 
 
-**Josh:** In my opinion, that’s something that will work if you know the organizer and can reach out to them directly, right? Or if they're having office hours and you can talk to them about it and you can get that feedback, that's fine. But I do think that if you're a first-time speaker at the conference or sort of unknown to the conference, you have to sell the talk. You have to be a little bit more confident in the talk that you're proposing because they're going to be evaluating you based on the talk more than how they know you as a speaker.
+So I would just caution—it's a fine line to trade.
 
-[00:29:36] **Ree:** Yeah, I wanted to just mention something. Especially depending on the conference, some conferences don't have limits as to how many talks you can submit. Sometimes, you know, especially if you're a newbie speaker, go for it and just see how far you can take it. But other conferences, like KubeCon, where there is a limit on the number of sessions, I would caution against submitting two versions of the same session where one's a lightning talk and the other one's a longer-form talk. I think you probably have a better chance of just submitting two unique topics because you never know. Also, I will say, don't be afraid to recycle submissions at other conferences. It doesn't always have to be a unique topic. Super, super important! It saves you a lot of mental energy because putting together a talk is a lot of work.
+**Dan:** Nice! I guess, you know, that's as well part of—there are a couple of questions from YouTube that are related to that, basically to knowing your audience, right? 
 
-**Henrik:** I would just add to the fact that for the reviewers, if you have a talk and usually you design your abstract for a 30-minute talk, for example, then the reviewer would expect some details. Then you say, "Okay, so he’s going to cover this and that, and it makes sense in 30 minutes because it's going to be well covered." If you do the same CFP in a lightning talk, then you say, "Wow, how is it going to cover that in five or ten minutes?" I think you need to adjust, of course, the way you're going to present the abstracts.
+So who's going to be reading your title, your CFP? So how do you know that? How do you know, like, how to approach the audience in a way that they would understand or engage with? And I'll ask that to Henrik.
 
-**Ree:** I would definitely recommend doing, like Adriana mentioned, to have two different submissions: one lighter for the lightning talks and one bigger for the normal track.
+**Henrik:** It's a very, very good question. I usually go to KubeCon and to KubeCon or open-source friendly conferences, so I know that the people that will be at that conference have at least a technical background. 
 
-**Dan:** Cool! Okay, I think it's time to start closing thoughts. One of the questions that people normally get is: I apply to many conferences, and then you get rejected. How normal is it to get rejected? How do you manage your expectations for getting your CFPs accepted? Josh, do you want to give us your thoughts?
+So then I know that my talk would not be perceived as too technical. But yeah, if you go to a conference that is more salesy, then yes, you may have to adjust and say, "Okay, what are the types of personas that will be in this conference?" 
 
-**Josh:** Sure! I think someone, again, you know, getting advice from mentors is great. Someone told me to expect a 10% acceptance rate. If you want to talk at one conference a year, that means you need to submit 10. I think that holds even for experienced speakers to some extent as well as new, at least from what I've seen. I don't know how you all feel about that ratio, but it is absolutely normal to get rejected. You think about conferences; some conferences get, especially the bigger ones, thousands, sometimes, but usually at least tens or dozens or hundreds of submissions. Just because they rejected it this time doesn't mean that they won't next time. I know people who've submitted the same one a few times to the same conference before it got accepted. Sometimes it's just timing; sometimes it's just, you know, they just have a lot of topics that were really good. Sometimes too, you can also ask for feedback from the conference. KubeCon, for example, they're pretty good about sharing feedback on your proposal; they'll be happy to share it.
+Do I have the normal audience that I'm talking to in general, or should I reduce the complexity of my talk so that people can follow the idea behind this talk?
 
-**Ree:** I also wanted to add, it's okay to mourn your rejection because especially when you're really invested in a topic, and you think, "I've got such a great chance of getting this in!" and you get rejected. You got a great title, and you're just... 
+**Dan:** Cool! Right, I'm going to move on to another topic, which is like the post-acceptance. So you got accepted—hooray! So what happens now? How do you train? How do you rehearse? What can you give people to get ready for the day? I know it was a very wide question, so I'm going to start with Ree. How do you like prepare for it?
 
-**Josh:** Yes!
+**Ree:** Well, so when I got my first talk—so funny story! My very first CFP that I submitted ever was also my first one that was ever accepted, which was huge and terrifying. My manager at the time, she actually hired—she got me a few lessons, virtual lessons, with a public speaking coach, and I found that that was super helpful. 
 
-**Ree:** Yeah, it's okay to mourn and take that time to mourn. As Ree said, if possible, ask for feedback. Resubmit it to that same conference or another conference or, like in the case of KubeCons, there are so many across the globe. Submit it to a different KubeCon. You know, if you didn't get in for NA, submit for EU. There's Open Source Summit NA, there's Open Source Summit EMEA, and also take some time to reflect on your CFP and see if there are areas where you see improvement. Sometimes I'll write out a CFP, and then I'll realize, "Oh, yeah, I can kind of see why they didn't like that," and just make a few tweaks.
+It was just three virtual sessions, and I came away with techniques that I still use. But I also know people who are great speakers who haven’t gone through that professional training. 
 
-**Dan:** I agree! 
+I say it's at least worth it to, if you can, if you have the resources to, I recommend it. But if not, there are also, you know, YouTube videos you can watch. 
 
-Well, thank you so much! I think now I've got one last question from you, and I think, as well, if everyone's been following the Golden Globes and the Academy Awards, you'll see that we've got quite a lot of horror films coming up in the awards. I've got a question for you. I think you've been to many conferences, and I would like to hear some of the conferences that you've been to because I think we didn't cover that in the intro. I would like to know some of the conferences that people could go and rewatch your videos, but also if you've got a quick anecdote or something that failed that was a bit of a horror story — right? The mic doesn't work or, you know, something that doesn't work. Can you tell us about it? I'll go for Ree first because she's got her hands raised.
+And of course, rehearse as much as you can so that you feel comfortable and it feels natural when you're like presenting. But I'm sure other people will have their tips.
 
-**Ree:** My very first talk that I did, it was about tail sampling in Open Telemetry. I had a live demo, and everything was working. I checked it right before my talk; everything was working. I got up on the stage, started the demo, and it didn't work! I still don't know what it was because I got it to work a few minutes later, and I know there are some people that still remember that too! So anyways, that's my—I have other ones too, but that one sticks close. 
+**Henrik:** Any other tips or tricks to basically get to the training and rehearsing stage?
 
-**Henrik:** What was my worst experience? I would say it happened once where I had to connect my laptop, and the screen mirroring didn't work. I suddenly did the demo, and then you end up having nothing on your screen, and you're like this, trying to type and looking at it. It's like a nightmare! I was saying, "Okay, the demo is going to be a nightmare; it's impossible to achieve!" So then I think the demo, I tried to skip it very fast, but I was not very happy. People didn't see so much because I tried to react as fast as possible to avoid having that blank effect where stress is coming up to you. At the end, I was unhappy because I said, "Ah, my performance was just not normal and not acceptable!" I had to improve that. 
+**Henrik:** I usually don't—I do just the rehearsal, not a full fresh rehearsal. I'm just checking that my talk is basically respecting the duration, because sometimes I put a lot of content, and then I realize, "Oh maybe too much here." 
 
-But yeah, where can we see you next? 
+So I need to maybe figure out by timing yourself, and then you know that when you will be on stage, there's a big chance that you will take probably more time. 
 
-**Henrik:** I was rejected for KubeCon, so I've been crying! So now I think I have no tears anymore. 
+So I had a few minutes to be always in time. I think that's the best thing. But what I usually do—I'm trying to put a lot of graphics, make it a nicer experience. 
 
-**Ree:** It happens to the best!
+I put—I mean, that's my style, so I like to make a lot of graphics and make it a smoother experience for the audience, so that's something that I prepare a lot in the background.
 
-**Henrik:** It does! So yeah, the next I have a virtual conference that I don't know when it's going to happen in a few weeks. I'm presenting a talk, and then I submitted lots of talks for the season. I have a lot of KCDs and KubeCon China and Japan. We'll see; I didn't have the feedback yet, so cross your fingers. But otherwise, if you want to watch any content from my end, you can find it on KubeCon Europe, KubeCon North America, and I have plenty of other KCDs where I have presented talks last year.
+**Dan:** I'm going to take now a question from the audience, and I think I’m going to choose—I'm going to pick Josh to answer this question. If a conference offers multiple formats, for example, lightning talk or a deep dive, and you know, your talk could fit more than one, should I spam the organizers with multiple responses or is there a better way?
 
-**Josh:** I think it's quite similar to Henrik’s. My very first talk, the audience could only see half of my slides. I could see all of my slides, but none of my notes. My lesson that I took away from that is I never rely on my notes ever again! Plus one to that! You have to have it all in your head. You have to be able to talk about the thing for 20 minutes with no notes and no slides if it comes down to it. I think not to scare anyone else off from doing this, right? You can do that; it's not as hard as it sounds. But yeah, that was my worst horror story. Although I would say I feel like at least something small goes wrong pretty much every time.
+**Josh:** In my opinion, that's something that will work if you know the organizer and can reach out to them directly, right? Like, or if they're having office hours and you can talk to them about it and you can get that feedback, that's fine. 
 
-And then where you can find me? A lot of DevOps Days; I'm really a big fan of those. I love that the KCDs are starting to adopt that community format and sort of the open discussion format more. I really love those conferences, and I love to get the combination of the people who are coming from all over like you would see at the bigger conferences, and then just also the local representatives of the tech companies that are employers in that area.
+### [00:39:38] Preparing for your talk
 
-**Adriana:** I think I know what my horror story is! I think I had a similar experience where I had a demo that was not working, and the audience could see it! But I think for me, the worst is when you give a talk, and you're like, "H, that wasn't my best work." You feel like you're a little bit off. Sometimes my voice is a little shaky or I forget my talking points. I think that's getting rattled by that, and it's interesting because you come off a talk, and people are like, "Oh, that was so great," and you're like, "Oh, I sucked!" You kind of just have to get over yourself and tell yourself it happens, and it'll happen again, and you just have to be okay with it. I would also suggest when you're practicing talks, practice. As you're practicing, if you stumble, just power through it because that can happen in real life.
+But I do think that if you're a first-time speaker at the conference or sort of unknown to the conference, you have to sell the talk. You have to be a little bit more confident in the talk that you're proposing because they're going to be evaluating you based on the talk more than how they know you as a speaker. 
 
-As far as conferences that I've spoken at, and I'm just sending Henrik a link to my YouTube channel because I have a playlist of all my talks. Recently, I've done a bunch of talks; we've spoken at KubeCon North America and EU a few times together. We've spoken at Observability Day North America and EU together. I've spoken at Platform Engineering Day most recently in North America. We've done All Things Open together. We did Open Source Summit, and I'm speaking at KubeCon EU coming up in London. I got in for Observability Day EU as well. I did DevOps Days in Montreal, and one of my favorites was KCD BUU, where I got to give a keynote. Unfortunately, there's no recording of the keynote, but I have a blog post version of the talk if anyone wants to check out my Medium channel.
+**Adriana:** See anybody else?
 
-**Dan:** Awesome! Well, thanks everybody so much. You are really the dream team—really all the veterans from all the conference dos. You can see that from the amount of conferences you've been to! Thank you so much for your tips, tricks, and advice. I think it's been really, really useful. But I think that's all we had time for. I just want to say thanks to the panelists and thanks to the people that asked questions in the audience. I think we didn't get to cover all the questions, but we are always open in the End User SIG. You can come to the CNCF Slack; you can go to the resources that are here, basically, and get in touch with us. I think we'd love to hear more about your—well, in general, anything about Open Telemetry, but also about topics like this one: how do you go and talk about Open Telemetry everywhere? 
+**Adriana:** I wanted to just mention something. Especially depending on the conference, some conferences don't have limits as to how many talks you can submit. 
 
-With that, thank you very much, and see you at a conference! Get the questions that were unanswered in the Slack channel. 
+And so sometimes, you know, especially if you're like a newbie speaker, go for it and just see how far you can take it. But other conferences, like KubeCon, where there is a limit on the number of sessions, I would caution against submitting basically two versions of the session where it's like one's a lightning talk and the other one is a longer-form talk. 
 
-**Dan:** Thank you! Bye-bye!
+I think you probably have a better chance of just submitting two unique topics because you never know. Also, I will say, don't be afraid to recycle submissions at other conferences. 
+
+It doesn't always have to be a unique topic—super, super important! It saves you a lot of mental energy because putting together a talk is a lot of work.
+
+**Henrik:** I would just add to the fact that for the reviewers, if you have a talk and usually you design your abstract for a 30-minute talk, for example, then the reviewer would expect some details. 
+
+So then you say, "Okay, so he's going to cover this and that; it makes sense in 30 minutes because it's going to be well covered." And then if you do the same CFP in a lightning talk, then you say, "Wow, how is it going to cover that in five or ten minutes?"
+
+So I think you need to adjust, of course, the way you're going to present the abstracts. I would definitely recommend to do, like Adriana mentioned, to have two different submissions—one for the lightning talks and one for the normal track.
+
+**Dan:** Cool! Okay, I think it's time to start closing thoughts. And I think one of the—well, not quite there yet, but one of the questions that people normally get is, "I applied to many conferences," and then you get rejected. 
+
+How normal is it to get rejected? How do you manage your expectations for getting your CFPs accepted? 
+
+**Josh:** Yeah, it's tough, isn't it? So Josh, do you want to go? Give us your thoughts.
+
+**Josh:** Sure! I think, again, getting advice from mentors is great. Someone told me to expect a 10% acceptance rate, so if you want to talk at one conference a year, that means you need to submit ten. 
+
+And I think that holds even for experienced speakers to some extent, as well as new, at least from what I've seen. I don't know how you all feel about that ratio, but you know, that's interesting because I haven't actually done like a statistical analysis myself. 
+
+But it is absolutely normal to get rejected. You know, you think about conferences; some conferences get, especially the bigger ones, they get thousands—sometimes, but usually, like, you know, at least tens of dozens or hundreds of submissions. 
+
+And just because they rejected it, you know, this time doesn’t mean that they won’t next time. I know people who've submitted the same one a few times to the same conference before it got accepted. 
+
+So sometimes it’s just timing; sometimes it’s just, you know, they just have a lot of topics that were just really, really good. And sometimes too, you can also ask for feedback from the conference. 
+
+KubeCon, for example, they're pretty good about sharing anything. If they get feedback on your proposal, they'll be happy to share it. 
+
+**Adriana:** Cool! 
+
+**Ree:** I also wanted to add, like, it’s okay to mourn your rejection because, you know, especially when you're really invested in a topic and you think, "I've got such a great chance of getting this in," and you get rejected. 
+
+You got like a great title, and you’re just, "Ah!" Yeah, it's like it’s okay to mourn and take that time to mourn. 
+
+And then as Ree said, like if possible, ask for feedback, resubmit it to that same conference or another conference, or like in the case of KubeCon, there are so many across the globe—submit it to a different KubeCon. 
+
+You know, like if it didn’t get in for NA, submit for EU. There’s Open Source Summit NA, there’s Open Source Summit EMEA. And also, like take some time to reflect on your CFP and see if there are like areas where you see improvement. 
+
+### [00:44:28] Handling rejection and feedback
+
+Like sometimes I’ll like write out a CFP and then I’ll like, you know, it gets rejected. I resubmit it for another conference, and I'm like, "Oh yeah, I can kind of see why they didn’t like that." 
+
+And just make a few tweaks.
+
+**Dan:** Yeah, agree! Well, thank you so much! I think now I've got one last question for you, and I think as—well, if everyone's been following the Golden Globes and the Academy Awards, you'll see that we've got quite a lot of horror films coming up and the awards. 
+
+So I've got a question for you: I think you've been to many conferences, and I would like to hear some of the conferences that you've been to, because I think we didn't cover that in the intro. 
+
+And I would like to know, you know, some of the conferences that people could go and rewatch your videos, but also like if you've got a quick anecdote or something that failed that was a bit of a horror story, right? 
+
+So the mic doesn't work, or you know, something that doesn't work. Can you tell us about it? And I'll go for Ree first because she's got her hands raised.
+
+**Ree:** My very first talk that I did—it was about tail sampling in OpenTelemetry. I had a live demo, and everything was working. I checked it right before my talk; everything was working. 
+
+I got up to the stage, started the demo—it didn't work! And I still don't know what it was because I got it to work a few minutes later, and I know there's some people that still remember that too. 
+
+So anyways, that's my—I have other ones too, but that one is very—sticks closely to my heart. 
+
+**Henrik:** What was my worst experience? I would say it happens once where I had to connect my laptop. The screen mirroring didn't work, and then I suddenly did the demo and ended up having nothing on my screen. 
+
+And you're like this, trying to type and looking at—and it's like a nightmare. I was saying, "Okay, the demo is going to be a nightmare; impossible to achieve." 
+
+And so then I think the demo—I tried to skip it very fast, but I was not very happy. People didn't see so much because I tried to react as fast as possible to avoid having that blank effect where stress was coming up to me. 
+
+But yeah, at the end, I was unhappy because I said, "My performance was just not normal and not acceptable," so I had to improve that. 
+
+But yeah, where can we see you next? Where can you— 
+
+**Henrik:** I was rejected for KubeCon, so I've been crying. 
+
+**Ree:** It happens to the best! 
+
+**Henrik:** It does! So yeah, the next I have a virtual conference that—I don't know when it's going to happen in a few weeks I'm presenting a talk, and then I submitted lots of talks for the season. 
+
+So a lot of KubeCons and KubeCon China and Japan, so we'll see. I didn't have the feedback yet, so cross the fingers. But otherwise, if you want to watch any content from my end, you can find it on KubeCon Europe, KubeCon North America, and then I have plenty of other KubeCons where I have presented talks last year.
+
+**Josh:** Awesome! Do you want to tell us your horror story?
+
+**Josh:** Yeah, it's actually quite similar to Henrik's. It had to do with screen mirroring and not working, and this is actually also like recent. My very first talk—the audience could only see half of my slides. 
+
+I could see all of my slides, but none of my notes. So my lesson that I took away from that is I never rely on my notes ever again. 
+
+**Henrik:** Plus one!
+
+**Josh:** Plus one to that! You have to have it all in your head; you have to be able to just talk about the thing for 20 minutes with no notes and no slides if it comes down to it. 
+
+I think not to scare anyone else off from doing this, right? Like you can do that. Actually, it's not as hard as it sounds. 
+
+But yeah, that was my worst horror story. Although I would say, like, I feel like at least something small goes wrong pretty much every time. 
+
+**Adriana:** And then where you can find me? 
+
+**Ree:** A lot of DevOps days—I’m really big on those, and I love that the KCDs are starting to adopt that community format and sort of the open discussion format more. I really love those conferences, and I love to get the combination of like the people who are coming from all over, like you would see at the bigger conferences, and then just also the local representatives of the tech companies that are employers in that area.
+
+**Henrik:** KCD in Edinburgh!
+
+**Ree:** Yeah, that is a KCD in Edinburg! 
+
+**Dan:** Yeah, that is a KCD in Edinburgh! You can find out this year; I’m not sure the CFP yet. Is it when is it open? 
+
+**Ree:** It's in October, so I'm not sure when the—okay! But yeah, everyone in Edinburgh is really excited about it. I mean, I'm not sure the normal person in the street would be, but I am!
+
+**Adriana:** I have a few conferences that I've spoken at. We've spoken at KubeCon North America and EU a few times together. We've spoken at Observability Day North America and EU together. 
+
+I've spoken at Platform Engineering Day most recently in North America. We've done All Things Open together. We did Open Source Summit North America and EU coming up. 
+
+And I got in for Observability Day EU as well. And then I did a DevOps Days in Montreal, and most recently one of my favorites was a KCD BUU where I got to give a keynote. 
+
+Unfortunately, there's no recording of the keynote, but I have a blog post version of the talk if anyone wants to check out my Medium channel.
+
+**Dan:** Awesome! Well, thanks everybody so much for—I mean, you are really the dream team. So really, like all the veterans from all the, you know, conference doers. 
+
+You can see that, you know, from the amount of conferences that you've been to. So thank you so much for your tips and tricks and your advice. I think, you know, it's been really, really useful. 
+
+But I think that's all we had time for. And I just want to say thanks to the panelists and thanks to the people that asked questions in the audience. I think we didn't get to cover all the questions, but we are always open in the end user SIG. You can come to the CNCF Slack, you can go to the resources that are here basically, and get in touch with us. 
+
+I think we would love to hear more about your, well, in general anything about OpenTelemetry, but also about topics like this one—how do you go and talk about OpenTelemetry everywhere? 
+
+So yeah, with that, thank you very much, and see you at a conference! Get the questions that were unanswered in the Slack channel!
+
+**Ree:** Yes! Right! Thank you! Bye-bye! 
+
+**All:** Bye!
 
 ## Raw YouTube Transcript
 
