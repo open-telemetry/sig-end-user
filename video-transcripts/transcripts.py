@@ -21,15 +21,20 @@ youtube_key = os.environ.get('API_KEY')
 # Second one is optional, but if it's missing, we'll skip the summary and cleanup.
 openai_key = os.environ.get("OPENAI_API_KEY","")
 
-def get_playlist_videos(playlist_id):
+def get_playlist_videos(playlist_id, max_pages=100):
     youtube = build('youtube', 'v3', developerKey=youtube_key)
     
     video_ids = []
     next_page_token = None
+    page_count = 0
+    max_retries = 3
+    retry_count = 0
 
-    # This returns a list of youtube:playlistItem with rate limiting
-    while True:
+    # Paginate through playlist items with rate limiting and safeguards
+    while page_count < max_pages:
         try:
+            page_count += 1
+            
             # Build request parameters
             request_params = {
                 'part': 'snippet',
@@ -50,6 +55,9 @@ def get_playlist_videos(playlist_id):
             next_page_token = response.get('nextPageToken')
             if not next_page_token:
                 break
+            
+            # Reset retry count on successful request
+            retry_count = 0
                 
             # Small delay between pagination requests
             delay = random.uniform(1, 3)  # Random delay between 1-3 seconds
@@ -58,7 +66,10 @@ def get_playlist_videos(playlist_id):
             
         except HttpError as e:
             if e.resp.status == 403 and 'quota' in str(e).lower():
-                print("Quota exceeded while fetching playlist items. Waiting before retry...")
+                retry_count += 1
+                if retry_count >= max_retries:
+                    raise RuntimeError(f"Max retries ({max_retries}) exceeded due to quota limits")
+                print(f"Quota exceeded while fetching playlist items (attempt {retry_count}/{max_retries}). Waiting before retry...")
                 time.sleep(60)  # Wait 1 minute
                 continue
             else:
