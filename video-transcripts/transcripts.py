@@ -315,7 +315,7 @@ def get_video_transcript_with_retry(video_id, max_retries=5):
             if 'blocking requests from your IP' in error_str or 'IP has been blocked' in error_str:
                 print(f"❌ YouTube IP block detected for video {video_id}")
                 print(f"   See README 'YouTube IP Blocking' section for solutions")
-                return None, None
+                return None, None´
             elif '429' in error_str or 'Too Many Requests' in error_str:
                 if attempt < max_retries - 1:
                     wait_time = random.uniform(60, 120)
@@ -1006,7 +1006,15 @@ IMPORTANT: Create chapters ONLY for the topics, people, and discussions mentione
     - Be precise and honest about what's happening at each moment
     - KEEP DESCRIPTIONS CONCISE: Use 2-6 words maximum, not full sentences
     - Descriptions should be SHORT PHRASES like "Guest introduction", "Discussion about X", "Demo of Y feature"
-    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}{summary_context}{timeline_context}
+    - DO NOT write full sentences or lengthy explanations in the chapter titles
+    
+    OUTPUT FORMAT REQUIREMENTS:
+    - Output ONLY the chapter list, nothing else
+    - Start directly with the first timestamp line: "00:00:00 Introductions"
+    - Do NOT include any preamble, introduction, or explanatory text before the chapters
+    - Do NOT say things like "Here are the chapters", "Sure, I'll help", or "Here are 10 key moments"
+    - Do NOT add any text after the last chapter
+    - Just provide the raw chapter list in the specified format{duration_constraint}{summary_context}{timeline_context}
     """
 
     print(f"Creating chapters for video {video_id}")
