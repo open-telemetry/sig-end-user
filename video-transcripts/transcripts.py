@@ -527,10 +527,6 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
     line_to_chapter = {}  # Maps line index to (timestamp_str, title) to insert
     
     for seconds, timestamp_str, title in chapters:
-        # Skip 00:00:00 as it's at the beginning
-        if seconds == 0:
-            continue
-        
         # Get text from a window around the timestamp (±5 seconds)
         window_texts = []
         for time_sec in range(max(0, seconds - 5), seconds + 6):
@@ -870,6 +866,55 @@ def create_chapters(transcript, video_id, raw_transcript=None):
         duration_str = format_duration(duration_seconds)
         duration_constraint = f"\n\nIMPORTANT: This video is {duration_str} long. DO NOT generate any timestamps beyond {duration_str}. All timestamps must be less than or equal to {duration_str}."
 
+    # Build a timeline skeleton from raw transcript if available
+    timeline_context = ""
+    if raw_transcript:
+        print(f"Building timeline skeleton from raw transcript for video {video_id}")
+        
+        # Build mapping of time to text (reusing existing logic)
+        time_to_texts = {}
+        for entry in raw_transcript:
+            if isinstance(entry, dict) and 'text' in entry and 'start' in entry:
+                text = entry['text'].strip()
+                if text and text not in ['[Music]', '[Applause]', '[Laughter]']:
+                    start_time = int(entry['start'])
+                    if start_time not in time_to_texts:
+                        time_to_texts[start_time] = []
+                    time_to_texts[start_time].append(text)
+        
+        # Create timeline samples every 30 seconds
+        timeline_samples = []
+        sample_interval = 30  # seconds
+        max_samples = 40  # Limit to avoid token overflow
+        
+        current_time = 0
+        sample_count = 0
+        
+        while current_time <= (duration_seconds or 3600) and sample_count < max_samples:
+            # Get text from a small window around this time
+            window_texts = []
+            for time_sec in range(current_time, min(current_time + 10, (duration_seconds or 3600) + 1)):
+                if time_sec in time_to_texts:
+                    window_texts.extend(time_to_texts[time_sec])
+            
+            if window_texts:
+                # Take first few words as a sample
+                sample_text = ' '.join(window_texts)[:150]  # Limit length
+                timestamp_str = format_duration(current_time)
+                timeline_samples.append(f"[{timestamp_str}]: {sample_text}")
+                sample_count += 1
+            
+            current_time += sample_interval
+        
+        if timeline_samples:
+            timeline_context = f"""
+
+TIMELINE REFERENCE - These are actual timestamps from the video showing what is being said at different times:
+
+{chr(10).join(timeline_samples)}
+
+USE THESE ACTUAL TIMESTAMPS to determine when topics change. Your chapter timestamps MUST come from the times shown above or nearby times. DO NOT guess or make up timestamps."""
+
     chapters_prompt = f"""
     This is a transcript of a YouTube livestream. Could you please identify up to 10 key moments in the stream and give me the timestamps in the format for YouTube like this?: 
     00:00:00 Introductions 
@@ -879,18 +924,18 @@ def create_chapters(transcript, video_id, raw_transcript=None):
 
     CRITICAL INSTRUCTIONS:
     - Always start with 00:00:00
-    - Use the ACTUAL timestamps from where topics begin in the transcript
+    - Use the ACTUAL timestamps from the timeline reference below
     - DO NOT round timestamps to neat intervals like :00 or :30
     - Use precise timestamps like 00:05:17, 00:12:43, 00:08:09, etc.
     - Look at the actual flow of conversation to determine when topics change
     - The chapter description MUST accurately describe what is being said RIGHT AT that timestamp
     - Do NOT describe what happens later - only describe what is happening at the exact moment of the timestamp
-    - Read the text carefully around each timestamp to ensure your description matches what's actually being discussed
+    - Read the timeline reference carefully to see what's actually being said at each time
     - If a guest is introduced at 00:05:30, don't put "Guest introduction" at 00:20:00
     - Be precise and honest about what's happening at each moment
     - KEEP DESCRIPTIONS CONCISE: Use 2-6 words maximum, not full sentences
     - Descriptions should be SHORT PHRASES like "Guest introduction", "Discussion about X", "Demo of Y feature"
-    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}
+    - DO NOT write full sentences or lengthy explanations in the chapter titles{duration_constraint}{timeline_context}
     """
 
     print(f"Creating chapters for video {video_id}")
