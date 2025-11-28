@@ -311,27 +311,18 @@ def get_video_transcript_with_retry(video_id, max_retries=5):
             print(f"Video {video_id} is unavailable")
             return None, None
         except YouTubeRequestFailed as e:
-            # Check if this is an IP block error
             error_str = str(e)
             if 'blocking requests from your IP' in error_str or 'IP has been blocked' in error_str:
-                print(f"❌ YouTube has blocked your IP address for video {video_id}")
-                print(f"   This is not a temporary rate limit - your IP is blocked.")
-                print(f"\n   Workarounds:")
-                print(f"   1. Wait 24-48 hours for the block to clear")
-                print(f"   2. Use a different network/WiFi connection")
-                print(f"   3. Set up cookie-based authentication (see README)")
-                print(f"   4. Use a residential proxy or VPN (not cloud-based)")
+                print(f"❌ YouTube IP block detected for video {video_id}")
+                print(f"   See README 'YouTube IP Blocking' section for solutions")
                 return None, None
             elif '429' in error_str or 'Too Many Requests' in error_str:
                 if attempt < max_retries - 1:
-                    # Use much longer wait time for rate limiting (60-120 seconds)
                     wait_time = random.uniform(60, 120)
-                    print(f"⚠️  YouTube rate limit (429) detected for video {video_id}")
-                    print(f"   Waiting {wait_time:.0f} seconds before retry {attempt + 2}/{max_retries}...")
+                    print(f"⚠️  Rate limit detected (429) - waiting {wait_time:.0f}s (retry {attempt + 2}/{max_retries})")
                     time.sleep(wait_time)
                 else:
-                    print(f"❌ YouTube rate limit persists after {max_retries} attempts for video {video_id}")
-                    print(f"   Consider waiting 10-15 minutes before running the script again.")
+                    print(f"❌ Rate limit persists after {max_retries} attempts - wait 10-15 minutes and retry")
                     return None, None
             else:
                 # Other YouTube API errors
@@ -347,14 +338,11 @@ def get_video_transcript_with_retry(video_id, max_retries=5):
             # Check if this is likely a rate limit error disguised as XML parse error
             if 'no element found' in error_str or 'line 1, column 0' in error_str:
                 if attempt < max_retries - 1:
-                    # Use longer wait time as this is likely a rate limit issue
                     wait_time = random.uniform(60, 120)
-                    print(f"⚠️  Possible YouTube rate limit detected for video {video_id} (XML parse error)")
-                    print(f"   Waiting {wait_time:.0f} seconds before retry {attempt + 2}/{max_retries}...")
+                    print(f"⚠️  Possible rate limit (XML parse error) - waiting {wait_time:.0f}s (retry {attempt + 2}/{max_retries})")
                     time.sleep(wait_time)
                 else:
-                    print(f"❌ Persistent error for video {video_id} after {max_retries} attempts")
-                    print(f"   This may be due to YouTube rate limiting. Wait 10-15 minutes and try again.")
+                    print(f"❌ Persistent error after {max_retries} attempts - see README troubleshooting")
                     return None, None
             elif attempt < max_retries - 1:
                 # Standard exponential backoff for other errors
