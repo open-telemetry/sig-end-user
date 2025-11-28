@@ -315,7 +315,7 @@ def get_video_transcript_with_retry(video_id, max_retries=5):
             if 'blocking requests from your IP' in error_str or 'IP has been blocked' in error_str:
                 print(f"❌ YouTube IP block detected for video {video_id}")
                 print(f"   See README 'YouTube IP Blocking' section for solutions")
-                return None, None´
+                return None, None
             elif '429' in error_str or 'Too Many Requests' in error_str:
                 if attempt < max_retries - 1:
                     wait_time = random.uniform(60, 120)
@@ -521,19 +521,12 @@ def parse_chapters(chapters_text):
             chapters.append((seconds, timestamp_str, title))
     return chapters
 
-def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript):
+def _build_time_to_text_mapping(raw_transcript):
     """
-    Insert timestamp markers into the cleaned transcript at appropriate positions.
-    @param cleaned_transcript: The cleaned transcript text from OpenAI
-    @param chapters: List of (seconds, timestamp_str, title) tuples
+    Build a mapping of time (in seconds) to text at that time from raw transcript.
     @param raw_transcript: Raw transcript data from YouTube with timing info
-    @return: Transcript with timestamps inserted
+    @return: Dictionary mapping time in seconds to list of text snippets
     """
-    if not cleaned_transcript or not chapters or not raw_transcript:
-        return cleaned_transcript
-    
-    # Build a mapping of time (in seconds) to text at that time
-    # Store multiple entries per time window for better matching
     time_to_texts = {}
     for entry in raw_transcript:
         if isinstance(entry, dict) and 'text' in entry and 'start' in entry:
@@ -543,86 +536,119 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
                 if start_time not in time_to_texts:
                     time_to_texts[start_time] = []
                 time_to_texts[start_time].append(text)
+    return time_to_texts
+
+
+def _get_window_texts(time_to_texts, seconds, window_size=5):
+    """
+    Get text snippets from a time window around the target timestamp.
+    @param time_to_texts: Dictionary mapping time to text snippets
+    @param seconds: Target timestamp in seconds
+    @param window_size: Size of window in seconds (±window_size)
+    @return: List of text snippets from the time window
+    """
+    window_texts = []
+    for time_sec in range(max(0, seconds - window_size), seconds + window_size + 1):
+        if time_sec in time_to_texts:
+            window_texts.extend(time_to_texts[time_sec])
     
-    # Split transcript into lines
-    lines = cleaned_transcript.split('\n')
+    if not window_texts:
+        # Fallback to closest time if window is empty
+        closest_time = min(time_to_texts.keys(), 
+                         key=lambda t: abs(t - seconds),
+                         default=None)
+        if closest_time:
+            window_texts = time_to_texts[closest_time]
     
-    # For each chapter, find the best line to insert it at
-    line_to_chapter = {}  # Maps line index to (timestamp_str, title) to insert
+    return window_texts
+
+
+def _extract_key_words(text, min_length=3, excluded_words=None):
+    """
+    Extract meaningful key words from text, filtering out common words.
+    @param text: Text to extract words from
+    @param min_length: Minimum word length to include
+    @param excluded_words: Set of words to exclude
+    @return: List of lowercase key words
+    """
+    if excluded_words is None:
+        excluded_words = set()
     
-    for seconds, timestamp_str, title in chapters:
-        # Get text from a window around the timestamp (±5 seconds)
-        window_texts = []
-        for time_sec in range(max(0, seconds - 5), seconds + 6):
-            if time_sec in time_to_texts:
-                window_texts.extend(time_to_texts[time_sec])
-        
-        if not window_texts:
-            # Fallback to closest time if window is empty
-            closest_time = min(time_to_texts.keys(), 
-                             key=lambda t: abs(t - seconds),
-                             default=None)
-            if closest_time:
-                window_texts = time_to_texts[closest_time]
-        
-        if not window_texts:
-            continue
-        
-        # Combine all texts in the window
-        combined_text = ' '.join(window_texts)
-        
-        # Extract key words from the window text
-        sample_words = [w.lower() for w in combined_text.split() 
-                       if len(w) > 3 and w.lower() not in ['that', 'this', 'with', 'from', 'have', 'were', 'been', 'they', 'them']]
-        
-        if not sample_words:
-            sample_words = [w.lower() for w in combined_text.split() if len(w) > 2][:10]
-        
-        # Also use words from the chapter title itself
-        title_words = [w.lower() for w in title.split() 
-                      if len(w) > 3 and w.lower() not in ['the', 'and', 'for', 'with', 'about', 'discussion', 'introduction']]
-        
-        # Find the best matching line in cleaned transcript
-        best_line_idx = None
-        best_score = 0
-        
-        for idx, line in enumerate(lines):
-            # Skip empty lines and lines that already have chapter markers
-            if not line.strip() or line.strip().startswith('###'):
-                continue
-            
-            line_lower = line.lower()
-            
-            # Count matching words from the window
-            text_matches = sum(1 for word in sample_words if word in line_lower)
-            
-            # Count matching words from the chapter title
-            title_matches = sum(1 for word in title_words if word in line_lower) * 2  # Weight title matches more
-            
-            # Bonus for lines that start with speaker markers
-            is_speaker_line = '**' in line and ':' in line
-            speaker_bonus = 1 if is_speaker_line else 0
-            
-            # Prefer lines that appear after already-placed timestamps (chronological order)
-            position_bonus = 0
-            if line_to_chapter:
-                last_placed = max(line_to_chapter.keys())
-                if idx > last_placed:
-                    position_bonus = 0.5
-            
-            score = text_matches + title_matches + speaker_bonus + position_bonus
-            
-            if score > best_score:
-                best_score = score
-                best_line_idx = idx
-        
-        # Insert chapter marker at the best matching line
-        if best_line_idx is not None and best_score > 1:  # Require at least some confidence
-            # Only insert if we don't already have a chapter marker for this line
-            if best_line_idx not in line_to_chapter:
-                line_to_chapter[best_line_idx] = (timestamp_str, title)
+    words = [w.lower() for w in text.split() 
+             if len(w) > min_length and w.lower() not in excluded_words]
     
-    # Build the result by inserting chapter headings before marked lines
+    # Fallback to shorter words if we got nothing
+    if not words:
+        words = [w.lower() for w in text.split() if len(w) > 2][:10]
+    
+    return words
+
+
+def _calculate_line_score(line, sample_words, title_words, idx, line_to_chapter):
+    """
+    Calculate how well a line matches the chapter based on multiple factors.
+    @param line: Line of text to score
+    @param sample_words: Key words from the timestamp window
+    @param title_words: Key words from the chapter title
+    @param idx: Index of the line in the transcript
+    @param line_to_chapter: Dictionary of already-placed chapters
+    @return: Score (higher is better match)
+    """
+    # Skip empty lines and lines that already have chapter markers
+    if not line.strip() or line.strip().startswith('###'):
+        return 0
+    
+    line_lower = line.lower()
+    
+    # Count matching words from the window
+    text_matches = sum(1 for word in sample_words if word in line_lower)
+    
+    # Count matching words from the chapter title (weighted more heavily)
+    title_matches = sum(1 for word in title_words if word in line_lower) * 2
+    
+    # Bonus for lines that start with speaker markers
+    is_speaker_line = '**' in line and ':' in line
+    speaker_bonus = 1 if is_speaker_line else 0
+    
+    # Prefer lines that appear after already-placed timestamps (chronological order)
+    position_bonus = 0
+    if line_to_chapter:
+        last_placed = max(line_to_chapter.keys())
+        if idx > last_placed:
+            position_bonus = 0.5
+    
+    return text_matches + title_matches + speaker_bonus + position_bonus
+
+
+def _find_best_insertion_line(lines, sample_words, title_words, line_to_chapter):
+    """
+    Find the best line index to insert a chapter marker.
+    @param lines: List of transcript lines
+    @param sample_words: Key words from the timestamp window
+    @param title_words: Key words from the chapter title
+    @param line_to_chapter: Dictionary of already-placed chapters
+    @return: Tuple of (best_line_idx, best_score) or (None, 0) if no match
+    """
+    best_line_idx = None
+    best_score = 0
+    
+    for idx, line in enumerate(lines):
+        score = _calculate_line_score(line, sample_words, title_words, idx, line_to_chapter)
+        
+        if score > best_score:
+            best_score = score
+            best_line_idx = idx
+    
+    return best_line_idx, best_score
+
+
+def _build_transcript_with_chapters(lines, line_to_chapter):
+    """
+    Build final transcript with chapter headings inserted at marked positions.
+    @param lines: List of transcript lines
+    @param line_to_chapter: Dictionary mapping line index to (timestamp, title)
+    @return: Transcript string with chapter headings inserted
+    """
     result_lines = []
     for idx, line in enumerate(lines):
         if idx in line_to_chapter:
@@ -635,6 +661,57 @@ def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript
             result_lines.append(line)
     
     return '\n'.join(result_lines)
+
+
+def insert_timestamps_in_transcript(cleaned_transcript, chapters, raw_transcript):
+    """
+    Insert timestamp markers into the cleaned transcript at appropriate positions.
+    @param cleaned_transcript: The cleaned transcript text from OpenAI
+    @param chapters: List of (seconds, timestamp_str, title) tuples
+    @param raw_transcript: Raw transcript data from YouTube with timing info
+    @return: Transcript with timestamps inserted
+    """
+    if not cleaned_transcript or not chapters or not raw_transcript:
+        return cleaned_transcript
+    
+    # Build time-to-text mapping from raw transcript
+    time_to_texts = _build_time_to_text_mapping(raw_transcript)
+    
+    # Split transcript into lines
+    lines = cleaned_transcript.split('\n')
+    
+    # For each chapter, find the best line to insert it at
+    line_to_chapter = {}  # Maps line index to (timestamp_str, title) to insert
+    
+    # Common words to exclude when extracting key words
+    common_words = {'that', 'this', 'with', 'from', 'have', 'were', 'been', 'they', 'them'}
+    title_common_words = {'the', 'and', 'for', 'with', 'about', 'discussion', 'introduction'}
+    
+    for seconds, timestamp_str, title in chapters:
+        # Get text from a window around the timestamp
+        window_texts = _get_window_texts(time_to_texts, seconds, window_size=5)
+        
+        if not window_texts:
+            continue
+        
+        # Extract key words from the window text and chapter title
+        combined_text = ' '.join(window_texts)
+        sample_words = _extract_key_words(combined_text, min_length=3, excluded_words=common_words)
+        title_words = _extract_key_words(title, min_length=3, excluded_words=title_common_words)
+        
+        # Find the best matching line in cleaned transcript
+        best_line_idx, best_score = _find_best_insertion_line(
+            lines, sample_words, title_words, line_to_chapter
+        )
+        
+        # Insert chapter marker at the best matching line
+        if best_line_idx is not None and best_score > 1:  # Require at least some confidence
+            # Only insert if we don't already have a chapter marker for this line
+            if best_line_idx not in line_to_chapter:
+                line_to_chapter[best_line_idx] = (timestamp_str, title)
+    
+    # Build the result by inserting chapter headings before marked lines
+    return _build_transcript_with_chapters(lines, line_to_chapter)
 
 def format_duration(seconds):
     """
