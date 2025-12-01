@@ -35,9 +35,9 @@ A simple analysis plan can include:
     - Visualize adoption trends (e.g., pie charts of “heard of OpenTelemetry,” re-categorized into (Yes/No), bar plots for the default category of “heard of OpenTelemetry”, and bar plots of components used).
     - Descriptive statistics for Likelihood-to-Recommend ( NPS-style Q3 in Adoption) with a component bar chart showing detractors (0-6), passives (7-8), and Promoters (9-10).
     - Frequency distributions of preferred event types, formats, and cadence.
-    - You can check the full analysis plan for the Japanese community survey [here](https://docs.google.com/document/d/1FJ9FVEoANc2-pTp6sQ_jTXh3L2w6a5K8V8Q-2uxkoFk/edit?usp=sharing)
+    - You can check the full analysis plan for the Japanese community survey [here](https://docs.google.com/document/d/1FJ9FVEoANc2-pTp6sQ_jTXh3L2w6a5K8V8Q-2uxkoFk/edit?usp=sharing).
 - **Cross-tabulations / Research Questions**
-  - Formulate a few focused analytical questions that is aligned to the objectives of the survey, and can be answered through cross-tabulation
+  - Formulate a few focused analytical questions that is aligned to the objectives of the survey, and can be answered through cross-tabulation.
   - Examples from the Japanese survey are:
     - Does organization size affect OpenTelemetry adoption?
     - Do industries differ in their likelihood of using or recommending OpenTelemetry?
@@ -77,17 +77,3 @@ For example:
 
 
 Having this mapping ready helps prevent confusion later when you start analyzing the exported data in Sheets.
-
-
-
-
-
-
-
- 
-
-
-
-
-
-

@@ -24,14 +24,9 @@ Note:
 
 **Steps to using pivot tables:** 
 
-
-
 https://github.com/user-attachments/assets/ce119f86-07db-4946-8efc-d6c78a293548
 
-
 https://github.com/user-attachments/assets/774df128-c6b9-46f1-b763-8d04b40fb4c4
-
-
 
 **Cleaning 2: Standardize Responses**
 
@@ -54,25 +49,25 @@ You’ll transform them later, only when needed for specific statistical tests o
 **Step 3: Multiple-Select Variables**
 For questions where respondents can select multiple answers:
  - ≤ 10 options:
-    - Convert each option into a dummy variable (0/1) using IF(ISERR(SEARCH(I$1,$H2)),0,1).
+    - Convert each option into a dummy variable (0/1) using `IF(ISERR(SEARCH(I$1,$H2)),0,1)`.
 ![69D61F99-06A9-4EB5-B7B0-76EF895EC32D_1_105_c](https://github.com/user-attachments/assets/653bbb97-8d39-4c09-a880-4a8633cff97c)  
     
     - Each option becomes its own column (e.g., deployment_k8s, deployment_vm, etc.).
       
  - Greater than 10 options:
     - To keep your sheet manageable, create a separate sheet for that question.
-    - Use the respondent_id to link it back when needed (e.g., through VLOOKUP)
+    - Use the respondent_id to link it back when needed (e.g., through `VLOOKUP`)
     - And this time, the only change in the formula is checking the matching case in the main data sheet, i.e, $O2 as shown in the screenshot, will be found in the data!$O2
 
 **Aggregation Tip:**
 
- - For multi-select questions: use SUM() across the dummy columns to get counts per option.
- - For single-select questions: in one of your Pivot Table sheets, get the counts and percentages.
+ - For multi-select questions: use `SUM()` across the dummy columns to get counts per option.
+ - For single-select questions: in one of your Pivot Table sheets, get the counts (using `COUNTA`) and percentages.
 
 ## Data Validation
 Before starting analysis, and as you run functions, it’s important to randomly validate that the outputs you have are accurate. This can be done by:
 
- - The number of rows or respondents matches the original after transformation
+ - The number of rows or respondents matches the original after transformation.
  - As you perform multiple response transformations, compare the sum of the new columns with the Google Forms summary.
 
 ## Exploratory Data Analysis (EDA)
@@ -88,40 +83,30 @@ For each categorical or binary variable:
 
 1. Go to Insert → Pivot Table.
 2. Set the Rows to the variable you want to summarize.
-3. Set Values to “COUNTA” (or SUM for dummy variables) to get frequencies.
+3. Set Values to `COUNTA` (or `SUM` for dummy variables) to get frequencies.
 4. Add the same variable again to Values, set to “% of  Column Total” to get percentages.
 5. Sort by descending frequency for clarity.
- - Reference initial video on freq
+https://github.com/user-attachments/assets/ce119f86-07db-4946-8efc-d6c78a293548
+
+https://github.com/user-attachments/assets/774df128-c6b9-46f1-b763-8d04b40fb4c4
 
 **Step 2: Group Summaries**
 
 To explore patterns across groups (e.g., region, organization size, number of collectors, etc):
 
-**Case 1**: Crossing 2 single select variables, e.g organization size x otel in production
-
-
+**Case 1**: Crossing 2 single select variables, e.g organization size x otel in production.
 
 https://github.com/user-attachments/assets/c33220b3-85af-4ecc-ba24-64c02d569208
 
-
-
 https://github.com/user-attachments/assets/954743e1-16cb-4e47-b5cb-c2c9665ff1ec
-
-
-
 
 https://github.com/user-attachments/assets/bb351316-8ebc-4cac-975c-4412c7563edc
 
-
-**Case 2**: crossing a single select with a multiple response variable, e.g, team type x collector deployment location
-
+**Case 2**: crossing a single select with a multiple response variable, e.g, team type x collector deployment location.
 
 ![4369B9A1-D196-4A42-83B5-3C9A43388BBD_1_105_c](https://github.com/user-attachments/assets/9cf6692f-dc7c-4ef7-a44f-04278ea9856f)
 
-
 https://github.com/user-attachments/assets/8bee9dbc-3e0c-4fd9-9d93-97a40af368cc
-
-
 
 **Tips for Groups Summaries:** 
 
@@ -181,9 +166,3 @@ When surveys are conducted yearly or periodically, comparing results across year
 
 
 https://github.com/user-attachments/assets/816e4c7f-97f9-4aab-b582-30ac9c9141c2
-
-
-
-
-
-
