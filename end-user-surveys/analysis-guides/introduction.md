@@ -42,7 +42,7 @@ Each exported survey sheet typically contains:
 
 Before starting any analysis, it’s important to familiarize yourself with this structure so you know where to find demographic questions, key variables, and open-ended responses.
 
-** Insert Image here
+![76E73D51-CBFF-4292-BF16-AE2C68D7C503_1_105_c](https://github.com/user-attachments/assets/176bd639-cc1b-4de2-bce5-5590bdee937c)
 
 
 **Tip**: ***Make a copy of the original Google Sheet and work from the copy. This preserves the raw data in case you need to revert or share it with others later.*** 
