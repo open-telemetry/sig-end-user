@@ -138,6 +138,10 @@ def file_for_video(args, video):
     if published == '':
         raise Exception("Could not find publish time for video")
 
+    # Convert 2023-06-01T17:22:03Z -> 20230601T172203Z
+    # This ensures Windows compatibility (colons are invalid in Windows filenames)
+    published = published.replace('-', '').replace(':', '')
+
     title = video['snippet']['title']
     slug = slugify(title)
     filename = f"{args.path}/{published}-{slug}.md"
