@@ -77,7 +77,6 @@ class TestTranscripts(unittest.TestCase):
         args = Namespace(path=self.test_dir)
         result = file_for_video(args, self.playlist_video)
 
-        # Uses ISO 8601 basic format (no colons/dashes) for Windows compatibility
         expected = f"{self.test_dir}/20240115T103000Z-test-video-title.md"
         self.assertEqual(result, expected)
 
@@ -258,7 +257,7 @@ class TestTranscripts(unittest.TestCase):
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['transcript'], 'Hello World')
 
-        # Verify file was created (uses ISO 8601 basic format for Windows compatibility)
+        # Verify file was created
         expected_file = f"{self.test_dir}/20240101T000000Z-test-video.md"
         self.assertTrue(os.path.exists(expected_file))
 
