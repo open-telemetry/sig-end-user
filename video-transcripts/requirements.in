@@ -4,4 +4,4 @@ google-api-python-client==2.181.0
 youtube-transcript-api==0.6.3
 python-dotenv==1.1.1
 python-slugify==8.0.4
-openai==1.104.1
+openai==1.109.1
