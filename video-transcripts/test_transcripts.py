@@ -77,7 +77,7 @@ class TestTranscripts(unittest.TestCase):
         args = Namespace(path=self.test_dir)
         result = file_for_video(args, self.playlist_video)
 
-        expected = f"{self.test_dir}/2024-01-15T10:30:00Z-test-video-title.md"
+        expected = f"{self.test_dir}/20240115T103000Z-test-video-title.md"
         self.assertEqual(result, expected)
 
     def test_file_for_video_with_special_characters(self):
@@ -258,7 +258,7 @@ class TestTranscripts(unittest.TestCase):
         self.assertEqual(result[0]['transcript'], 'Hello World')
 
         # Verify file was created
-        expected_file = f"{self.test_dir}/2024-01-01T00:00:00Z-test-video.md"
+        expected_file = f"{self.test_dir}/20240101T000000Z-test-video.md"
         self.assertTrue(os.path.exists(expected_file))
 
         # Verify file contents
