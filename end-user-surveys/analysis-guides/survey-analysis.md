@@ -146,7 +146,7 @@ https://github.com/user-attachments/assets/9ebbf38d-5e39-4988-ae46-e54c99a9bd0b
  **Tips:**
 
  - Any category that has less than 5% should not be presented in the graph
- - Avoid having multiple illustrations saying the same thing on the graph, e.g, having an axis of percentage when the bars are already showing labels
+ - Avoid having multiple illustrations saying the same thing on the graph, e.g., having an axis of percentage when the bars are already showing labels
 
  **Step 2: Side-by-Side Comparisons**
  Use a Pivot Table with multiple columns, as created in Group summaries.
