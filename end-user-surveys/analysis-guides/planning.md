@@ -62,7 +62,7 @@ Organizing questions into sections helps keep the survey focused and supports st
 **Classify Each Variable**
 
 For each question, decide the data type you’ll be working with. This determines the right analysis and visualization methods:
- -  **Single-select categorical** – Respondents choose one option.
+ - **Single-select categorical** – Respondents choose one option.
  - **Multiple-response categorical** – Respondents select more than one option
  - **Binary** – Yes/No or True/False questions.
  - **Numeric** – Counts or continuous values (e.g., number of collectors).
