@@ -33,7 +33,7 @@ A simple analysis plan can include:
   - Example from the Japanese Community Survey:
     - Summarize response distributions (frequencies, percentages) across demographic categories (organization size, industry, team type). This can be presented in bar charts or tables, depending on the audience for whom the presentation is intended.
     - Visualize adoption trends (e.g., pie charts of “heard of OpenTelemetry,” re-categorized into (Yes/No), bar plots for the default category of “heard of OpenTelemetry”, and bar plots of components used).
-    - Descriptive statistics for Likelihood-to-Recommend ( NPS-style Q3 in Adoption) with a component bar chart showing detractors (0-6), passives (7-8), and Promoters (9-10).
+    - Descriptive statistics for Likelihood-to-Recommend (NPS-style Q3 in Adoption) with a component bar chart showing detractors (0-6), passives (7-8), and promoters (9-10).
     - Frequency distributions of preferred event types, formats, and cadence.
     - You can check the full analysis plan for the Japanese community survey [here](https://docs.google.com/document/d/1FJ9FVEoANc2-pTp6sQ_jTXh3L2w6a5K8V8Q-2uxkoFk/edit?usp=sharing).
 - **Cross-tabulations / Research Questions**
