@@ -3,7 +3,7 @@
 
 ***Author: Ernest Owojori***: ***Page 2 of 3***
 
-## Plan Your analysis Early
+## Plan Your Analysis Early
 A common mistake in community surveys is to treat analysis as something that happens after data collection. In reality, the most effective survey analyses start while the survey is being drafted. 
 
 By thinking ahead about what you want to learn and how you plan to analyze it, you can ensure that the survey questions you write will produce data that’s clean, structured, and easy to work with later.
