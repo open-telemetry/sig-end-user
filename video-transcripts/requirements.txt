@@ -53,7 +53,7 @@ idna==3.11
     #   requests
 jiter==0.12.0
     # via openai
-openai==2.9.0
+openai==2.11.0
     # via -r requirements.in
 proto-plus==1.26.1
     # via google-api-core
