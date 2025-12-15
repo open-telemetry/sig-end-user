@@ -102,7 +102,7 @@ https://github.com/user-attachments/assets/954743e1-16cb-4e47-b5cb-c2c9665ff1ec
 
 https://github.com/user-attachments/assets/bb351316-8ebc-4cac-975c-4412c7563edc
 
-**Case 2**: crossing a single select with a multiple response variable, e.g, team type x collector deployment location.
+**Case 2**: crossing a single select with a multiple response variable, e.g., team type x collector deployment location.
 
 ![4369B9A1-D196-4A42-83B5-3C9A43388BBD_1_105_c](https://github.com/user-attachments/assets/9cf6692f-dc7c-4ef7-a44f-04278ea9856f)
 
