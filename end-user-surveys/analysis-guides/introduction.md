@@ -3,7 +3,7 @@
 
 ***Author: Ernest Owojori***: ***Page 1 of 3***
 
-## Purpose of this Tutorial
+## Purpose of This Tutorial
 Survey data has become an important way for OpenTelemetry (OTel) Special Interest Groups (SIGs) to understand the community’s behaviors, needs, and priorities. Whether it’s learning how end-users adopt OTel in production, identifying common pain points, or informing roadmap decisions, survey analysis provides a structured way to convert community feedback into actionable insights.
 
 However, surveys are often analyzed in different ways across SIGs, which can make it difficult to compare results, replicate analyses, or build on each other’s work.
@@ -11,7 +11,7 @@ This tutorial aims to solve that by providing a shared, step-by-step framework t
 
 The goal is not to enforce a rigid process, but to make survey analysis reproducible, transparent, and consistent across SIGs.
 
-## Who this Tutorial is For
+## Who This Tutorial Is For
 This tutorial is designed for a broad audience within the OTel community, including:
 
 * **SIG Leads** who want to better understand community feedback to guide their working group’s direction.
