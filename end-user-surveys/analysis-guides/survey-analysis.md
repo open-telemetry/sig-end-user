@@ -155,7 +155,7 @@ https://github.com/user-attachments/assets/9ebbf38d-5e39-4988-ae46-e54c99a9bd0b
  - Grouped column charts are especially effective for side-by-side categorical comparisons.
  - Use consistent colors and formatting across charts to keep visuals cohesive.
 
-## Combining multiple data sets
+## Combining Multiple Data Sets
 
 When surveys are conducted yearly or periodically, comparing results across years can reveal important trends — such as changes in adoption, satisfaction, or priorities. However, combining survey datasets requires careful attention to consistency and structure.
  - Consistent Question Wording
