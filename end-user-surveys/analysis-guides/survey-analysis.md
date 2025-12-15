@@ -57,7 +57,7 @@ For questions where respondents can select multiple answers:
  - Greater than 10 options:
     - To keep your sheet manageable, create a separate sheet for that question.
     - Use the respondent_id to link it back when needed (e.g., through `VLOOKUP`)
-    - And this time, the only change in the formula is checking the matching case in the main data sheet, i.e, $O2 as shown in the screenshot, will be found in the data!$O2
+    - And this time, the only change in the formula is checking the matching case in the main data sheet, i.e., $O2 as shown in the screenshot, will be found in the data!$O2
 
 **Aggregation Tip:**
 
