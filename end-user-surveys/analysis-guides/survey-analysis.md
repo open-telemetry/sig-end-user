@@ -84,7 +84,7 @@ For each categorical or binary variable:
 1. Go to Insert → Pivot Table.
 2. Set the Rows to the variable you want to summarize.
 3. Set Values to `COUNTA` (or `SUM` for dummy variables) to get frequencies.
-4. Add the same variable again to Values, set to “% of  Column Total” to get percentages.
+4. Add the same variable again to Values, set to “% of Column Total” to get percentages.
 5. Sort by descending frequency for clarity.
 https://github.com/user-attachments/assets/ce119f86-07db-4946-8efc-d6c78a293548
 
