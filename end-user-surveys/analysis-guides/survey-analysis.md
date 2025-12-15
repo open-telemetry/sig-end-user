@@ -94,7 +94,7 @@ https://github.com/user-attachments/assets/774df128-c6b9-46f1-b763-8d04b40fb4c4
 
 To explore patterns across groups (e.g., region, organization size, number of collectors, etc):
 
-**Case 1**: Crossing 2 single select variables, e.g organization size x otel in production.
+**Case 1**: Crossing 2 single select variables, e.g organization size x OTel in production.
 
 https://github.com/user-attachments/assets/c33220b3-85af-4ecc-ba24-64c02d569208
 
