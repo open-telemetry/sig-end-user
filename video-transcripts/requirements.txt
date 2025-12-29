@@ -72,7 +72,7 @@ pydantic==2.12.5
     # via openai
 pydantic-core==2.41.5
     # via pydantic
-pyparsing==3.2.5
+pyparsing==3.3.1
     # via httplib2
 python-dotenv==1.2.1
     # via -r requirements.in
