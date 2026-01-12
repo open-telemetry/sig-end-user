@@ -6,12 +6,10 @@
 #
 annotated-types==0.7.0
     # via pydantic
-anyio==4.12.0
+anyio==4.12.1
     # via
     #   httpx
     #   openai
-cachetools==6.2.4
-    # via google-auth
 certifi==2026.1.4
     # via
     #   httpcore
@@ -23,11 +21,11 @@ defusedxml==0.7.1
     # via youtube-transcript-api
 distro==1.9.0
     # via openai
-google-api-core==2.28.1
+google-api-core==2.29.0
     # via google-api-python-client
 google-api-python-client==2.187.0
     # via -r requirements.in
-google-auth==2.45.0
+google-auth==2.47.0
     # via
     #   google-api-core
     #   google-api-python-client
@@ -57,7 +55,7 @@ openai==2.15.0
     # via -r requirements.in
 proto-plus==1.27.0
     # via google-api-core
-protobuf==6.33.2
+protobuf==6.33.3
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -100,7 +98,7 @@ typing-inspection==0.4.2
     # via pydantic
 uritemplate==4.2.0
     # via google-api-python-client
-urllib3==2.6.2
+urllib3==2.6.3
     # via requests
 youtube-transcript-api==1.2.3
     # via -r requirements.in
