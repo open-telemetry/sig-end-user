@@ -42,9 +42,7 @@ If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io
 ## SIG Leadership
 
 #### Maintainers
+* [@AndrejKiri](https://github.com/AndrejKiri)
 * [@avillela](https://github.com/avillela)
 * [@danielgblanco](https://github.com/danielgblanco)
 * [@reese-lee](https://github.com/reese-lee)
-
-#### Triagers
-* [@AndrejKiri](https://github.com/AndrejKiri)
