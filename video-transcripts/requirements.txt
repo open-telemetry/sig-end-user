@@ -100,5 +100,5 @@ uritemplate==4.2.0
     # via google-api-python-client
 urllib3==2.6.3
     # via requests
-youtube-transcript-api==1.2.3
+youtube-transcript-api==1.2.4
     # via -r requirements.in
