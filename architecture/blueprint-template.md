@@ -7,7 +7,7 @@ author: {Author}
 
 <!--
 A blueprint SHOULD be structured in a way that conveys a journey, from a current state to a desired state.
-For this purpose, the OTel Blueprint template is based on the approach to strategic thinking popularised by Richard Rumelt in Good Strategy/Bad Strategy. See useful materials before starting to write a blueprint:
+For this purpose, the OTel Blueprint template is based on the approach to strategic thinking popularized by Richard Rumelt in Good Strategy/Bad Strategy. See useful materials before starting to write a blueprint:
 
 - Summary - https://itsadeliverything.com/good-strategy-bad-strategy-the-difference-and-why-it-matters-by-richard-rumelt
 - Interview - https://www.youtube.com/watch?v=4uWKEG0s9Kc
@@ -132,7 +132,7 @@ The author SHOULD define the boundaries for decision-making, both in terms of ar
 Each guideline MUST address at least one challenge presented in the Common Challenges.
 If a guideline does not directly help with any challenges, it MUST NOT be included.
 The author SHOULD ensure that recommendations explain the value of applying them.
-For example, a guideline should not simply state "Declarative config is provided to teams as a centralised config file", but rather as "Declarative config is provided to teams as a centralised config file so that a consolidated set of domain-specific properties are applied with minimal friction, allowing configuration owners to quickly perform changes at scale".
+For example, a guideline should not simply state "Declarative config is provided to teams as a centralized config file", but rather as "Declarative config is provided to teams as a centralized config file so that a consolidated set of domain-specific properties are applied with minimal friction, allowing configuration owners to quickly perform changes at scale".
 
 Diagrams SHOULD be used here to illustrate the North Star architecture or proposed interaction modes between teams. Consider using Mermaid diagram definitions to facilitate maintenance.
 -->
@@ -148,7 +148,7 @@ By implementing this guideline, organizations can expect to achieve:
 - {Outcome 1, e.g. context propagation works out of the box through service boundaries and asynchronous execution units.}
 - {Other outcomes...}
 
-### 2. {Guideline 2: e.g., 2. Centralise Common Processing}
+### 2. {Guideline 2: e.g., 2. Centralize Common Processing}
 <small>Challenges Addressed: {Challenge Numbers, e.g. 2}</small>
 
 {Guideline description and expected outcomes as documented above}
