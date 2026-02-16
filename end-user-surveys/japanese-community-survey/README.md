@@ -5,7 +5,7 @@ Purpose of this survey is to get information about OpenTelemetry community in Ja
 
 ## Resources
 <!-- Add links to the resources you created -->
-- Survey responses in `.csv`
+- [CSV survey data](/end-user-surveys/japanese-community-survey/japanese-community-survey.csv)
 - Survey report in `.pdf`
 - Blog summary of survey results
 
