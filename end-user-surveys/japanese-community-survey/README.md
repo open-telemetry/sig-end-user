@@ -12,7 +12,7 @@ Purpose of this survey is to get information about OpenTelemetry community in Ja
 ## Metadata
 - related issues: [link](https://github.com/orgs/open-telemetry/projects/90/views/5?pane=issue&itemId=130435805&issue=open-telemetry%7Csig-end-user%7C189)
 - questionnaire: [link](https://docs.google.com/forms/d/e/1FAIpQLSevGGUqkbL2SndG9yWrM97C2aa9TkgzUHCWJ12OVgGQ6BNZrQ/viewform?usp=header)
-- start: (2025-12-04)
-- end: (2026-01-20)
+- start: 2025-12-04
+- end: 2026-01-20
 - sample-size: 114
 - number-of-questions: 16
