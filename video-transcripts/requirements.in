@@ -2,6 +2,6 @@
 # Pinned to latest versions - Renovate will manage updates
 google-api-python-client==2.190.0
 youtube-transcript-api==1.2.4
-python-dotenv==1.2.1
+python-dotenv==1.2.2
 python-slugify==8.0.4
 openai==2.21.0

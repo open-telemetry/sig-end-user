@@ -78,7 +78,7 @@ pydantic-core==2.41.5
     # via pydantic
 pyparsing==3.3.2
     # via httplib2
-python-dotenv==1.2.1
+python-dotenv==1.2.2
     # via -r requirements.in
 python-slugify==8.0.4
     # via -r requirements.in
