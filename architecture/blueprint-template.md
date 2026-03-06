@@ -21,7 +21,7 @@ Effectively, an OTel Blueprint is structured in four core areas:
 - Common Challenges: The challenges to solve that, once solved, will generate the largest value for a particular organization.
     This is referred to as the “Diagnosis” in Rumelt’s framework.
 - General Guidelines: The pattern that, if implemented, would solve the Common Challenges identified in the previous block.
-    Guidelines MUST NOT be included if they don’t apply to at least one of the documented challenge.
+    Guidelines MUST NOT be included if they don’t apply to at least one of the documented challenges.
     This is referred to as “Guiding Policy” in Rumelt’s framework.
 - Implementation: The list of actions to implement the General Guidelines, highlighting a plan that takes into consideration interdependencies between these actions (i.e. coherently).
     This is referred to as “Coherent Actions” in Rumelt’s framework.
@@ -70,10 +70,10 @@ By implementing the patterns in this blueprint, organizations can expect to achi
 ## Background
 <!--
 OPTIONAL. A brief introduction to the environment in scope, or the intended audience.
-This section is optional, however it authors SHOULD consider it in order to keep the summary to a few paragraphs.
+This section is optional, however authors SHOULD consider adding it in order to keep the summary to a few paragraphs.
 -->
 
-{Background, e.g. Organizations are widely adoption a cloud native Platform Engineering to reduce cognitive load and abstract complexity for the rest of their organization, and this also applies to observability...}
+{Background, e.g. Organizations are widely adopting a cloud native Platform Engineering team to reduce cognitive load and abstract complexity for the rest of their organization, and this also applies to observability...}
 
 ## Common Challenges
 <!--
@@ -89,18 +89,18 @@ In particular, they MUST avoid thinking about the need for a particular solution
 For instance, they MUST NOT state something like “because of a lack of distributed tracing, we must provide a way to configure a TracerProvider”.
 They SHOULD leave those statements for the Coherent Actions section, so that actions can connect back to guiding policies.
 
-This section SHOULD focus on the root causes or the pivotal issues that, if resolved, deliver the most impact
+This section SHOULD focus on the root causes or the pivotal issues that, if resolved, deliver the most impact.
 Authors SHOULD NOT go into deep details, and they SHOULD NOT aim to cover every known problem in the environments in scope.
 Instead, they SHOULD highlight why particular challenges are important and the impact they have.
 
-This section MAY include diagrams that explain the high-level architecture or organizational structure where this blueprint is applied to.
+This section MAY include diagrams that explain the high-level architecture or organizational structure where this blueprint is applied to. Authors SHOULD use Mermaid.js with default styles to create diagrams.
 -->
 
 Organizations operating in this environment typically face a distinct set of challenges that hinder effective observability:
 
 ### 1. {Challenge 1, e.g. Fragmented Instrumentation Standards}
 
-{Description of the challenge, e.g., in multi-tenant Kubernetes clusters distinct teams often adopt different instrumentation standards.}
+{Description of the challenge, e.g., in multi-tenant Kubernetes clusters, distinct teams often adopt different instrumentation standards.}
 
 This leads to:
 <!-- Impact of the challenge -->
@@ -127,14 +127,14 @@ This is the North Star of the blueprint, so it MUST focus on the end-goal.
 - What additional benefits does it bring?
 - How can this optimize the way that teams operate or interact with each other?
 
-The author SHOULD define the boundaries for decision-making, both in terms of architecture (i.e., what part of the stack this applies to), organization (i.e., what personas this affects and how they use OpenTelemetry tooling). 
+The author SHOULD define the boundaries for decision-making, both in terms of architecture (i.e., what part of the stack this applies to) and organization (i.e., what personas this affects and how they use OpenTelemetry tooling). 
 
 Each guideline MUST address at least one challenge presented in the Common Challenges.
 If a guideline does not directly help with any challenges, it MUST NOT be included.
 The author SHOULD ensure that recommendations explain the value of applying them.
 For example, a guideline should not simply state "Declarative config is provided to teams as a centralized config file", but rather as "Declarative config is provided to teams as a centralized config file so that a consolidated set of domain-specific properties are applied with minimal friction, allowing configuration owners to quickly perform changes at scale".
 
-Diagrams SHOULD be used here to illustrate the North Star architecture or proposed interaction modes between teams. Consider using Mermaid diagram definitions to facilitate maintenance.
+Diagrams SHOULD be used here to illustrate the North Star architecture or proposed interaction modes between teams. Authors SHOULD use Mermaid diagram definitions with default styles to facilitate maintenance.
 -->
 
 ### 1. {Guideline 1: e.g., Decouple Instrumentation from Configuration}
@@ -191,10 +191,10 @@ Documentation:
 
 ## Reference Architectures
 <!--
-Links to real-world adoption that validate this blueprint. This connects the theory to practice.
+Links to real-world adoption that validates this blueprint. This connects the theory to practice.
 -->
 The patterns described above have been successfully implemented by the following end-users:
 
-- {Reference Architecture 1}
-- {Reference Architecture 2}
+- {Link to Reference Architecture 1}
+- {Link to Reference Architecture 2}
 
