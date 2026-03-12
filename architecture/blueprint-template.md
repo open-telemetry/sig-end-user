@@ -32,7 +32,8 @@ Additionally, OTel Blueprints SHOULD optionally include these other sections:
 - Reference Architectures: Links to reference architectures that implemented some, or all of the General Guidelines.
     It is strongly encouraged to back blueprints with reference architectures that implement them.
     This MUST be placed after the Coherent Actions section.
-- Appendix: Any information that would make other sections too verbose (e.g., code snippets, step-by-step guides, etc).
+- Appendix: Any information that would make other sections too verbose.
+    Include here sections like code snippets, step-by-step operating guides, common issues and troubleshooting guidelines, etc.
     This MUST be placed at the end of the document.
 
 This template uses an example, i.e. "Centralized Observability Platform on Kubernetes" to illustrate some of the defined blocks.
@@ -198,3 +199,16 @@ The patterns described above have been successfully implemented by the following
 - {Link to Reference Architecture 1}
 - {Link to Reference Architecture 2}
 
+## Appendix
+<!--
+Each optional subsection here will represent an aspect that can reinforce the guidelines and actions presented above.
+It SHOULD NOT be a replacement for user documentation which can be found or contributed elsewhere in OpenTelemetry Docs.
+It SHOULD be focused on providing useful resources for readers and to extend guidance or actions presented above.
+
+Include here sections like code snippets, step-by-step operating guides, common issues and troubleshooting guidelines, etc.
+-->
+
+### 1. {Appendix 1, e.g. Common Issues and Troubleshooting}
+
+
+### n. {Action n}
