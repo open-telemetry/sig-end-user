@@ -1,0 +1,122 @@
+name: Blueprint Proposal
+description: Propose a new OTel Blueprint to guide adoption in a specific environment or for a specific audience
+title: 'Blueprint Proposal: <Blueprint Name>'
+labels:
+  - blueprints
+assignees: ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for proposing a new OTel Blueprint!
+        Blueprints provide challenge-oriented guidance to help organizations adopt OpenTelemetry in specific environments.
+
+        A good blueprint starts with a clearly defined scope: **who** it is for and **what challenges** it will help them solve.
+        Please be as specific as possible.
+        This scope will determine what content belongs in the blueprint, and help reviewers approve the creation of the document.
+
+        If you are willing to contribute to authoring the blueprint, please mention it below.
+        The template to follow can be found at [`/architecture/blueprint-template.md`](../../architecture/blueprint-template.md).
+  - type: input
+    id: blueprint_name
+    attributes:
+      label: Blueprint name
+      description: |
+        A concise, descriptive name for the blueprint.
+        It should reflect the target environment or scenario.
+      placeholder: e.g., Centralized Observability Platform on Kubernetes
+    validations:
+      required: true
+  - type: textarea
+    id: intended_audience
+    attributes:
+      label: Intended audience
+      description: |
+        Who is this blueprint for?
+        Identify the type of team, engineering role, or persona that will read and apply this blueprint.
+        Be as specific as possible.
+        A well-scoped audience helps ensure the blueprint's guidance is actionable and relevant.
+      placeholder: |
+        e.g.,
+        - Platform Engineering teams responsible for providing observability infrastructure to application developers
+        - Kubernetes owners needing to extract telemetry from their clusters in a vendor-neutral way
+    validations:
+      required: true
+  - type: textarea
+    id: challenges
+    attributes:
+      label: Common challenges this blueprint will solve
+      description: |
+        What are the specific challenges that the intended audience faces in their environment that this blueprint will address?
+        Focus on the **problems**, not the solutions.
+        Each challenge should explain the friction it causes and why it matters to the audience.
+      placeholder: |
+        e.g.,
+        1. **Fragmented instrumentation standards**: Teams independently choose instrumentation approaches, resulting in inconsistent resource attributes and broken trace correlation across service boundaries.
+        2. **Lack of centralized SDK configuration**: Application developers must manually configure OTel SDKs per service and language, leading to high toil and frequent misconfiguration.
+        3. **Scaling data collection**: As the number of services grows, teams struggle to manage Collector capacity and control telemetry costs without sacrificing observability quality.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Target environment or stack
+      description: What environment, technology stack, or deployment model does this blueprint apply to?
+      placeholder: |
+        e.g.,
+        - Large-scale, multi-tenant Kubernetes clusters
+        - Managed cloud environments (AWS, GCP, Azure)
+        - Mixed language microservices (Java, Python, Go)
+    validations:
+      required: true
+  - type: textarea
+    id: components
+    attributes:
+      label: Components & tools
+      description: What OpenTelemetry components or tools will be recommended to solve the challenges identified as part of the blueprint?
+      placeholder: |
+        e.g.,
+        - OpenTelemetry Collector
+        - Language SDKs & APIs
+        - Instrumentation libraries
+        - OpAMP
+        - Weaver
+    validations:
+      required: true
+  - type: textarea
+    id: reference_architectures
+    attributes:
+      label: Supporting reference architectures or evidence
+      description: Are there any reference architectures, case studies, survey results, or community sessions that provide evidence for the challenges and patterns described above? Links are welcome.
+      placeholder: |
+        e.g.,
+        - Reference architecture from Acme Corp (link)
+        - OTel in Practice episode: "Platform Engineering at Scale" (link)
+        - End-User SIG Survey 2024 findings on SDK configuration challenges (link)
+    validations:
+      required: false
+  - type: dropdown
+    id: contribution
+    attributes:
+      label: Are you willing to contribute to authoring this blueprint?
+      description: Let us know if you'd like to help write or review the blueprint.
+      options:
+        - Yes, I can lead the authoring effort
+        - Yes, I can contribute as a co-author or reviewer
+        - No, I am proposing this for the community to pick up
+    validations:
+      required: true
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional notes
+      description: Any other context, related work, or considerations that are relevant to this proposal.
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Tip
+      description: This element is static, used to render a helpful sub-heading for end-users and community members to help prioritize issues. Please leave as is.
+      options:
+        - <sub>[React](https://github.blog/news-insights/product-news/add-reactions-to-pull-requests-issues-and-comments/) with 👍 to help prioritize this issue. Please use comments to provide useful context, avoiding `+1` or `me too`, to help us triage it. Learn more [here](https://opentelemetry.io/community/end-user/issue-participation/).</sub>
+      default: 0

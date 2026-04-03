@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: CNCF Slack
+    url: https://opentelemetry.io/community/end-user/#slack
+    about: For any other discussions, please join us in our CNCF Slack channels.

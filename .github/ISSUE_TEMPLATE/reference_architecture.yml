@@ -1,0 +1,85 @@
+name: Reference Implementation Proposal
+description: Propose a new end-user reference implementation
+title: 'Reference Implementation: <Organization or Project Name>'
+labels:
+  - reference-implementation
+assignees: ''
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for contributing an OTel reference implementation!
+        Real-world evidence of how organizations have successfully adopted OpenTelemetry at scale.
+
+        Your submission will help us identify common patterns and challenges that can inform future blueprints, and may be published on the OpenTelemetry website.
+
+        > **Note:** You do not need to have a full document ready to share when creating this issue, we can work with you to complete the template if required.
+  - type: input
+    id: org_name
+    attributes:
+      label: Organization or project name
+      description: The name of your organization or project.
+      placeholder: e.g., Acme Corp
+    validations:
+      required: true
+  - type: dropdown
+    id: org_type
+    attributes:
+      label: Organization type
+      description: What best describes your organization?
+      options:
+        - Enterprise (1000+ employees)
+        - Mid-size company (100–999 employees)
+        - Small company / startup (<100 employees)
+        - Public sector / government
+        - Academic / research institution
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: industry
+    attributes:
+      label: Industry / sector
+      description: The industry or sector your organization operates in.
+      placeholder: e.g., Financial services, Healthcare, E-commerce, Telecommunications
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment and technology stack
+      description: In a couple of paragraphs maximum, describe the environment where OpenTelemetry was deployed and the key technologies involved.
+      placeholder: |
+        e.g.,
+        - Cloud vs on-prem
+        - Kubernetes vs non-Kubernetes
+        - Application languages
+        - Collector deployment patterns (e.g. gateway, agent)
+    validations:
+      required: true
+  - type: dropdown
+    id: participation
+    attributes:
+      label: Preferred form of participation
+      description: How would you like to be involved in documenting this reference implementation?
+      options:
+        - I can write it up myself following the provided template (available soon!)
+        - I can write most if myself, but would like some help to complete it
+        - I would like to be interviewed and have someone else write it up
+        - I am not sure yet — let's discuss
+    validations:
+      required: true
+  - type: textarea
+    id: additional_notes
+    attributes:
+      label: Additional notes
+      description: Anything else you would like to share that is relevant to this reference implementation.
+    validations:
+      required: false
+  - type: dropdown
+    attributes:
+      label: Tip
+      description: This element is static, used to render a helpful sub-heading for end-users and community members to help prioritize issues. Please leave as is.
+      options:
+        - <sub>[React](https://github.blog/news-insights/product-news/add-reactions-to-pull-requests-issues-and-comments/) with 👍 to help prioritize this issue. Please use comments to provide useful context, avoiding `+1` or `me too`, to help us triage it. Learn more [here](https://opentelemetry.io/community/end-user/issue-participation/).</sub>
+      default: 0
