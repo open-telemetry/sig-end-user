@@ -13,7 +13,7 @@ body:
 
         A good blueprint starts with a clearly defined scope: **who** it is for and **what challenges** it will help them solve.
         Please be as specific as possible.
-        This scope will determine what content belongs in the blueprint, and help reviewers approve the creation of the document.
+        This scope determines what content belongs in the blueprint and helps reviewers approve the creation of the document.
 
         If you are willing to contribute to authoring the blueprint, please mention it below.
         The template to follow can be found at [`/architecture/blueprint-template.md`](../../architecture/blueprint-template.md).
@@ -52,9 +52,9 @@ body:
         Each challenge should explain the friction it causes and why it matters to the audience.
       placeholder: |
         e.g.,
-        1. **Fragmented instrumentation standards**: Teams independently choose instrumentation approaches, resulting in inconsistent resource attributes and broken trace correlation across service boundaries.
-        2. **Lack of centralized SDK configuration**: Application developers must manually configure OTel SDKs per service and language, leading to high toil and frequent misconfiguration.
-        3. **Scaling data collection**: As the number of services grows, teams struggle to manage Collector capacity and control telemetry costs without sacrificing observability quality.
+        - **Fragmented instrumentation standards**: Teams independently choose instrumentation approaches, resulting in inconsistent resource attributes and broken trace correlation across service boundaries.
+        - **Lack of centralized SDK configuration**: Application developers must manually configure OTel SDKs per service and language, leading to high toil and frequent misconfiguration.
+        - **Scaling data collection**: As the number of services grows, teams struggle to manage Collector capacity and control telemetry costs without sacrificing observability quality.
     validations:
       required: true
   - type: textarea
