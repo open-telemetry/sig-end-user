@@ -6,7 +6,7 @@
 #
 annotated-types==0.7.0
     # via pydantic
-anyio==4.12.1
+anyio==4.13.0
     # via
     #   httpx
     #   openai
@@ -17,15 +17,15 @@ certifi==2026.2.25
     #   requests
 cffi==2.0.0
     # via cryptography
-charset-normalizer==3.4.6
+charset-normalizer==3.4.7
     # via requests
-cryptography==46.0.5
+cryptography==46.0.6
     # via google-auth
 defusedxml==0.7.1
     # via youtube-transcript-api
 distro==1.9.0
     # via openai
-google-api-core==2.30.0
+google-api-core==2.30.2
     # via google-api-python-client
 google-api-python-client==2.193.0
     # via -r requirements.in
@@ -34,9 +34,9 @@ google-auth==2.49.1
     #   google-api-core
     #   google-api-python-client
     #   google-auth-httplib2
-google-auth-httplib2==0.3.0
+google-auth-httplib2==0.3.1
     # via google-api-python-client
-googleapis-common-protos==1.73.0
+googleapis-common-protos==1.74.0
     # via google-api-core
 h11==0.16.0
     # via httpcore
@@ -57,9 +57,9 @@ jiter==0.13.0
     # via openai
 openai==2.30.0
     # via -r requirements.in
-proto-plus==1.27.1
+proto-plus==1.27.2
     # via google-api-core
-protobuf==6.33.6
+protobuf==7.34.1
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -80,7 +80,7 @@ python-dotenv==1.2.2
     # via -r requirements.in
 python-slugify==8.0.4
     # via -r requirements.in
-requests==2.32.5
+requests==2.33.1
     # via
     #   google-api-core
     #   youtube-transcript-api
