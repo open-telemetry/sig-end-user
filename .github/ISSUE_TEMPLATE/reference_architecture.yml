@@ -3,7 +3,6 @@ description: Propose a new end-user reference implementation
 title: 'Reference Implementation: <Organization or Project Name>'
 labels:
   - reference-implementation
-assignees: ''
 body:
   - type: markdown
     attributes:
