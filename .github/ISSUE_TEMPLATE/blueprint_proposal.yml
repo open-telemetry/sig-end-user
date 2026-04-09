@@ -3,7 +3,6 @@ description: Propose a new OTel Blueprint to guide adoption in a specific enviro
 title: 'Blueprint Proposal: <Blueprint Name>'
 labels:
   - blueprints
-assignees: ''
 body:
   - type: markdown
     attributes:
