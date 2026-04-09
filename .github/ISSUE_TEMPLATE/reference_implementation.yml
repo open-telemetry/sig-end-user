@@ -7,8 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for contributing an OTel reference implementation!
-        Real-world evidence of how organizations have successfully adopted OpenTelemetry at scale.
+        Thank you for contributing an OTel reference implementation! Real-world evidence of how organizations have successfully adopted OpenTelemetry at scale.
 
         Your submission will help us identify common patterns and challenges that can inform future blueprints and may be published on the OpenTelemetry website.
 
