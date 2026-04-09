@@ -7,15 +7,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thank you for proposing a new OTel Blueprint!
-        Blueprints provide challenge-oriented guidance to help organizations adopt OpenTelemetry in specific environments.
+        Thank you for proposing a new OTel Blueprint! Blueprints provide challenge-oriented guidance to help organizations adopt OpenTelemetry in specific environments.
 
-        A good blueprint starts with a clearly defined scope: **who** it is for and **what challenges** it will help them solve.
-        Please be as specific as possible.
-        This scope determines what content belongs in the blueprint and helps reviewers approve the creation of the document.
+        A good blueprint starts with a clearly defined scope: **who** it is for and **what challenges** it will help them solve. Please be as specific as possible. This scope determines what content belongs in the blueprint and helps reviewers approve the creation of the document.
 
-        If you are willing to contribute to authoring the blueprint, please mention it below.
-        The template to follow can be found at [`/architecture/blueprint-template.md`](../../architecture/blueprint-template.md).
+        If you are willing to contribute to authoring the blueprint, please mention it below. The template to follow can be found at [`/architecture/blueprint-template.md`](https://github.com/open-telemetry/sig-end-user/blob/main/architecture/blueprint-template.md).
   - type: input
     id: blueprint_name
     attributes:
