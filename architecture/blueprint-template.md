@@ -13,7 +13,7 @@ For this purpose, the OTel Blueprint template is based on the approach to strate
 - Summary - https://itsadeliverything.com/good-strategy-bad-strategy-the-difference-and-why-it-matters-by-richard-rumelt
 - Interview - https://www.youtube.com/watch?v=4uWKEG0s9Kc
 
-Some modifications must be applied to that framework, as OTel Blueprints are not scoped to solve a specific set of challenges for a single organization, but rather a common set of challenges as identified in end-user reference architectures, feedback surveys, and OpenTelemetry Live sessions.
+Some modifications must be applied to that framework, as OTel Blueprints are not scoped to solve a specific set of challenges for a single organization, but rather a common set of challenges as identified in end-user reference implementations, feedback surveys, and OpenTelemetry Live sessions.
 
 Effectively, an OTel Blueprint is structured in four core areas:
 
@@ -30,8 +30,8 @@ Effectively, an OTel Blueprint is structured in four core areas:
 Additionally, OTel Blueprints SHOULD optionally include these other sections:
 
 - Background: A brief introduction to the environment and the audience.
-- Reference Architectures: Links to reference architectures that implemented some, or all of the General Guidelines.
-    It is strongly encouraged to back blueprints with reference architectures that implement them.
+- Reference Implementations: Links to reference implementations that implemented some, or all of the General Guidelines.
+    It is strongly encouraged to back blueprints with reference implementations that implement them.
     This MUST be placed after the Coherent Actions section.
 - Appendix: Any information that would make other sections too verbose.
     Include here sections like code snippets, step-by-step operating guides, common issues and troubleshooting guidelines, etc.
@@ -79,14 +79,14 @@ This section is optional, however authors SHOULD consider adding it in order to 
 
 ## Common Challenges
 <!--
-This section describes the inherent friction points of this specific environment/scenario, as backed by reference architectures, feedback surveys, and live sessions.
+This section describes the inherent friction points of this specific environment/scenario, as backed by reference implementation, feedback surveys, and live sessions.
 
 - What typically breaks or slows down adoption?
 - How does this affect business or engineering practices?
 - What is normally a hard problem to solve and thus requires a coherent strategy?
 
 Authors MUST NOT focus on solutions, or goals, here.
-They SHOULD simply state the challenges that target audiences normally see in the environments in scope, as documented in existing reference architectures.
+They SHOULD simply state the challenges that target audiences normally see in the environments in scope, as documented in existing reference implementations.
 In particular, they MUST avoid thinking about the need for a particular solution within these common challenges.
 For instance, they MUST NOT state something like “because of a lack of distributed tracing, we must provide a way to configure a TracerProvider”.
 They SHOULD leave those statements for the Coherent Actions section, so that actions can connect back to guiding policies.
@@ -191,14 +191,14 @@ Documentation:
 <small>Guidelines Supported: {Guideline Numbers, e.g. n}</small>
 
 
-## Reference Architectures
+## Reference Implementations
 <!--
 Links to real-world adoption that validates this blueprint. This connects the theory to practice.
 -->
 The patterns described above have been successfully implemented by the following end-users:
 
-- {Link to Reference Architecture 1}
-- {Link to Reference Architecture 2}
+- {Link to Reference Implementation 1}
+- {Link to Reference Implementation 2}
 
 ## Appendix
 <!--

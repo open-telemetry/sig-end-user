@@ -81,13 +81,13 @@ body:
     validations:
       required: true
   - type: textarea
-    id: reference_architectures
+    id: reference_implementations
     attributes:
-      label: Supporting reference architectures or evidence
-      description: Are there any reference architectures, case studies, survey results, or community sessions that provide evidence for the challenges and patterns described above? Links are welcome.
+      label: Supporting reference implementations or evidence
+      description: Are there any reference implementations, case studies, survey results, or community sessions that provide evidence for the challenges and patterns described above? Links are welcome.
       placeholder: |
         e.g.,
-        - Reference architecture from Acme Corp (link)
+        - Reference implementation from Acme Corp (link)
         - OTel in Practice episode: "Platform Engineering at Scale" (link)
         - End-User SIG Survey 2024 findings on SDK configuration challenges (link)
     validations:
