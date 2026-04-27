@@ -10,6 +10,8 @@ body:
         Thank you for contributing an OTel reference implementation! Real-world evidence of how organizations have successfully adopted OpenTelemetry at scale.
 
         Your submission will help us identify common patterns and challenges that can inform future blueprints and may be published on the OpenTelemetry website.
+        
+        Please visit [our website](https://opentelemetry.io/docs/guidance/reference-implementations/) if you want to find out more about blueprints.
 
         > **Note:** You do not need to have a full document ready to share when creating this issue. We can work with you to complete the template at [`/architecture/reference-implementation-template.md`](https://github.com/open-telemetry/sig-end-user/blob/main/architecture/reference-implementation-template.md) if required.
   - type: input

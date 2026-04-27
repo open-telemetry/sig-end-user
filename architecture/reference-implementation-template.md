@@ -19,11 +19,15 @@ A good reference implementation tells a story. It explains:
 - How their architecture and configuration works in practice.
 - What worked, what didn't, and what they would do differently.
 
+IMPORTANT: This template contains sections which may not be applicable to the environment in scope, or even possible for the author to fill in.
+All sections are RECOMMENDED, helping the author drive the narrative, however the existence of any particular section is NOT REQUIRED.
+
 Two types of markup are used to guide the author:
 
 - Text in {curly brackets} denotes details that MUST be filled in by the author.
 - Text in HTML comments (like this one) contains guidance that MUST NOT appear in the final document.
 
+Authors MAY remove sections if they're not applicable to their implementation, or if they cannot share information pertaining to that section for any reason.
 Authors MAY add additional sections, diagrams, or configuration examples.
 Authors SHOULD keep descriptions factual and evidence-based, avoiding generic claims.
 Authors MUST remove all {curly bracket placeholders} and HTML comment blocks before publishing.
