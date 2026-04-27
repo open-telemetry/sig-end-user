@@ -12,6 +12,8 @@ body:
         A good blueprint starts with a clearly defined scope: **who** it is for and **what challenges** it will help them solve. Please be as specific as possible. This scope determines what content belongs in the blueprint and helps reviewers approve the creation of the document.
 
         If you are willing to contribute to authoring the blueprint, please mention it below. The template to follow can be found at [`/architecture/blueprint-template.md`](https://github.com/open-telemetry/sig-end-user/blob/main/architecture/blueprint-template.md).
+        
+        Please visit [our website](https://opentelemetry.io/docs/guidance/blueprints/) if you want to find out more about blueprints.
   - type: input
     id: blueprint_name
     attributes:

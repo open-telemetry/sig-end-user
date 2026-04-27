@@ -1,8 +1,9 @@
 ---
-title: {Blueprint Name, e.g., Centralized Observability Platform on Kubernetes}
-linkTitle: {Blueprint Name, e.g., Centralized Observability Platform on Kubernetes}
-date: {Date}
+title: '{Blueprint Name, e.g., Centralized Observability Platform on Kubernetes}'
+linkTitle: '{Blueprint Name, e.g., Centralized Observability Platform on Kubernetes}'
+date: '{Date}'
 author: {Author}
+sig: End-User
 ---
 
 <!--
