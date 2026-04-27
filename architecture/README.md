@@ -10,3 +10,5 @@ See existing templates below:
 
 - [Blueprint](./blueprint-template.md)
 - [Reference Implementation](./reference-implementation-template.md)
+
+**Please note**, blueprints and reference implementations resulting from the use of these templates must be contributed as pull requests to their respective subdirectories under the [guidance](https://github.com/open-telemetry/opentelemetry.io/tree/main/content/en/docs/guidance) directory in https://github.com/open-telemetry/opentelemetry.io
