@@ -10,7 +10,7 @@ anyio==4.13.0
     # via
     #   httpx
     #   openai
-certifi==2026.2.25
+certifi==2026.4.22
     # via
     #   httpcore
     #   httpx
@@ -19,7 +19,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.7
     # via requests
-cryptography==46.0.7
+cryptography==47.0.0
     # via google-auth
 defusedxml==0.7.1
     # via youtube-transcript-api
@@ -48,7 +48,7 @@ httplib2==0.31.2
     #   google-auth-httplib2
 httpx==0.28.1
     # via openai
-idna==3.11
+idna==3.13
     # via
     #   anyio
     #   httpx
@@ -70,9 +70,9 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0
     # via cffi
-pydantic==2.13.1
+pydantic==2.13.3
     # via openai
-pydantic-core==2.46.1
+pydantic-core==2.46.3
     # via pydantic
 pyparsing==3.3.2
     # via httplib2
