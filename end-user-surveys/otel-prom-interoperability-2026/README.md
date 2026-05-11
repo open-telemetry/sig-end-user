@@ -1,4 +1,4 @@
-# OTel-Prometheus Interoperability 2026
+# OpenTelemetry ↔ Prometheus Interoperability 2026
 
 ## Purpose
 <!-- Explain what do you want to learn from this survey -->
@@ -10,9 +10,9 @@
 - Blog summary of survey results
 
 ## Metadata
-- related issues: 
-- questionnaire: 
-- start: (YYYY-MM-DD)
+- related issues: [OTel x Prometheus Interoperability '26](https://github.com/open-telemetry/sig-end-user/issues/280)
+- questionnaire: [Google Form](https://docs.google.com/forms/d/1p_s9p77pc9rRk67Kjh9t-88lQNkYIpIwOof-S6gFKeE/edit#responses)
+- start: 2026-04-23
 - end: (YYYY-MM-DD)
 - sample-size: 
 - number-of-questions: 
