@@ -100,7 +100,7 @@ typing-inspection==0.4.2
     # via pydantic
 uritemplate==4.2.0
     # via google-api-python-client
-urllib3==2.6.3
+urllib3==2.7.0
     # via requests
 youtube-transcript-api==1.2.4
     # via -r requirements.in
