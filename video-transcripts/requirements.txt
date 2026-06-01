@@ -10,7 +10,7 @@ anyio==4.13.0
     # via
     #   httpx
     #   openai
-certifi==2026.4.22
+certifi==2026.5.20
     # via
     #   httpcore
     #   httpx
@@ -19,7 +19,7 @@ cffi==2.0.0
     # via cryptography
 charset-normalizer==3.4.7
     # via requests
-cryptography==47.0.0
+cryptography==48.0.0
     # via google-auth
 defusedxml==0.7.1
     # via youtube-transcript-api
@@ -29,14 +29,14 @@ google-api-core==2.30.3
     # via google-api-python-client
 google-api-python-client==2.197.0
     # via -r requirements.in
-google-auth==2.49.2
+google-auth==2.53.0
     # via
     #   google-api-core
     #   google-api-python-client
     #   google-auth-httplib2
-google-auth-httplib2==0.3.1
+google-auth-httplib2==0.4.0
     # via google-api-python-client
-googleapis-common-protos==1.74.0
+googleapis-common-protos==1.75.0
     # via google-api-core
 h11==0.16.0
     # via httpcore
@@ -48,18 +48,18 @@ httplib2==0.31.2
     #   google-auth-httplib2
 httpx==0.28.1
     # via openai
-idna==3.15
+idna==3.17
     # via
     #   anyio
     #   httpx
     #   requests
-jiter==0.14.0
+jiter==0.15.0
     # via openai
 openai==2.38.0
     # via -r requirements.in
-proto-plus==1.27.2
+proto-plus==1.28.0
     # via google-api-core
-protobuf==7.34.1
+protobuf==7.35.0
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -70,9 +70,9 @@ pyasn1-modules==0.4.2
     # via google-auth
 pycparser==3.0
     # via cffi
-pydantic==2.13.3
+pydantic==2.13.4
     # via openai
-pydantic-core==2.46.3
+pydantic-core==2.46.4
     # via pydantic
 pyparsing==3.3.2
     # via httplib2
@@ -80,7 +80,7 @@ python-dotenv==1.2.2
     # via -r requirements.in
 python-slugify==8.0.4
     # via -r requirements.in
-requests==2.33.1
+requests==2.34.2
     # via
     #   google-api-core
     #   youtube-transcript-api
