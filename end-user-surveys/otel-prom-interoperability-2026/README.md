@@ -6,6 +6,7 @@ In 2024 we ran a survey about OTel and Prometheus interoperability to help infor
 
 ## Resources
 
+- [Research plan](https://docs.google.com/document/d/1gfE8UmeHaAmFG6ZjRiVDO2Phi-5Vk3mLpMU3YJQ58PU/edit?usp=sharing)
 - [QR code](/end-user-surveys/otel-prom-interoperability-2026/otel-prom-interoperability-survey-2026-qr.pdf)
 - [Survey responses in `.csv`](/end-user-surveys/otel-prom-interoperability-2026/otel-prom-interoperability-survey-2026.csv)
 - Survey report in `.pdf` (coming soon)
