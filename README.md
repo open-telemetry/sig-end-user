@@ -49,3 +49,4 @@ If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io
 
 #### Approvers
 * [@nwanduka](https://github.com/nwanduka)
+* [@sophiesage](https://github.com/sophiesage)
