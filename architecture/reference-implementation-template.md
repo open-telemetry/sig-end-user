@@ -1,11 +1,9 @@
 ---
 title: '{Organization Name}: {Short descriptor, e.g., OpenTelemetry at Scale on Kubernetes}'
 linkTitle: '{Organization Name}'
-date: {Date}
-author: >-
-  [{Author Name}]({GitHub or web profile URL}) ({Organization Name})
-sig: End-User
 ---
+
+By [{Author Name}]({GitHub or web profile URL}) ({Organization Name}) | {Date}
 
 <!--
 This template is for documenting a reference implementation: a real-world account of how an organization has adopted OpenTelemetry in production.
