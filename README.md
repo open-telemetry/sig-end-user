@@ -50,3 +50,7 @@ If you are new, you can create a CNCF Slack account [here](https://slack.cncf.io
 #### Approvers
 * [@nwanduka](https://github.com/nwanduka)
 * [@sophiesage](https://github.com/sophiesage)
+
+#### Blueprints and Reference Implementations Approvers
+* [@luke6Lh43](https://github.com/luke6Lh43)
+* [@tiffany76](https://github.com/tiffany76)
