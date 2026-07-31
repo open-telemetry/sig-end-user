@@ -48,6 +48,17 @@ implementation, including:
 * Host panels with end users 
 * Host time-limited surveys 
 
+#### Blueprints and Reference Implementations
+
+Produce and maintain vendor-neutral [architectural guidance](https://opentelemetry.io/docs/guidance/) 
+that helps organizations adopt and operate OpenTelemetry, including:
+
+* Review and approve proposals for new Blueprints and Reference Implementations, 
+raised as issues in this repository.
+* Author, or help author, specific Blueprints.
+* Maintain [templates and contribution guidance](https://github.com/open-telemetry/sig-end-user/tree/main/architecture) .
+for authoring Blueprints and Reference Implementations
+
 ### Out of scope
 
 SIG End User’s scope does not include:
