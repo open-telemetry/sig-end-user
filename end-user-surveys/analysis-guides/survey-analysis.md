@@ -118,6 +118,52 @@ https://github.com/user-attachments/assets/8bee9dbc-3e0c-4fd9-9d93-97a40af368cc
     - If the sample is less than 10% of N, don’t decide on it.
     - If the sample is within 10% - 24% of N, decide carefully.
     - If the sample is 25% or above of N, a decision can be made.
+ 
+## Statistical Significance
+Statistical significance helps determine whether an observed difference between survey groups is likely due to a real effect rather than random variation.
+
+Use statistical significance testing when:
+* Comparing two or more survey groups (e.g., first-time vs. returning users)
+* Comparing responses across survey periods (e.g., year-over-year)
+* The sample size is sufficiently large
+* The analysis is intended to support product or project decisions
+
+Once you've identified a difference/pattern between survey groups (e.g., org size vs. OTel in production), use the following tests to validate your finding
+
+### Margin of Error
+### Chi-Square Test of Independence
+### Two-Proportion Z-Test
+
+### When to use which:
+
+Margin of Error (MOE): quick sanity check on any single percentage (e.g., "62% of respondents use Kubernetes ± X%")
+Chi-Square Test of Independence: testing whether two categorical variables are related (e.g., does team size relate to OTel adoption stage?)
+Two-Proportion Z-Test: comparing one specific percentage between two groups (e.g., is Kubernetes adoption higher for large orgs vs small orgs?)
+
+### Common guidelines:
+
+Use a significance level of α = 0.05.
+If p < 0.05, the observed difference is considered statistically significant.
+If p ≥ 0.05, there is insufficient evidence to conclude that the groups differ.
+
+Note: Statistical significance does not imply practical significance. Always interpret results alongside effect size, confidence intervals, and sample size.
+
+### Communicating Statistical Significance
+
+When reporting statistical significance:
+
+* State the groups being compared.
+* Report the observed values or percentages for each group.
+* Include the statistical test used, where applicable.
+* Report the p-value or significance level (for example, **p < 0.05**).
+* State whether the difference is statistically significant.
+* Avoid implying causation. Statistical significance indicates an association, not a cause-and-effect relationship.
+* Include effect size or confidence intervals when they add context to the findings.
+
+**Examples**
+
+* Kubernetes adoption was higher in large organizations (72%) than in small organizations (54%) (**p < 0.05**).
+* No statistically significant difference was observed between first-time and returning respondents (**p ≥ 0.05**).
 
 ## Data Visualization
 
