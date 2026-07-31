@@ -4,8 +4,8 @@
 
 The primary goals of the End-User SIG are:
 * Fostering a sense of vendor-agnostic community for OpenTelemetry end-users to promote learning and adoption. We currently accomplish this through: [CNCF Slack channel](https://cloud-native.slack.com/archives/C01RT3MSWGZ), [panels](https://youtube.com/@otel-official) and blog posts.
-* Facilitate the collection and communication of end-user feedback to OpenTelemetry project special interest groups to influence SIG priorities. We currently accomplish this through: creation and maintenance of end-user research assets such as OpenTelemetry Community surveys & organization and facilitation of structured end-user interview sessions.
-* Produce vendor-neutral architectural guidance that helps end-users adopt and operate OpenTelemetry, in the form of [Blueprints and Reference Implementations](https://opentelemetry.io/docs/guidance/). See the [`architecture/`](./architecture) directory for templates and our contribution process.
+* Facilitating the collection and communication of end-user feedback to OpenTelemetry project special interest groups to influence SIG priorities. We currently accomplish this through: creation and maintenance of end-user research assets such as OpenTelemetry Community surveys & organization and facilitation of structured end-user interview sessions.
+* Producing vendor-neutral architectural guidance that helps end-users adopt and operate OpenTelemetry, in the form of [Blueprints and Reference Implementations](https://opentelemetry.io/docs/guidance/). See the [`architecture/`](./architecture) directory for templates and our contribution process.
 
 Our group discourages promotion of vendor-specific solutions and desires to keep the focus on OpenTelemetry core technologies, adoption and usage.
 
