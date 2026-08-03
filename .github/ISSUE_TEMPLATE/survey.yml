@@ -12,10 +12,12 @@ body:
         Please remember to change the title of this issue – change `<name>` to the name of your survey.
 
         Once opened, the tasks below will be tracked and carried out as the proposal moves forward, mainly by End User SIG contributors.
-  - type: markdown
+  - type: textarea
+    id: tasks
     attributes:
+      label: Tasks
+      description: The following list contains sub-tasks that need to be completed as part of organising, recording, and publicising the survey. Feel free to add any more tasks you require, but do NOT delete any of the default tasks below.
       value: |
-        ### Tasks
         - [ ] Review End-user SIG [guidance](https://github.com/open-telemetry/sig-end-user/tree/main/end-user-surveys) on how to run surveys in OTel community
         - [ ] Prepare questions
         - [ ] Create a questionnaire from [this template](https://docs.google.com/forms/d/1NsOBVcajq3tm4wDrZTt-5bEG5pR3YfK2yccFGVqVzWI/edit) (@avillela can grant you access)
@@ -31,6 +33,8 @@ body:
         - [ ] Create a report
         - [ ] Write a blog post
         - [ ] Present findings at a maintainers meeting
+    validations:
+      required: true
   - type: dropdown
     attributes:
       label: Tip

@@ -23,12 +23,12 @@ body:
     attributes:
       label: Description
       description: Add here the main description that will be used in promotional posts and event invites. See [OpenTelemetry Live](https://ocgroups.dev/cncf/group/opentelemetry-live) for previous examples.
-  - type: markdown
+  - type: textarea
+    id: tasks
     attributes:
+      label: Tasks
+      description: The following list contains sub-tasks that need to be completed as part of organising, recording, and publicising the episode. Feel free to add any more tasks you require, but do NOT delete any of the default tasks below.
       value: |
-        ### Tasks
-        The following list contains sub-tasks that need to be completed as part of organising, recording, and publicising the episode. Please replace items with individual links to issues where appropriate.
-
         - [ ] Confirm speakers
         - [ ] Confirm date and time
         - [ ] Make a copy of the [Q&A interview template](https://docs.google.com/document/d/1vi6NpSj3MvKTuNwFpE8toywHP0sWiH4bsE3AOWvgSwo/edit)
@@ -39,6 +39,8 @@ body:
         - [ ] Promote on CNCF Slack channels ([#otel-announcements](https://cloud-native.slack.com/archives/C049G9W5NQ7), [#otel-sig-end-users](https://cloud-native.slack.com/archives/C01RT3MSWGZ), [#o11y-ambassadors](https://cloud-native.slack.com/archives/C050WLWHV1U)) - make sure that these point to the CNCF event link
         - [ ] Host session
         - [ ] Promote recording on socials
+    validations:
+      required: true
   - type: dropdown
     attributes:
       label: Tip
