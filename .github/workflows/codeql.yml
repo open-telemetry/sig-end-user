@@ -24,6 +24,7 @@ permissions:
 jobs:
   CodeQL-Build:
     permissions:
+      contents: read # for actions/checkout
       security-events: write # for github/codeql-action/analyze to upload SARIF results
     runs-on: ubuntu-latest
 
