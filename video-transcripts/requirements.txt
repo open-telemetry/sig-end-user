@@ -15,28 +15,28 @@ certifi==2026.7.22
     #   httpcore
     #   httpx
     #   requests
-cffi==2.1.0
+cffi==2.1.1
     # via cryptography
-charset-normalizer==3.4.9
+charset-normalizer==3.5.1
     # via requests
-cryptography==49.0.0
+cryptography==50.0.1
     # via google-auth
 defusedxml==0.7.1
     # via youtube-transcript-api
 distro==1.9.0
     # via openai
-google-api-core==2.33.0
+google-api-core==2.34.0
     # via google-api-python-client
 google-api-python-client==2.198.0
     # via -r requirements.in
-google-auth==2.56.2
+google-auth==2.57.0
     # via
     #   google-api-core
     #   google-api-python-client
     #   google-auth-httplib2
-google-auth-httplib2==0.4.0
+google-auth-httplib2==0.4.2
     # via google-api-python-client
-googleapis-common-protos==1.75.0
+googleapis-common-protos==1.75.2
     # via google-api-core
 h11==0.16.0
     # via httpcore
@@ -48,7 +48,7 @@ httplib2==0.32.0
     #   google-auth-httplib2
 httpx==0.28.1
     # via openai
-idna==3.18
+idna==3.19
     # via
     #   anyio
     #   httpx
@@ -57,9 +57,9 @@ jiter==0.16.0
     # via openai
 openai==2.50.0
     # via -r requirements.in
-proto-plus==1.28.2
+proto-plus==1.28.4
     # via google-api-core
-protobuf==7.35.1
+protobuf==7.36.0
     # via
     #   google-api-core
     #   googleapis-common-protos
@@ -96,7 +96,7 @@ typing-extensions==4.16.0
     #   pydantic
     #   pydantic-core
     #   typing-inspection
-typing-inspection==0.4.2
+typing-inspection==0.4.4
     # via pydantic
 uritemplate==4.2.0
     # via google-api-python-client
