@@ -38,7 +38,7 @@ Additionally, OTel Blueprints SHOULD optionally include these other sections:
   the end of the document.
 
 The template uses an example, "Centralized Observability Platform on Kubernetes", to illustrate some of the defined
-blocks. Two types of punctuation are used to guide the author:
+blocks. The following conventions guide the author:
 
 - Text in `{curly brackets}` denotes details that MUST be filled in by the author, with examples inside the curly
   brackets.
