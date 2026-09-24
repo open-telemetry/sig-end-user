@@ -3,6 +3,7 @@ import os
 import tempfile
 from argparse import Namespace
 from unittest.mock import patch, MagicMock
+from youtube_transcript_api import FetchedTranscriptSnippet
 from transcripts import (
     get_publish,
     get_id,
@@ -218,16 +219,16 @@ class TestTranscripts(unittest.TestCase):
         mock_build.assert_called_once()
         mock_youtube.search().list.assert_called()
 
-    @patch('transcripts.YouTubeTranscriptApi')
+    @patch('transcripts.YouTubeTranscriptApi', autospec=True)
     @patch('transcripts.openai_cleanup')
     def test_fetch_transcripts_integration(self, mock_cleanup, mock_transcript_api):
         """Test fetch_transcripts with mocked APIs"""
         # Mock transcript API
         mock_transcript = [
-            {'text': 'Hello', 'start': 0.0},
-            {'text': 'World', 'start': 1.0}
+            FetchedTranscriptSnippet(text='Hello', start=0.0, duration=1.0),
+            FetchedTranscriptSnippet(text='World', start=1.0, duration=1.0)
         ]
-        mock_transcript_api.get_transcript.return_value = mock_transcript
+        mock_transcript_api.return_value.fetch.return_value = mock_transcript
 
         # Mock OpenAI cleanup
         mock_cleanup.return_value = ['Test summary', 'Cleaned transcript']
@@ -248,9 +249,9 @@ class TestTranscripts(unittest.TestCase):
         result = fetch_transcripts(args, [test_video])
 
         # Verify transcript was fetched
-        mock_transcript_api.get_transcript.assert_called_once_with(
+        mock_transcript_api.return_value.fetch.assert_called_once_with(
             'test123',
-            languages=('en', 'es', 'fr', 'de', 'jp')
+            languages=('en', 'es', 'fr', 'de', 'ja')
         )
 
         # Verify the video has transcript
