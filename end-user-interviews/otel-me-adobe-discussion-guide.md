@@ -5,20 +5,26 @@
 Suggested Interview Flow (30/60 minute duration)
 
 ## Housekeeping (~5 min)
-- [ ] Welcome the end user and thank them for participating.
+- [ ] Welcome the participants and introduce the Adobe representatives and thank them for participating.
 - [ ] Confirm it’s ok to record the interview. [Start Recording if not auto-enabled]
-- [ ] Outline the expected flow for the interview, highlighting any special topics and that there will be time for the audience and the end-user to ask questions too.
+- [ ] Briefly explain the OTel Me interview flow and its purpose.
 - [ ] Introduce yourself and ask them to introduce themselves (and the audience too if time allows)
+- [ ] Introduce Adobe's published OpenTelemetry [reference inplementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/) as the starting point for the discussion.
+- [ ] Outline the expected discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learnt.
+- [ ] Mention that the discussion will also include any updates or experiences Adobe representatives would like to share beyond what is documented in the reference implementation."
+- [ ] Reserve time at the end for the questions from the audience and Adobe Representatives
+
  
 ## Warm-up questions (~3 / 10 min)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
-- Please tell us about your role in the company.
-- What are the top 3 problems that you’re now facing in your role?
+- Could you briefly describe your responsibilities in Adobe's OpenTelemetry platform and how you work with the application/service teams?
+- The reference implementation describes few challenges:
+    - Chain Collectors: When telemetry passes through multiple Collectors, how does your team ensure that backend errors are propagated and visible to upstream Collectors? Have you encountered similar error-visibility challenges elsewhere in the platform?
+    - Operator and Collector version compatibility: How do you manage compatibility between Operator upgrades and different Collector versions across service teams?
+    - Routing processor deprecation: How do you handle changes to Collector components when existing components are deprecated or replaced?  
+- The reference implementation describes a Kubernetes-based deployment model using Helm charts and the OpenTelemetry Operator. Is this the primary onboarding approach for applications using the platform? Are there any significant exceptions?
 - Can you describe your architecture, programming languages that your organization uses, and deployment environment? How do you deploy applications today?
-- How are the apps/services that you work with currently instrumented and/or logged?
-- What telemetry are you capturing, and where are you sending it?
-- How do you interact with telemetry coming from apps/services in your org? If not, who?
-- Are you using vendor-specific telemetry instrumentation? If so, why?
+- What types of workloads are currently instrumented with OpenTelemetry at Adobe, such as microservices, customer-facing APIs, event-driven services, or background processing jobs? Do they have different instrumentation requirements?
 
 ## Meaty questions (~15 / 25 min) 
 This section will depend upon goals for the interview and what assumptions and/or hypothesis is being tested, some suggested questions are below:
