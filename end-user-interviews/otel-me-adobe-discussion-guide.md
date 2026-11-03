@@ -11,8 +11,8 @@ Suggested Interview Flow (30/60 minute duration)
 - [ ] Introduce yourself and ask them to introduce themselves (and the audience too if time allows)
 - [ ] Introduce Adobe's published OpenTelemetry [reference inplementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/) as the starting point for the discussion.
 - [ ] Outline the expected discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learnt.
-- [ ] Mention that the discussion will also include any updates or experiences Adobe representatives would like to share beyond what is documented in the reference implementation."
-- [ ] Reserve time at the end for the questions from the audience and Adobe Representatives
+- [ ] Mention that the discussion will also include any updates or experiences Adobe representatives would like to share beyond what is documented in the reference implementation.
+- [ ] Reserve time at the end for the questions from the audience and Adobe representatives.
 
  
 ## Warm-up questions (~3 / 10 min)
@@ -32,9 +32,10 @@ This section will depend upon goals for the interview and what assumptions and/o
 - Based on your experience with chained Collectors and the broader OpenTelemetry ecosystem, what improvements would you like to see, particularly around error propagation and backpressure handling?
 - What feedback have application teams shared about the ease of onboarding, configuring instrumentation, and getting the telemetry they need from the platform?
 - Which teams or roles are most involved in improving and maintaining the OpenTelemetry platform at Adobe? How do they collaborate?
-- Are you interested in contributing to this project/community, if so what challenges do you have with that?
-- GenAI observability: Is Adobe exploring OpenTelemetry for observing GenAI applications and AI agents? If so, how do you approach capturing telemetry such as LLM interactions, agent execution flows, and tool calls?
-- What is your perspective on OpenTelemetry's emerging GenAI semantic conventions? Do you see value in standardizing telemetry attributes across different AI frameworks and observability backends, even while the conventions are still evolving?
+- How does Adobe engage with the OpenTelemetry community? Are there any challenges you face when contributing code, documentation, or feedback to the project?
+- GenAI observability:
+  - Is Adobe exploring OpenTelemetry for observing GenAI applications and AI agents? If so, how do you approach capturing telemetry such as LLM interactions, agent execution flows, and tool calls?
+  - What is your perspective on OpenTelemetry's emerging GenAI semantic conventions? Do you see value in standardizing telemetry attributes across different AI frameworks and observability backends, even while the conventions are still evolving?
 
 ## [Optional] Observer questions (~0 / 5 min)
 - Ask the audience if they have any questions for the end user
