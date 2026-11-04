@@ -4,16 +4,20 @@
  
 Suggested Interview Flow (30/60 minute duration)
 
-## Housekeeping (~5 min)
+## Housekeeping (~5 min) Pre-Livestream Preparation/Checklist - revamp this
 - [ ] Welcome the participants and introduce the Adobe representatives and thank them for participating.
 - [ ] Confirm it’s ok to record the interview. [Start Recording if not auto-enabled]
 - [ ] Briefly explain the OTel Me interview flow and its purpose.
+
+- [ ] 
 - [ ] Introduce yourself and ask them to introduce themselves (and the audience too if time allows)
 - [ ] Introduce Adobe's published OpenTelemetry [reference inplementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/) as the starting point for the discussion.
 - [ ] Outline the expected discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learnt.
 - [ ] Mention that the discussion will also include any updates or experiences Adobe representatives would like to share beyond what is documented in the reference implementation.
 - [ ] Reserve time at the end for the questions from the audience and Adobe representatives.
 
+## Livestream Kickoff
+- [ ] To get us started, could you introduce Adobe's published OpenTelemetry reference implementation, What does it cover, and how can it help teams get started with OpenTelemetry?
  
 ## Warm-up questions (~3 / 10 min)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
