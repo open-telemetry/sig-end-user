@@ -11,7 +11,7 @@ Suggested Interview Flow (30/60 minute duration)
 - [ ] Agree on how audience questions will be handled and reserve time for Q&A.
 
 ## Livestream Kickoff
-- [ ] To get us started, could you introduce Adobe's published OpenTelemetry (reference implementation)[https://opentelemetry.io/docs/guidance/reference-implementations/adobe/?utm_source=chatgpt.com], What does it cover, and how can it help teams get started with OpenTelemetry?
+- [ ] To get us started, could you introduce Adobe's published OpenTelemetry [reference implementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/?utm_source=chatgpt.com), What does it cover, and how can it help teams get started with OpenTelemetry?
  
 ## Warm-up questions (~3 / 10 min)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
