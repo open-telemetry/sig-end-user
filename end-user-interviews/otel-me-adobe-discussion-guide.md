@@ -1,16 +1,11 @@
 # <img src="https://opentelemetry.io/img/logos/opentelemetry-logo-nav.png" alt="OpenTelemetry Icon" width="45" height=""> OTel Me Adobe Discussion
  
- This template outlines a best practice flow for for end user interviews. This guidance might be especially helpful if there is no pre-defined session agenda.
- 
 Suggested Interview Flow (30/60 minute duration)
 
-## Housekeeping (~5 min) Pre-Livestream Preparation/Checklist - revamp this
-- [ ] Welcome the participants and introduce the Adobe representatives and thank them for participating.
-- [ ] Confirm it’s ok to record the interview. [Start Recording if not auto-enabled]
-- [ ] Briefly explain the OTel Me interview flow and its purpose.
-
-- [ ] 
+## Pre-Livestream Preparation/Checklist - revamp this (~5 min)
+- [ ] Welcome the participants, introduce the Adobe representatives and thank them for joining.
 - [ ] Introduce yourself and ask them to introduce themselves (and the audience too if time allows)
+### Optional (depending on how the discussion is going)
 - [ ] Introduce Adobe's published OpenTelemetry [reference inplementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/) as the starting point for the discussion.
 - [ ] Outline the expected discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learnt.
 - [ ] Mention that the discussion will also include any updates or experiences Adobe representatives would like to share beyond what is documented in the reference implementation.
@@ -23,7 +18,7 @@ Suggested Interview Flow (30/60 minute duration)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
 - Could you briefly describe your responsibilities in Adobe's OpenTelemetry platform and how you work with the application/service teams?
 - The reference implementation describes few challenges:
-    - Chain Collectors: When telemetry passes through multiple Collectors, how does your team ensure that backend errors are propagated and visible to upstream Collectors? Have you encountered similar error-visibility challenges elsewhere in the platform?
+    - Chain Collectors: When telemetry passes through multiple Collectors, how does your team ensure that backend errors are propagated and visible to upstream Collectors? Have you encountered similar error-   visibility challenges elsewhere in the platform?
     - Operator and Collector version compatibility: How do you manage compatibility between Operator upgrades and different Collector versions across service teams?
     - Routing processor deprecation: How do you handle changes to Collector components when existing components are deprecated or replaced?  
 - The reference implementation describes a Kubernetes-based deployment model using Helm charts and the OpenTelemetry Operator. Is this the primary onboarding approach for applications using the platform? Are there any significant exceptions?
