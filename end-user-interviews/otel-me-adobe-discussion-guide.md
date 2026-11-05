@@ -2,13 +2,13 @@
  
 Suggested Interview Flow (30/60 minute duration)
 
-Pre-Stream Housekeeping (~5 min)
-[ ] Welcome the Adobe representatives and thank them for joining.
-[ ] Introduce yourself and invite the Adobe representatives to introduce themselves.
-[ ] Briefly review Adobe's published OpenTelemetry reference implementation as the starting point for the discussion.
-[ ] Walk through the planned discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learned.
-[ ] Confirm whether the Adobe representatives have any additional updates or experiences they would like to share beyond what's documented in the reference implementation.
-[ ] Agree on how audience questions will be handled and reserve time for Q&A.
+## Pre-Stream Housekeeping (~5 min)
+- [ ] Welcome the Adobe representatives and thank them for joining.
+- [ ] Introduce yourself and invite the Adobe representatives to introduce themselves.
+- [ ] Briefly review Adobe's published OpenTelemetry reference implementation as the starting point for the discussion.
+- [ ] Walk through the planned discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learned.
+- [ ] Confirm whether the Adobe representatives have any additional updates or experiences they would like to share beyond what's documented in the reference implementation.
+- [ ] Agree on how audience questions will be handled and reserve time for Q&A.
 
 ## Livestream Kickoff
 - [ ] To get us started, could you introduce Adobe's published OpenTelemetry reference implementation, What does it cover, and how can it help teams get started with OpenTelemetry?
