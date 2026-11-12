@@ -10,7 +10,7 @@ Suggested Interview Flow (30/60 minute duration)
 - [ ] Agree on how audience questions will be handled and reserve time for Q&A.
 
 ## Livestream Kickoff
-- [ ] Could you briefly introduce yourselves, share your roles at Adobe, explain how you are involved in using or implementing OpenTelemetry at Abode? 
+- [ ] Could you briefly introduce yourselves, share your roles at Adobe, explain how you are involved in using or implementing OpenTelemetry at Adobe? 
 - [ ] To get us started, could you introduce Adobe's published OpenTelemetry [reference implementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/?utm_source=chatgpt.com), What does it cover, and how can it help teams get started with OpenTelemetry?
 - [ ] What are the key architectural decisions reflected in this implementation?
  
