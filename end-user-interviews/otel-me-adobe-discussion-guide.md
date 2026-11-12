@@ -3,17 +3,16 @@
 Suggested Interview Flow (30/60 minute duration)
 
 ## Pre-Stream Housekeeping (~5 min)
-- [ ] Welcome the Adobe representatives and thank them for joining.
+- [ ] Welcome the Adobe representatives and thank them for joining the preparation call.
 - [ ] Introduce yourself and invite the Adobe representatives to introduce themselves.
-- [ ] Briefly review Adobe's published OpenTelemetry reference implementation as the starting point for the discussion.
 - [ ] Walk through the planned discussion flow, covering adoption, architecture and design decisions, instrumentation, operational challenges, and lessons learned.
 - [ ] Confirm whether the Adobe representatives have any additional updates or experiences they would like to share beyond what's documented in the reference implementation.
 - [ ] Agree on how audience questions will be handled and reserve time for Q&A.
 
 ## Livestream Kickoff
+- [ ] Could you briefly introduce yourselves, share your roles at Adobe, explain how you are involved in using or implementing OpenTelemetry at Abode? 
 - [ ] To get us started, could you introduce Adobe's published OpenTelemetry [reference implementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/?utm_source=chatgpt.com), What does it cover, and how can it help teams get started with OpenTelemetry?
 - [ ] What are the key architectural decisions reflected in this implementation?
-- [ ] Which parts of your implementation do you think other teams should pay particular attention to when planning their own OpenTelemetry adoption?
  
 ## Warm-up questions (~3 / 10 min)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
@@ -37,9 +36,12 @@ This section will depend upon goals for the interview and what assumptions and/o
   - Is Adobe exploring OpenTelemetry for observing GenAI applications and AI agents? If so, how do you approach capturing telemetry such as LLM interactions, agent execution flows, and tool calls?
   - What is your perspective on OpenTelemetry's emerging GenAI semantic conventions? Do you see value in standardizing telemetry attributes across different AI frameworks and observability backends, even while the conventions are still evolving?
 
+## Key Takeaways for OpenTelemetry Adoption
+- [ ] Which parts of your implementation do you think other teams (both inside and outside Abode) should pay particular attention to when planning their own OpenTelemetry adoption?
+
 ## [Optional] Observer questions (~0 / 5 min)
 - Ask the audience if they have any questions for the end user
-
+  
 ## Turn the tables (~5 / 10 min)
 - [ ] Ask the end user what questions, if any, you or the folks on the call can answer for them 
 
