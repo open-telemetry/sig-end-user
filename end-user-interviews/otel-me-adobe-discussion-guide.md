@@ -37,7 +37,7 @@ This section will depend upon goals for the interview and what assumptions and/o
   - What is your perspective on OpenTelemetry's emerging GenAI semantic conventions? Do you see value in standardizing telemetry attributes across different AI frameworks and observability backends, even while the conventions are still evolving?
 
 ## Key Takeaways for OpenTelemetry Adoption
-- [ ] Which parts of your implementation do you think other teams (both inside and outside Abode) should pay particular attention to when planning their own OpenTelemetry adoption?
+- [ ] Which parts of your implementation do you think other teams (both inside and outside Adobe) should pay particular attention to when planning their own OpenTelemetry adoption?
 
 ## [Optional] Observer questions (~0 / 5 min)
 - Ask the audience if they have any questions for the end user
