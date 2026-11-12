@@ -12,6 +12,8 @@ Suggested Interview Flow (30/60 minute duration)
 
 ## Livestream Kickoff
 - [ ] To get us started, could you introduce Adobe's published OpenTelemetry [reference implementation](https://opentelemetry.io/docs/guidance/reference-implementations/adobe/?utm_source=chatgpt.com), What does it cover, and how can it help teams get started with OpenTelemetry?
+- [ ] What are the key architectural decisions reflected in this implementation?
+- [ ] Which parts of your implementation do you think other teams should pay particular attention to when planning their own OpenTelemetry adoption?
  
 ## Warm-up questions (~3 / 10 min)
 This section helps set the stage for the session and provides context that should allow for more insightful questions to be asked later.
