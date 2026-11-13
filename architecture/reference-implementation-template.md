@@ -96,7 +96,9 @@ OTEL_RESOURCE_ATTRIBUTES=deployment.environment=production}
 ### Collector configuration
 
 {Example Collector configuration.
-Include a brief explanation of the key decisions made.}
+Include a brief explanation of the key decisions made.
+If the configuration is long, consider wrapping it in a collapsible `<details>` block and linking to an
+[OTelBin](https://www.otelbin.io/) visualization of the pipeline, to keep the reading flow.}
 
 ```yaml
 # {Brief description of what this configuration does and any notable choices made}
