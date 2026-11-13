@@ -63,7 +63,7 @@ body:
       label: Preferred form of participation
       description: How would you like to be involved in documenting this reference implementation?
       options:
-        - I can write it myself following the provided template (available soon!)
+        - I can write it myself following the provided template
         - I can write most of it myself but would like some help to complete it
         - I would like to be interviewed and have someone else write it
         - I am not sure yet — let's discuss
