@@ -32,6 +32,12 @@ Authors SHOULD keep descriptions factual and evidence-based, avoiding generic cl
 `{curly bracket placeholders}` before publishing. Authors MAY include the names of the backend or vendor they used,
 but they MUST NOT include details related to why that backend was used, or the benefits/drawbacks of using it.
 
+> [!NOTE]
+> Reference implementations are a collaborative effort, and you do not have to share more than you are comfortable
+> with. Leave a section out and the [Blueprints and Reference Implementations
+> approvers](../README.md#blueprints-and-reference-implementations-approvers) will work with you on the rest, for
+> example through an interview.
+
 ## {Organization Name} Reference Implementation
 
 Introduce your organization in a paragraph or two. Explain what it does, who it serves, and any context that is
